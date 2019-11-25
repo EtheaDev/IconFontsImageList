@@ -119,6 +119,7 @@ type
     FIconIndexLabel: string;
     FUpdating: Boolean;
     FEditingList: TIconFontsImageList;
+    FOldImageList: TIconFontsImageList;
     FOldIconFontItems: TIconFontItems;
     procedure UndoEditing;
     procedure AddColor(const S: string);
@@ -173,7 +174,8 @@ begin
         DefaultMaskColorColorBox.Selected := FEditingList.MaskColor;
         StoreBitmapCheckBox.Checked := FEditingList.StoreBitmap;
         FEditinglist.IconFontItems := AImageList.IconFontItems;
-        FOldIconFontItems.Assign(FEditinglist.IconFontItems);
+        FOldImageList.Assign(FEditingList);
+        //FOldIconFontItems.Assign(FEditinglist.IconFontItems);
 
         ImageView.LargeImages := FEditingList;
         ImageView.SmallImages := FEditingList;
@@ -290,15 +292,16 @@ end;
 procedure TIconFontsImageListEditor.UndoEditing;
 begin
   FEditingList.ClearIcons;
-  FEditingList.IconFontItems.Assign(FOldIconFontItems);
+  //FEditingList.IconFontItems.Assign(FOldIconFontItems);
+  FEditingList.Assign(FOldImageList);
 end;
 
 procedure TIconFontsImageListEditor.UpdateCharsToBuild;
 begin
   CharsEdit.Font.Size := 16;
-  if DefaultFontName.Text <> '' then
+  if FEditingList.FontName <> '' then
   begin
-    CharsEdit.Font.Name := DefaultFontName.Text;
+    CharsEdit.Font.Name := FEditingList.FontName;
     CharsEdit.Enabled := True;
   end
   else
@@ -311,6 +314,7 @@ end;
 procedure TIconFontsImageListEditor.UpdateGUI;
 var
   LIsItemSelected: Boolean;
+  LItemFontName: string;
 begin
   FUpdating := True;
   try
@@ -331,7 +335,8 @@ begin
       ImageGroup.Caption := Format(FIconIndexLabel,[SelectedIconFont.Index]);
       MaskColor.Selected := SelectedIconFont.MaskColor;
       FontColor.Selected := SelectedIconFont.FontColor;
-      FontName.ItemIndex := FontName.Items.IndexOf(SelectedIconFont.FontName);
+      LItemFontName := SelectedIconFont.FontName;
+      FontName.ItemIndex := FontName.Items.IndexOf(LItemFontName);
       IconName.Text := SelectedIconFont.IconName;
       FontIconDec.Value := SelectedIconFont.FontIconDec;
       FontIconHex.Text := SelectedIconFont.FontIconHex;
@@ -416,7 +421,7 @@ end;
 procedure TIconFontsImageListEditor.DefaultFontColorColorBoxChange(
   Sender: TObject);
 begin
-  FEditingList.FontColor := DefaultFontColorColorBox.Color;
+  FEditingList.FontColor := DefaultFontColorColorBox.Selected;
 end;
 
 procedure TIconFontsImageListEditor.DefaultFontNameChange(Sender: TObject);
@@ -428,7 +433,7 @@ end;
 procedure TIconFontsImageListEditor.DefaultMaskColorColorBoxChange(
   Sender: TObject);
 begin
-  FEditingList.MaskColor := DefaultMaskColorColorBox.Color;
+  FEditingList.MaskColor := DefaultMaskColorColorBox.Selected;
 end;
 
 procedure TIconFontsImageListEditor.DeleteButtonClick(Sender: TObject);
@@ -460,7 +465,8 @@ end;
 procedure TIconFontsImageListEditor.FormCreate(Sender: TObject);
 begin
   FUpdating := True;
-  FOldIconFontItems := TIconFontItems.Create(nil, TIconFontItem);
+  FOldImageList := TIconFontsImageList.Create(nil);
+  FOldIconFontItems := TIconFontItems.Create(FOldImageList, TIconFontItem);
   GetColorValues(AddColor);
   FontColor.ItemIndex := -1;
   MaskColor.ItemIndex := -1;
@@ -471,7 +477,8 @@ end;
 
 procedure TIconFontsImageListEditor.FormDestroy(Sender: TObject);
 begin
-  FreeAndNil( FOldIconFontItems);
+  FreeAndNil(FOldImageList);
+//  FreeAndNil( FOldIconFontItems);
   Screen.Cursors[crColorPick] := 0;
 end;
 
@@ -479,18 +486,19 @@ procedure TIconFontsImageListEditor.FormResize(Sender: TObject);
 var
   LEditSize: Integer;
 begin
-  LEditSize := (ImageGroup.Width - MainPanel.Width - 20) div 3;
+  LEditSize := (ImageGroup.Width - MainPanel.Width - 33) div 3;
 
   DefaultFontColorColorBox.Width := LEditSize;
   DefaultMaskColorColorBox.Left := DefaultFontColorColorBox.Left + DefaultFontColorColorBox.Width + 2;
   DefaultMaskColorLabel.Left := DefaultMaskColorColorBox.Left;
+  DefaultMaskColorColorBox.Width := LEditSize;
 
   MaskColor.Width := LEditSize;
   FontColor.Width := LEditSize;
   MaskColor.Left := FontColor.Left + FontColor.Width + 2;
   MaskColorLabel.Left := MaskColor.Left;
-
   MaskColor.Width := LEditSize;
+
   IconName.Left := MaskColor.Left + MaskColor.Width + 2;
   IconNameLabel.Left := IconName.Left;
   IconName.Width := LEditSize;

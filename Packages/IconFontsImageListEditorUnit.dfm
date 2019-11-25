@@ -54,7 +54,6 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
     Align = alClient
     Caption = ' Font &Icons'
     TabOrder = 1
-    ExplicitHeight = 298
     object ImageView: TListView
       Left = 2
       Top = 15
@@ -67,7 +66,6 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       ReadOnly = True
       TabOrder = 0
       OnSelectItem = ImageViewSelectItem
-      ExplicitHeight = 281
     end
   end
   object ImageGroup: TGroupBox
@@ -210,10 +208,10 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Top = 74
       Width = 160
       Height = 22
-      DefaultColorColor = clWindow
+      DefaultColorColor = clNone
       NoneColorColor = clNone
       Selected = clNone
-      Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbIncludeDefault, cbCustomColor, cbPrettyNames]
+      Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbIncludeNone, cbCustomColor, cbPrettyNames, cbCustomColors]
       TabOrder = 4
       OnChange = FontColorChange
     end
@@ -222,10 +220,10 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Top = 74
       Width = 160
       Height = 22
-      DefaultColorColor = clWindow
+      DefaultColorColor = clNone
       NoneColorColor = clNone
       Selected = clNone
-      Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbIncludeDefault, cbCustomColor, cbPrettyNames]
+      Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbIncludeNone, cbCustomColor, cbPrettyNames, cbCustomColors]
       TabOrder = 5
       OnChange = MaskColorChange
     end
@@ -309,7 +307,6 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Top = 15
       Width = 58
       Height = 13
-      Anchors = [akTop, akRight]
       AutoSize = False
       Caption = '&Size'
       Transparent = False
@@ -338,10 +335,10 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Top = 70
       Width = 160
       Height = 22
-      DefaultColorColor = clWindow
+      DefaultColorColor = clNone
       NoneColorColor = clNone
       Selected = clNone
-      Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbIncludeDefault, cbCustomColor, cbPrettyNames]
+      Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbIncludeNone, cbCustomColor, cbPrettyNames, cbCustomColors]
       TabOrder = 4
       OnChange = DefaultFontColorColorBoxChange
     end
@@ -350,10 +347,10 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Top = 70
       Width = 160
       Height = 22
-      DefaultColorColor = clWindow
+      DefaultColorColor = clNone
       NoneColorColor = clNone
       Selected = clNone
-      Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbIncludeDefault, cbCustomColor, cbPrettyNames]
+      Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbIncludeNone, cbCustomColor, cbPrettyNames, cbCustomColors]
       TabOrder = 5
       OnChange = DefaultMaskColorColorBoxChange
     end

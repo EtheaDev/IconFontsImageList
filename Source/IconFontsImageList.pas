@@ -72,7 +72,7 @@ type
     procedure Changed;
     function GetCharacter: char;
     procedure UpdateIconAttributes(const AFontColor, AMaskColor: TColor;
-      const AFontName: string = '');
+      const AFontName: string = ''; const AReplace: Boolean = True);
     function GetIconFontsImageList: TIconFontsImageList;
     function FontColorDifferent: Boolean;
     function MaskColorDifferent: Boolean;
@@ -148,6 +148,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+    procedure Assign(Source: TPersistent); override;
     procedure Delete(AIndex: Integer);
     procedure AddIcon(const AChar: Char; const AFontName: TFontName = '';
       const AFontColor: TColor = clNone; AMaskColor: TColor = clNone);  virtual;
@@ -155,7 +156,7 @@ type
     function AddIcons(const AFrom, ATo: Char; const AFontName: TFontName = '';
       const AFontColor: TColor = clNone; AMaskColor: TColor = clNone): Integer;  virtual;
     procedure UpdateIconsAttributes(const AFontColor, AMaskColor: TColor;
-      const AFontName: string = ''); virtual;
+      const AFontName: string = ''; const AReplace: Boolean = True); virtual;
     procedure ClearIcons; virtual;
     procedure RedrawImages; virtual;
     property Width: Integer read GetWidth write SetWidth;
@@ -172,7 +173,7 @@ type
     {$IFDEF NeedStoreBitmapProperty}
     property StoreBitmap: Boolean read FStoreBitmap write FStoreBitmap default False;
     {$ELSE}
-    property StoreBitmap;
+    property StoreBitmap default False;
     {$ENDIF}
   end;
 
@@ -188,11 +189,11 @@ procedure TIconFontItem.Assign(Source: TPersistent);
 begin
   if Source is TIconFontItem then
   begin
-    FFontName := TIconFontItem(Source).FontName;
-    FCharacter := TIconFontItem(Source).Character;
-    FFontColor := TIconFontItem(Source).FontColor;
-    FMaskColor := TIconFontItem(Source).MaskColor;
-    FIconName := TIconFontItem(Source).IconName;
+    FFontName := TIconFontItem(Source).FFontName;
+    FCharacter := TIconFontItem(Source).FCharacter;
+    FFontColor := TIconFontItem(Source).FFontColor;
+    FMaskColor := TIconFontItem(Source).FMaskColor;
+    FIconName := TIconFontItem(Source).FIconName;
   end
   else
     inherited Assign(Source);
@@ -202,13 +203,18 @@ constructor TIconFontItem.Create(Collection: TCollection);
 begin
   inherited Create(Collection);
   FCharacter := Chr(0);
+  FFontColor := clNone;
+  FMaskColor := clNone;
+
   //Default values inherited from owner ImageList
+(*
   if Assigned(IconFontsImageList) then
   begin
-    FFontName := IconFontsImageList.FontName;
-    FFontColor := IconFontsImageList.FontColor;
-    FMaskColor := IconFontsImageList.MaskColor;
+    FFontName := IconFontsImageList.FFontName;
+    FFontColor := IconFontsImageList.FFontColor;
+    FMaskColor := IconFontsImageList.FMaskColor;
   end;
+*)
 end;
 
 destructor TIconFontItem.Destroy;
@@ -318,23 +324,24 @@ begin
 end;
 
 procedure TIconFontItem.UpdateIconAttributes(const AFontColor, AMaskColor: TColor;
-  const AFontName: string = '');
+  const AFontName: string = ''; const AReplace: Boolean = True);
 begin
   if (FFontColor <> AFontColor) or (FMaskColor <> AMaskColor) then
   begin
-    FFontColor := AFontColor;
-    FMaskColor := AMaskColor;
-    if AFontName <> '' then
-      FFontName := AFontName;
+    if AReplace then
+    begin
+      FFontColor := AFontColor;
+      FMaskColor := AMaskColor;
+      if AFontName <> '' then
+        FFontName := AFontName;
+    end;
     Changed;
   end;
 end;
 
 procedure TIconFontItem.Changed;
 begin
-  if Assigned(Collection)
-//  and (FFontName <> '') and (FFontColor <> clNone) and (FMaskColor <> clNone)
-      then
+  if Assigned(Collection) then
     TIconFontItems(Collection).UpdateImage(Index);
 end;
 
@@ -387,14 +394,20 @@ end;
 
 procedure TIconFontsImageList.SetFontColor(const AValue: TColor);
 begin
-  FFontColor := AValue;
-  UpdateIconsAttributes(FFontColor, FMaskColor, FFontName);
+  if FFontColor <> AValue then
+  begin
+    FFontColor := AValue;
+    UpdateIconsAttributes(FFontColor, FMaskColor, FFontName, False);
+  end;
 end;
 
 procedure TIconFontsImageList.SetFontName(const AValue: TFontName);
 begin
-  FFontName := AValue;
-  UpdateIconsAttributes(FFontColor, FMaskColor, FFontName);
+  if FFontName <> AValue then
+  begin
+    FFontName := AValue;
+    UpdateIconsAttributes(FFontColor, FMaskColor, FFontName, False);
+  end;
 end;
 
 procedure TIconFontsImageList.SetHeight(const AValue: Integer);
@@ -417,8 +430,11 @@ end;
 
 procedure TIconFontsImageList.SetMaskColor(const AValue: TColor);
 begin
-  FMaskColor := AValue;
-  UpdateIconsAttributes(FFontColor, FMaskColor, FFontName);
+  if FMaskColor <> AValue then
+  begin
+    FMaskColor := AValue;
+    UpdateIconsAttributes(FFontColor, FMaskColor, FFontName, False);
+  end;
 end;
 
 procedure TIconFontsImageList.SetSize(const AValue: Integer);
@@ -460,15 +476,15 @@ begin
   if AFontName <> '' then
     LFontName := AFontName
   else
-    LFontName := FontName;
+    LFontName := FFontName;
   if AFontColor <> clNone then
     LFontColor := AFontColor
   else
-    LFontColor := FontColor;
+    LFontColor := FFontColor;
   if AMaskColor <> clNone then
     LMaskColor := AMaskColor
   else
-    LMaskColor := MaskColor;
+    LMaskColor := FMaskColor;
   LIconFontItem := FIconFontItems.Add;
   LIconFontItem.FCharacter := AChar;
   LIconFontItem.FFontName := LFontName;
@@ -497,6 +513,21 @@ begin
   RedrawImages;
 end;
 
+procedure TIconFontsImageList.Assign(Source: TPersistent);
+begin
+  if Source is TIconFontsImageList then
+  begin
+    FFontName := TIconFontsImageList(Source).FontName;
+    FFontColor := TIconFontsImageList(Source).FontColor;
+    FMaskColor := TIconFontsImageList(Source).FMaskColor;
+    StoreBitmap := TIconFontsImageList(Source).StoreBitmap;
+    Height := TIconFontsImageList(Source).Height;
+    FIconFontItems.Assign(TIconFontsImageList(Source).FIconFontItems);
+  end
+  else
+  inherited;
+end;
+
 procedure TIconFontsImageList.DrawFontIcon(const AIndex: Integer;
   const ABitmap: TBitmap; const AAdd: Boolean);
 var
@@ -504,22 +535,35 @@ var
   CharWidth: Integer;
   CharHeight: Integer;
   LCharacter: Char;
-  LMaskColor: TColor;
+  LFontName: string;
+  LMaskColor, LFontColor: TColor;
 begin
   if FStopDrawing > 0 then
     Exit;
-  LIconFontItem := IconFontItems.GetItem(AIndex);
-  LMaskColor := LIconFontItem.MaskColor;
   if Assigned(ABitmap) then
   begin
+    LIconFontItem := IconFontItems.GetItem(AIndex);
+    //Default values from ImageList if not supplied from Item
+    if LIconFontItem.FMaskColor <> clNone then
+      LMaskColor := LIconFontItem.FMaskColor
+    else
+      LMaskColor := FMaskColor;
+    if LIconFontItem.FFontColor <> clNone then
+      LFontColor := LIconFontItem.FFontColor
+    else
+      LFontColor := FFontColor;
+    if LIconFontItem.FFontName <> '' then
+      LFontName := LIconFontItem.FFontName
+    else
+      LFontName := FFontName;
     LCharacter := LIconFontItem.Character;
     ABitmap.Width := Width;
     ABitmap.Height := Height;
     with ABitmap.Canvas do
     begin
-      Font.Name := LIconFontItem.FontName;
+      Font.Name := LFontName;
       Font.Height := Height;
-      Font.Color := LIconFontItem.FontColor;
+      Font.Color := LFontColor;
       Brush.Color := LMaskColor;
       FillRect(Rect(0, 0, Width, Height));
       CharWidth := TextWidth(LCharacter);
@@ -556,19 +600,20 @@ begin
 end;
 
 procedure TIconFontsImageList.UpdateIconsAttributes(const AFontColor,
-  AMaskColor: TColor; const AFontName: string = '');
+  AMaskColor: TColor; const AFontName: string = '';
+  const AReplace: Boolean = True);
 var
   I: Integer;
   LIconFontItem: TIconFontItem;
 begin
-  FFontColor := AFontColor;
-  FMaskColor := AMaskColor;
   if (AFontColor <> clNone) and (AMaskColor <> clNone) then
   begin
+    FFontColor := AFontColor;
+    FMaskColor := AMaskColor;
     for I := 0 to IconFontItems.Count -1 do
     begin
       LIconFontItem := IconFontItems.Items[I];
-      LIconFontItem.UpdateIconAttributes(FFontColor, FMaskColor, AFontName);
+      LIconFontItem.UpdateIconAttributes(FFontColor, FMaskColor, AFontName, AReplace);
     end;
   end;
 end;
