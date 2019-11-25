@@ -10,4 +10,5 @@ November 2019: first version:
 
 ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/Sample.jpg](https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/Sample.jpg)
 
-Inspired by the "Font Icon Editor" project by Luca Minuti.
+Inspired by the "Font Icon Editor" project by Luca Minuti:
+[https://github.com/lminuti/FontIconEditor](https://github.com/lminuti/FontIconEditor)
