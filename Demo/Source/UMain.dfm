@@ -62,8 +62,6 @@ object MainForm: TMainForm
       Height = 30
       Anchors = [akLeft, akBottom]
       Caption = 'Show Image Editor'
-      DoubleBuffered = True
-      ParentDoubleBuffered = False
       TabOrder = 1
       OnClick = ShowImageEditorButtonClick
     end
@@ -112,8 +110,6 @@ object MainForm: TMainForm
         Width = 115
         Height = 30
         Caption = 'Build Random Icons'
-        DoubleBuffered = True
-        ParentDoubleBuffered = False
         TabOrder = 1
         OnClick = AssignIconsButtonClick
       end
@@ -124,8 +120,6 @@ object MainForm: TMainForm
       Width = 115
       Height = 30
       Caption = 'Clear Icons'
-      DoubleBuffered = True
-      ParentDoubleBuffered = False
       TabOrder = 4
       OnClick = ClearButtonClick
     end
@@ -189,9 +183,7 @@ object MainForm: TMainForm
       Height = 60
       Action = DeleteIconAction
       Caption = 'Delete Icon'
-      DoubleBuffered = True
       Layout = blGlyphTop
-      ParentDoubleBuffered = False
       TabOrder = 0
     end
     object ChangeIconButton: TBitBtn
@@ -201,9 +193,7 @@ object MainForm: TMainForm
       Height = 60
       Action = ChangeIconAction
       Caption = 'Change icon'
-      DoubleBuffered = True
       Layout = blGlyphTop
-      ParentDoubleBuffered = False
       TabOrder = 1
     end
   end
@@ -296,7 +286,7 @@ object MainForm: TMainForm
     Left = 368
     Top = 304
     Bitmap = {
-      494C010107000800140020002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101070008001C0020002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000800000004000000001002000000000000080
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

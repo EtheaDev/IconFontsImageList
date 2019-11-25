@@ -135,9 +135,6 @@ begin
     Screen.Cursor := crDefault;
   end;
   UpdateGUI;
-//  IconFontsImageList.IconFontItems[0].FontIconHex := 'f009';
-//  LHex := IconFontsImageList.IconFontItems[0].FontIconHex;
-//  IconFontsImageList.IconFontItems[0].FontIconHex := LHex;
 end;
 
 procedure TMainForm.ChangeIconActionExecute(Sender: TObject);
@@ -198,16 +195,16 @@ var
 begin
   LStyleName := SelectThemeRadioGroup.Items[SelectThemeRadioGroup.ItemIndex];
   //Comment this line if You are using an old version of Delphi!
-//  TStyleManager.TrySetStyle(LStyleName);
+  TStyleManager.TrySetStyle(LStyleName);
 
   if LStyleName = 'Windows' then
     IconFontsImageList.UpdateIconsAttributes(clBlack, clBtnFace)
   else if LStyleName = 'Windows10' then
-    IconFontsImageList.UpdateIconsAttributes(clBlue, clBtnFace)
+    IconFontsImageList.UpdateIconsAttributes(clBlack, clWhite)
   else if LStyleName = 'Windows10 SlateGray' then
     IconFontsImageList.UpdateIconsAttributes(clWhite, clBlack)
   else if LStyleName = 'Windows10 Blue' then
-    IconFontsImageList.UpdateIconsAttributes(clAqua, clBlue)
+    IconFontsImageList.UpdateIconsAttributes(clBlue, clGray)
   else if LStyleName = 'Windows10 Dark' then
     IconFontsImageList.UpdateIconsAttributes(clSilver, clBlack)
   else if LStyleName = 'Windows10 Green' then
