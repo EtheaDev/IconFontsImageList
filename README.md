@@ -1,7 +1,7 @@
 # IconFontsImageList
 An extended ImageList for Delphi (from 2010 to current) to manage webfont icons.
 
-Novembre 2019: first version:
+November 2019: first version:
 - A component IconFontsImageList with advanced component editor.
 - A demo to show how to change the size, fonts and colors of the icons.
 - Performance of building hundreds of icons are very high.
