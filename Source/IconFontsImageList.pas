@@ -74,9 +74,9 @@ type
     procedure UpdateIconAttributes(const AFontColor, AMaskColor: TColor;
       const AFontName: string = ''; const AReplace: Boolean = True);
     function GetIconFontsImageList: TIconFontsImageList;
-    function FontColorDifferent: Boolean;
-    function MaskColorDifferent: Boolean;
-    function FontNameDifferent: Boolean;
+    function StoreFontColor: Boolean;
+    function StoreMaskColor: Boolean;
+    function StoreFontName: Boolean;
   public
     function GetDisplayName: string; override;
     constructor Create(Collection: TCollection); override;
@@ -86,9 +86,9 @@ type
     property IconFontsImageList: TIconFontsImageList read GetIconFontsImageList;
     property FontIconDec: Integer read GetFontIconDec write SetFontIconDec stored false;
     property FontIconHex: string read GetFontIconHex write SetFontIconHex stored false;
-    property FontName: TFontName read FFontName write SetFontName stored FontNameDifferent;
-    property FontColor: TColor read FFontColor write SetFontColor stored FontColorDifferent;
-    property MaskColor: TColor read FMaskColor write SetMaskColor stored MaskColorDifferent;
+    property FontName: TFontName read FFontName write SetFontName stored StoreFontName;
+    property FontColor: TColor read FFontColor write SetFontColor stored StoreFontColor;
+    property MaskColor: TColor read FMaskColor write SetMaskColor stored StoreMaskColor;
     property IconName: string read FIconName write SetIconName;
     property Character: char read GetCharacter write SetCharacter default #0;
   end;
@@ -149,7 +149,10 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure Assign(Source: TPersistent); override;
-    procedure Delete(AIndex: Integer);
+    procedure Delete(const AIndex: Integer);
+    procedure Replace(const AIndex: Integer; const AChar: Char;
+      const AFontName: TFontName = ''; const AFontColor: TColor = clNone;
+      AMaskColor: TColor = clNone);
     procedure AddIcon(const AChar: Char; const AFontName: TFontName = '';
       const AFontColor: TColor = clNone; const AMaskColor: TColor = clNone);  virtual;
     //Multiple icons methods
@@ -222,16 +225,25 @@ begin
   inherited Destroy;
 end;
 
-function TIconFontItem.FontColorDifferent: Boolean;
+function TIconFontItem.StoreFontColor: Boolean;
 begin
   Result := Assigned(IconFontsImageList) and
-    (FFontColor <> IconFontsImageList.FFontColor);
+    (FFontColor <> IconFontsImageList.FFontColor) and
+    (FFontColor <> clNone);
 end;
 
-function TIconFontItem.FontNameDifferent: Boolean;
+function TIconFontItem.StoreFontName: Boolean;
 begin
   Result := Assigned(IconFontsImageList) and
-    (FFontName <> IconFontsImageList.FFontName);
+    (FFontName <> IconFontsImageList.FFontName) and
+    (FFontName <> '');
+end;
+
+function TIconFontItem.StoreMaskColor: Boolean;
+begin
+  Result := Assigned(IconFontsImageList) and
+    (FMaskColor <> IconFontsImageList.FMaskColor) and
+    (FMaskColor <> clNone);
 end;
 
 function TIconFontItem.GetCharacter: char;
@@ -261,12 +273,6 @@ begin
     Result := TIconFontItems(Collection).IconFontsImageList
   else
     Result := nil;  
-end;
-
-function TIconFontItem.MaskColorDifferent: Boolean;
-begin
-  Result := Assigned(IconFontsImageList) and 
-    (FMaskColor <> IconFontsImageList.FMaskColor);
 end;
 
 procedure TIconFontItem.SetCharacter(const AValue: char);
@@ -379,7 +385,7 @@ begin
   StoreBitmap := False;
 end;
 
-procedure TIconFontsImageList.Delete(AIndex: Integer);
+procedure TIconFontsImageList.Delete(const AIndex: Integer);
 begin
   //Don't call inherited method of ImageList, to avoid errors
   if Assigned(IconFontItems) then
@@ -639,6 +645,20 @@ begin
     Self.Change;
   finally
     LBitmap.Free;
+  end;
+end;
+
+procedure TIconFontsImageList.Replace(const AIndex: Integer; const AChar: Char;
+  const AFontName: TFontName; const AFontColor: TColor; AMaskColor: TColor);
+var
+  LIconFontItem: TIconFontItem;
+begin
+  LIconFontItem := IconFontItems.GetItem(AIndex);
+  if Assigned(LIconFontItem) then
+  begin
+    LIconFontItem.Character := AChar;
+    LIconFontItem.UpdateIconAttributes(AFontColor, AMaskColor,
+      AFontName, True);
   end;
 end;
 
