@@ -1,6 +1,6 @@
 # IconFontsImageList [![License](https://img.shields.io/badge/License-Apache%202.0-yellowgreen.svg)](https://opensource.org/licenses/Apache-2.0)
 
-## An extended ImageList for Delphi (from 2010 to current) to manage webfont icons.
+## An extended ImageList for Delphi to simple use and manage webfont icons.
 
 November 2019: first version:
 - A component IconFontsImageList with advanced component editor.
