@@ -200,6 +200,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Height = 21
       Hint = 'Hexadecimal value'
       Anchors = [akTop, akRight]
+      CharCase = ecUpperCase
       TabOrder = 2
       OnExit = FontIconHexExit
     end
