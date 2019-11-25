@@ -255,6 +255,7 @@ object MainForm: TMainForm
         Character = #61445
       end
       item
+        FontColor = clMaroon
         IconName = 'Delete'
         Character = #61888
       end
@@ -267,6 +268,7 @@ object MainForm: TMainForm
         Character = #62127
       end
       item
+        FontColor = clTeal
         IconName = 'Android head'
         Character = #63375
       end
