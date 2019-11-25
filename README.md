@@ -10,5 +10,7 @@ November 2019: first version:
 
 ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/Sample.jpg](https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/Sample.jpg)
 
+Follow the [guide in Wiki section](https://github.com/EtheaDev/IconFontsImageList/wiki) to known how to use this component to modernize your Delphi applications scalable, colored and beautiful with few lines of code.
+
 Inspired by the "Font Icon Editor" project by Luca Minuti:
 [https://github.com/lminuti/FontIconEditor](https://github.com/lminuti/FontIconEditor)
