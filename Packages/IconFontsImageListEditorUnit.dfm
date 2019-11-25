@@ -99,7 +99,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Width = 325
       Height = 13
       AutoSize = False
-      Caption = 'Font&Name*'
+      Caption = 'Font&Name'
       Transparent = False
     end
     object FontIconHexLabel: TLabel
@@ -128,7 +128,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Width = 100
       Height = 13
       AutoSize = False
-      Caption = 'Font&Color*'
+      Caption = 'Font&Color'
       Transparent = False
     end
     object MaskColorLabel: TLabel
@@ -137,7 +137,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Width = 100
       Height = 13
       AutoSize = False
-      Caption = '&MaskColor*'
+      Caption = '&MaskColor'
       Transparent = False
     end
     object MainPanel: TPanel

@@ -6,6 +6,7 @@
 {       Copyright (c) 2019 (Ethea S.r.l.)                                      }
 {       Contributors:                                                          }
 {         Carlo Barazzetta                                                     }
+{         Nicola Tambascia                                                     }
 {                                                                              }
 {       https://github.com/EtheaDev/IconFontsImageList                         }
 {                                                                              }
@@ -208,16 +209,6 @@ begin
   FCharacter := Chr(0);
   FFontColor := clNone;
   FMaskColor := clNone;
-
-  //Default values inherited from owner ImageList
-(*
-  if Assigned(IconFontsImageList) then
-  begin
-    FFontName := IconFontsImageList.FFontName;
-    FFontColor := IconFontsImageList.FFontColor;
-    FMaskColor := IconFontsImageList.FMaskColor;
-  end;
-*)
 end;
 
 destructor TIconFontItem.Destroy;

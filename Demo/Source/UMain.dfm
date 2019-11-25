@@ -3,7 +3,7 @@ object MainForm: TMainForm
   Top = 0
   Caption = 
     'Icon Fonts ImageList Demo - Copyright (c) Ethea S.r.l. - Apache ' +
-    '2.0 Open Source Licence'
+    '2.0 Open Source License'
   ClientHeight = 595
   ClientWidth = 946
   Color = clBtnFace
@@ -56,7 +56,7 @@ object MainForm: TMainForm
       OnClick = SelectThemeRadioGroupClick
     end
     object ShowImageEditorButton: TBitBtn
-      Left = 8
+      Left = 13
       Top = 457
       Width = 115
       Height = 30
