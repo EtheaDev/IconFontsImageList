@@ -1,5 +1,5 @@
 # IconFontsImageList
-An extended ImageList for Delphi (from 2010 ver.) to simplify use of Icons with material icon fonts (resize, colors and more...)
+An extended ImageList for Delphi (from 2010 to current) to manage webfont icons.
 
 Novembre 2019: first version:
 - A component IconFontsImageList with advanced component editor.
