@@ -151,7 +151,7 @@ type
     procedure Assign(Source: TPersistent); override;
     procedure Delete(AIndex: Integer);
     procedure AddIcon(const AChar: Char; const AFontName: TFontName = '';
-      const AFontColor: TColor = clNone; AMaskColor: TColor = clNone);  virtual;
+      const AFontColor: TColor = clNone; const AMaskColor: TColor = clNone);  virtual;
     //Multiple icons methods
     function AddIcons(const AFrom, ATo: Char; const AFontName: TFontName = '';
       const AFontColor: TColor = clNone; AMaskColor: TColor = clNone): Integer;  virtual;
@@ -466,30 +466,19 @@ begin
 end;
 
 procedure TIconFontsImageList.AddIcon(const AChar: Char;
-  const AFontName: TFontName; const AFontColor: TColor;
-  AMaskColor: TColor);
+  const AFontName: TFontName = ''; const AFontColor: TColor = clNone;
+  const AMaskColor: TColor = clNone);
 var
   LIconFontItem: TIconFontItem;
-  LFontName: string;
-  LFontColor, LMaskColor: TColor;
 begin
-  if AFontName <> '' then
-    LFontName := AFontName
-  else
-    LFontName := FFontName;
-  if AFontColor <> clNone then
-    LFontColor := AFontColor
-  else
-    LFontColor := FFontColor;
-  if AMaskColor <> clNone then
-    LMaskColor := AMaskColor
-  else
-    LMaskColor := FMaskColor;
   LIconFontItem := FIconFontItems.Add;
   LIconFontItem.FCharacter := AChar;
-  LIconFontItem.FFontName := LFontName;
-  LIconFontItem.FFontColor := LFontColor;
-  LIconFontItem.FMaskColor := LMaskColor;
+  if AFontName <> '' then
+    LIconFontItem.FFontName := AFontName;
+  if AFontColor <> clNone then
+    LIconFontItem.FFontColor := AFontColor;
+  if AMaskColor <> clNone then
+    LIconFontItem.FMaskColor := AMaskColor;
 end;
 
 function TIconFontsImageList.AddIcons(const AFrom, ATo: Char;
