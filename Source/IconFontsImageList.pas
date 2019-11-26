@@ -29,27 +29,15 @@ unit IconFontsImageList;
 
 interface
 
+{$INCLUDE IconFontsImageList.inc}
+
 uses
   Classes
   , ImgList
-  , Graphics;
-
-//StoreBitmap option introduced in Delphi 10.3 Rio
-{$IF Defined(VER210) //Delphi 2010
-  or Defined(VER220) //Delphi XE
-  or Defined(VER230) //Delphi XE2
-  or Defined(VER240) //Delphi XE3
-  or Defined(VER250) //Delphi XE4
-  or Defined(VER260) //Delphi XE5
-  or Defined(VER270) //Delphi XE6
-  or Defined(VER280) //Delphi XE7
-  or Defined(VER290) //Delphi XE8
-  or Defined(VER300) //Delphi 10 Seattle
-  or Defined(VER310) //Delphi 10.1 Berlin
-  or Defined(VER320) //Delphi 10.2 Tokyo
-  }
-  {$Define NeedStoreBitmapProperty}
-{$IFEND}
+  , Windows
+  , Graphics
+  , Forms
+  , Messaging;
 
 type
   TIconFontsImageList = class;
@@ -120,6 +108,10 @@ type
     FFontName: TFontName;
     FMaskColor: TColor;
     FFontColor: TColor;
+    {$IFDEF HiDPISupport}
+    FScaled: Boolean;
+    FDPIChangedMessageID: Integer;
+    {$ENDIF}
     {$IFDEF NeedStoreBitmapProperty}
     FStoreBitmap: Boolean;
     {$ENDIF}
@@ -139,6 +131,9 @@ type
     function GetWidth: Integer;
     procedure SetHeight(const AValue: Integer);
     procedure SetWidth(const AValue: Integer);
+    {$IFDEF HiDPISupport}
+    procedure DPIChangedMessageHandler(const Sender: TObject; const Msg: Messaging.TMessage);
+    {$ENDIF}
   protected
     {$IFDEF NeedStoreBitmapProperty}
     procedure DefineProperties(Filer: TFiler); override;
@@ -178,6 +173,12 @@ type
     property StoreBitmap: Boolean read FStoreBitmap write FStoreBitmap default False;
     {$ELSE}
     property StoreBitmap default False;
+    {$ENDIF}
+    /// <summary>
+    /// Enable and disable scaling with form
+    /// </summary>
+    {$IFDEF HiDPISupport}
+    property Scaled: Boolean read FScaled write FScaled default True;
     {$ENDIF}
   end;
 
@@ -374,6 +375,10 @@ begin
   FMaskColor := clNone;
   FIconFontItems := TIconFontItems.Create(Self, TIconFontItem);
   StoreBitmap := False;
+  {$IFDEF HiDPISupport}
+  FScaled := True;
+  FDPIChangedMessageID := TMessageManager.DefaultManager.SubscribeToMessage(TChangeScaleMessage, DPIChangedMessageHandler);
+  {$ENDIF}
 end;
 
 procedure TIconFontsImageList.Delete(const AIndex: Integer);
@@ -385,9 +390,33 @@ end;
 
 destructor TIconFontsImageList.Destroy;
 begin
+  {$IFDEF HiDPISupport}
+  TMessageManager.DefaultManager.Unsubscribe(TChangeScaleMessage, FDPIChangedMessageID);
+  {$ENDIF}
   FreeAndNil(FIconFontItems);
   inherited;
 end;
+
+{$IFDEF HiDPISupport}
+procedure TIconFontsImageList.DPIChangedMessageHandler(const Sender: TObject;
+  const Msg: Messaging.TMessage);
+var
+  W: Integer;
+  //H: Integer;
+begin
+  if FScaled and (TChangeScaleMessage(Msg).Sender = Owner) then
+  begin
+    W := MulDiv(Width, TChangeScaleMessage(Msg).M, TChangeScaleMessage(Msg).D);
+    //H := MulDiv(Height, TChangeScaleMessage(Msg).M, TChangeScaleMessage(Msg).D);
+    FScaling := True;
+    try
+      SetSize(W);
+    finally
+      FScaling := False;
+    end;
+  end;
+end;
+{$ENDIF}
 
 procedure TIconFontsImageList.SetFontColor(const AValue: TColor);
 begin

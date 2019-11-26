@@ -28,6 +28,8 @@ unit IconFontsUtils;
 
 interface
 
+{$INCLUDE IconFontsImageList.inc}
+
 uses
   Classes
   , ImgList
