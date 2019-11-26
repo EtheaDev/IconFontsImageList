@@ -172,9 +172,7 @@ type
     property FontColor: TColor read FFontColor write SetFontColor default clNone;
     property MaskColor: TColor read FMaskColor write SetMaskColor default clNone;
     property Size: Integer read GetSize write SetSize default 16;
-    {$IFDEF NeedStoreBitmapProperty}
-    property StoreBitmap: Boolean read FStoreBitmap write FStoreBitmap default False;
-    {$ELSE}
+    {$IFDEF HasStoreBitmapProperty}
     property StoreBitmap default False;
     {$ENDIF}
     /// <summary>
@@ -377,7 +375,9 @@ begin
   FFontColor := clNone;
   FMaskColor := clNone;
   FIconFontItems := TIconFontItems.Create(Self, TIconFontItem);
+  {$IFDEF HasStoreBitmapProperty}
   StoreBitmap := False;
+  {$ENDIF}
   {$IFDEF HiDPISupport}
   FScaled := True;
   FDPIChangedMessageID := TMessageManager.DefaultManager.SubscribeToMessage(TChangeScaleMessage, DPIChangedMessageHandler);
@@ -533,17 +533,18 @@ end;
 
 procedure TIconFontsImageList.Assign(Source: TPersistent);
 begin
+  inherited;
   if Source is TIconFontsImageList then
   begin
     FFontName := TIconFontsImageList(Source).FontName;
     FFontColor := TIconFontsImageList(Source).FontColor;
     FMaskColor := TIconFontsImageList(Source).FMaskColor;
+    {$IFDEF HasStoreBitmapProperty}
     StoreBitmap := TIconFontsImageList(Source).StoreBitmap;
+    {$ENDIF}
     Height := TIconFontsImageList(Source).Height;
     FIconFontItems.Assign(TIconFontsImageList(Source).FIconFontItems);
-  end
-  else
-  inherited;
+  end;
 end;
 
 procedure TIconFontsImageList.DrawFontIcon(const AIndex: Integer;
@@ -613,8 +614,13 @@ end;
 procedure TIconFontsImageList.Loaded;
 begin
   inherited;
-  if not StoreBitmap then
+  {$IFDEF HasStoreBitmapProperty}
+  if (not StoreBitmap) then
     RedrawImages;
+  {$ELSE}
+  if inherited Count = 0 then
+    RedrawImages;
+  {$ENDIF}
 end;
 
 procedure TIconFontsImageList.UpdateIconsAttributes(const AFontColor,
@@ -684,25 +690,6 @@ begin
       AFontName, True);
   end;
 end;
-
-{$IFDEF NeedStoreBitmapProperty}
-procedure TIconFontsImageList.ReadData(Stream: TStream);
-begin
-  if FStoreBitmap then
-    inherited;
-end;
-
-procedure TIconFontsImageList.WriteData(Stream: TStream);
-begin
-  if FStoreBitmap then
-    inherited;
-end;
-
-procedure TIconFontsImageList.DefineProperties(Filer: TFiler);
-begin
-  inherited DefineProperties(Filer);
-end;
-{$ENDIF}
 
 { TIconFontItems }
 

@@ -91,7 +91,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Height = 13
       AutoSize = False
       Caption = '&IconName'
-      Transparent = False
+      Transparent = True
     end
     object FontNameLabel: TLabel
       Left = 95
@@ -100,7 +100,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Height = 13
       AutoSize = False
       Caption = 'Font&Name'
-      Transparent = False
+      Transparent = True
     end
     object FontIconHexLabel: TLabel
       Left = 427
@@ -110,7 +110,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Anchors = [akTop, akRight]
       AutoSize = False
       Caption = 'FontIcon&Hex*'
-      Transparent = False
+      Transparent = True
     end
     object FontIconDecLabel: TLabel
       Left = 505
@@ -120,7 +120,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Anchors = [akTop, akRight]
       AutoSize = False
       Caption = 'FontIcon&Dec*'
-      Transparent = False
+      Transparent = True
     end
     object FontColorLabel: TLabel
       Left = 95
@@ -129,7 +129,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Height = 13
       AutoSize = False
       Caption = 'Font&Color'
-      Transparent = False
+      Transparent = True
     end
     object MaskColorLabel: TLabel
       Left = 260
@@ -138,7 +138,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Height = 13
       AutoSize = False
       Caption = '&MaskColor'
-      Transparent = False
+      Transparent = True
     end
     object MainPanel: TPanel
       Left = 10
@@ -157,6 +157,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
         Height = 64
         Align = alClient
         Stretch = True
+        Transparent = True
         ExplicitWidth = 60
         ExplicitHeight = 60
       end
@@ -283,7 +284,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Height = 13
       AutoSize = False
       Caption = 'Font&Name'
-      Transparent = False
+      Transparent = True
     end
     object DefaultFontColorLabel: TLabel
       Left = 96
@@ -292,7 +293,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Height = 13
       AutoSize = False
       Caption = 'Font&Color*'
-      Transparent = False
+      Transparent = True
     end
     object DefaultMaskColorLabel: TLabel
       Left = 261
@@ -301,7 +302,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Height = 13
       AutoSize = False
       Caption = '&MaskColor*'
-      Transparent = False
+      Transparent = True
     end
     object SizeLabel: TLabel
       Left = 8
@@ -310,7 +311,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Height = 13
       AutoSize = False
       Caption = '&Size'
-      Transparent = False
+      Transparent = True
     end
     object ShowCharMapButton: TButton
       Left = 489

@@ -142,8 +142,8 @@
 {$ENDIF}
 
 //StoreBitmap option introduced in Delphi 10.3 Rio
-{$IFNDEF D10_3+}
-  {$Define NeedStoreBitmapProperty}
+{$IFDEF D10_3+}
+  {$Define HasStoreBitmapProperty}
 {$ENDIF}
 
 {$IFDEF D10_3+}

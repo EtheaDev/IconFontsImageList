@@ -29,6 +29,8 @@ unit IconFontsImageListEditorUnit;
 
 interface
 
+{$INCLUDE ..\Source\IconFontsImageList.inc}
+
 uses
   Windows
   , Messages
@@ -172,7 +174,9 @@ begin
         DefaultFontName.ItemIndex := DefaultFontName.Items.IndexOf(FEditingList.FontName);
         DefaultFontColorColorBox.Selected := FEditingList.FontColor;
         DefaultMaskColorColorBox.Selected := FEditingList.MaskColor;
+        {$IFDEF HasStoreBitmapProperty}
         StoreBitmapCheckBox.Checked := FEditingList.StoreBitmap;
+        {$endif}
         FEditinglist.IconFontItems := AImageList.IconFontItems;
         FOldImageList.Assign(FEditingList);
         //FOldIconFontItems.Assign(FEditinglist.IconFontItems);
@@ -203,7 +207,7 @@ end;
 procedure TIconFontsImageListEditor.HelpButtonClick(Sender: TObject);
 begin
   ShellExecute(handle, 'open',
-    PChar('https://github.com/EtheaDev/IconFontsImageList/wiki/IconFontsImageList-guide'), nil, nil,
+    PChar('https://github.com/EtheaDev/IconFontsImageList/wiki/Home'), nil, nil,
     SW_SHOWNORMAL)
 end;
 
@@ -226,7 +230,9 @@ end;
 
 procedure TIconFontsImageListEditor.StoreBitmapCheckBoxClick(Sender: TObject);
 begin
+  {$IFDEF HasStoreBitmapProperty}
   FEditingList.StoreBitmap := StoreBitmapCheckBox.Checked;
+  {$ENDIF}
 end;
 
 procedure TIconFontsImageListEditor.SetImageFontColor(Color: TColor);
@@ -324,7 +330,6 @@ begin
     DeleteButton.Enabled := LIsItemSelected;
     FontColor.Enabled := LIsItemSelected;
     MaskColor.Enabled := LIsItemSelected;
-    FontColor.Enabled := LIsItemSelected;
     FontName.Enabled := LIsItemSelected;
     FontIconDec.Enabled := LIsItemSelected;
     FontIconHex.Enabled := LIsItemSelected;
@@ -473,6 +478,9 @@ begin
   FontName.Items := Screen.Fonts;
   DefaultFontName.Items := Screen.Fonts;
   FIconIndexLabel := ImageGroup.Caption;
+  {$IFNDEF HasStoreBitmapProperty}
+  StoreBitmapCheckBox.Visible := False;
+  {$ENDIF}
 end;
 
 procedure TIconFontsImageListEditor.FormDestroy(Sender: TObject);
