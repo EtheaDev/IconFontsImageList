@@ -2,6 +2,8 @@
 
 ## An extended ImageList for Delphi to simple use and manage webfont icons.
 
+![https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png](https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png)
+
 November 2019: first version:
 - A component IconFontsImageList with advanced component editor.
 - A demo to show how to change the size, fonts and colors of the icons.
