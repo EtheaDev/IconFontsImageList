@@ -91,6 +91,7 @@ type
     CharsEdit: TEdit;
     BuildButton: TButton;
     StoreBitmapCheckBox: TCheckBox;
+    ImportButton: TButton;
     procedure FormCreate(Sender: TObject);
     procedure ClearAllButtonClick(Sender: TObject);
     procedure DeleteButtonClick(Sender: TObject);
@@ -117,6 +118,7 @@ type
     procedure StoreBitmapCheckBoxClick(Sender: TObject);
     procedure DefaultFontColorColorBoxChange(Sender: TObject);
     procedure DefaultMaskColorColorBoxChange(Sender: TObject);
+    procedure ImportButtonClick(Sender: TObject);
   private
     FIconIndexLabel: string;
     FUpdating: Boolean;
@@ -421,6 +423,14 @@ procedure TIconFontsImageListEditor.ImageViewSelectItem(Sender: TObject;
 begin
   if Selected then
     UpdateGUI;
+end;
+
+procedure TIconFontsImageListEditor.ImportButtonClick(Sender: TObject);
+var
+  LFont: TFont;
+begin
+  LFont := TFont.Create;
+  LFont.Name := FEditingList.FontName;
 end;
 
 procedure TIconFontsImageListEditor.DefaultFontColorColorBoxChange(

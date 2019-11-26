@@ -377,6 +377,16 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       TabOrder = 3
       OnClick = StoreBitmapCheckBoxClick
     end
+    object ImportButton: TButton
+      Left = 489
+      Top = 66
+      Width = 99
+      Height = 25
+      Anchors = [akTop, akRight]
+      Caption = 'Import all chars...'
+      TabOrder = 6
+      OnClick = ImportButtonClick
+    end
   end
   object ClearAllButton: TButton
     Left = 604

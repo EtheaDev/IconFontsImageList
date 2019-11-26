@@ -36,7 +36,7 @@ uses
   Controls, Forms, Dialogs, ImgList,
   StdCtrls, Buttons, StdActns,
   ActnList, ExtCtrls, ComCtrls, ToolWin,
-  Spin, IconFontsImageList;
+  Spin, IconFontsImageList, System.Actions, System.ImageList;
 
 type
   TMainForm = class(TForm)
