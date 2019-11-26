@@ -62,8 +62,6 @@ object MainForm: TMainForm
       Height = 30
       Anchors = [akLeft, akBottom]
       Caption = 'Show Image Editor'
-      DoubleBuffered = True
-      ParentDoubleBuffered = False
       TabOrder = 1
       OnClick = ShowImageEditorButtonClick
     end
@@ -112,8 +110,6 @@ object MainForm: TMainForm
         Width = 115
         Height = 30
         Caption = 'Build Random Icons'
-        DoubleBuffered = True
-        ParentDoubleBuffered = False
         TabOrder = 1
         OnClick = AssignIconsButtonClick
       end
@@ -124,8 +120,6 @@ object MainForm: TMainForm
       Width = 115
       Height = 30
       Caption = 'Clear Icons'
-      DoubleBuffered = True
-      ParentDoubleBuffered = False
       TabOrder = 4
       OnClick = ClearButtonClick
     end
@@ -189,7 +183,6 @@ object MainForm: TMainForm
       Height = 60
       Action = DeleteIconAction
       Caption = 'Delete Icon'
-      DoubleBuffered = True
       Glyph.Data = {
         36100000424D3610000000000000360000002800000020000000200000000100
         2000000000000010000000000000000000000000000000000000FF00FF00FF00
@@ -322,7 +315,6 @@ object MainForm: TMainForm
         FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
         FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00}
       Layout = blGlyphTop
-      ParentDoubleBuffered = False
       TabOrder = 0
     end
     object ChangeIconButton: TBitBtn
@@ -332,7 +324,6 @@ object MainForm: TMainForm
       Height = 60
       Action = ChangeIconAction
       Caption = 'Change icon'
-      DoubleBuffered = True
       Glyph.Data = {
         36100000424D3610000000000000360000002800000020000000200000000100
         2000000000000010000000000000000000000000000000000000FF00FF00FF00
@@ -465,7 +456,6 @@ object MainForm: TMainForm
         FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
         FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00}
       Layout = blGlyphTop
-      ParentDoubleBuffered = False
       TabOrder = 1
     end
   end
@@ -558,7 +548,6 @@ object MainForm: TMainForm
     Size = 32
     Left = 368
     Top = 304
-    Bitmap = {}
   end
   object ActionList: TActionList
     Images = IconFontsImageList
