@@ -69,6 +69,8 @@ type
     function StoreFontColor: Boolean;
     function StoreMaskColor: Boolean;
     function StoreFontName: Boolean;
+  protected
+    procedure SetIndex(Value: Integer); override;
   public
     function GetDisplayName: string; override;
     constructor Create(Collection: TCollection); override;
@@ -311,6 +313,16 @@ end;
 procedure TIconFontItem.SetIconName(const AValue: string);
 begin
   FIconName := AValue;
+end;
+
+procedure TIconFontItem.SetIndex(Value: Integer);
+var
+  LOldIndex: Integer;
+begin
+  LOldIndex := inherited Index;
+  inherited;
+  if (Index <> LOldIndex) and Assigned(IconFontsImageList) then
+    IconFontsImageList.RedrawImages;
 end;
 
 procedure TIconFontItem.SetMaskColor(const AValue: TColor);
