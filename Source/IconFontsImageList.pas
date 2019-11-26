@@ -7,6 +7,7 @@
 {       Contributors:                                                          }
 {         Carlo Barazzetta                                                     }
 {         Nicola Tambascia                                                     }
+{         Luca Minuti                                                          }
 {                                                                              }
 {       https://github.com/EtheaDev/IconFontsImageList                         }
 {                                                                              }
@@ -36,8 +37,10 @@ uses
   , ImgList
   , Windows
   , Graphics
-  , Forms
-  , Messaging;
+{$IFDEF HiDPISupport}
+  , Messaging
+{$ENDIF}
+  , Forms;
 
 type
   TIconFontsImageList = class;

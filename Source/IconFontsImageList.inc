@@ -1,20 +1,151 @@
-//StoreBitmap option introduced in Delphi 10.3 Rio
-{$IF Defined(VER210) //Delphi 2010
-  or Defined(VER220) //Delphi XE
-  or Defined(VER230) //Delphi XE2
-  or Defined(VER240) //Delphi XE3
-  or Defined(VER250) //Delphi XE4
-  or Defined(VER260) //Delphi XE5
-  or Defined(VER270) //Delphi XE6
-  or Defined(VER280) //Delphi XE7
-  or Defined(VER290) //Delphi XE8
-  or Defined(VER300) //Delphi 10 Seattle
-  or Defined(VER310) //Delphi 10.1 Berlin
-  or Defined(VER320) //Delphi 10.2 Tokyo
-  }
-  {$Define NeedStoreBitmapProperty}
-{$IFEND}
+// Delphi 2010
+{$IFDEF VER210}
+  {$DEFINE D2010+}
+{$ENDIF}
 
-{$IF Defined(VER330)}
+// Delphi XE
+{$IFDEF VER220}
+  {$DEFINE D2010+}
+  {$DEFINE DXE+}
+{$ENDIF}
+
+// Delphi XE2
+{$IFDEF VER230}
+  {$DEFINE D2010+}
+  {$DEFINE DXE+}
+  {$DEFINE DXE2+}
+{$ENDIF}
+
+// Delphi XE3
+{$IFDEF VER240}
+  {$DEFINE D2010+}
+  {$DEFINE DXE+}
+  {$DEFINE DXE2+}
+  {$DEFINE DXE3+}
+{$ENDIF}
+
+// Delphi XE4
+{$IFDEF VER250}
+  {$DEFINE D2010+}
+  {$DEFINE DXE+}
+  {$DEFINE DXE2+}
+  {$DEFINE DXE3+}
+  {$DEFINE DXE4+}
+{$ENDIF}
+
+// Delphi XE5
+{$IFDEF VER260}
+  {$DEFINE D2010+}
+  {$DEFINE DXE+}
+  {$DEFINE DXE2+}
+  {$DEFINE DXE3+}
+  {$DEFINE DXE4+}
+  {$DEFINE DXE5+}
+{$ENDIF}
+
+// Delphi XE6
+{$IFDEF VER270}
+  {$DEFINE D2010+}
+  {$DEFINE DXE+}
+  {$DEFINE DXE2+}
+  {$DEFINE DXE3+}
+  {$DEFINE DXE4+}
+  {$DEFINE DXE5+}
+  {$DEFINE DXE6+}
+{$ENDIF}
+
+// Delphi XE7
+{$IFDEF VER280}
+  {$DEFINE D2010+}
+  {$DEFINE DXE+}
+  {$DEFINE DXE2+}
+  {$DEFINE DXE3+}
+  {$DEFINE DXE4+}
+  {$DEFINE DXE5+}
+  {$DEFINE DXE6+}
+  {$DEFINE DXE7+}
+{$ENDIF}
+
+// Delphi XE8
+{$IFDEF VER290}
+  {$DEFINE D2010+}
+  {$DEFINE DXE+}
+  {$DEFINE DXE2+}
+  {$DEFINE DXE3+}
+  {$DEFINE DXE4+}
+  {$DEFINE DXE5+}
+  {$DEFINE DXE6+}
+  {$DEFINE DXE7+}
+  {$DEFINE DXE8+}
+{$ENDIF}
+
+// Delphi 10 Seattle
+{$IFDEF VER300}
+  {$DEFINE D2010+}
+  {$DEFINE DXE+}
+  {$DEFINE DXE2+}
+  {$DEFINE DXE3+}
+  {$DEFINE DXE4+}
+  {$DEFINE DXE5+}
+  {$DEFINE DXE6+}
+  {$DEFINE DXE7+}
+  {$DEFINE DXE8+}
+  {$DEFINE D10_0+}
+{$ENDIF}
+
+// Delphi 10.1 Berlin
+{$IFDEF VER310}
+  {$DEFINE D2010+}
+  {$DEFINE DXE+}
+  {$DEFINE DXE2+}
+  {$DEFINE DXE3+}
+  {$DEFINE DXE4+}
+  {$DEFINE DXE5+}
+  {$DEFINE DXE6+}
+  {$DEFINE DXE7+}
+  {$DEFINE DXE8+}
+  {$DEFINE D10_0+}
+  {$DEFINE D10_1+}
+{$ENDIF}
+
+// Delphi 10.2 Tokyo
+{$IFDEF VER320}
+  {$DEFINE D2010+}
+  {$DEFINE DXE+}
+  {$DEFINE DXE2+}
+  {$DEFINE DXE3+}
+  {$DEFINE DXE4+}
+  {$DEFINE DXE5+}
+  {$DEFINE DXE6+}
+  {$DEFINE DXE7+}
+  {$DEFINE DXE8+}
+  {$DEFINE D10_0+}
+  {$DEFINE D10_1+}
+  {$DEFINE D10_2+}
+{$ENDIF}
+
+// Delphi 10.3
+{$IFDEF VER330}
+  {$DEFINE D2010+}
+  {$DEFINE DXE+}
+  {$DEFINE DXE2+}
+  {$DEFINE DXE3+}
+  {$DEFINE DXE4+}
+  {$DEFINE DXE5+}
+  {$DEFINE DXE6+}
+  {$DEFINE DXE7+}
+  {$DEFINE DXE8+}
+  {$DEFINE D10_0+}
+  {$DEFINE D10_1+}
+  {$DEFINE D10_2+}
+  {$DEFINE D10_3+}
+{$ENDIF}
+
+//StoreBitmap option introduced in Delphi 10.3 Rio
+{$IFNDEF D10_3+}
+  {$Define NeedStoreBitmapProperty}
+{$ENDIF}
+
+{$IFDEF D10_3+}
   {$Define HiDPISupport}
-{$IFEND}
+{$ENDIF}

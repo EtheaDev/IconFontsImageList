@@ -22,7 +22,7 @@ package IconFontsImageList;
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
-{$DESCRIPTION 'Extended ImageList to simplify use of icons with material icon fonts'}
+{$DESCRIPTION 'Ethea IconFontsImageList component'}
 {$LIBSUFFIX '_D2010'}
 {$RUNONLY}
 {$IMPLICITBUILD ON}

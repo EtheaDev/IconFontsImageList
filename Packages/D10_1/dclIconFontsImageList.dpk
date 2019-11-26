@@ -27,7 +27,7 @@ package dclIconFontsImageList;
 {$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'Ethea IconFontsImageList component'}
-{$LIBSUFFIX '_D10_3'}
+{$LIBSUFFIX '_D10_1'}
 {$DESIGNONLY}
 {$IMPLICITBUILD ON}
 

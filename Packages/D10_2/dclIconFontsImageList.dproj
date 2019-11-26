@@ -49,7 +49,7 @@
         <GenDll>true</GenDll>
         <GenPackage>true</GenPackage>
         <SanitizedProjectName>dclIconFontsImageList</SanitizedProjectName>
-        <DCC_Description>Extended ImageList to simplify use of icons with material icon fonts</DCC_Description>
+        <DCC_Description>Ethea IconFontsImageList component</DCC_Description>
         <DllSuffix>_D10_2</DllSuffix>
         <DesignOnlyPackage>true</DesignOnlyPackage>
         <VerInfo_Locale>1040</VerInfo_Locale>
@@ -87,6 +87,7 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
+        <DCCReference Include="..\IconFontsImageList.dcr"/>
         <DCCReference Include="DesignIDE.dcp"/>
         <DCCReference Include="IconFontsImageList.dcp"/>
         <DCCReference Include="VclSmp.dcp"/>

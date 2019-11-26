@@ -5,7 +5,7 @@ package IconFontsImageList;
 {$ALIGN 8}
 {$ASSERTIONS ON}
 {$BOOLEVAL OFF}
-{$DEBUGINFO OFF}
+{$DEBUGINFO ON}
 {$EXTENDEDSYNTAX ON}
 {$IMPORTEDDATA ON}
 {$IOCHECKS ON}
@@ -15,7 +15,7 @@ package IconFontsImageList;
 {$OPTIMIZATION OFF}
 {$OVERFLOWCHECKS OFF}
 {$RANGECHECKS OFF}
-{$REFERENCEINFO ON}
+{$REFERENCEINFO OFF}
 {$SAFEDIVIDE OFF}
 {$STACKFRAMES ON}
 {$TYPEDADDRESS OFF}
@@ -25,7 +25,7 @@ package IconFontsImageList;
 {$IMAGEBASE $400000}
 {$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
-{$DESCRIPTION 'Extended ImageList to simplify use of icons with material icon fonts'}
+{$DESCRIPTION 'Ethea IconFontsImageList component'}
 {$LIBSUFFIX '_D10_3'}
 {$RUNONLY}
 {$IMPLICITBUILD ON}

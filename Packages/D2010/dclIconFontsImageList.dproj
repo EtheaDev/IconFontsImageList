@@ -46,6 +46,7 @@
 			<DelphiCompile Include="dclIconFontsImageList.dpk">
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
+			<DCCReference Include="..\IconFontsImageList.dcr"/>
 			<DCCReference Include="DesignIDE.dcp"/>
 			<DCCReference Include="IconFontsImageList.dcp"/>
 			<DCCReference Include="VclSmp.dcp"/>

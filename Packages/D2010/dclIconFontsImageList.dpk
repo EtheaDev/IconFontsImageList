@@ -1,10 +1,11 @@
 package dclIconFontsImageList;
 
 {$R *.res}
+{$R '..\IconFontsImageList.dcr'}
 {$ALIGN 8}
 {$ASSERTIONS ON}
 {$BOOLEVAL OFF}
-{$DEBUGINFO ON}
+{$DEBUGINFO OFF}
 {$EXTENDEDSYNTAX ON}
 {$IMPORTEDDATA ON}
 {$IOCHECKS ON}
@@ -22,7 +23,7 @@ package dclIconFontsImageList;
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
-{$DESCRIPTION 'Extended ImageList to simplify use of icons with material icon fonts'}
+{$DESCRIPTION 'Ethea IconFontsImageList component'}
 {$LIBSUFFIX '_D2010'}
 {$DESIGNONLY}
 {$IMPLICITBUILD ON}

@@ -6,6 +6,7 @@
 {       Copyright (c) 2019 (Ethea S.r.l.)                                      }
 {       Contributors:                                                          }
 {         Carlo Barazzetta                                                     }
+{         Luca Minuti                                                          }
 {                                                                              }
 {       https://github.com/EtheaDev/IconFontsImageList                         }
 {                                                                              }
@@ -35,7 +36,7 @@ uses
   Controls, Forms, Dialogs, ImgList,
   StdCtrls, Buttons, StdActns,
   ActnList, ExtCtrls, ComCtrls, ToolWin,
-  Spin, IconFontsImageList, System.Actions, System.ImageList;
+  Spin, IconFontsImageList;
 
 type
   TMainForm = class(TForm)
@@ -186,7 +187,7 @@ begin
   TrackBar.Position := IconFontsImageList.Height;
   TrackBarChange(TrackBar);
 
-  {$IF Defined(HiDPISupport)}
+  {$IFDEF HiDPISupport}
   OnAfterMonitorDpiChanged := FormAfterMonitorDpiChanged;
   {$ENDIF}
 end;
@@ -206,8 +207,9 @@ var
   LStyleName: string;
 begin
   LStyleName := SelectThemeRadioGroup.Items[SelectThemeRadioGroup.ItemIndex];
-  //Comment this line if You are using an old version of Delphi!
+  {$IFDEF DXE+}
   TStyleManager.TrySetStyle(LStyleName);
+  {$ENDIF}
 
   if LStyleName = 'Windows' then
     IconFontsImageList.UpdateIconsAttributes(clBlack, clBtnFace)
