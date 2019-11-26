@@ -28,12 +28,14 @@ unit UMain;
 
 interface
 
+{$INCLUDE IconFontsImageList.inc}
+
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics,
   Controls, Forms, Dialogs, ImgList,
   StdCtrls, Buttons, StdActns,
   ActnList, ExtCtrls, ComCtrls, ToolWin,
-  Spin, IconFontsImageList;
+  Spin, IconFontsImageList, System.Actions, System.ImageList;
 
 type
   TMainForm = class(TForm)
@@ -77,6 +79,7 @@ type
     procedure ReplaceBitBtnClick(Sender: TObject);
     procedure DeleteIconActionExecute(Sender: TObject);
   private
+    procedure FormAfterMonitorDpiChanged(Sender: TObject; OldDPI, NewDPI: Integer);
     procedure UpdateButtons;
     procedure UpdateGUI;
     procedure UpdateListView;
@@ -169,6 +172,11 @@ begin
   end;
 end;
 
+procedure TMainForm.FormAfterMonitorDpiChanged(Sender: TObject; OldDPI, NewDPI: Integer);
+begin
+  UpdateGUI;
+end;
+
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
   if Screen.Fonts.IndexOf('Material Design Icons') = -1 then
@@ -177,6 +185,10 @@ begin
   
   TrackBar.Position := IconFontsImageList.Height;
   TrackBarChange(TrackBar);
+
+  {$IF Defined(HiDPISupport)}
+  OnAfterMonitorDpiChanged := FormAfterMonitorDpiChanged;
+  {$ENDIF}
 end;
 
 procedure TMainForm.IconFontsImageListChange(Sender: TObject);
