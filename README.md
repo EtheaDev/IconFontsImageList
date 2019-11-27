@@ -12,6 +12,14 @@
 
 ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/Sample.jpg](https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/Sample.jpg)
 
+Use the advanced Component Editor to easily create your Icons, from different Fonts:
+
+![https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/ImageEditor.jpg](https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/ImageEditor.jpg)
+
+Change the color of all Icons of your application with "one line of code", according to the active VCL Style:
+
+![https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/DemoChangeStyle.gif](https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/DemoChangeStyle.gif)
+
 Follow the [guide in Wiki section](https://github.com/EtheaDev/IconFontsImageList/wiki) to known how to use this component to modernize your Delphi applications scalable, colored and beautiful with few lines of code.
 
 Inspired by the "Font Icon Editor" project by Luca Minuti:
