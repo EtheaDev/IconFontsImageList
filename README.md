@@ -5,7 +5,7 @@
 ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png](https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png)
 
 27 November 2019: first stable version:
-- A component IconFontsImageList with advanced component editor.
+- The component TIconFontsImageList with advanced component editor.
 - A demo to show how to change the size, fonts and colors of the icons.
 - Performance of building hundreds of icons are very high.
 - Support from Delphi 2010 to 10.3 Rio
