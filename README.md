@@ -20,6 +20,10 @@ Change the color of all Icons of your application with "one line of code", accor
 
 ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/DemoChangeStyle.gif](https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/DemoChangeStyle.gif)
 
+Resize Icons at any pixel size is very simple:
+
+![https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/DemoChangeSize.gif](https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/DemoChangeSize.gif)
+
 Follow the [guide in Wiki section](https://github.com/EtheaDev/IconFontsImageList/wiki) to known how to use this component to modernize your Delphi applications scalable, colored and beautiful with few lines of code.
 
 Inspired by the "Font Icon Editor" project by Luca Minuti:
