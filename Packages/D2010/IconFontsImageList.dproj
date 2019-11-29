@@ -22,7 +22,7 @@
 		<PropertyGroup Condition="'$(Base)'!=''">
 			<DesignOnlyPackage>false</DesignOnlyPackage>
 			<DllSuffix>_D2010</DllSuffix>
-			<DCC_Description>Extended ImageList to simplify use of icons with material icon fonts</DCC_Description>
+			<DCC_Description>Ethea IconFontsImageList component</DCC_Description>
 			<RuntimeOnlyPackage>true</RuntimeOnlyPackage>
 			<DCC_DcuOutput>..\..\Lib\D2010\Win32\$(Config)</DCC_DcuOutput>
 			<DCC_UnitAlias>WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;$(DCC_UnitAlias)</DCC_UnitAlias>
