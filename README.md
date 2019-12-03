@@ -4,7 +4,12 @@
 
 ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png](https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png)
 
-27 November 2019: first stable version:
+03 December 2019: version 1.1
+- Fixed some problems adding-deleting icons into Extended Editor and Collection Editor
+- Added support for building icons from/to Chars (into Exrended Editor)
+- Added support for Delphi XE6
+
+27 November 2019: first stable version 1.0:
 - The component TIconFontsImageList with advanced component editor.
 - A demo to show how to change the size, fonts and colors of the icons.
 - Performance of building hundreds of icons are very high.
