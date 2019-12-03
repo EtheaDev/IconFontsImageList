@@ -6,8 +6,7 @@
 
 03 December 2019: version 1.1
 - Fixed some problems adding-deleting icons into Extended Editor and Collection Editor
-- Added support for building icons from/to Chars (into Exrended Editor)
-- Added support for Delphi XE6
+- Added support for building icons from/to Chars (into Extended Editor)
 
 27 November 2019: first stable version 1.0:
 - The component TIconFontsImageList with advanced component editor.
