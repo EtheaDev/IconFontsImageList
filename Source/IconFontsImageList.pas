@@ -95,11 +95,11 @@ type
     procedure UpdateImage(const AIndex: Integer);
     function GetIconFontsImageList: TIconFontsImageList;
   protected
-    procedure Notify(Item: TCollectionItem; Action: TCollectionNotification); override;
   public
     function Add: TIconFontItem;
     procedure Assign(Source: TPersistent); override;
     function Insert(AIndex: Integer): TIconFontItem;
+    procedure Delete(AIndex: Integer);
     FUNCTION GetIconByName(const AIconName: string): TIconFontItem;
     property IconFontsImageList: TIconFontsImageList read GetIconFontsImageList;
     property Items[Index: Integer]: TIconFontItem read GetItem write SetItem; default;
@@ -216,8 +216,13 @@ begin
 end;
 
 destructor TIconFontItem.Destroy;
+var
+  LIconFontsImageList: TIconFontsImageList;
 begin
+  LIconFontsImageList := IconFontsImageList;
   inherited Destroy;
+  if (LIconFontsImageList <> nil) and not (csDestroying in LIconFontsImageList.ComponentState) then
+    LIconFontsImageList.RedrawImages;
 end;
 
 function TIconFontItem.StoreFontColor: Boolean;
@@ -259,7 +264,10 @@ end;
 
 function TIconFontItem.GetFontIconHex: string;
 begin
-  Result := IntToHex(Ord(FCharacter), 4);
+  if FCharacter <> #0 then
+    Result := IntToHex(Ord(FCharacter), 4)
+  else
+    Result := '';
 end;
 
 function TIconFontItem.GetIconFontsImageList: TIconFontsImageList;
@@ -295,8 +303,12 @@ end;
 
 procedure TIconFontItem.SetFontIconHex(const AValue: string);
 begin
-  if (Length(AValue) = 4) or (Length(AValue)=0) then
-    Character := Chr(StrToInt('$' + AValue));
+  if (Length(AValue) = 4) then
+    Character := Chr(StrToInt('$' + AValue))
+  else if (Length(AValue) = 0) then
+    Character := #0
+  else
+    raise Exception.CreateFmt('Value %s not accepted!',[AValue]);
 end;
 
 procedure TIconFontItem.SetFontName(const AValue: TFontName);
@@ -726,6 +738,12 @@ begin
     inherited;
 end;
 
+procedure TIconFontItems.Delete(AIndex: Integer);
+begin
+  inherited Delete(AIndex);
+//  IconFontsImageList.RedrawImages;
+end;
+
 function TIconFontItems.GetIconByName(const AIconName: string): TIconFontItem;
 var
   I: Integer;
@@ -760,15 +778,6 @@ function TIconFontItems.Insert(AIndex: Integer): TIconFontItem;
 begin
   Result := TIconFontItem(inherited Insert(AIndex));
   IconFontsImageList.RedrawImages;
-end;
-
-procedure TIconFontItems.Notify(Item: TCollectionItem;
-  Action: TCollectionNotification);
-begin
-  inherited;
-  if (Owner <> nil) and (IconFontsImageList.FStopDrawing = 0) and
-    (Action in [cnExtracting, cnDeleting]) then
-    TIconFontsImageList(Owner).RedrawImages;
 end;
 
 procedure TIconFontItems.SetItem(AIndex: Integer;

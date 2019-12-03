@@ -2,7 +2,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
   Left = 0
   Top = 0
   HelpContext = 26140
-  Caption = 'Icon Fonts ImageList Editor - Copyright Ethea S.r.l.'
+  Caption = 'Icon Fonts ImageList Editor 1.1 - Copyright Ethea S.r.l.'
   ClientHeight = 580
   ClientWidth = 687
   Color = clBtnFace
@@ -50,15 +50,15 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
     Left = 0
     Top = 207
     Width = 687
-    Height = 317
+    Height = 295
     Align = alClient
-    Caption = ' Font &Icons'
-    TabOrder = 1
+    Caption = ' Icons of Imagelist'
+    TabOrder = 8
     object ImageView: TListView
       Left = 2
       Top = 15
       Width = 683
-      Height = 300
+      Height = 278
       Align = alClient
       Columns = <>
       HideSelection = False
@@ -79,8 +79,8 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
     Margins.Right = 90
     Margins.Bottom = 0
     Align = alTop
-    Caption = 'Properties of Selected &Icon n.%d'
-    TabOrder = 0
+    Caption = 'Properties of Selected Icon n.%d'
+    TabOrder = 1
     DesignSize = (
       597
       104)
@@ -90,7 +90,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Width = 87
       Height = 13
       AutoSize = False
-      Caption = '&IconName'
+      Caption = 'IconName'
       Transparent = True
     end
     object FontNameLabel: TLabel
@@ -99,7 +99,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Width = 325
       Height = 13
       AutoSize = False
-      Caption = 'Font&Name'
+      Caption = 'FontName'
       Transparent = True
     end
     object FontIconHexLabel: TLabel
@@ -109,7 +109,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Height = 13
       Anchors = [akTop, akRight]
       AutoSize = False
-      Caption = 'FontIcon&Hex*'
+      Caption = 'FontIconHex'
       Transparent = True
     end
     object FontIconDecLabel: TLabel
@@ -119,7 +119,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Height = 13
       Anchors = [akTop, akRight]
       AutoSize = False
-      Caption = 'FontIcon&Dec*'
+      Caption = 'FontIconDec'
       Transparent = True
     end
     object FontColorLabel: TLabel
@@ -128,7 +128,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Width = 100
       Height = 13
       AutoSize = False
-      Caption = 'Font&Color'
+      Caption = 'FontColor'
       Transparent = True
     end
     object MaskColorLabel: TLabel
@@ -137,7 +137,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Width = 100
       Height = 13
       AutoSize = False
-      Caption = '&MaskColor'
+      Caption = 'MaskColor'
       Transparent = True
     end
     object MainPanel: TPanel
@@ -192,7 +192,6 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       TabOrder = 3
       Value = 0
       OnChange = FontIconDecChange
-      OnExit = FontIconDecExit
     end
     object FontIconHex: TEdit
       Left = 427
@@ -203,7 +202,8 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Anchors = [akTop, akRight]
       CharCase = ecUpperCase
       TabOrder = 2
-      OnExit = FontIconHexExit
+      OnChange = FontIconHexChange
+      OnKeyPress = FontIconHexKeyPress
     end
     object FontColor: TColorBox
       Left = 96
@@ -273,17 +273,17 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
     Margins.Bottom = 0
     Align = alTop
     Caption = 'Properties of ImageList'
-    TabOrder = 7
+    TabOrder = 0
     DesignSize = (
       597
       103)
     object DefaultFontNameLabel: TLabel
       Left = 95
       Top = 15
-      Width = 329
+      Width = 161
       Height = 13
       AutoSize = False
-      Caption = 'Font&Name'
+      Caption = 'FontName (default)'
       Transparent = True
     end
     object DefaultFontColorLabel: TLabel
@@ -292,7 +292,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Width = 100
       Height = 13
       AutoSize = False
-      Caption = 'Font&Color*'
+      Caption = 'FontColor (default)'
       Transparent = True
     end
     object DefaultMaskColorLabel: TLabel
@@ -301,7 +301,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Width = 100
       Height = 13
       AutoSize = False
-      Caption = '&MaskColor*'
+      Caption = 'MaskColor (default)'
       Transparent = True
     end
     object SizeLabel: TLabel
@@ -310,18 +310,8 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Width = 58
       Height = 13
       AutoSize = False
-      Caption = '&Size'
+      Caption = 'Size (in pixel)'
       Transparent = True
-    end
-    object ShowCharMapButton: TButton
-      Left = 489
-      Top = 28
-      Width = 99
-      Height = 25
-      Anchors = [akTop, akRight]
-      Caption = 'Show Char Map...'
-      TabOrder = 2
-      OnClick = ShowCharMapButtonClick
     end
     object DefaultFontName: TComboBox
       Left = 95
@@ -341,7 +331,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       NoneColorColor = clNone
       Selected = clNone
       Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbIncludeNone, cbCustomColor, cbPrettyNames, cbCustomColors]
-      TabOrder = 4
+      TabOrder = 3
       OnChange = DefaultFontColorColorBoxChange
     end
     object DefaultMaskColorColorBox: TColorBox
@@ -353,7 +343,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       NoneColorColor = clNone
       Selected = clNone
       Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbIncludeNone, cbCustomColor, cbPrettyNames, cbCustomColors]
-      TabOrder = 5
+      TabOrder = 4
       OnChange = DefaultMaskColorColorBoxChange
     end
     object SizeSpinEdit: TSpinEdit
@@ -374,18 +364,18 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Width = 85
       Height = 17
       Caption = 'StoreBitmap'
-      TabOrder = 3
+      TabOrder = 2
       OnClick = StoreBitmapCheckBoxClick
     end
-    object ImportButton: TButton
+    object ShowCharMapButton: TButton
       Left = 489
-      Top = 66
+      Top = 24
       Width = 99
-      Height = 25
+      Height = 33
       Anchors = [akTop, akRight]
-      Caption = 'Import all chars...'
-      TabOrder = 6
-      OnClick = ImportButtonClick
+      Caption = 'Show Char Map...'
+      TabOrder = 5
+      OnClick = ShowCharMapButtonClick
     end
   end
   object ClearAllButton: TButton
@@ -396,40 +386,99 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
     Anchors = [akTop, akRight]
     Caption = '&Clear all'
     Enabled = False
-    TabOrder = 8
+    TabOrder = 7
     OnClick = ClearAllButtonClick
   end
   object IconBuilderGroupBox: TGroupBox
     Left = 0
-    Top = 524
+    Top = 502
     Width = 687
-    Height = 56
+    Height = 78
     Align = alBottom
     Caption = 'Icons Builder'
     TabOrder = 9
     DesignSize = (
       687
-      56)
+      78)
+    object FromHexNumLabel: TLabel
+      Left = 306
+      Top = 16
+      Width = 68
+      Height = 13
+      Alignment = taRightJustify
+      AutoSize = False
+      Caption = 'From Hex N.'
+      Transparent = True
+    end
+    object ToHexNumLabel: TLabel
+      Left = 438
+      Top = 16
+      Width = 68
+      Height = 13
+      Alignment = taRightJustify
+      AutoSize = False
+      Caption = 'To Hex N.'
+      Transparent = True
+    end
+    object CharsEditLabel: TLabel
+      Left = 7
+      Top = 26
+      Width = 145
+      Height = 13
+      AutoSize = False
+      Caption = 'Paste chars to build here'
+      Transparent = True
+    end
     object CharsEdit: TEdit
-      Left = 8
-      Top = 19
-      Width = 574
+      Left = 7
+      Top = 43
+      Width = 575
       Height = 21
       Hint = 'Icon Name'
       Anchors = [akLeft, akTop, akRight]
-      TabOrder = 0
-      OnChange = CharsEditChange
+      TabOrder = 3
+      OnChange = EditChangeUpdateGUI
     end
     object BuildButton: TButton
       Left = 586
-      Top = 18
+      Top = 43
       Width = 98
       Height = 30
       Anchors = [akTop, akRight]
-      Caption = 'Build from chars'
+      Caption = 'Build from &Chars'
       Enabled = False
-      TabOrder = 1
+      TabOrder = 4
       OnClick = BuildButtonClick
+    end
+    object BuildFromHexButton: TButton
+      Left = 586
+      Top = 9
+      Width = 98
+      Height = 30
+      Anchors = [akTop, akRight]
+      Caption = 'Build by &Hex N.'
+      Enabled = False
+      TabOrder = 2
+      OnClick = BuildFromHexButtonClick
+    end
+    object FromHexNum: TEdit
+      Left = 376
+      Top = 13
+      Width = 74
+      Height = 21
+      CharCase = ecUpperCase
+      TabOrder = 0
+      OnChange = EditChangeUpdateGUI
+      OnKeyPress = FontIconHexKeyPress
+    end
+    object ToHexNum: TEdit
+      Left = 508
+      Top = 13
+      Width = 74
+      Height = 21
+      CharCase = ecUpperCase
+      TabOrder = 1
+      OnChange = EditChangeUpdateGUI
     end
   end
   object SaveDialog: TSavePictureDialog

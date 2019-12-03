@@ -37,6 +37,7 @@ uses
   , ComCtrls;
 
 function UpdateIconFontListView(const AListView: TListView): Integer;
+function UpdateIconFontListViewCaptions(const AListView: TListView): Integer;
 
 implementation
 
@@ -65,6 +66,31 @@ begin
          LItem.FontIconHex,sLineBreak,
          Litem.IconName]);
       LListItem.ImageIndex := I;
+    end;
+  finally
+    AListView.Items.EndUpdate;
+  end;
+end;
+
+function UpdateIconFontListViewCaptions(const AListView: TListView): Integer;
+var
+  I: Integer;
+  LItem: TIconFontItem;
+  LListItem: TListItem;
+  LIconFontsImageList: TIconFontsImageList;
+begin
+  LIconFontsImageList := AListView.LargeImages as TIconFontsImageList;
+  AListView.Items.BeginUpdate;
+  try
+    Result := LIconFontsImageList.IconFontItems.Count;
+    for I := 0 to Result -1 do
+    begin
+      LItem := LIconFontsImageList.IconFontItems[I];
+      LListItem := AListView.Items[I];
+      LListItem.Caption := Format('%d%s$%s%s%s',
+        [LItem.FontIconDec,sLineBreak,
+         LItem.FontIconHex,sLineBreak,
+         Litem.IconName]);
     end;
   finally
     AListView.Items.EndUpdate;

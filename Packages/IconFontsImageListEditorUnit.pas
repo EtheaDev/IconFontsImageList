@@ -67,7 +67,6 @@ type
     IconNameLabel: TLabel;
     IconName: TEdit;
     BuilderGroupBox: TGroupBox;
-    ShowCharMapButton: TButton;
     FontNameLabel: TLabel;
     FontName: TComboBox;
     FontIconHexLabel: TLabel;
@@ -91,7 +90,13 @@ type
     CharsEdit: TEdit;
     BuildButton: TButton;
     StoreBitmapCheckBox: TCheckBox;
-    ImportButton: TButton;
+    BuildFromHexButton: TButton;
+    FromHexNum: TEdit;
+    FromHexNumLabel: TLabel;
+    ToHexNumLabel: TLabel;
+    ToHexNum: TEdit;
+    CharsEditLabel: TLabel;
+    ShowCharMapButton: TButton;
     procedure FormCreate(Sender: TObject);
     procedure ClearAllButtonClick(Sender: TObject);
     procedure DeleteButtonClick(Sender: TObject);
@@ -102,8 +107,6 @@ type
     procedure FormResize(Sender: TObject);
     procedure HelpButtonClick(Sender: TObject);
     procedure FontNameChange(Sender: TObject);
-    procedure FontIconDecExit(Sender: TObject);
-    procedure FontIconHexExit(Sender: TObject);
     procedure IconNameExit(Sender: TObject);
     procedure CancelButtonClick(Sender: TObject);
     procedure FontIconDecChange(Sender: TObject);
@@ -112,13 +115,16 @@ type
       Selected: Boolean);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure BuildButtonClick(Sender: TObject);
-    procedure CharsEditChange(Sender: TObject);
     procedure SizeSpinEditChange(Sender: TObject);
     procedure DefaultFontNameChange(Sender: TObject);
     procedure StoreBitmapCheckBoxClick(Sender: TObject);
     procedure DefaultFontColorColorBoxChange(Sender: TObject);
     procedure DefaultMaskColorColorBoxChange(Sender: TObject);
     procedure ImportButtonClick(Sender: TObject);
+    procedure BuildFromHexButtonClick(Sender: TObject);
+    procedure FontIconHexChange(Sender: TObject);
+    procedure FontIconHexKeyPress(Sender: TObject; var Key: Char);
+    procedure EditChangeUpdateGUI(Sender: TObject);
   private
     FIconIndexLabel: string;
     FUpdating: Boolean;
@@ -279,16 +285,31 @@ begin
   SetImageFontIconDec(FontIconDec.Value);
 end;
 
-procedure TIconFontsImageListEditor.FontIconDecExit(Sender: TObject);
+procedure TIconFontsImageListEditor.FontIconHexChange(Sender: TObject);
+var
+  LText: string;
 begin
   if FUpdating then Exit;
-  SetImageFontIconDec(StrToInt(FontIconDec.Text));
+  LText := (Sender as TEdit).Text;
+  if (Length(LText) = 4) or (Length(LText)=0) then
+  begin
+    if Sender = FontIconHex then
+      SetImageFontIconHex(FontIconHex.Text);
+  end;
 end;
 
-procedure TIconFontsImageListEditor.FontIconHexExit(Sender: TObject);
+procedure TIconFontsImageListEditor.FontIconHexKeyPress(Sender: TObject;
+  var Key: Char);
+var
+  LSenderEdit: TEdit;
 begin
-  if FUpdating then Exit;
-  SetImageFontIconHex(FontIconHex.Text);
+  LSenderEdit := Sender as TEdit;
+  if not CharInSet(Key, ['a'..'f','A'..'F','0'..'9',#8]) then
+    Key := #0;
+  if (Length((Sender as TEdit).Text) > 3) and (Key <> #8) and not (LSenderEdit.SelLength = 4) then
+    Key := #0;
+  if Key = #0 then
+    Beep;
 end;
 
 procedure TIconFontsImageListEditor.FontNameChange(Sender: TObject);
@@ -329,6 +350,7 @@ begin
     LIsItemSelected := SelectedIconFont <> nil;
     ClearAllButton.Enabled := FEditingList.Count > 0;
     BuildButton.Enabled := CharsEdit.Text <> '';
+    BuildFromHexButton.Enabled := (Length(FromHexNum.Text) = 4) and (Length(ToHexNum.Text) = 4);
     DeleteButton.Enabled := LIsItemSelected;
     FontColor.Enabled := LIsItemSelected;
     MaskColor.Enabled := LIsItemSelected;
@@ -351,7 +373,6 @@ begin
     end
     else
     begin
-      //IconIndexLabel.Caption := Format(FIconIndexLabel,[-1]);
       FontColor.Selected := clNone;
       MaskColor.Selected := clNone;
       FontName.ItemIndex := -1;
@@ -363,6 +384,7 @@ begin
     MainImage.Picture.Bitmap.Canvas.FillRect(Rect(0,0,FEditingList.Width, FEditingList.Height));
     if ImageView.SelCount = 1 then
       FEditingList.GetBitmap(ImageView.Selected.Index, MainImage.Picture.Bitmap);
+    UpdateIconFontListViewCaptions(ImageView);
   finally
     FUpdating := False;
   end;
@@ -370,25 +392,21 @@ end;
 
 procedure TIconFontsImageListEditor.DeleteSelectedItem;
 var
-  LLastIndex: Integer;
+  LIndex: Integer;
 begin
-  LLastIndex := ImageView.Selected.Index;
-  FEditingList.Delete(ImageView.Selected.Index);
+  LIndex := ImageView.Selected.Index;
+  FEditingList.Delete(LIndex);
   UpdateIconFontListView(ImageView);
-  if LLastIndex < ImageView.Items.Count then
-    ImageView.ItemIndex := LLastIndex
+  if LIndex < ImageView.Items.Count then
+    ImageView.ItemIndex := LIndex
   else if ImageView.Items.Count > 0 then
-    ImageView.ItemIndex := LLastIndex-1;
+    ImageView.ItemIndex := LIndex-1;
+  UpdateGUI;
 end;
 
 procedure TIconFontsImageListEditor.CancelButtonClick(Sender: TObject);
 begin
   UndoEditing;
-end;
-
-procedure TIconFontsImageListEditor.CharsEditChange(Sender: TObject);
-begin
-  UpdateGUI;
 end;
 
 procedure TIconFontsImageListEditor.ClearAllImages;
@@ -454,7 +472,6 @@ end;
 procedure TIconFontsImageListEditor.DeleteButtonClick(Sender: TObject);
 begin
   DeleteSelectedItem;
-  UpdateGUI;
 end;
 
 procedure TIconFontsImageListEditor.MaskColorChange(Sender: TObject);
@@ -522,6 +539,11 @@ begin
   IconName.Width := LEditSize;
 end;
 
+procedure TIconFontsImageListEditor.EditChangeUpdateGUI(Sender: TObject);
+begin
+  UpdateGUI;
+end;
+
 function TIconFontsImageListEditor.SelectedIconFont: TIconFontItem;
 begin
   if (ImageView.Selected <> nil) and (ImageView.Selected.Index < FEditingList.IconFontItems.Count) then
@@ -532,16 +554,16 @@ end;
 
 procedure TIconFontsImageListEditor.AddButtonClick(Sender: TObject);
 var
-  InsertIndex: Integer;
+  LInsertIndex: Integer;
 begin
   if (ImageView.Selected <> nil) then
-    InsertIndex := ImageView.Selected.Index
+    LInsertIndex := ImageView.Selected.Index +1
   else
-    InsertIndex := ImageView.Items.Count;
+    LInsertIndex := ImageView.Items.Count;
   ImageView.Selected := nil;
-  FEditingList.IconFontItems.Insert(InsertIndex);
+  FEditingList.IconFontItems.Insert(LInsertIndex);
   UpdateIconFontListView(ImageView);
-  ImageView.ItemIndex := InsertIndex;
+  ImageView.ItemIndex := LInsertIndex;
 end;
 
 procedure TIconFontsImageListEditor.AddColor(const S: string);
@@ -558,6 +580,21 @@ begin
     FEditingList.AddIcon(C);
   FEditingList.RedrawImages;
   UpdateIconFontListView(ImageView);
+end;
+
+procedure TIconFontsImageListEditor.BuildFromHexButtonClick(Sender: TObject);
+begin
+  Screen.Cursor := crHourGlass;
+  try
+    FEditingList.AddIcons(
+      Chr(StrToInt('$' + FromHexNum.Text)), //From Chr
+      Chr(StrToInt('$' + ToHexNum.Text)), //To Chr
+      'Material Design Icons'
+      );
+    UpdateIconFontListView(ImageView);
+  finally
+    Screen.Cursor := crDefault;
+  end;
 end;
 
 end.
