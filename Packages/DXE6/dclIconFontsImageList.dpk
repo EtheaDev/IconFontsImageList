@@ -1,6 +1,7 @@
-package IconFontsImageList;
+package dclIconFontsImageList;
 
 {$R *.res}
+{$R '..\IconFontsImageList.dcr'}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
 {$ALIGN 8}
 {$ASSERTIONS ON}
@@ -9,33 +10,35 @@ package IconFontsImageList;
 {$EXTENDEDSYNTAX ON}
 {$IMPORTEDDATA ON}
 {$IOCHECKS ON}
-{$LOCALSYMBOLS OFF}
+{$LOCALSYMBOLS ON}
 {$LONGSTRINGS ON}
 {$OPENSTRINGS ON}
-{$OPTIMIZATION ON}
+{$OPTIMIZATION OFF}
 {$OVERFLOWCHECKS OFF}
 {$RANGECHECKS OFF}
-{$REFERENCEINFO OFF}
+{$REFERENCEINFO ON}
 {$SAFEDIVIDE OFF}
-{$STACKFRAMES OFF}
+{$STACKFRAMES ON}
 {$TYPEDADDRESS OFF}
 {$VARSTRINGCHECKS ON}
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
-{$DEFINE RELEASE}
+{$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'Ethea IconFontsImageList component'}
-{$LIBSUFFIX '_D10_3'}
-{$RUNONLY}
+{$LIBSUFFIX '_DXE6'}
+{$DESIGNONLY}
 {$IMPLICITBUILD ON}
 
 requires
-  rtl,
-  vcl;
+  DesignIDE,
+  IconFontsImageList,
+  VclSmp;
 
 contains
-  IconFontsImageList in '..\..\Source\IconFontsImageList.pas',
-  IconFontsUtils in '..\..\Source\IconFontsUtils.pas';
+  RegisterIconFontsImageList in '..\RegisterIconFontsImageList.pas',
+  IconFontsImageListEditor in '..\IconFontsImageListEditor.pas',
+  IconFontsImageListEditorUnit in '..\IconFontsImageListEditorUnit.pas';
 
 end.
