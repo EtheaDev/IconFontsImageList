@@ -316,6 +316,7 @@ procedure TIconFontsImageListEditor.FontNameChange(Sender: TObject);
 begin
   if FUpdating then Exit;
   SetImageFontName(FontName.Text);
+  UpdateCharsToBuild;
 end;
 
 procedure TIconFontsImageListEditor.UndoEditing;
@@ -327,10 +328,15 @@ end;
 
 procedure TIconFontsImageListEditor.UpdateCharsToBuild;
 begin
-  CharsEdit.Font.Size := 16;
-  if FEditingList.FontName <> '' then
+  CharsEdit.Font.Size := 14;
+  if FontName.Text <> '' then
   begin
-    CharsEdit.Font.Name := FEditingList.FontName;
+    CharsEdit.Font.Name := FontName.Text;
+    CharsEdit.Enabled := True;
+  end
+  else if DefaultFontName.Text <> '' then
+  begin
+    CharsEdit.Font.Name := DefaultFontName.Text;
     CharsEdit.Enabled := True;
   end
   else
