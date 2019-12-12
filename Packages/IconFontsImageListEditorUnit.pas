@@ -123,7 +123,6 @@ type
     procedure ImportButtonClick(Sender: TObject);
     procedure BuildFromHexButtonClick(Sender: TObject);
     procedure FontIconHexChange(Sender: TObject);
-    procedure FontIconHexKeyPress(Sender: TObject; var Key: Char);
     procedure EditChangeUpdateGUI(Sender: TObject);
   private
     FIconIndexLabel: string;
@@ -296,20 +295,6 @@ begin
     if Sender = FontIconHex then
       SetImageFontIconHex(FontIconHex.Text);
   end;
-end;
-
-procedure TIconFontsImageListEditor.FontIconHexKeyPress(Sender: TObject;
-  var Key: Char);
-var
-  LSenderEdit: TEdit;
-begin
-  LSenderEdit := Sender as TEdit;
-  if not CharInSet(Key, ['a'..'f','A'..'F','0'..'9',#8]) then
-    Key := #0;
-  if (Length((Sender as TEdit).Text) > 3) and (Key <> #8) and not (LSenderEdit.SelLength = 4) then
-    Key := #0;
-  if Key = #0 then
-    Beep;
 end;
 
 procedure TIconFontsImageListEditor.FontNameChange(Sender: TObject);

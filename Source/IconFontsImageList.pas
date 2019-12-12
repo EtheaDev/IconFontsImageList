@@ -560,14 +560,19 @@ begin
   inherited;
   if Source is TIconFontsImageList then
   begin
-    FFontName := TIconFontsImageList(Source).FontName;
-    FFontColor := TIconFontsImageList(Source).FontColor;
-    FMaskColor := TIconFontsImageList(Source).FMaskColor;
-    {$IFDEF HasStoreBitmapProperty}
-    StoreBitmap := TIconFontsImageList(Source).StoreBitmap;
-    {$ENDIF}
-    Height := TIconFontsImageList(Source).Height;
-    FIconFontItems.Assign(TIconFontsImageList(Source).FIconFontItems);
+    StopDrawing(True);
+    try
+      FFontName := TIconFontsImageList(Source).FontName;
+      FFontColor := TIconFontsImageList(Source).FontColor;
+      FMaskColor := TIconFontsImageList(Source).FMaskColor;
+      {$IFDEF HasStoreBitmapProperty}
+      StoreBitmap := TIconFontsImageList(Source).StoreBitmap;
+      {$ENDIF}
+      Size := TIconFontsImageList(Source).Size;
+      FIconFontItems.Assign(TIconFontsImageList(Source).FIconFontItems);
+    finally
+      StopDrawing(False);
+    end;
   end;
 end;
 
@@ -686,6 +691,8 @@ var
   I: Integer;
   LBitmap: TBitmap;
 begin
+  if FStopDrawing > 0 then
+    Exit;
   if not Assigned(FIconFontItems) or
     (csLoading in ComponentState) or
     (csDestroying in ComponentState) then
@@ -777,7 +784,6 @@ end;
 function TIconFontItems.Insert(AIndex: Integer): TIconFontItem;
 begin
   Result := TIconFontItem(inherited Insert(AIndex));
-  IconFontsImageList.RedrawImages;
 end;
 
 procedure TIconFontItems.SetItem(AIndex: Integer;

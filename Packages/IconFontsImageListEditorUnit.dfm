@@ -201,9 +201,9 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Hint = 'Hexadecimal value'
       Anchors = [akTop, akRight]
       CharCase = ecUpperCase
+      MaxLength = 4
       TabOrder = 2
       OnChange = FontIconHexChange
-      OnKeyPress = FontIconHexKeyPress
     end
     object FontColor: TColorBox
       Left = 96
@@ -467,9 +467,9 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Width = 74
       Height = 21
       CharCase = ecUpperCase
+      MaxLength = 4
       TabOrder = 0
       OnChange = EditChangeUpdateGUI
-      OnKeyPress = FontIconHexKeyPress
     end
     object ToHexNum: TEdit
       Left = 508
@@ -477,6 +477,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Width = 74
       Height = 21
       CharCase = ecUpperCase
+      MaxLength = 4
       TabOrder = 1
       OnChange = EditChangeUpdateGUI
     end
