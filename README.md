@@ -4,7 +4,7 @@
 
 ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png](https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png)
 
-13 December 2019: version official 1.1 version
+13 December 2019: official 1.1 version
 - Fixed some problems adding-deleting icons into Extended Editor and Collection Editor
 - Added support for building icons from/to Chars (into Extended Editor)
 - Fixed some minor problems
