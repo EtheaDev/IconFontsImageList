@@ -3,7 +3,7 @@
 {       Icon Fonts ImageList: An extended ImageList for Delphi                 }
 {       to simplify use of Icons (resize, colors and more...)                  }
 {                                                                              }
-{       Copyright (c) 2019 (Ethea S.r.l.)                                      }
+{       Copyright (c) 2019-2020 (Ethea S.r.l.)                                 }
 {       Contributors:                                                          }
 {         Carlo Barazzetta                                                     }
 {                                                                              }
@@ -33,17 +33,21 @@ interface
 uses
   Classes
   , ImgList
+  , IconFontsImageList
   , Graphics
   , ComCtrls;
 
 function UpdateIconFontListView(const AListView: TListView): Integer;
 function UpdateIconFontListViewCaptions(const AListView: TListView): Integer;
+procedure UpdateIconFontsColorByStyle(const IconFontsImageList: TIconFontsImageList;
+    const AReplaceCustomColors: Boolean = False);
 
 implementation
 
 uses
   SysUtils
-  , IconFontsImageList;
+  , Themes
+  ;
 
 function UpdateIconFontListView(const AListView: TListView): Integer;
 var
@@ -95,6 +99,34 @@ begin
   finally
     AListView.Items.EndUpdate;
   end;
+end;
+
+procedure UpdateIconFontsColorByStyle(const IconFontsImageList: TIconFontsImageList;
+  const AReplaceCustomColors: Boolean = False);
+var
+  LStyleFontColor, LStyleMaskColor: TColor;
+begin
+  {$IFDEF DXE+}
+  LStyleFontColor := TStyleManager.ActiveStyle.GetStyleFontColor(sfButtonTextNormal);
+  LStyleMaskColor := TStyleManager.ActiveStyle.GetStyleFontColor(sfButtonTextDisabled);
+  IconFontsImageList.UpdateIconsAttributes(LStyleFontColor, LStyleMaskColor,
+    AReplaceCustomColors);
+  {$ELSE}
+  if LStyleName = 'Windows' then
+    IconFontsImageList.UpdateIconsAttributes(clBlack, clBtnFace, '', False)
+  else if LStyleName = 'Windows10' then
+    IconFontsImageList.UpdateIconsAttributes(clBlack, clWhite)
+  else if LStyleName = 'Windows10 SlateGray' then
+    IconFontsImageList.UpdateIconsAttributes(clWhite, clBlack)
+  else if LStyleName = 'Windows10 Blue' then
+    IconFontsImageList.UpdateIconsAttributes(clBlue, clGray)
+  else if LStyleName = 'Windows10 Dark' then
+    IconFontsImageList.UpdateIconsAttributes(clSilver, clBlack)
+  else if LStyleName = 'Windows10 Green' then
+    IconFontsImageList.UpdateIconsAttributes(clOlive, clGreen)
+  else if LStyleName = 'Windows10 Purple' then
+    IconFontsImageList.UpdateIconsAttributes(clRed, clPurple);
+  {$ENDIF}
 end;
 
 end.

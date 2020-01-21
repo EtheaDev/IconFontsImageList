@@ -2,7 +2,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
   Left = 0
   Top = 0
   HelpContext = 26140
-  Caption = 'Icon Fonts ImageList Editor 1.1 - Copyright Ethea S.r.l.'
+  Caption = 'Icon Fonts ImageList Editor 1.2 - Copyright Ethea S.r.l.'
   ClientHeight = 580
   ClientWidth = 687
   Color = clBtnFace
@@ -146,18 +146,22 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Width = 78
       Height = 78
       BevelOuter = bvNone
-      BorderWidth = 5
+      BorderWidth = 2
       BorderStyle = bsSingle
-      ParentColor = True
+      Color = clWindow
+      Ctl3D = False
+      ParentCtl3D = False
       TabOrder = 0
       object MainImage: TImage
-        Left = 5
-        Top = 5
-        Width = 64
-        Height = 64
+        Left = 2
+        Top = 2
+        Width = 72
+        Height = 72
         Align = alClient
         Stretch = True
         Transparent = True
+        ExplicitLeft = 5
+        ExplicitTop = 5
         ExplicitWidth = 60
         ExplicitHeight = 60
       end
@@ -307,7 +311,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
     object SizeLabel: TLabel
       Left = 8
       Top = 15
-      Width = 58
+      Width = 80
       Height = 13
       AutoSize = False
       Caption = 'Size (in pixel)'

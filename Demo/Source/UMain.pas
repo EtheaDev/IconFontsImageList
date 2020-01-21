@@ -3,7 +3,7 @@
 {       Icon Fonts ImageList: An extended ImageList for Delphi                 }
 {       to simplify use of Icons (resize, colors and more...)                  }
 {                                                                              }
-{       Copyright (c) 2019 (Ethea S.r.l.)                                      }
+{       Copyright (c) 2019-2020 (Ethea S.r.l.)                                 }
 {       Contributors:                                                          }
 {         Carlo Barazzetta                                                     }
 {         Luca Minuti                                                          }
@@ -45,7 +45,6 @@ type
     ChangeIconAction: TAction;
     Panel1: TPanel;
     SelectThemeRadioGroup: TRadioGroup;
-    ShowImageEditorButton: TBitBtn;
     TopToolBar: TToolBar;
     ToolButton1: TToolButton;
     ToolButton2: TToolButton;
@@ -57,8 +56,6 @@ type
     Panel2: TPanel;
     DeleteButton: TBitBtn;
     ChangeIconButton: TBitBtn;
-    TrackBar: TTrackBar;
-    IconSizeLabel: TLabel;
     ClientPanel: TPanel;
     TreeView: TTreeView;
     ImageView: TListView;
@@ -67,8 +64,13 @@ type
     NumSpinEdit: TSpinEdit;
     Label2: TLabel;
     AssignIconsButton: TBitBtn;
-    ClearButton: TBitBtn;
     DeleteIconAction: TAction;
+    SliderPanel: TPanel;
+    TrackBar: TTrackBar;
+    IconSizeLabel: TLabel;
+    ButtonsPanel: TPanel;
+    ClearButton: TBitBtn;
+    ShowImageEditorButton: TBitBtn;
     procedure AssignIconsButtonClick(Sender: TObject);
     procedure ChangeIconActionExecute(Sender: TObject);
     procedure SelectThemeRadioGroupClick(Sender: TObject);
@@ -179,16 +181,27 @@ begin
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
+var
+  I, SelectedIndex: integer;
 begin
   if Screen.Fonts.IndexOf('Material Design Icons') = -1 then
     MessageDlg('Warning: "Material Design Icons" font is not present in your system!'+sLineBreak+
       'Please download at https://materialdesignicons.com and install it, because this demo is based on this font.', mtError, [mbOK], 0);
-  
+
   TrackBar.Position := IconFontsImageList.Height;
   TrackBarChange(TrackBar);
 
   {$IFDEF HiDPISupport}
   OnAfterMonitorDpiChanged := FormAfterMonitorDpiChanged;
+  {$ENDIF}
+
+  {$IFDEF DXE+}
+  //Build available VCL Styles
+  SelectThemeRadioGroup.Items.Clear;
+  for I := 0 to High(TStyleManager.StyleNames) do
+    SelectThemeRadioGroup.Items.Add(TStyleManager.StyleNames[I]);
+  TStringList(SelectThemeRadioGroup.Items).Sort;
+  SelectThemeRadioGroup.ItemIndex := SelectThemeRadioGroup.Items.IndexOf('Windows');
   {$ENDIF}
 end;
 
@@ -205,28 +218,35 @@ end;
 procedure TMainForm.SelectThemeRadioGroupClick(Sender: TObject);
 var
   LStyleName: string;
+  LStyleFontColor, LStyleMaskColor: TColor;
 begin
-  LStyleName := SelectThemeRadioGroup.Items[SelectThemeRadioGroup.ItemIndex];
-  {$IFDEF DXE+}
-  TStyleManager.TrySetStyle(LStyleName);
-  {$ENDIF}
+  Screen.Cursor := crHourGlass;
+  try
+    LStyleName := SelectThemeRadioGroup.Items[SelectThemeRadioGroup.ItemIndex];
+    {$IFDEF DXE+}
+    TStyleManager.TrySetStyle(LStyleName);
+    UpdateIconFontImageListByStyle(IconFontsImageList);
+    {$ELSE}
+    if LStyleName = 'Windows' then
+      IconFontsImageList.UpdateIconsAttributes(clBlack, clBtnFace, False)
+    else if LStyleName = 'Windows10' then
+      IconFontsImageList.UpdateIconsAttributes(clBlack, clWhite)
+    else if LStyleName = 'Windows10 SlateGray' then
+      IconFontsImageList.UpdateIconsAttributes(clWhite, clBlack)
+    else if LStyleName = 'Windows10 Blue' then
+      IconFontsImageList.UpdateIconsAttributes(clBlue, clGray)
+    else if LStyleName = 'Windows10 Dark' then
+      IconFontsImageList.UpdateIconsAttributes(clSilver, clBlack)
+    else if LStyleName = 'Windows10 Green' then
+      IconFontsImageList.UpdateIconsAttributes(clOlive, clGreen)
+    else if LStyleName = 'Windows10 Purple' then
+      IconFontsImageList.UpdateIconsAttributes(clRed, clPurple);
+    {$ENDIF}
 
-  if LStyleName = 'Windows' then
-    IconFontsImageList.UpdateIconsAttributes(clBlack, clBtnFace)
-  else if LStyleName = 'Windows10' then
-    IconFontsImageList.UpdateIconsAttributes(clBlack, clWhite)
-  else if LStyleName = 'Windows10 SlateGray' then
-    IconFontsImageList.UpdateIconsAttributes(clWhite, clBlack)
-  else if LStyleName = 'Windows10 Blue' then
-    IconFontsImageList.UpdateIconsAttributes(clBlue, clGray)
-  else if LStyleName = 'Windows10 Dark' then
-    IconFontsImageList.UpdateIconsAttributes(clSilver, clBlack)
-  else if LStyleName = 'Windows10 Green' then
-    IconFontsImageList.UpdateIconsAttributes(clOlive, clGreen)
-  else if LStyleName = 'Windows10 Purple' then
-    IconFontsImageList.UpdateIconsAttributes(clRed, clPurple);
-
-  UpdateButtons;
+    UpdateButtons;
+  finally
+    Screen.Cursor := crDefault;
+  end;
 end;
 
 procedure TMainForm.ShowImageEditorButtonClick(Sender: TObject);
@@ -243,7 +263,7 @@ begin
   IconSizeLabel.Caption := Format('Icons size: %d',[LSize]);
   TopToolBar.ButtonHeight := LSize + 2;
   TopToolBar.ButtonWidth := LSize + 2;
-  TopToolBar.Height := LSize + 4;
+  TopToolBar.Height := LSize + 6;
   TreeView.Indent := LSize;
   UpdateButtons;
   UpdateListView;

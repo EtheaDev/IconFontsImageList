@@ -3,7 +3,7 @@
 {       Icon Fonts ImageList: An extended ImageList for Delphi                 }
 {       to simplify use of Icons (resize, colors and more...)                  }
 {                                                                              }
-{       Copyright (c) 2019 (Ethea S.r.l.)                                      }
+{       Copyright (c) 2019-2020 (Ethea S.r.l.)                                 }
 {       Contributors:                                                          }
 {         Carlo Barazzetta                                                     }
 {         Nicola Tambascia                                                     }
@@ -186,7 +186,6 @@ begin
         {$endif}
         FEditinglist.IconFontItems := AImageList.IconFontItems;
         FOldImageList.Assign(FEditingList);
-        //FOldIconFontItems.Assign(FEditinglist.IconFontItems);
 
         ImageView.LargeImages := FEditingList;
         ImageView.SmallImages := FEditingList;
@@ -307,7 +306,6 @@ end;
 procedure TIconFontsImageListEditor.UndoEditing;
 begin
   FEditingList.ClearIcons;
-  //FEditingList.IconFontItems.Assign(FOldIconFontItems);
   FEditingList.Assign(FOldImageList);
 end;
 
@@ -335,10 +333,14 @@ procedure TIconFontsImageListEditor.UpdateGUI;
 var
   LIsItemSelected: Boolean;
   LItemFontName: string;
+  LCharWidth: Integer;
+  LCharHeight: Integer;
+  LIconFontItem: TIconFontItem;
 begin
   FUpdating := True;
   try
-    LIsItemSelected := SelectedIconFont <> nil;
+    LIconFontItem := SelectedIconFont;
+    LIsItemSelected := LIconFontItem <> nil;
     ClearAllButton.Enabled := FEditingList.Count > 0;
     BuildButton.Enabled := CharsEdit.Text <> '';
     BuildFromHexButton.Enabled := (Length(FromHexNum.Text) = 4) and (Length(ToHexNum.Text) = 4);
@@ -352,14 +354,14 @@ begin
     ShowCharMapButton.Enabled := (FEditingList.FontName <> '');
     if LIsItemSelected then
     begin
-      ImageGroup.Caption := Format(FIconIndexLabel,[SelectedIconFont.Index]);
-      MaskColor.Selected := SelectedIconFont.MaskColor;
-      FontColor.Selected := SelectedIconFont.FontColor;
-      LItemFontName := SelectedIconFont.FontName;
+      ImageGroup.Caption := Format(FIconIndexLabel,[LIconFontItem.Index]);
+      MaskColor.Selected := LIconFontItem.MaskColor;
+      FontColor.Selected := LIconFontItem.FontColor;
+      LItemFontName := LIconFontItem.FontName;
       FontName.ItemIndex := FontName.Items.IndexOf(LItemFontName);
-      IconName.Text := SelectedIconFont.IconName;
-      FontIconDec.Value := SelectedIconFont.FontIconDec;
-      FontIconHex.Text := SelectedIconFont.FontIconHex;
+      IconName.Text := LIconFontItem.IconName;
+      FontIconDec.Value := LIconFontItem.FontIconDec;
+      FontIconHex.Text := LIconFontItem.FontIconHex;
       MainPanel.Invalidate;
     end
     else
@@ -371,10 +373,27 @@ begin
       FontIconDec.Value := 0;
       FontIconHex.Text := '';
     end;
-    MainImage.Picture.Bitmap.Canvas.Brush.Color :=  MainPanel.Color;
-    MainImage.Picture.Bitmap.Canvas.FillRect(Rect(0,0,FEditingList.Width, FEditingList.Height));
-    if ImageView.SelCount = 1 then
-      FEditingList.GetBitmap(ImageView.Selected.Index, MainImage.Picture.Bitmap);
+    MainImage.Canvas.Brush.Color :=  MainPanel.Color;
+    MainImage.Canvas.FillRect(Rect(0, 0, MainImage.Height, MainImage.Height));
+    if LIsItemSelected then
+    begin
+      if LIconFontItem.FontName <> '' then
+        MainImage.Canvas.Font.Name := LIconFontItem.FontName
+      else
+        MainImage.Canvas.Font.Name := FEditingList.FontName;
+      MainImage.Canvas.Font.Height := MainImage.Height;
+      if LIconFontItem.FontColor <> clNone then
+        MainImage.Canvas.Font.Color := LIconFontItem.FontColor
+      else
+        MainImage.Canvas.Font.Color := FEditingList.FontColor;
+      if LIconFontItem.MaskColor <> clNone then
+        MainImage.Canvas.Brush.Color := LIconFontItem.MaskColor
+      else
+        MainImage.Canvas.Brush.Color := FEditingList.MaskColor;
+      MainImage.Canvas.FillRect(Rect(0, 0, MainImage.Height, MainImage.Height));
+      MainImage.Canvas.TextOut(0, 0, LIconFontItem.Character);
+    end;
+
     UpdateIconFontListViewCaptions(ImageView);
   finally
     FUpdating := False;
@@ -504,7 +523,7 @@ end;
 procedure TIconFontsImageListEditor.FormDestroy(Sender: TObject);
 begin
   FreeAndNil(FOldImageList);
-//  FreeAndNil( FOldIconFontItems);
+  FreeAndNil( FOldIconFontItems);
   Screen.Cursors[crColorPick] := 0;
 end;
 
