@@ -4,6 +4,13 @@
 
 ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png](https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png)
 
+21 January 2020: official 1.2 version
+- Added support for DXE8
+- Demos with various VCL Styles
+- Utility to Update automatically IconFonts color by active VCL Style
+- Increased performance when switching VCL Style at runtime
+- Minor fixes
+
 13 December 2019: official 1.1 version
 - Fixed some problems adding-deleting icons into Extended Editor and Collection Editor
 - Added support for building icons from/to Chars (into Extended Editor)
