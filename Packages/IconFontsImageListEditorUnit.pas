@@ -333,8 +333,6 @@ procedure TIconFontsImageListEditor.UpdateGUI;
 var
   LIsItemSelected: Boolean;
   LItemFontName: string;
-  LCharWidth: Integer;
-  LCharHeight: Integer;
   LIconFontItem: TIconFontItem;
 begin
   FUpdating := True;

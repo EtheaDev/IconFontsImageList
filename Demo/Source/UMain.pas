@@ -225,7 +225,7 @@ begin
     LStyleName := SelectThemeRadioGroup.Items[SelectThemeRadioGroup.ItemIndex];
     {$IFDEF DXE+}
     TStyleManager.TrySetStyle(LStyleName);
-    UpdateIconFontImageListByStyle(IconFontsImageList);
+    UpdateIconFontsColorByStyle(IconFontsImageList);
     {$ELSE}
     if LStyleName = 'Windows' then
       IconFontsImageList.UpdateIconsAttributes(clBlack, clBtnFace, False)
