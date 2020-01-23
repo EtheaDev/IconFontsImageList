@@ -261,7 +261,6 @@ object MainForm: TMainForm
     end
   end
   object IconFontsImageList: TIconFontsImageList
-    OnChange = IconFontsImageListChange
     IconFontItems = <
       item
         IconName = 'Account'

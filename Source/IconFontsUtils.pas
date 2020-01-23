@@ -103,29 +103,16 @@ end;
 
 procedure UpdateIconFontsColorByStyle(const IconFontsImageList: TIconFontsImageList;
   const AReplaceCustomColors: Boolean = False);
+{$IFDEF DXE+}
 var
   LStyleFontColor, LStyleMaskColor: TColor;
+{$ENDIF}
 begin
   {$IFDEF DXE+}
   LStyleFontColor := TStyleManager.ActiveStyle.GetStyleFontColor(sfButtonTextNormal);
   LStyleMaskColor := TStyleManager.ActiveStyle.GetStyleFontColor(sfButtonTextDisabled);
   IconFontsImageList.UpdateIconsAttributes(LStyleFontColor, LStyleMaskColor,
     AReplaceCustomColors);
-  {$ELSE}
-  if LStyleName = 'Windows' then
-    IconFontsImageList.UpdateIconsAttributes(clBlack, clBtnFace, '', False)
-  else if LStyleName = 'Windows10' then
-    IconFontsImageList.UpdateIconsAttributes(clBlack, clWhite)
-  else if LStyleName = 'Windows10 SlateGray' then
-    IconFontsImageList.UpdateIconsAttributes(clWhite, clBlack)
-  else if LStyleName = 'Windows10 Blue' then
-    IconFontsImageList.UpdateIconsAttributes(clBlue, clGray)
-  else if LStyleName = 'Windows10 Dark' then
-    IconFontsImageList.UpdateIconsAttributes(clSilver, clBlack)
-  else if LStyleName = 'Windows10 Green' then
-    IconFontsImageList.UpdateIconsAttributes(clOlive, clGreen)
-  else if LStyleName = 'Windows10 Purple' then
-    IconFontsImageList.UpdateIconsAttributes(clRed, clPurple);
   {$ENDIF}
 end;
 

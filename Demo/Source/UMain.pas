@@ -77,9 +77,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure ShowImageEditorButtonClick(Sender: TObject);
     procedure TrackBarChange(Sender: TObject);
-    procedure IconFontsImageListChange(Sender: TObject);
     procedure ClearButtonClick(Sender: TObject);
-    procedure ReplaceBitBtnClick(Sender: TObject);
     procedure DeleteIconActionExecute(Sender: TObject);
   private
     procedure FormAfterMonitorDpiChanged(Sender: TObject; OldDPI, NewDPI: Integer);
@@ -203,16 +201,6 @@ begin
   TStringList(SelectThemeRadioGroup.Items).Sort;
   SelectThemeRadioGroup.ItemIndex := SelectThemeRadioGroup.Items.IndexOf('Windows');
   {$ENDIF}
-end;
-
-procedure TMainForm.IconFontsImageListChange(Sender: TObject);
-begin
-  ;
-end;
-
-procedure TMainForm.ReplaceBitBtnClick(Sender: TObject);
-begin
-  ;
 end;
 
 procedure TMainForm.SelectThemeRadioGroupClick(Sender: TObject);
