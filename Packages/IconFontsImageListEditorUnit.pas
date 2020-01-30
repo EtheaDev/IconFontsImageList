@@ -66,6 +66,9 @@ type
     HelpButton: TButton;
     IconNameLabel: TLabel;
     IconName: TEdit;
+    paTop: TPanel;
+    paButtons: TPanel;
+    paClient: TPanel;
     BuilderGroupBox: TGroupBox;
     FontNameLabel: TLabel;
     FontName: TComboBox;
@@ -175,7 +178,7 @@ begin
   if (AImageList.Width > 256) or (AImageList.Height > 256) then
     raise Exception.Create('ImageList Too Big');
 
-  ListItems := TIconFontsImageListEditor.Create(Application);
+  ListItems := TIconFontsImageListEditor.Create(nil);
   with ListItems do
   begin
     try
@@ -536,8 +539,8 @@ end;
 
 procedure TIconFontsImageListEditor.FormDestroy(Sender: TObject);
 begin
+  FreeAndNil(FOldIconFontItems);
   FreeAndNil(FOldImageList);
-  FreeAndNil( FOldIconFontItems);
   Screen.Cursors[crColorPick] := 0;
 end;
 
@@ -609,10 +612,14 @@ end;
 
 procedure TIconFontsImageListEditor.BuildButtonClick(Sender: TObject);
 var
-  C: Char;
+  I: Integer;
+  C: WideChar;
 begin
-  for C in CharsEdit.Text do
+  for I := 0 to Length(CharsEdit.Text) do
+  begin
+    C := WideChar(CharsEdit.Text[I]);
     FEditingList.AddIcon(C);
+  end;    
   FEditingList.RedrawImages;
   UpdateIconFontListView(ImageView);
 end;
@@ -622,8 +629,8 @@ begin
   Screen.Cursor := crHourGlass;
   try
     FEditingList.AddIcons(
-      Chr(StrToInt('$' + FromHexNum.Text)), //From Chr
-      Chr(StrToInt('$' + ToHexNum.Text)), //To Chr
+      WideChar(StrToInt('$' + FromHexNum.Text)), //From Chr
+      WideChar(StrToInt('$' + ToHexNum.Text)), //To Chr
       'Material Design Icons'
       );
     UpdateIconFontListView(ImageView);

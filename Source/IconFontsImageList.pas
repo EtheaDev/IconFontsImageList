@@ -43,7 +43,7 @@ uses
   , Forms;
 
 const
-  IconFontsImageListVersion = '1.3';
+  IconFontsImageListVersion = '1.3.0';
 
 type
   TIconFontsImageList = class;
@@ -52,7 +52,7 @@ type
   TIconFontItem = class(TCollectionItem)
   private
     FFontName: TFontName;
-    FCharacter: Char;
+    FCharacter: WideChar;
     FFontColor: TColor;
     FMaskColor: TColor;
     FIconName: string;
@@ -60,13 +60,13 @@ type
     procedure SetFontName(const AValue: TFontName);
     procedure SetMaskColor(const AValue: TColor);
     procedure SetIconName(const AValue: string);
-    procedure SetCharacter(const AValue: char);
+    procedure SetCharacter(const AValue: WideChar);
     procedure SetFontIconHex(const AValue: string);
     procedure SetFontIconDec(const AValue: Integer);
     function GetFontIconDec: Integer;
     function GetFontIconHex: string;
     procedure Changed;
-    function GetCharacter: char;
+    function GetCharacter: WideChar;
     procedure UpdateIconAttributes(const AFontColor, AMaskColor: TColor;
       const AReplaceFontColor: Boolean = True; const AFontName: string = '');
     function GetIconFontsImageList: TIconFontsImageList;
@@ -82,13 +82,13 @@ type
     procedure Assign(Source: TPersistent); override;
   published
     property IconFontsImageList: TIconFontsImageList read GetIconFontsImageList;
-    property FontIconDec: Integer read GetFontIconDec write SetFontIconDec stored false;
+    property FontIconDec: Integer read GetFontIconDec write SetFontIconDec stored true default 0;
     property FontIconHex: string read GetFontIconHex write SetFontIconHex stored false;
     property FontName: TFontName read FFontName write SetFontName stored StoreFontName;
     property FontColor: TColor read FFontColor write SetFontColor stored StoreFontColor;
     property MaskColor: TColor read FMaskColor write SetMaskColor stored StoreMaskColor;
     property IconName: string read FIconName write SetIconName;
-    property Character: char read GetCharacter write SetCharacter default #0;
+    property Character: WideChar read GetCharacter write SetCharacter stored false default #0;
   end;
 
   {TIconFontItems}
@@ -158,13 +158,13 @@ type
     destructor Destroy; override;
     procedure Assign(Source: TPersistent); override;
     procedure Delete(const AIndex: Integer);
-    procedure Replace(const AIndex: Integer; const AChar: Char;
+    procedure Replace(const AIndex: Integer; const AChar: WideChar;
       const AFontName: TFontName = ''; const AFontColor: TColor = clNone;
       AMaskColor: TColor = clNone);
-    procedure AddIcon(const AChar: Char; const AFontName: TFontName = '';
+    procedure AddIcon(const AChar: WideChar; const AFontName: TFontName = '';
       const AFontColor: TColor = clNone; const AMaskColor: TColor = clNone);  virtual;
     //Multiple icons methods
-    function AddIcons(const AFrom, ATo: Char; const AFontName: TFontName = '';
+    function AddIcons(const AFrom, ATo: WideChar; const AFontName: TFontName = '';
       const AFontColor: TColor = clNone; AMaskColor: TColor = clNone): Integer;  virtual;
     procedure UpdateIconsAttributes(const AFontColor, AMaskColor: TColor;
       const AReplaceFontColor: Boolean = True; const AFontName: string = ''); virtual;
@@ -219,7 +219,7 @@ end;
 constructor TIconFontItem.Create(Collection: TCollection);
 begin
   inherited Create(Collection);
-  FCharacter := Chr(0);
+  FCharacter := WideChar(0);
   FFontColor := clNone;
   FMaskColor := clNone;
 end;
@@ -255,7 +255,7 @@ begin
     (FMaskColor <> clNone);
 end;
 
-function TIconFontItem.GetCharacter: char;
+function TIconFontItem.GetCharacter: WideChar;
 begin
   Result := FCharacter;
 end;
@@ -287,7 +287,7 @@ begin
     Result := nil;  
 end;
 
-procedure TIconFontItem.SetCharacter(const AValue: char);
+procedure TIconFontItem.SetCharacter(const AValue: WideChar);
 begin
   if AValue <> FCharacter then
   begin
@@ -307,13 +307,13 @@ end;
 
 procedure TIconFontItem.SetFontIconDec(const AValue: Integer);
 begin
-  Character := Chr(AValue);
+  Character := WideChar(AValue);
 end;
 
 procedure TIconFontItem.SetFontIconHex(const AValue: string);
 begin
   if (Length(AValue) = 4) then
-    Character := Chr(StrToInt('$' + AValue))
+    Character := WideChar(StrToInt('$' + AValue))
   else if (Length(AValue) = 0) then
     Character := #0
   else
@@ -533,7 +533,7 @@ begin
     Dec(FStopDrawing);
 end;
 
-procedure TIconFontsImageList.AddIcon(const AChar: Char;
+procedure TIconFontsImageList.AddIcon(const AChar: WideChar;
   const AFontName: TFontName = ''; const AFontColor: TColor = clNone;
   const AMaskColor: TColor = clNone);
 var
@@ -549,11 +549,11 @@ begin
     LIconFontItem.FMaskColor := AMaskColor;
 end;
 
-function TIconFontsImageList.AddIcons(const AFrom, ATo: Char;
+function TIconFontsImageList.AddIcons(const AFrom, ATo: WideChar;
   const AFontName: TFontName = '';
   const AFontColor: TColor = clNone; AMaskColor: TColor = clNone): Integer;
 var
-  LChar: Char;
+  LChar: WideChar;
 begin
   StopDrawing(True);
   try
@@ -594,9 +594,13 @@ procedure TIconFontsImageList.DrawFontIcon(const AIndex: Integer;
   const ABitmap: TBitmap; const AAdd: Boolean);
 var
   LIconFontItem: TIconFontItem;
+  {$IFDEF UNICODE}
   LCharWidth: Integer;
   LCharHeight: Integer;
-  LCharacter: Char;
+  {$ELSE}
+  S: WideString;
+  {$ENDIF}
+  LCharacter: WideChar;
   LFontName: string;
   LMaskColor, LFontColor: TColor;
   LRect: TRect;
@@ -629,12 +633,17 @@ begin
       Brush.Color := LMaskColor;
       LRect.Left := 0;
       LRect.Top := 0;
-      LRect.Width := Width;
-      LRect.Height := Height;
+      LRect.Right := Width;
+      LRect.Bottom := Height;
       FillRect(LRect);
+      {$IFDEF UNICODE}
       LCharWidth := TextWidth(LCharacter);
       LCharHeight := TextHeight(LCharacter);
       TextOut((Width - LCharWidth) div 2, (Height - LCharHeight) div 2, LCharacter);
+      {$ELSE}
+      S := LCharacter;
+      TextOutW(ABitmap.Canvas.Handle, 0, 0, PWideChar(S), 1);
+      {$ENDIF}
     end;
     if AAdd then
       AddMasked(ABitmap, LMaskColor)
@@ -795,7 +804,7 @@ begin
   end;
 end;
 
-procedure TIconFontsImageList.Replace(const AIndex: Integer; const AChar: Char;
+procedure TIconFontsImageList.Replace(const AIndex: Integer; const AChar: WideChar;
   const AFontName: TFontName; const AFontColor: TColor; AMaskColor: TColor);
 var
   LIconFontItem: TIconFontItem;

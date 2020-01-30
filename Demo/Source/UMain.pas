@@ -130,8 +130,8 @@ begin
     LStart := GetTickCount;
     //Generate Icons
     IconFontsImageList.AddIcons(
-      Chr(LRand1), //From Chr
-      Chr(LRand2), //To Chr
+      WideChar(LRand1), //From Chr
+      WideChar(LRand2), //To Chr
       'Material Design Icons'
       );
     LStop := GetTickCount;
@@ -229,20 +229,20 @@ begin
     TStyleManager.TrySetStyle(LStyleName);
     UpdateIconFontsColorByStyle(IconFontsImageList);
     {$ELSE}
-    if LStyleName = 'Windows' then
-      IconFontsImageList.UpdateIconsAttributes(clBlack, clBtnFace, False)
-    else if LStyleName = 'Windows10' then
-      IconFontsImageList.UpdateIconsAttributes(clBlack, clWhite)
-    else if LStyleName = 'Windows10 SlateGray' then
-      IconFontsImageList.UpdateIconsAttributes(clWhite, clBlack)
-    else if LStyleName = 'Windows10 Blue' then
-      IconFontsImageList.UpdateIconsAttributes(clBlue, clGray)
-    else if LStyleName = 'Windows10 Dark' then
-      IconFontsImageList.UpdateIconsAttributes(clSilver, clBlack)
-    else if LStyleName = 'Windows10 Green' then
-      IconFontsImageList.UpdateIconsAttributes(clOlive, clGreen)
-    else if LStyleName = 'Windows10 Purple' then
-      IconFontsImageList.UpdateIconsAttributes(clRed, clPurple);
+    if LStyleName = 'Black' then
+      IconFontsImageList.UpdateIconsAttributes(clBlack, clBtnFace)
+    else if LStyleName = 'White' then
+      IconFontsImageList.UpdateIconsAttributes(clWhite, clBtnFace)
+    else if LStyleName = 'Blue' then
+      IconFontsImageList.UpdateIconsAttributes(clBlue, clBtnFace)
+    else if LStyleName = 'Silver' then
+      IconFontsImageList.UpdateIconsAttributes(clSilver, clBtnFace)
+    else if LStyleName = 'Olive' then
+      IconFontsImageList.UpdateIconsAttributes(clOlive, clBtnFace)
+    else if LStyleName = 'Red' then
+      IconFontsImageList.UpdateIconsAttributes(clRed, clBtnFace);
+    ImageView.Invalidate;
+    TopToolBar.Invalidate;
     {$ENDIF}
 
     UpdateButtons;

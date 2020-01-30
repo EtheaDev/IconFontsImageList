@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 0
-  Top = 0
+  Left = 916
+  Top = 169
   Caption = 
     'Icon Fonts ImageList Demo - Copyright (c) Ethea S.r.l. - Apache ' +
     '2.0 Open Source License'
@@ -34,13 +34,12 @@ object MainForm: TMainForm
       Caption = 'Select Theme/Color'
       ItemIndex = 0
       Items.Strings = (
-        'Windows'
-        'Windows10'
-        'Windows10 SlateGray'
-        'Windows10 Blue'
-        'Windows10 Dark'
-        'Windows10 Green'
-        'Windows10 Purple')
+        'Black'
+        'White'
+        'Blue'
+        'Silver'
+        'Olive'
+        'Red')
       TabOrder = 0
       OnClick = SelectThemeRadioGroupClick
     end
@@ -234,7 +233,7 @@ object MainForm: TMainForm
       Height = 222
       Align = alTop
       Images = IconFontsImageList
-      Indent = 30
+      Indent = 35
       TabOrder = 0
       Items.NodeData = {
         0303000000240000000100000001000000FFFFFFFFFFFFFFFF00000000000000
@@ -263,34 +262,34 @@ object MainForm: TMainForm
   object IconFontsImageList: TIconFontsImageList
     IconFontItems = <
       item
+        FontIconDec = 61445
         IconName = 'Account'
-        Character = #61445
       end
       item
+        FontIconDec = 61888
         FontColor = clMaroon
         IconName = 'Delete'
-        Character = #61888
       end
       item
+        FontIconDec = 61485
         IconName = 'Amazon'
-        Character = #61485
       end
       item
+        FontIconDec = 62127
         IconName = 'Google chrome'
-        Character = #62127
       end
       item
+        FontIconDec = 63375
         FontColor = clTeal
         IconName = 'Android head'
-        Character = #63375
       end
       item
+        FontIconDec = 64279
         IconName = 'File-replace'
-        Character = #64279
       end
       item
+        FontIconDec = 61462
         IconName = 'Account-search'
-        Character = #61462
       end>
     FontName = 'Material Design Icons'
     FontColor = clBlack
