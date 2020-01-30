@@ -365,8 +365,14 @@ begin
     if LIsItemSelected then
     begin
       ImageGroup.Caption := Format(FIconIndexLabel,[LIconFontItem.Index]);
-      MaskColor.Selected := LIconFontItem.MaskColor;
-      FontColor.Selected := LIconFontItem.FontColor;
+      if LIconFontItem.MaskColor <> FEditingList.MaskColor then
+        MaskColor.Selected := LIconFontItem.MaskColor
+      else
+        MaskColor.Selected := clNone;
+      if LIconFontItem.FontColor <> FEditingList.FontColor then
+        FontColor.Selected := LIconFontItem.FontColor
+      else
+        FontColor.Selected := clNone;
       LItemFontName := LIconFontItem.FontName;
       FontName.ItemIndex := FontName.Items.IndexOf(LItemFontName);
       IconName.Text := LIconFontItem.IconName;
@@ -529,6 +535,16 @@ begin
 end;
 
 procedure TIconFontsImageListEditor.FormCreate(Sender: TObject);
+
+  procedure InitColorBox(AColorBox: TColorBox);
+  begin
+    {$IFDEF UNICODE}
+    AColorBox.Style := [cbStandardColors, cbExtendedColors, cbSystemColors,
+      cbIncludeNone, cbIncludeDefault, cbCustomColor, cbCustomColors, cbPrettyNames];
+    {$ENDIF}
+    AColorBox.Selected := clNone;
+  end;
+
 begin
   {$IFNDEF UNICODE}
   CharsEditLabel.Visible := False;
@@ -536,6 +552,10 @@ begin
   BuildButton.Visible := False;
   IconBuilderGroupBox.Height := IconBuilderGroupBox.Height - BuildButton.Height -4;
   {$ENDIF}
+  InitColorBox(DefaultFontColorColorBox);
+  InitColorBox(DefaultMaskColorColorBox);
+  InitColorBox(FontColor);
+  InitColorBox(MaskColor);
   Caption := Format(Caption, [IconFontsImageListVersion]);
   FUpdating := True;
   FOldImageList := TIconFontsImageList.Create(nil);

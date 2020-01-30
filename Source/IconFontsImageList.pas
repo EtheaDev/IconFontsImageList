@@ -541,7 +541,7 @@ var
 begin
   LIconFontItem := FIconFontItems.Add;
   LIconFontItem.FCharacter := AChar;
-  if AFontName <> '' then
+  if (AFontName <> '') and (AFontName <> FontName) then
     LIconFontItem.FFontName := AFontName;
   if AFontColor <> clNone then
     LIconFontItem.FFontColor := AFontColor;
