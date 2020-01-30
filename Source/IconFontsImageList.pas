@@ -42,8 +42,12 @@ uses
 {$ENDIF}
   , Forms;
 
+const
+  IconFontsImageListVersion = '1.3';
+
 type
   TIconFontsImageList = class;
+  TIconFontMissing = procedure (const AFontName: string) of object;
 
   TIconFontItem = class(TCollectionItem)
   private
@@ -113,6 +117,7 @@ type
     FFontName: TFontName;
     FMaskColor: TColor;
     FFontColor: TColor;
+    FOnFontMissing: TIconFontMissing;
     {$IFDEF HiDPISupport}
     FScaled: Boolean;
     FDPIChangedMessageID: Integer;
@@ -120,6 +125,7 @@ type
     {$IFDEF NeedStoreBitmapProperty}
     FStoreBitmap: Boolean;
     {$ENDIF}
+    procedure CheckFontName(const AFontName: string);
     procedure SetIconSize(const ASize: Integer);
     procedure SetIconFontItems(const AValue: TIconFontItems);
     procedure UpdateImage(const AIndex: Integer);
@@ -164,6 +170,7 @@ type
       const AReplaceFontColor: Boolean = True; const AFontName: string = ''); virtual;
     procedure ClearIcons; virtual;
     procedure RedrawImages; virtual;
+    procedure SaveToFile(const AFileName: string);
     property Width: Integer read GetWidth write SetWidth;
     property Height: Integer read GetHeight write SetHeight;
   published
@@ -175,6 +182,7 @@ type
     property FontColor: TColor read FFontColor write SetFontColor default clNone;
     property MaskColor: TColor read FMaskColor write SetMaskColor default clNone;
     property Size: Integer read GetSize write SetSize default 16;
+    property OnFontMissing: TIconFontMissing read FOnFontMissing write FOnFontMissing;
     {$IFDEF HasStoreBitmapProperty}
     property StoreBitmap default False;
     {$ENDIF}
@@ -366,7 +374,7 @@ end;
 
 procedure TIconFontItem.Changed;
 begin
-  if Assigned(Collection) then
+  if Assigned(Collection) and not (csLoading in IconFontsImageList.ComponentState) then
     TIconFontItems(Collection).UpdateImage(Index);
 end;
 
@@ -420,6 +428,16 @@ begin
   //Optimization: Do not notify to components during redrawing of icons
   if FStopDrawing = 0 then
     inherited;
+end;
+
+procedure TIconFontsImageList.CheckFontName(const AFontName: string);
+begin
+  if Screen.Fonts.IndexOf(AFontName) = -1 then
+  begin
+    if Assigned(OnFontMissing) then
+      OnFontMissing(AFontName) else
+      raise Exception.CreateFmt('Font "%s" is not installed!',[AFontName]);
+  end;
 end;
 
 {$IFDEF HiDPISupport}
@@ -581,6 +599,7 @@ var
   LCharacter: Char;
   LFontName: string;
   LMaskColor, LFontColor: TColor;
+  LRect: TRect;
 begin
   if Assigned(ABitmap) then
   begin
@@ -598,6 +617,7 @@ begin
       LFontName := LIconFontItem.FFontName
     else
       LFontName := FFontName;
+    CheckFontName(LFontName);
     LCharacter := LIconFontItem.Character;
     ABitmap.Width := Width;
     ABitmap.Height := Height;
@@ -607,7 +627,11 @@ begin
       Font.Height := Height;
       Font.Color := LFontColor;
       Brush.Color := LMaskColor;
-      FillRect(Rect(0, 0, Width, Height));
+      LRect.Left := 0;
+      LRect.Top := 0;
+      LRect.Width := Width;
+      LRect.Height := Height;
+      FillRect(LRect);
       LCharWidth := TextWidth(LCharacter);
       LCharHeight := TextHeight(LCharacter);
       TextOut((Width - LCharWidth) div 2, (Height - LCharHeight) div 2, LCharacter);
@@ -616,6 +640,63 @@ begin
       AddMasked(ABitmap, LMaskColor)
     else
       ReplaceMasked(AIndex, ABitmap, LMaskColor);
+  end;
+end;
+
+procedure TIconFontsImageList.SaveToFile(const AFileName: string);
+var
+  LImageStrip: TBitmap;
+  LImageCount: Integer;
+  LStripWidth, LStripHeight: Integer;
+
+  procedure CreateLImageStrip(var AStrip: TBitmap);
+  var
+    I, J, K: Integer;
+  begin
+    with AStrip do
+    begin
+      Canvas.Brush.Color := MaskColor;
+      Canvas.FillRect(Rect(0, 0, AStrip.Width, AStrip.Height));
+      J := 0;
+      K := 0;
+      for I := 0 to Self.Count - 1 do
+      begin
+        Draw(Canvas, J * Width, K * Height, I, dsTransparent, itImage);
+        Inc(J);
+        if J >= LStripWidth then
+        begin
+          J := 0;
+          Inc(K);
+        end;
+      end;
+    end;
+  end;
+
+  procedure CalcDimensions(ACount: Integer; var AWidth, AHeight: Integer);
+  var
+    X: Double;
+  begin
+    X := Sqrt(ACount);
+    AWidth := Trunc(X);
+    if Frac(X) > 0 then
+      Inc(AWidth);
+    X := ACount / AWidth;
+    AHeight := Trunc(X);
+    if Frac(X) > 0 then
+      Inc(AHeight);
+  end;
+
+begin
+  LImageStrip := TBitmap.Create;
+  try
+    LImageCount := Count;
+    CalcDimensions(LImageCount, LStripWidth, LStripHeight);
+    LImageStrip.Width := LStripWidth * Size;
+    LImageStrip.Height := LStripHeight * Size;
+    CreateLImageStrip(LImageStrip);
+    LImageStrip.SaveToFile(AFileName);
+  finally
+    LImageStrip.Free;
   end;
 end;
 
@@ -640,9 +721,9 @@ begin
   {$IFDEF HasStoreBitmapProperty}
   if (not StoreBitmap) then
     InternalRedrawImages;
-  {$ELSE}
-  InternalRedrawImages;
   {$ENDIF}
+  if (inherited Count = 0) or (csDesigning in ComponentState) then
+    InternalRedrawImages;
 end;
 
 procedure TIconFontsImageList.UpdateIconsAttributes(const AFontColor,
@@ -789,6 +870,7 @@ end;
 function TIconFontItems.Insert(AIndex: Integer): TIconFontItem;
 begin
   Result := TIconFontItem(inherited Insert(AIndex));
+  UpdateImage(AIndex);
 end;
 
 procedure TIconFontItems.SetItem(AIndex: Integer;

@@ -296,6 +296,7 @@ object MainForm: TMainForm
     FontColor = clBlack
     MaskColor = clBtnFace
     Size = 32
+    OnFontMissing = IconFontsImageListFontMissing
     Left = 368
     Top = 304
   end

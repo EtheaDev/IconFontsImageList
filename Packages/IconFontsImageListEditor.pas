@@ -48,7 +48,9 @@ type
 implementation
 
 uses
-  IconFontsImageList
+  ShellApi
+  , Windows
+  , IconFontsImageList
   , IconFontsImageListEditorUnit;
 
 { TIconFontsImageListCompEditor }
@@ -65,7 +67,11 @@ begin
   begin
     if EditIconFontsImageList(Component as TIconFontsImageList) then
       Designer.Modified;
-  end;
+  end
+  else
+    ShellExecute(0, 'open',
+      PChar('https://github.com/EtheaDev/IconFontsImageList/wiki/Home'), nil, nil,
+      SW_SHOWNORMAL)
 end;
 
 function TIconFontsImageListCompEditor.GetVerb(Index: Integer): string;
@@ -73,12 +79,13 @@ begin
   Result := '';
   case Index of
     0: Result := 'I&conFonts ImageList Editor...';
+    1: Result := Format('Version %s - Copyright (c) Ethea S.r.l.',[IconFontsImageListVersion]);
   end;
 end;
 
 function TIconFontsImageListCompEditor.GetVerbCount: Integer;
 begin
-  Result := 1;
+  Result := 2;
 end;
 
 end.

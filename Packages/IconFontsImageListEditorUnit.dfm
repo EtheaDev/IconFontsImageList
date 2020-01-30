@@ -2,7 +2,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
   Left = 0
   Top = 0
   HelpContext = 26140
-  Caption = 'Icon Fonts ImageList Editor 1.2 - Copyright Ethea S.r.l.'
+  Caption = 'Icon Fonts ImageList Editor %s - Copyright Ethea S.r.l.'
   ClientHeight = 580
   ClientWidth = 687
   Color = clBtnFace
@@ -36,7 +36,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
   end
   object CancelButton: TButton
     Left = 604
-    Top = 37
+    Top = 34
     Width = 75
     Height = 25
     Anchors = [akTop, akRight]
@@ -65,6 +65,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       IconOptions.AutoArrange = True
       ReadOnly = True
       TabOrder = 0
+      OnKeyDown = ImageViewKeyDown
       OnSelectItem = ImageViewSelectItem
     end
   end
@@ -217,7 +218,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       DefaultColorColor = clNone
       NoneColorColor = clNone
       Selected = clNone
-      Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbIncludeNone, cbCustomColor, cbPrettyNames, cbCustomColors]
+      Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbIncludeNone, cbIncludeDefault, cbCustomColor, cbCustomColors]
       TabOrder = 4
       OnChange = FontColorChange
     end
@@ -229,14 +230,14 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       DefaultColorColor = clNone
       NoneColorColor = clNone
       Selected = clNone
-      Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbIncludeNone, cbCustomColor, cbPrettyNames, cbCustomColors]
+      Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbIncludeNone, cbIncludeDefault, cbCustomColor, cbCustomColors]
       TabOrder = 5
       OnChange = MaskColorChange
     end
   end
   object AddButton: TButton
     Left = 604
-    Top = 106
+    Top = 90
     Width = 75
     Height = 25
     Anchors = [akTop, akRight]
@@ -246,7 +247,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
   end
   object DeleteButton: TButton
     Left = 604
-    Top = 134
+    Top = 116
     Width = 75
     Height = 25
     Anchors = [akTop, akRight]
@@ -257,7 +258,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
   end
   object HelpButton: TButton
     Left = 604
-    Top = 67
+    Top = 60
     Width = 75
     Height = 25
     Anchors = [akTop, akRight]
@@ -334,7 +335,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       DefaultColorColor = clNone
       NoneColorColor = clNone
       Selected = clNone
-      Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbIncludeNone, cbCustomColor, cbPrettyNames, cbCustomColors]
+      Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbIncludeNone, cbIncludeDefault, cbCustomColor, cbCustomColors]
       TabOrder = 3
       OnChange = DefaultFontColorColorBoxChange
     end
@@ -346,7 +347,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       DefaultColorColor = clNone
       NoneColorColor = clNone
       Selected = clNone
-      Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbIncludeNone, cbCustomColor, cbPrettyNames, cbCustomColors]
+      Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbIncludeNone, cbIncludeDefault, cbCustomColor, cbCustomColors]
       TabOrder = 4
       OnChange = DefaultMaskColorColorBoxChange
     end
@@ -384,7 +385,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
   end
   object ClearAllButton: TButton
     Left = 604
-    Top = 178
+    Top = 152
     Width = 75
     Height = 25
     Anchors = [akTop, akRight]
@@ -410,6 +411,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Width = 68
       Height = 13
       Alignment = taRightJustify
+      Anchors = [akTop, akRight]
       AutoSize = False
       Caption = 'From Hex N.'
       Transparent = True
@@ -420,6 +422,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Width = 68
       Height = 13
       Alignment = taRightJustify
+      Anchors = [akTop, akRight]
       AutoSize = False
       Caption = 'To Hex N.'
       Transparent = True
@@ -470,6 +473,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Top = 13
       Width = 74
       Height = 21
+      Anchors = [akTop, akRight]
       CharCase = ecUpperCase
       MaxLength = 4
       TabOrder = 0
@@ -480,11 +484,23 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Top = 13
       Width = 74
       Height = 21
+      Anchors = [akTop, akRight]
       CharCase = ecUpperCase
       MaxLength = 4
       TabOrder = 1
       OnChange = EditChangeUpdateGUI
     end
+  end
+  object ExportButton: TButton
+    Left = 604
+    Top = 178
+    Width = 75
+    Height = 25
+    Anchors = [akTop, akRight]
+    Caption = '&Export'
+    Enabled = False
+    TabOrder = 10
+    OnClick = ExportButtonClick
   end
   object SaveDialog: TSavePictureDialog
     HelpContext = 27010

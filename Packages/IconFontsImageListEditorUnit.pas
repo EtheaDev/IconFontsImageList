@@ -97,6 +97,7 @@ type
     ToHexNum: TEdit;
     CharsEditLabel: TLabel;
     ShowCharMapButton: TButton;
+    ExportButton: TButton;
     procedure FormCreate(Sender: TObject);
     procedure ClearAllButtonClick(Sender: TObject);
     procedure DeleteButtonClick(Sender: TObject);
@@ -124,6 +125,9 @@ type
     procedure BuildFromHexButtonClick(Sender: TObject);
     procedure FontIconHexChange(Sender: TObject);
     procedure EditChangeUpdateGUI(Sender: TObject);
+    procedure ImageViewKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure ExportButtonClick(Sender: TObject);
   private
     FIconIndexLabel: string;
     FUpdating: Boolean;
@@ -132,6 +136,7 @@ type
     FOldIconFontItems: TIconFontItems;
     procedure UndoEditing;
     procedure AddColor(const S: string);
+    procedure AddNewItem;
     procedure DeleteSelectedItem;
     procedure ClearAllImages;
     procedure UpdateGUI;
@@ -340,6 +345,7 @@ begin
     LIconFontItem := SelectedIconFont;
     LIsItemSelected := LIconFontItem <> nil;
     ClearAllButton.Enabled := FEditingList.Count > 0;
+    ExportButton.Enabled := FEditingList.Count > 0;
     BuildButton.Enabled := CharsEdit.Text <> '';
     BuildFromHexButton.Enabled := (Length(FromHexNum.Text) = 4) and (Length(ToHexNum.Text) = 4);
     DeleteButton.Enabled := LIsItemSelected;
@@ -444,6 +450,15 @@ begin
   UpdateGUI;
 end;
 
+procedure TIconFontsImageListEditor.ImageViewKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  if (Key = VK_INSERT) and (Shift = []) then
+    AddNewItem
+  else if (Key = VK_DELETE) and (Shift = []) then
+    DeleteSelectedItem;
+end;
+
 procedure TIconFontsImageListEditor.ImageViewSelectItem(Sender: TObject;
   Item: TListItem; Selected: Boolean);
 begin
@@ -504,6 +519,7 @@ end;
 
 procedure TIconFontsImageListEditor.FormCreate(Sender: TObject);
 begin
+  Caption := Format(Caption, [IconFontsImageListVersion]);
   FUpdating := True;
   FOldImageList := TIconFontsImageList.Create(nil);
   FOldIconFontItems := TIconFontItems.Create(FOldImageList, TIconFontItem);
@@ -552,6 +568,12 @@ begin
   UpdateGUI;
 end;
 
+procedure TIconFontsImageListEditor.ExportButtonClick(Sender: TObject);
+begin
+  if SaveDialog.Execute then
+    FEditingList.SaveToFile(SaveDialog.FileName);
+end;
+
 function TIconFontsImageListEditor.SelectedIconFont: TIconFontItem;
 begin
   if (ImageView.Selected <> nil) and (ImageView.Selected.Index < FEditingList.IconFontItems.Count) then
@@ -561,6 +583,11 @@ begin
 end;
 
 procedure TIconFontsImageListEditor.AddButtonClick(Sender: TObject);
+begin
+  AddNewItem;
+end;
+
+procedure TIconFontsImageListEditor.AddNewItem;
 var
   LInsertIndex: Integer;
 begin

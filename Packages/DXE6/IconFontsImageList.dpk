@@ -28,7 +28,7 @@ package IconFontsImageList;
 {$DESCRIPTION 'Ethea IconFontsImageList component'}
 {$LIBSUFFIX '_DXE6'}
 {$RUNONLY}
-{$IMPLICITBUILD ON}
+{$IMPLICITBUILD OFF}
 
 requires
   rtl,

@@ -79,7 +79,9 @@ type
     procedure TrackBarChange(Sender: TObject);
     procedure ClearButtonClick(Sender: TObject);
     procedure DeleteIconActionExecute(Sender: TObject);
+    procedure IconFontsImageListFontMissing(const AFontName: string);
   private
+    FMissingFontAlert: Boolean;
     procedure FormAfterMonitorDpiChanged(Sender: TObject; OldDPI, NewDPI: Integer);
     procedure UpdateButtons;
     procedure UpdateGUI;
@@ -182,10 +184,6 @@ procedure TMainForm.FormCreate(Sender: TObject);
 var
   I, SelectedIndex: integer;
 begin
-  if Screen.Fonts.IndexOf('Material Design Icons') = -1 then
-    MessageDlg('Warning: "Material Design Icons" font is not present in your system!'+sLineBreak+
-      'Please download at https://materialdesignicons.com and install it, because this demo is based on this font.', mtError, [mbOK], 0);
-
   TrackBar.Position := IconFontsImageList.Height;
   TrackBarChange(TrackBar);
 
@@ -199,8 +197,24 @@ begin
   for I := 0 to High(TStyleManager.StyleNames) do
     SelectThemeRadioGroup.Items.Add(TStyleManager.StyleNames[I]);
   TStringList(SelectThemeRadioGroup.Items).Sort;
-  SelectThemeRadioGroup.ItemIndex := SelectThemeRadioGroup.Items.IndexOf('Windows');
+  SelectThemeRadioGroup.OnClick := nil;
+  try
+    SelectThemeRadioGroup.ItemIndex := SelectThemeRadioGroup.Items.IndexOf('Windows');
+  finally
+    SelectThemeRadioGroup.OnClick := SelectThemeRadioGroupClick;
+  end;
   {$ENDIF}
+end;
+
+procedure TMainForm.IconFontsImageListFontMissing(const AFontName: string);
+begin
+  if not FMissingFontAlert then
+  begin
+    MessageDlg(Format('Warning: "%s" font is not present in your system!'+sLineBreak+
+      'Please download at https://materialdesignicons.com and install it, because this demo is based on this font.',
+        [AFontName]), mtError, [mbOK], 0);
+    FMissingFontAlert := True;
+  end;
 end;
 
 procedure TMainForm.SelectThemeRadioGroupClick(Sender: TObject);
