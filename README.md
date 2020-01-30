@@ -4,6 +4,12 @@
 
 ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png](https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png)
 
+30 January 2020: official 1.3 version
+- Fixed when adding an icon without specify a Character
+- Added SaveToFile method to save the icons into a single Bitmap
+- Added Export button To ImageList Editor
+- Added OnMissingFont event
+
 21 January 2020: official 1.2 version
 - Added support for DXE8
 - Demos with various VCL Styles
