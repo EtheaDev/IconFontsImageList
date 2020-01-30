@@ -342,6 +342,9 @@ var
   LIsItemSelected: Boolean;
   LItemFontName: string;
   LIconFontItem: TIconFontItem;
+  {$IFNDEF UNICODE}
+  S: WideString;
+  {$ENDIF}
 begin
   FUpdating := True;
   try
@@ -398,7 +401,12 @@ begin
       else
         MainImage.Canvas.Brush.Color := FEditingList.MaskColor;
       MainImage.Canvas.FillRect(Rect(0, 0, MainImage.Height, MainImage.Height));
+      {$IFNDEF UNICODE}
+      S := LIconFontItem.Character;
+      TextOutW(MainImage.Canvas.Handle, 0, 0, PWideChar(S), 1);
+      {$ELSE}
       MainImage.Canvas.TextOut(0, 0, LIconFontItem.Character);
+      {$ENDIF}
     end;
 
     UpdateIconFontListViewCaptions(ImageView);
@@ -522,6 +530,12 @@ end;
 
 procedure TIconFontsImageListEditor.FormCreate(Sender: TObject);
 begin
+  {$IFNDEF UNICODE}
+  CharsEditLabel.Visible := False;
+  CharsEdit.Visible := False;
+  BuildButton.Visible := False;
+  IconBuilderGroupBox.Height := IconBuilderGroupBox.Height - BuildButton.Height -4;
+  {$ENDIF}
   Caption := Format(Caption, [IconFontsImageListVersion]);
   FUpdating := True;
   FOldImageList := TIconFontsImageList.Create(nil);
@@ -611,17 +625,17 @@ begin
 end;
 
 procedure TIconFontsImageListEditor.BuildButtonClick(Sender: TObject);
+{$IFDEF UNICODE}
 var
-  I: Integer;
-  C: WideChar;
+  C: Char;
+{$ENDIF}
 begin
-  for I := 0 to Length(CharsEdit.Text) do
-  begin
-    C := WideChar(CharsEdit.Text[I]);
+  {$IFDEF UNICODE}
+  for C in CharsEdit.Text do
     FEditingList.AddIcon(C);
-  end;    
   FEditingList.RedrawImages;
   UpdateIconFontListView(ImageView);
+  {$ENDIF}
 end;
 
 procedure TIconFontsImageListEditor.BuildFromHexButtonClick(Sender: TObject);

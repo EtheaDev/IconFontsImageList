@@ -499,7 +499,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
         Top = 178
         Width = 75
         Height = 25
-        Caption = '&Export'
+        Caption = '&Export...'
         Enabled = False
         TabOrder = 6
         OnClick = ExportButtonClick
