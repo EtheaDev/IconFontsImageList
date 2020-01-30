@@ -5,6 +5,7 @@
 ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png](https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png)
 
 30 January 2020: official 1.3 version
+- Added support for Delphi7 (generally for no Unicode version)
 - Fixed when adding an icon without specify a Character
 - Added SaveToFile method to save the icons into a single Bitmap
 - Added Export button To ImageList Editor
