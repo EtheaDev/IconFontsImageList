@@ -6,7 +6,7 @@
 
 30 January 2020: official 1.3 version
 - Added support for Delphi7 (generally for no Unicode version)
-- Fixed when adding an icon without specify a Character
+- Fixed when adding an icon without specifying a character
 - Added SaveToFile method to save the icons into a single Bitmap
 - Added Export button To ImageList Editor
 - Added OnMissingFont event
@@ -14,19 +14,19 @@
 21 January 2020: official 1.2 version
 - Added support for DXE8
 - Demos with various VCL Styles
-- Utility to Update automatically IconFonts color by active VCL Style
+- Utility to update automatically IconFonts color by active VCL Style
 - Increased performance when switching VCL Style at runtime
 - Minor fixes
 
 13 December 2019: official 1.1 version
-- Fixed some problems adding-deleting icons into Extended Editor and Collection Editor
+- Fixed some problems when adding or deleting icons into Extended Editor and Collection Editor
 - Added support for building icons from/to Chars (into Extended Editor)
 - Fixed some minor problems
 
 27 November 2019: first stable version 1.0:
 - The component TIconFontsImageList with advanced component editor.
-- A demo to show how to change the size, fonts and colors of the icons.
-- Performance of building hundreds of icons are very high.
+- Demo to show how to change the size, fonts and colors of the icons.
+- Very high performance for building hundreds of icons.
 - Support from Delphi 2010 to 10.3 Rio
 
 ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/Sample.jpg](https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/Sample.jpg)
