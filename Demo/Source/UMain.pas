@@ -81,7 +81,6 @@ type
     procedure DeleteIconActionExecute(Sender: TObject);
     procedure IconFontsImageListFontMissing(const AFontName: string);
   private
-    FMissingFontAlert: Boolean;
     procedure FormAfterMonitorDpiChanged(Sender: TObject; OldDPI, NewDPI: Integer);
     procedure UpdateButtons;
     procedure UpdateGUI;
@@ -208,13 +207,9 @@ end;
 
 procedure TMainForm.IconFontsImageListFontMissing(const AFontName: string);
 begin
-  if not FMissingFontAlert then
-  begin
-    MessageDlg(Format('Warning: "%s" font is not present in your system!'+sLineBreak+
-      'Please download at https://materialdesignicons.com and install it, because this demo is based on this font.',
-        [AFontName]), mtError, [mbOK], 0);
-    FMissingFontAlert := True;
-  end;
+  MessageDlg(Format('Warning: "%s" font is not present in your system!'+sLineBreak+
+    'Please download at https://materialdesignicons.com and install it, because this demo is based on this font.',
+      [AFontName]), mtError, [mbOK], 0);
 end;
 
 procedure TMainForm.SelectThemeRadioGroupClick(Sender: TObject);

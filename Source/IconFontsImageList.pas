@@ -118,6 +118,7 @@ type
     FMaskColor: TColor;
     FFontColor: TColor;
     FOnFontMissing: TIconFontMissing;
+    FFontNamesChecked: TStrings;
     {$IFDEF HiDPISupport}
     FScaled: Boolean;
     FDPIChangedMessageID: Integer;
@@ -397,6 +398,7 @@ begin
   FStopDrawing := 0;
   FFontColor := clNone;
   FMaskColor := clNone;
+  FFontNamesChecked := TStringList.Create;
   FIconFontItems := TIconFontItems.Create(Self, TIconFontItem);
   {$IFDEF HasStoreBitmapProperty}
   StoreBitmap := False;
@@ -419,6 +421,7 @@ begin
   {$IFDEF HiDPISupport}
   TMessageManager.DefaultManager.Unsubscribe(TChangeScaleMessage, FDPIChangedMessageID);
   {$ENDIF}
+  FreeAndNil(FFontNamesChecked);
   FreeAndNil(FIconFontItems);
   inherited;
 end;
@@ -432,11 +435,17 @@ end;
 
 procedure TIconFontsImageList.CheckFontName(const AFontName: string);
 begin
-  if Screen.Fonts.IndexOf(AFontName) = -1 then
+  if FFontNamesChecked.IndexOf(AFontName) = -1 then //Speed-up check of a Font already checked
   begin
-    if Assigned(OnFontMissing) then
-      OnFontMissing(AFontName) else
-      raise Exception.CreateFmt('Font "%s" is not installed!',[AFontName]);
+    FFontNamesChecked.Add(AFontName);
+    if Screen.Fonts.IndexOf(AFontName) = -1 then
+    begin
+      if Assigned(OnFontMissing) then
+        OnFontMissing(AFontName) else
+        raise Exception.CreateFmt('Font "%s" is not installed!',[AFontName]);
+    end
+    else
+      FFontNamesChecked.Add(AFontName);
   end;
 end;
 

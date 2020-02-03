@@ -449,7 +449,6 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
         Caption = 'Cancel'
         ModalResult = 2
         TabOrder = 1
-        OnClick = CancelButtonClick
       end
       object AddButton: TButton
         Left = 2

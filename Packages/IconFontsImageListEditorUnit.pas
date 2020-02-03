@@ -112,7 +112,6 @@ type
     procedure HelpButtonClick(Sender: TObject);
     procedure FontNameChange(Sender: TObject);
     procedure IconNameExit(Sender: TObject);
-    procedure CancelButtonClick(Sender: TObject);
     procedure FontIconDecChange(Sender: TObject);
     procedure ShowCharMapButtonClick(Sender: TObject);
     procedure ImageViewSelectItem(Sender: TObject; Item: TListItem;
@@ -135,9 +134,7 @@ type
     FIconIndexLabel: string;
     FUpdating: Boolean;
     FEditingList: TIconFontsImageList;
-    FOldImageList: TIconFontsImageList;
-    FOldIconFontItems: TIconFontItems;
-    procedure UndoEditing;
+    FIconFontItems: TIconFontItems;
     procedure AddColor(const S: string);
     procedure AddNewItem;
     procedure DeleteSelectedItem;
@@ -184,7 +181,7 @@ begin
     try
       Screen.Cursor := crHourglass;
       try
-        FEditinglist := AImageList;
+        FEditinglist.Assign(AImageList);
         SizeSpinEdit.Value := FEditinglist.Size;
         DefaultFontName.ItemIndex := DefaultFontName.Items.IndexOf(FEditingList.FontName);
         DefaultFontColorColorBox.Selected := FEditingList.FontColor;
@@ -192,9 +189,7 @@ begin
         {$IFDEF HasStoreBitmapProperty}
         StoreBitmapCheckBox.Checked := FEditingList.StoreBitmap;
         {$endif}
-        FEditinglist.IconFontItems := AImageList.IconFontItems;
-        FOldImageList.Assign(FEditingList);
-
+        FEditinglist.IconFontItems.Assign(AImageList.IconFontItems);
         ImageView.LargeImages := FEditingList;
         ImageView.SmallImages := FEditingList;
         UpdateIconFontListView(ImageView);
@@ -209,6 +204,8 @@ begin
         Screen.Cursor := crDefault;
       end;
       Result := ShowModal = mrOk;
+      if Result then
+        AImageList.Assign(FEditingList);
       SavedBounds := BoundsRect;
     finally
       Free;
@@ -309,12 +306,6 @@ begin
   if FUpdating then Exit;
   SetImageFontName(FontName.Text);
   UpdateCharsToBuild;
-end;
-
-procedure TIconFontsImageListEditor.UndoEditing;
-begin
-  FEditingList.ClearIcons;
-  FEditingList.Assign(FOldImageList);
 end;
 
 procedure TIconFontsImageListEditor.UpdateCharsToBuild;
@@ -435,11 +426,6 @@ begin
   UpdateGUI;
 end;
 
-procedure TIconFontsImageListEditor.CancelButtonClick(Sender: TObject);
-begin
-  UndoEditing;
-end;
-
 procedure TIconFontsImageListEditor.ClearAllImages;
 begin
   Screen.Cursor := crHourglass;
@@ -524,14 +510,9 @@ procedure TIconFontsImageListEditor.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
   if ModalResult = mrOK then
-  begin
-    OKButton.SetFocus;
-  end
+    OKButton.SetFocus
   else
-  begin
     CancelButton.SetFocus;
-    UndoEditing;
-  end;
 end;
 
 procedure TIconFontsImageListEditor.FormCreate(Sender: TObject);
@@ -558,8 +539,8 @@ begin
   InitColorBox(MaskColor);
   Caption := Format(Caption, [IconFontsImageListVersion]);
   FUpdating := True;
-  FOldImageList := TIconFontsImageList.Create(nil);
-  FOldIconFontItems := TIconFontItems.Create(FOldImageList, TIconFontItem);
+  FEditingList := TIconFontsImageList.Create(nil);
+  FIconFontItems := TIconFontItems.Create(FEditingList, TIconFontItem);
   GetColorValues(AddColor);
   FontColor.ItemIndex := -1;
   MaskColor.ItemIndex := -1;
@@ -573,8 +554,8 @@ end;
 
 procedure TIconFontsImageListEditor.FormDestroy(Sender: TObject);
 begin
-  FreeAndNil(FOldIconFontItems);
-  FreeAndNil(FOldImageList);
+  FreeAndNil(FIconFontItems);
+  FreeAndNil(FEditingList);
   Screen.Cursors[crColorPick] := 0;
 end;
 
