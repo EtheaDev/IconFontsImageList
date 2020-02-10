@@ -763,9 +763,9 @@ begin
         LIconFontItem.UpdateIconAttributes(FFontColor, FMaskColor, AReplaceFontColor, AFontName);
       end;
     finally
-      InternalRedrawImages;
       StopDrawing(False);
     end;
+    InternalRedrawImages;
   end;
 end;
 
