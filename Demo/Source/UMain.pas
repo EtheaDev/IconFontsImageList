@@ -226,8 +226,12 @@ begin
   LFontFileName := ExtractFilePath(Application.ExeName)+'..\Fonts\materialdesignicons-webfont.ttf';
   if FileExists(LFontFileName) then
   begin
-   AddFontResource(PWideChar(LFontFileName));
-   SendMessage(HWND_BROADCAST, WM_FONTCHANGE, 0, 0);
+    {$IFNDEF D2010+}
+    AddFontResource(PChar(LFontFileName));
+    {$ELSE}
+    AddFontResource(PWideChar(LFontFileName));
+    {$ENDIF}
+    SendMessage(HWND_BROADCAST, WM_FONTCHANGE, 0, 0);
   end
   else
   begin
