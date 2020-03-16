@@ -71,6 +71,9 @@ type
     ButtonsPanel: TPanel;
     ClearButton: TBitBtn;
     ShowImageEditorButton: TBitBtn;
+    ChangeColorButton: TBitBtn;
+    ChangeColorAction: TAction;
+    ColorDialog: TColorDialog;
     procedure AssignIconsButtonClick(Sender: TObject);
     procedure ChangeIconActionExecute(Sender: TObject);
     procedure SelectThemeRadioGroupClick(Sender: TObject);
@@ -80,6 +83,7 @@ type
     procedure ClearButtonClick(Sender: TObject);
     procedure DeleteIconActionExecute(Sender: TObject);
     procedure IconFontsImageListFontMissing(const AFontName: string);
+    procedure ChangeColorActionExecute(Sender: TObject);
   private
     procedure FormAfterMonitorDpiChanged(Sender: TObject; OldDPI, NewDPI: Integer);
     procedure UpdateButtons;
@@ -105,6 +109,7 @@ procedure TMainForm.UpdateButtons;
 begin
   DeleteButton.Action := DeleteIconAction;
   ChangeIconButton.Action := ChangeIconAction;
+  ChangeColorButton.Action :=ChangeColorAction;
 end;
 
 procedure TMainForm.UpdateListView;
@@ -140,6 +145,13 @@ begin
     Screen.Cursor := crDefault;
   end;
   UpdateGUI;
+end;
+
+procedure TMainForm.ChangeColorActionExecute(Sender: TObject);
+begin
+  ColorDialog.Color := IconFontsImageList.FontColor;
+  if ColorDialog.Execute then
+    IconFontsImageList.FontColor := ColorDialog.Color;
 end;
 
 procedure TMainForm.ChangeIconActionExecute(Sender: TObject);
@@ -206,10 +218,24 @@ begin
 end;
 
 procedure TMainForm.IconFontsImageListFontMissing(const AFontName: string);
+var
+  LFontFileName: string;
 begin
-  MessageDlg(Format('Warning: "%s" font is not present in your system!'+sLineBreak+
-    'Please download at https://materialdesignicons.com and install it, because this demo is based on this font.',
-      [AFontName]), mtError, [mbOK], 0);
+  inherited;
+  //The "material design web-font is not installed into system: load and install now from disk
+  LFontFileName := ExtractFilePath(Application.ExeName)+'..\Fonts\materialdesignicons-webfont.ttf';
+  if FileExists(LFontFileName) then
+  begin
+   AddFontResource(PWideChar(LFontFileName));
+   SendMessage(HWND_BROADCAST, WM_FONTCHANGE, 0, 0);
+  end
+  else
+  begin
+    //If the font file is not available
+    MessageDlg(Format('Warning: "%s" font is not present in your system!'+sLineBreak+
+      'Please download at https://materialdesignicons.com and install it, because this demo is based on this font.',
+        [AFontName]), mtError, [mbOK], 0);
+  end;
 end;
 
 procedure TMainForm.SelectThemeRadioGroupClick(Sender: TObject);

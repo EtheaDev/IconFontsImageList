@@ -199,6 +199,7 @@ implementation
 
 uses
   SysUtils
+  , Math
   , StrUtils;
 
 { TIconFontItem }
@@ -453,16 +454,16 @@ end;
 procedure TIconFontsImageList.DPIChangedMessageHandler(const Sender: TObject;
   const Msg: Messaging.TMessage);
 var
-  W: Integer;
-  //H: Integer;
+  LWidthScaled, LHeightScaled: Integer;
 begin
   if FScaled and (TChangeScaleMessage(Msg).Sender = Owner) then
   begin
-    W := MulDiv(Width, TChangeScaleMessage(Msg).M, TChangeScaleMessage(Msg).D);
-    //H := MulDiv(Height, TChangeScaleMessage(Msg).M, TChangeScaleMessage(Msg).D);
+    LWidthScaled := MulDiv(Width, TChangeScaleMessage(Msg).M, TChangeScaleMessage(Msg).D);
+    LHeightScaled := MulDiv(Height, TChangeScaleMessage(Msg).M, TChangeScaleMessage(Msg).D);
     FScaling := True;
     try
-      SetSize(W);
+      //Use Minimum value of scaled size
+      SetSize(Min(LWidthScaled, LHeightScaled));
     finally
       FScaling := False;
     end;
@@ -802,15 +803,21 @@ begin
     (csLoading in ComponentState) or
     (csDestroying in ComponentState) then
     Exit;
-  inherited Clear;
-  LBitmap := TBitmap.Create;
+  StopDrawing(True);
   try
-    for I := 0 to FIconFontItems.Count -1 do
-      DrawFontIcon(I, LBitmap, True);
-    Self.Change;
+    inherited Clear;
+    LBitmap := TBitmap.Create;
+    try
+      for I := 0 to FIconFontItems.Count -1 do
+        DrawFontIcon(I, LBitmap, True);
+      Self.Change;
+    finally
+      LBitmap.Free;
+    end;
   finally
-    LBitmap.Free;
+    StopDrawing(False);
   end;
+  Change;
 end;
 
 procedure TIconFontsImageList.Replace(const AIndex: Integer; const AChar: WideChar;

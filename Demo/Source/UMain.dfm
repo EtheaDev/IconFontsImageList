@@ -20,16 +20,16 @@ object MainForm: TMainForm
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
-    Top = 41
+    Top = 38
     Width = 201
-    Height = 551
+    Height = 554
     Align = alLeft
     TabOrder = 0
     object SelectThemeRadioGroup: TRadioGroup
       Left = 1
       Top = 1
       Width = 199
-      Height = 369
+      Height = 372
       Align = alClient
       Caption = 'Select Theme/Color'
       ItemIndex = 0
@@ -45,7 +45,7 @@ object MainForm: TMainForm
     end
     object GroupBox1: TGroupBox
       Left = 1
-      Top = 370
+      Top = 373
       Width = 199
       Height = 77
       Align = alBottom
@@ -80,7 +80,7 @@ object MainForm: TMainForm
     end
     object SliderPanel: TPanel
       Left = 1
-      Top = 488
+      Top = 491
       Width = 199
       Height = 62
       Align = alBottom
@@ -110,7 +110,7 @@ object MainForm: TMainForm
     end
     object ButtonsPanel: TPanel
       Left = 1
-      Top = 447
+      Top = 450
       Width = 199
       Height = 41
       Align = alBottom
@@ -140,7 +140,8 @@ object MainForm: TMainForm
     Left = 0
     Top = 0
     Width = 946
-    Height = 41
+    Height = 38
+    AutoSize = True
     ButtonHeight = 38
     ButtonWidth = 39
     Images = IconFontsImageList
@@ -183,9 +184,9 @@ object MainForm: TMainForm
   end
   object Panel2: TPanel
     Left = 864
-    Top = 41
+    Top = 38
     Width = 82
-    Height = 551
+    Height = 554
     Align = alRight
     TabOrder = 2
     object DeleteButton: TBitBtn
@@ -208,12 +209,22 @@ object MainForm: TMainForm
       Layout = blGlyphTop
       TabOrder = 1
     end
+    object ChangeColorButton: TBitBtn
+      Left = 6
+      Top = 137
+      Width = 73
+      Height = 60
+      Action = ChangeColorAction
+      Caption = 'Change Color'
+      Layout = blGlyphTop
+      TabOrder = 2
+    end
   end
   object ClientPanel: TPanel
     Left = 201
-    Top = 41
+    Top = 38
     Width = 663
-    Height = 551
+    Height = 554
     Align = alClient
     TabOrder = 3
     object ImageListLabel: TLabel
@@ -250,7 +261,7 @@ object MainForm: TMainForm
       Left = 1
       Top = 236
       Width = 661
-      Height = 314
+      Height = 317
       Align = alClient
       Columns = <>
       IconOptions.AutoArrange = True
@@ -290,6 +301,10 @@ object MainForm: TMainForm
       item
         FontIconDec = 61462
         IconName = 'Account-search'
+      end
+      item
+        FontIconDec = 62424
+        IconName = 'font-color'
       end>
     FontName = 'Material Design Icons'
     FontColor = clBlack
@@ -315,5 +330,15 @@ object MainForm: TMainForm
       ImageIndex = 1
       OnExecute = DeleteIconActionExecute
     end
+    object ChangeColorAction: TAction
+      Category = 'Edit'
+      Caption = 'Change Color'
+      ImageIndex = 7
+      OnExecute = ChangeColorActionExecute
+    end
+  end
+  object ColorDialog: TColorDialog
+    Left = 496
+    Top = 312
   end
 end
