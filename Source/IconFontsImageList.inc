@@ -141,6 +141,24 @@
   {$DEFINE D10_3+}
 {$ENDIF}
 
+// Delphi 10.4
+{$IFDEF VER340}
+  {$DEFINE D2010+}
+  {$DEFINE DXE+}
+  {$DEFINE DXE2+}
+  {$DEFINE DXE3+}
+  {$DEFINE DXE4+}
+  {$DEFINE DXE5+}
+  {$DEFINE DXE6+}
+  {$DEFINE DXE7+}
+  {$DEFINE DXE8+}
+  {$DEFINE D10_0+}
+  {$DEFINE D10_1+}
+  {$DEFINE D10_2+}
+  {$DEFINE D10_3+}
+  {$DEFINE D10_4+}
+{$ENDIF}
+
 //StoreBitmap option introduced in Delphi 10.3 Rio
 {$IFDEF D10_3+}
   {$Define HasStoreBitmapProperty}
