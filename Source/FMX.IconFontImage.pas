@@ -174,10 +174,6 @@ begin
     FOwnerCollection := Collection as TIconFontFixedMultiResBitmap;
   FSize := 16;
   FOpacity := 1;
-  //TODO remove example
-  FCharacter := WideChar(StrToInt('$F008'));
-  FFontColor := TAlphaColors.Black;
-  FFontName := 'Material Design Icons';
 end;
 
 procedure TIconFontFixedBitmapItem.UpdateBitmap;

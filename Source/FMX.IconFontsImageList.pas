@@ -113,6 +113,8 @@ type
     procedure SetFontName(const AValue: string);
     procedure SetOpacity(const AValue: Single);
     procedure AutoSizeBitmap(const ASize: Single);
+    function GetIconName: string;
+    procedure SetIconName(const Value: string);
   protected
     function GetDisplayName: string; override;
     function CreateMultiResBitmap: TMultiResBitmap; override;
@@ -120,7 +122,7 @@ type
     constructor Create(Collection: TCollection); override;
   published
     property MultiResBitmap;
-    property Name;
+    property IconName: string read GetIconName write SetIconName;
     property FontName: string read FFontName write SetFontName;
     property FontIconDec: Integer read GetFontIconDec write SetFontIconDec stored true default 0;
     property FontIconHex: string read GetFontIconHex write SetFontIconHex stored false;
@@ -348,6 +350,11 @@ begin
     Result := '';
 end;
 
+function TIconFontsSourceItem.GetIconName: string;
+begin
+  Result := inherited Name;
+end;
+
 procedure TIconFontsSourceItem.SetCharacter(const AValue: WideChar);
 begin
   if AValue <> FCharacter then
@@ -382,6 +389,11 @@ procedure TIconFontsSourceItem.SetFontName(const AValue: string);
 begin
   FFontName := AValue;
   UpdateAllItems;
+end;
+
+procedure TIconFontsSourceItem.SetIconName(const Value: string);
+begin
+  inherited Name := Value;
 end;
 
 procedure TIconFontsSourceItem.SetOpacity(const AValue: Single);

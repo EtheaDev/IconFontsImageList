@@ -7,7 +7,7 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.Controls.Presentation, FMX.StdCtrls, System.ImageList, FMX.ImgList,
   FMX.Objects, FMX.MultiresBitmap, System.Rtti, System.Messaging,
-  FMX.IconFontsImageList, FMX.ListBox, FMX.Colors;
+  FMX.IconFontsImageList, FMX.ListBox, FMX.Colors, FMX.IconFontImage;
 
 type
   TIconFontImageForm = class(TForm)

@@ -127,7 +127,7 @@ object IconFontImageListForm: TIconFontImageListForm
             Scale = 7.000000000000000000
             Size = 16.000000000000000000
           end>
-        Name = 'Account'
+        IconName = 'Account'
         FontName = 'Material Design Icons'
         FontIconDec = 61444
         FontColor = claBlack
@@ -138,7 +138,7 @@ object IconFontImageListForm: TIconFontImageListForm
           item
             Size = 16.000000000000000000
           end>
-        Name = 'User'
+        IconName = 'User'
         FontName = 'Material Design Icons'
         FontIconDec = 61449
         FontColor = claBlack
