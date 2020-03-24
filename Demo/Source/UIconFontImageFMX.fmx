@@ -1,0 +1,72 @@
+object IconFontImageForm: TIconFontImageForm
+  Left = 0
+  Top = 0
+  Caption = 
+    'IconFont Image Demo - Copyright (c) Ethea S.r.l. - Apache 2.0 Op' +
+    'en Source License'
+  ClientHeight = 251
+  ClientWidth = 340
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  DesignerMasterStyle = 0
+  object IconFontImage: TIconFontImage
+    MultiResBitmap = <
+      item
+        FontName = 'Material Design Icons'
+        FontIconDec = 61448
+        FontColor = claBlack
+        Opacity = 1.000000000000000000
+        Size = 205.000000000000000000
+        IconName = 'Account'
+      end
+      item
+        Scale = 2.000000000000000000
+        FontName = 'Material Design Icons'
+        FontIconDec = 61449
+        FontColor = claBlack
+        Opacity = 1.000000000000000000
+        Size = 205.000000000000000000
+        IconName = 'User'
+      end>
+    Align = Client
+    DisableInterpolation = True
+    Size.Width = 340.000000000000000000
+    Size.Height = 205.000000000000000000
+    Size.PlatformDefault = False
+    OnResize = IconFontImageResize
+    BitmapSize = 340.000000000000000000
+  end
+  object Panel1: TPanel
+    Align = Bottom
+    Position.Y = 205.000000000000000000
+    Size.Width = 340.000000000000000000
+    Size.Height = 46.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    object Button: TButton
+      Position.X = 8.000000000000000000
+      Position.Y = 8.000000000000000000
+      Size.Width = 89.000000000000000000
+      Size.Height = 33.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      Text = 'Next Char...'
+      OnClick = ButtonClick
+    end
+    object edtColor: TColorComboBox
+      DropDownKind = Custom
+      Color = claBlack
+      DisableFocusEffect = False
+      ItemIndex = 7
+      Position.X = 104.000000000000000000
+      Position.Y = 12.000000000000000000
+      Size.Width = 225.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 3
+      OnChange = edtColorChange
+    end
+  end
+end

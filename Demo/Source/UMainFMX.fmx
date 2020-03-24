@@ -1,0 +1,163 @@
+object IconFontImageListForm: TIconFontImageListForm
+  Left = 0
+  Top = 0
+  Caption = 
+    'IconFont ImageList Demo - Copyright (c) Ethea S.r.l. - Apache 2.' +
+    '0 Open Source License'
+  ClientHeight = 386
+  ClientWidth = 250
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  DesignerMasterStyle = 0
+  object Panel1: TPanel
+    Align = Bottom
+    Position.Y = 276.000000000000000000
+    Size.Width = 250.000000000000000000
+    Size.Height = 110.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    object NextButton: TButton
+      Position.X = 104.000000000000000000
+      Position.Y = 8.000000000000000000
+      Size.Width = 89.000000000000000000
+      Size.Height = 33.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      Text = 'Next Image...'
+      OnClick = NextButtonClick
+    end
+    object edtColor: TColorComboBox
+      DropDownKind = Custom
+      Color = claBlack
+      DisableFocusEffect = False
+      ItemIndex = 7
+      Position.X = 8.000000000000000000
+      Position.Y = 84.000000000000000000
+      Size.Width = 161.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 5
+      OnChange = edtColorChange
+    end
+    object RandomButton: TButton
+      Position.X = 8.000000000000000000
+      Position.Y = 48.000000000000000000
+      Size.Width = 89.000000000000000000
+      Size.Height = 33.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 2
+      Text = 'Build random...'
+      OnClick = RandomButtonClick
+    end
+    object IconsLabel: TLabel
+      Position.X = 104.000000000000000000
+      Position.Y = 44.000000000000000000
+      Text = 'Icons:'
+      TabOrder = 3
+    end
+    object CurrentLabel: TLabel
+      Position.X = 104.000000000000000000
+      Position.Y = 60.000000000000000000
+      Text = 'Current:'
+      TabOrder = 4
+    end
+    object AutoSizeCheckBox: TCheckBox
+      Position.X = 176.000000000000000000
+      Position.Y = 88.000000000000000000
+      TabOrder = 6
+      Text = 'AutoSize'
+      OnChange = AutoSizeCheckBoxChange
+    end
+    object PrevButton: TButton
+      Position.X = 8.000000000000000000
+      Position.Y = 8.000000000000000000
+      Size.Width = 89.000000000000000000
+      Size.Height = 33.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      Text = 'Prev.Image...'
+      OnClick = PrevButtonClick
+    end
+  end
+  object Glyph: TGlyph
+    Align = Client
+    Size.Width = 250.000000000000000000
+    Size.Height = 276.000000000000000000
+    Size.PlatformDefault = False
+    ImageIndex = 0
+    Images = IconFontsImageList
+  end
+  object IconFontsImageList: TIconFontsImageList
+    Source = <
+      item
+        MultiResBitmap.Height = 64
+        MultiResBitmap.Width = 64
+        MultiResBitmap.LoadSize = 0
+        MultiResBitmap = <
+          item
+            Scale = 8.000000000000000000
+            Size = 16.000000000000000000
+          end
+          item
+            Size = 16.000000000000000000
+          end
+          item
+            Scale = 2.000000000000000000
+            Size = 16.000000000000000000
+          end
+          item
+            Scale = 3.000000000000000000
+            Size = 16.000000000000000000
+          end
+          item
+            Scale = 4.000000000000000000
+            Size = 16.000000000000000000
+          end
+          item
+            Scale = 5.000000000000000000
+            Size = 16.000000000000000000
+          end
+          item
+            Scale = 6.000000000000000000
+            Size = 16.000000000000000000
+          end
+          item
+            Scale = 7.000000000000000000
+            Size = 16.000000000000000000
+          end>
+        Name = 'Account'
+        FontName = 'Material Design Icons'
+        FontIconDec = 61444
+        FontColor = claBlack
+        Opacity = 1.000000000000000000
+      end
+      item
+        MultiResBitmap = <
+          item
+            Size = 16.000000000000000000
+          end>
+        Name = 'User'
+        FontName = 'Material Design Icons'
+        FontIconDec = 61449
+        FontColor = claBlack
+        Opacity = 1.000000000000000000
+      end>
+    Destination = <
+      item
+        Layers = <
+          item
+            Name = 'Account'
+          end>
+      end
+      item
+        Layers = <
+          item
+            Name = 'User'
+          end>
+      end>
+    Left = 48
+    Top = 16
+  end
+end
