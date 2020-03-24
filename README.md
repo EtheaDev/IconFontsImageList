@@ -1,8 +1,14 @@
 # IconFontsImageList [![License](https://img.shields.io/badge/License-Apache%202.0-yellowgreen.svg)](https://opensource.org/licenses/Apache-2.0)
 
-## An extended ImageList for Delphi to simple use and manage webfont icons.
+## An extended ImageList for Delphi (VCL & FMX) to simple use and manage Icon Fonts.
 
 ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png](https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png)
+
+24 March 2020: official 1.4 version (VCL) and first Beta version (FMX)
+- Improved performances into IDE (VCL)
+- Added two new FMX components: TIconFontsImageListFMX and TIconFontImageFMX (beta)
+- Added two demos for TIconFontsImageListFMX and TIconFontImageFMX
+- Minor fixes (VCL)
 
 30 January 2020: official 1.3 version
 - Added support for Delphi7 (generally for no Unicode version)
@@ -31,19 +37,7 @@
 
 ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/Sample.jpg](https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/Sample.jpg)
 
-Use the advanced Component Editor to easily create your Icons, from different Fonts:
-
-![https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/ImageEditor.jpg](https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/ImageEditor.jpg)
-
-Change the color of all Icons of your application with "one line of code", according to the active VCL Style:
-
-![https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/DemoChangeStyle.gif](https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/DemoChangeStyle.gif)
-
-Resize Icons at any pixel size is very simple:
-
-![https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/DemoChangeSize.gif](https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/DemoChangeSize.gif)
-
-Follow the [guide in Wiki section](https://github.com/EtheaDev/IconFontsImageList/wiki) to known how to use this component to modernize your Delphi applications scalable, colored and beautiful with few lines of code.
+Follow the [guide in Wiki section](https://github.com/EtheaDev/IconFontsImageList/wiki) to known how to use those components to modernize your Delphi VCL or FMX applications scalable, colored and beautiful with few lines of code.
 
 Inspired by the "Font Icon Editor" project by Luca Minuti:
 [https://github.com/lminuti/FontIconEditor](https://github.com/lminuti/FontIconEditor)
