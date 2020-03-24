@@ -4,8 +4,7 @@
 {       to simplify use of Icons (resize, colors and more...)                  }
 {                                                                              }
 {       Copyright (c) 2019-2020 (Ethea S.r.l.)                                 }
-{       Contributors:                                                          }
-{         Carlo Barazzetta                                                     }
+{       Author: Carlo Barazzetta                                               }
 {                                                                              }
 {       https://github.com/EtheaDev/IconFontsImageList                         }
 {                                                                              }
@@ -41,11 +40,17 @@ function UpdateIconFontListView(const AListView: TListView): Integer;
 function UpdateIconFontListViewCaptions(const AListView: TListView): Integer;
 procedure UpdateIconFontsColorByStyle(const IconFontsImageList: TIconFontsImageList;
     const AReplaceCustomColors: Boolean = False);
+function DarkerColor(AColor: TColor; APercent: Integer): TColor;
+function LighterColor(AColor: TColor; APercent: Integer): TColor;
+function DisabledColor(AColor: TColor; APercent: Integer): TColor;
+function IsLightColor(const AColor: TColor): Boolean;
+function HotColor(AColor: TColor; APercent: Integer): TColor;
 
 implementation
 
 uses
   SysUtils
+  , Windows
   , Themes
   ;
 
@@ -114,6 +119,64 @@ begin
   IconFontsImageList.UpdateIconsAttributes(LStyleFontColor, LStyleMaskColor,
     AReplaceCustomColors);
   {$ENDIF}
+end;
+
+function DarkerColor(AColor: TColor; APercent: Integer): TColor;
+var
+  r,g,b: Byte;
+begin
+  AColor := ColorToRGB(AColor);
+  r := GetRValue(AColor);
+  g := GetGValue(AColor);
+  b := GetBValue(AColor);
+  r := r-muldiv(r,APercent,100);  //APercent% closer to black
+  g := g-muldiv(g,APercent,100);
+  b := b-muldiv(b,APercent,100);
+  result := RGB(r, g, b);
+end;
+
+function LighterColor(AColor: TColor; APercent: Integer): TColor;
+var
+  r,g,b: Byte;
+begin
+  AColor := ColorToRGB(AColor);
+  r := GetRValue(AColor);
+  g := GetGValue(AColor);
+  b := GetBValue(AColor);
+  r := r+muldiv(255-r,APercent,100); //APercent% closer to white
+  g := g+muldiv(255-g,APercent,100);
+  b := b+muldiv(255-b,APercent,100);
+  result := RGB(r, g, b);
+end;
+
+function IsLightColor(const AColor: TColor): Boolean;
+var
+  r, g, b, yiq: integer;
+begin
+  r := GetRValue(AColor);
+  g := GetGValue(AColor);
+  b := GetBValue(AColor);
+  yiq := ((r*299)+(g*587)+(b*114)) div 1000;
+  if (yiq >= 128) then
+    result := True
+  else
+    result := False;
+end;
+
+function DisabledColor(AColor: TColor; APercent: Integer): TColor;
+begin
+  if IsLightColor(AColor) then
+    Result := DarkerColor(AColor, APercent)
+  else
+    Result := LighterColor(AColor, APercent);
+end;
+
+function HotColor(AColor: TColor; APercent: Integer): TColor;
+begin
+  if IsLightColor(AColor) then
+    Result := LighterColor(AColor, APercent)
+  else
+    Result := DarkerColor(AColor, APercent);
 end;
 
 end.

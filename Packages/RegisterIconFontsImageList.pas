@@ -26,6 +26,8 @@
 {******************************************************************************}
 unit RegisterIconFontsImageList;
 
+{$INCLUDE ..\Source\IconFontsImageList.inc}
+
 interface
 
 uses
@@ -43,8 +45,13 @@ uses
 
 procedure Register;
 begin
-  RegisterComponents('Ethea', [TIconFontsImageList]);
-
+  RegisterComponents('Ethea', [TIconFontsImageList
+(*
+  {$IFDEF D10_3+}
+  , TIconFontsImageCollection
+  {$ENDIF}
+*)
+  ]);
   RegisterComponentEditor(TIconFontsImageList, TIconFontsImageListCompEditor);
 end;
 

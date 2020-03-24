@@ -1,11 +1,11 @@
 {******************************************************************************}
 {                                                                              }
-{       Icon Fonts ImageList: An extended ImageList for Delphi                 }
+{       Icon Fonts ImageList: An extended ImageList for Delphi/VCL             }
 {       to simplify use of Icons (resize, colors and more...)                  }
 {                                                                              }
 {       Copyright (c) 2019-2020 (Ethea S.r.l.)                                 }
+{       Author: Carlo Barazzetta                                               }
 {       Contributors:                                                          }
-{         Carlo Barazzetta                                                     }
 {         Nicola Tambascia                                                     }
 {         Luca Minuti                                                          }
 {                                                                              }
@@ -37,13 +37,18 @@ uses
   , ImgList
   , Windows
   , Graphics
+(*
+{$IFDEF D10_3+}
+  , BaseImageCollection
+{$ENDIF}
+*)
 {$IFDEF HiDPISupport}
   , Messaging
 {$ENDIF}
   , Forms;
 
 const
-  IconFontsImageListVersion = '1.3.0';
+  IconFontsImageListVersion = '1.4.0';
 
 type
   TIconFontsImageList = class;
@@ -168,7 +173,9 @@ type
     function AddIcons(const AFrom, ATo: WideChar; const AFontName: TFontName = '';
       const AFontColor: TColor = clNone; AMaskColor: TColor = clNone): Integer;  virtual;
     procedure UpdateIconsAttributes(const AFontColor, AMaskColor: TColor;
-      const AReplaceFontColor: Boolean = True; const AFontName: string = ''); virtual;
+      const AReplaceFontColor: Boolean = True; const AFontName: string = ''); overload; virtual;
+    procedure UpdateIconsAttributes(const ASize: Integer; const AFontColor, AMaskColor: TColor;
+      const AReplaceFontColor: Boolean = True; const AFontName: string = ''); overload; virtual;
     procedure ClearIcons; virtual;
     procedure RedrawImages; virtual;
     procedure SaveToFile(const AFileName: string);
@@ -194,6 +201,53 @@ type
     property Scaled: Boolean read FScaled write FScaled default True;
     {$ENDIF}
   end;
+
+(*
+{$IFDEF D10_3+}
+  /// <summary>
+  /// Component to store, scale and draw images.
+  /// </summary>
+  TIconFontsImageCollection = class(TCustomImageCollection)
+  private
+    FIconFontsImageList: TIconFontsImageList;
+    procedure SetIconFontsImages(Value: TIconFontsImageList);
+    procedure DoDraw(ACanvas: TCanvas; ARect: TRect; AIndex: Integer;
+      AProportional: Boolean);
+  protected
+    function GetCount: Integer; override;
+    procedure Notification(AComponent: TComponent; Operation: TOperation); override;
+    procedure Loaded; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+    procedure Assign(Source: TPersistent); override;
+    function IsIndexAvailable(AIndex: Integer): Boolean; override;
+    function GetIndexByName(const AName: String): Integer; override;
+    function GetNameByIndex(AIndex: Integer): String; override;
+    /// <summary>
+    /// Get scaled to specific size TBitmap from item with specific index.
+    /// </summary>
+    function GetBitmap(AIndex: Integer; AWidth, AHeight: Integer): TBitmap; overload; override;
+    /// <summary>
+    /// Get scaled to specific size TBitmap from item with specific name.
+    /// </summary>
+    function GetBitmap(const AName: String; AWidth, AHeight: Integer; AEnabled: Boolean = True): TBitmap; overload;
+    /// <summary>
+    /// Draw image from collection item with specific index to specific rect and proportional parameter.
+    /// </summary>
+    procedure Draw(ACanvas: TCanvas; ARect: TRect; AIndex: Integer; AProportional: Boolean = False); overload; override;
+    /// <summary>
+    /// Draw image from collection item with specific name to specific rect and proportional parameter.
+    /// </summary>
+    procedure Draw(ACanvas: TCanvas; ARect: TRect; const AName: String; AProportional: Boolean = False); overload;
+  published
+    /// <summary>
+    /// Collection of items with source images.
+    /// </summary>
+    property IconFontsImages: TIconFontsImageList read FIconFontsImageList write SetIconFontsImages;
+  end;
+{$ENDIF}
+*)
 
 implementation
 
@@ -526,7 +580,8 @@ begin
     finally
       StopDrawing(False);
     end;
-    InternalRedrawImages;
+    if not (csLoading in ComponentState) then
+      InternalRedrawImages;
   end;
 end;
 
@@ -576,7 +631,8 @@ begin
   finally
     StopDrawing(False);
   end;
-  InternalRedrawImages;
+  if not (csLoading in ComponentState) then
+    InternalRedrawImages;
 end;
 
 procedure TIconFontsImageList.Assign(Source: TPersistent);
@@ -737,16 +793,19 @@ end;
 procedure TIconFontsImageList.Loaded;
 begin
   inherited;
-  {$IFDEF HasStoreBitmapProperty}
-  if (not StoreBitmap) then
-    InternalRedrawImages;
-  {$ENDIF}
-  if (inherited Count = 0) or (csDesigning in ComponentState) then
-    InternalRedrawImages;
+  if not (csLoading in ComponentState) then
+  begin
+    {$IFDEF HasStoreBitmapProperty}
+    if (not StoreBitmap) then
+      InternalRedrawImages;
+    {$ENDIF}
+    if (inherited Count = 0) or (csDesigning in ComponentState) then
+      InternalRedrawImages;
+  end;
 end;
 
-procedure TIconFontsImageList.UpdateIconsAttributes(const AFontColor,
-  AMaskColor: TColor; const AReplaceFontColor: Boolean = True;
+procedure TIconFontsImageList.UpdateIconsAttributes(const ASize: Integer;
+  const AFontColor, AMaskColor: TColor; const AReplaceFontColor: Boolean = True;
   const AFontName: string = '');
 var
   I: Integer;
@@ -756,6 +815,7 @@ begin
   begin
     StopDrawing(True);
     try
+      SetIconSize(ASize);
       FFontColor := AFontColor;
       FMaskColor := AMaskColor;
       for I := 0 to IconFontItems.Count -1 do
@@ -766,8 +826,15 @@ begin
     finally
       StopDrawing(False);
     end;
-    InternalRedrawImages;
+    if not (csLoading in ComponentState) then
+      InternalRedrawImages;
   end;
+end;
+
+procedure TIconFontsImageList.UpdateIconsAttributes(const AFontColor,
+  AMaskColor: TColor; const AReplaceFontColor: Boolean; const AFontName: string);
+begin
+  UpdateIconsAttributes(Self.Size, AFontColor, AMaskColor, AReplaceFontColor, AFontName);
 end;
 
 procedure TIconFontsImageList.UpdateImage(const AIndex: Integer);
@@ -791,7 +858,8 @@ procedure TIconFontsImageList.RedrawImages;
 begin
   if FStopDrawing > 0 then
     Exit;
-  InternalRedrawImages;
+  if not (csLoading in ComponentState) then
+    InternalRedrawImages;
 end;
 
 procedure TIconFontsImageList.InternalRedrawImages;
@@ -800,7 +868,6 @@ var
   LBitmap: TBitmap;
 begin
   if not Assigned(FIconFontItems) or
-    (csLoading in ComponentState) or
     (csDestroying in ComponentState) then
     Exit;
   StopDrawing(True);
@@ -851,7 +918,7 @@ begin
     finally
       IconFontsImageList.StopDrawing(False);
     end;
-    IconFontsImageList.RedrawImages;
+    IconFontsImageList.InternalRedrawImages;
   end
   else
     inherited;
@@ -909,5 +976,176 @@ begin
   if Owner <> nil then
     TIconFontsImageList(Owner).UpdateImage(AIndex);
 end;
+
+{ TIconFontsImageCollection }
+(*
+{$IFDEF D10_3+}
+function UpdateRectForProportionalSize(ARect: TRect; AWidth, AHeight: Integer; AStretch: Boolean): TRect;
+var
+  w, h, cw, ch: Integer;
+  xyaspect: Double;
+begin
+  Result := ARect;
+  if AWidth * AHeight = 0 then
+    Exit;
+
+  w := AWidth;
+  h := AHeight;
+  cw := ARect.Width;
+  ch := ARect.Height;
+
+  if AStretch or ((w > cw) or (h > ch)) then
+  begin
+    xyaspect := w / h;
+    if w > h then
+    begin
+      w := cw;
+      h := Trunc(cw / xyaspect);
+      if h > ch then
+      begin
+        h := ch;
+        w := Trunc(ch * xyaspect);
+      end;
+     end
+     else
+     begin
+       h := ch;
+       w := Trunc(ch * xyaspect);
+       if w > cw then
+       begin
+         w := cw;
+         h := Trunc(cw / xyaspect);
+       end;
+     end;
+  end;
+
+  Result := Rect(0, 0, w, h);
+  OffsetRect(Result, ARect.Left + (cw - w) div 2, ARect.Top + (ch - h) div 2);
+end;
+
+constructor TIconFontsImageCollection.Create(AOwner: TComponent);
+begin
+  inherited;
+end;
+
+destructor TIconFontsImageCollection.Destroy;
+begin
+  inherited;
+end;
+
+procedure TIconFontsImageCollection.SetIconFontsImages(Value: TIconFontsImageList);
+begin
+  FIconFontsImageList := Value;
+  if Assigned(FIconFontsImageList) then
+    FIconFontsImageList.InternalRedrawImages;
+end;
+
+function TIconFontsImageCollection.GetCount: Integer;
+begin
+  if Assigned(FIconFontsImageList) then
+    Result := FIconFontsImageList.IconFontItems.Count
+  else
+    Result := 0;
+end;
+
+function TIconFontsImageCollection.GetNameByIndex(AIndex: Integer): String;
+begin
+  if (AIndex >= 0) and (AIndex < Count) then
+    Result := IconFontsImages.IconFontItems[AIndex].IconName;
+end;
+
+function TIconFontsImageCollection.GetIndexByName(const AName: String): Integer;
+var
+  I: Integer;
+  S: String;
+begin
+  Result := -1;
+  S := LowerCase(AName);
+  for I := 0 to FIconFontsImageList.Count - 1 do
+    if LowerCase(FIconFontsImageList.IconFontItems[I].IconName) = S then
+      Exit(I);
+end;
+
+function TIconFontsImageCollection.IsIndexAvailable(AIndex: Integer): Boolean;
+begin
+  Result := (Count > 0) and (AIndex >= 0) and (AIndex < Count);
+end;
+
+procedure TIconFontsImageCollection.Loaded;
+begin
+  inherited;
+  if Assigned(FIconFontsImageList) then
+    Change;
+end;
+
+procedure TIconFontsImageCollection.Notification(AComponent: TComponent;
+  Operation: TOperation);
+begin
+  inherited Notification(AComponent, Operation);
+  if (Operation = opRemove) and (FIconFontsImageList <> nil) and
+    (AComponent = FIconFontsImageList) then
+    FIconFontsImageList := nil;
+end;
+
+function TIconFontsImageCollection.GetBitmap(AIndex: Integer; AWidth, AHeight: Integer): TBitmap;
+begin
+  Result := nil;
+  if (AIndex < 0) or (AIndex > Count-1) then
+    Exit;
+  //Resize collection to obtain best picture
+  FIconFontsImageList.Size := Min(AWidth, AHeight);
+  Result := TBitmap.Create;
+  Result.PixelFormat := pf32bit;
+  Result.AlphaFormat := afDefined;
+  Result.TransparentMode := tmFixed;
+  if FIconFontsImageList.GetBitmap(AIndex, Result) then
+  begin
+    Result.TransparentColor := FIconFontsImageList.MaskColor;
+    Result.Canvas.Font.Color := FIconFontsImageList.FontColor;
+  end;
+end;
+
+function TIconFontsImageCollection.GetBitmap(const AName: String; AWidth, AHeight: Integer;
+  AEnabled: Boolean = True): TBitmap;
+begin
+  Result := GetBitmap(GetIndexByName(AName), AWidth, AHeight);
+end;
+
+procedure TIconFontsImageCollection.DoDraw(ACanvas: TCanvas; ARect: TRect;
+  AIndex: Integer; AProportional: Boolean);
+var
+  SourceImage: TBitmap;
+begin
+  if ARect.IsEmpty then
+    Exit;
+  SourceImage := GetBitmap(AIndex, ARect.Width, ARect.Height);
+  if SourceImage <> nil then
+  begin
+    if AProportional then
+      ARect := UpdateRectForProportionalSize(ARect, SourceImage.Width, SourceImage.Height, True);
+    ACanvas.Draw(ARect.Left, ARect.Top, SourceImage);
+  end;
+end;
+
+procedure TIconFontsImageCollection.Draw(ACanvas: TCanvas; ARect: TRect; AIndex: Integer; AProportional: Boolean = False);
+begin
+  DoDraw(ACanvas, ARect, AIndex, AProportional);
+end;
+
+procedure TIconFontsImageCollection.Draw(ACanvas: TCanvas; ARect: TRect; const AName: String; AProportional: Boolean = False);
+begin
+  DoDraw(ACanvas, ARect, GetIndexByName(AName), AProportional);
+end;
+
+
+procedure TIconFontsImageCollection.Assign(Source: TPersistent);
+begin
+  if Source is TIconFontsImageCollection then
+    TIconFontsImageCollection(Source).FIconFontsImageList.Assign(FIconFontsImageList)
+  else
+    inherited;
+end;
+{$ENDIF}
+*)
 
 end.

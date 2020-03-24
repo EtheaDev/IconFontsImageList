@@ -1,12 +1,12 @@
 {******************************************************************************}
 {                                                                              }
-{       Icon Fonts ImageList: An extended ImageList for Delphi                 }
+{       Icon Fonts ImageList: An extended ImageList for Delphi/VCL             }
 {       to simplify use of Icons (resize, colors and more...)                  }
 {                                                                              }
 {       Copyright (c) 2019-2020 (Ethea S.r.l.)                                 }
+{       Author: Carlo Barazzetta                                               }
 {       Contributors:                                                          }
-{         Carlo Barazzetta                                                     }
-{         Luca Minuti                                                          }
+{         Nicola Tambascia                                                     }
 {                                                                              }
 {       https://github.com/EtheaDev/IconFontsImageList                         }
 {                                                                              }
