@@ -28,7 +28,6 @@ type
     procedure AutoSizeCheckBoxChange(Sender: TObject);
     procedure PrevButtonClick(Sender: TObject);
   private
-    FCurrentImage: Integer;
     procedure UpdateGUI;
   public
     { Public declarations }

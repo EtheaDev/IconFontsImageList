@@ -88,7 +88,7 @@ type
   TIconFontMultiResBitmap = class(TMultiResBitmap)
   private
     FOwnerSourceItem: TIconFontsSourceItem;
-    function OwnerImageList: TIconFontsImageList;
+    //function OwnerImageList: TIconFontsImageList;
     procedure UpdateImageSize(const ASize: Single);
   protected
     constructor Create(AOwner: TPersistent; ItemClass: TIconFontBitmapItemClass); overload;
@@ -268,6 +268,7 @@ begin
     FOwnerSourceItem := nil;
 end;
 
+(*
 function TIconFontMultiResBitmap.OwnerImageList: TIconFontsImageList;
 begin
   if Assigned(FOwnerSourceItem) then
@@ -275,6 +276,7 @@ begin
   else
     Result := nil;
 end;
+*)
 
 procedure TIconFontMultiResBitmap.UpdateImageSize(const ASize: Single);
 var
@@ -295,8 +297,6 @@ end;
 { TIconFontsSourceItem }
 
 procedure TIconFontsSourceItem.AutoSizeBitmap(const ASize: Single);
-var
-  LItem: TIconFontBitmapItem;
 begin
   //If present, delete multiple items
   while MultiResBitmap.Count > 0 do
@@ -424,9 +424,7 @@ end;
 function TIconFontsImageList.DoBitmap(Size: TSize;
   const Index: Integer): TBitmap;
 var
-  LSourceCollectionItem: TIconFontsSourceItem;
   LDestItem: TDestinationItem;
-  LDinamicSize: Boolean;
   LSourceItem: TIconFontsSourceItem;
   LIndex: Integer;
   LSize: Single;
