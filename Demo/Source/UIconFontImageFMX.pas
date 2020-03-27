@@ -41,8 +41,8 @@ var
   I: Integer;
 begin
   for I := 0 to IconFontImage.MultiResBitmap.Count -1 do
-    (IconFontImage.MultiResBitmap.Items[I] as TIconFontFixedBitmapItem).Character :=
-      WideChar(Ord((IconFontImage.MultiResBitmap.Items[I]as TIconFontFixedBitmapItem).Character)+1);
+    (IconFontImage.MultiResBitmap.Items[I] as TIconFontFixedBitmapItem).FontIconDec :=
+      (IconFontImage.MultiResBitmap.Items[I]as TIconFontFixedBitmapItem).FontIconDec+1;
   IconFontImage.Repaint;
 end;
 
@@ -58,7 +58,9 @@ end;
 
 procedure TIconFontImageForm.FormCreate(Sender: TObject);
 begin
-  (IconFontImage.MultiResBitmap.Items[0] as TIconFontFixedBitmapItem).Character := #61448;
+  (IconFontImage.MultiResBitmap.Items[0] as TIconFontFixedBitmapItem).FontIconDec
+    := $F008;
+    //:= F0000; //Test for Icons with surrogate pairs
 end;
 
 procedure TIconFontImageForm.IconFontImageResize(Sender: TObject);

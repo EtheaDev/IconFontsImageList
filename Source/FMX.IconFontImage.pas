@@ -56,25 +56,24 @@ type
   private
     FSize: Single;
     FFontName: string;
-    FCharacter: WideChar;
+    FFontIconDec: Integer;
     FFontColor: TAlphaColor;
     FOpacity: Single;
     FOwnerCollection: TIconFontFixedMultiResBitmap;
     FIconName: string;
     procedure SetBitmap(const AValue: TBitmapOfItem);
     function GetBitmap: TBitmapOfItem;
-    procedure SetCharacter(const AValue: WideChar);
     procedure SetFontName(const AValue: string);
     procedure SetFontColor(const AValue: TAlphaColor);
     procedure SetSize(const AValue: Single);
-    procedure UpdateBitmap;
+    procedure DrawFontIcon;
     procedure SetOpacity(const AValue: Single);
     procedure SetIconName(const AValue: string);
     function GetFontIconDec: Integer;
     function GetFontIconHex: string;
     procedure SetFontIconDec(const AValue: Integer);
     procedure SetFontIconHex(const AValue: string);
-    function GetCharacter: WideChar;
+    function GetCharacter: WideString;
   protected
     function BitmapStored: Boolean; override;
     function GetDisplayName: string; override;
@@ -85,7 +84,7 @@ type
     property FontName: string read FFontName write SetFontName;
     property FontIconDec: Integer read GetFontIconDec write SetFontIconDec stored true default 0;
     property FontIconHex: string read GetFontIconHex write SetFontIconHex stored false;
-    property Character: WideChar read GetCharacter write SetCharacter stored false default #0;
+    property Character: WideString read GetCharacter stored false;
     property FontColor: TAlphaColor read FFontColor write SetFontColor;
     property Opacity: Single read FOpacity write SetOpacity;
     property Size: Single read FSize write SetSize;
@@ -123,8 +122,10 @@ implementation
 
 uses
   System.Math
+  , FMX.IconFontsImageList
   , System.RTLConsts
   , System.SysUtils
+  , System.Character
   , FMX.Forms
   , FMX.Consts;
 
@@ -176,29 +177,31 @@ begin
   FOpacity := 1;
 end;
 
-procedure TIconFontFixedBitmapItem.UpdateBitmap;
+procedure TIconFontFixedBitmapItem.DrawFontIcon;
 var
   LFont: TFont;
   LBitmap: TBitmap;
   LBitmapSize: Single;
   LRect: TRectF;
+  LCharacter: WideString;
 begin
   LBitmap := inherited Bitmap;
   LBitmapSize := Size * Scale;
   LFont := TFont.Create;
   try
-    LFont.Family := FFontName;
+    LFont.Family := FontName;
     LFont.Size := Size;
     LBitmap.Width  := Trunc(LBitmapSize);
     LBitmap.Height := Trunc(LBitmapSize);
     LBitmap.Canvas.BeginScene;
     try
       LBitmap.Canvas.Clear(TAlphaColors.Null);
-      LBitmap.Canvas.Fill.Color := FFontColor;
+      LBitmap.Canvas.Fill.Color := FontColor;
       LBitmap.Canvas.Font.Assign(LFont);
       LRect.Create(0,0,Size,Size);
+      LCharacter := ConvertFromUtf32(FontIconDec);
       LBitmap.Canvas.FillText(LRect,
-        FCharacter, False, FOpacity,
+        Character, False, Opacity,
         [TFillTextFlag.RightToLeft],
         TTextAlign.Leading, TTextAlign.Center);
     finally
@@ -211,13 +214,14 @@ end;
 
 function TIconFontFixedBitmapItem.GetBitmap: TBitmapOfItem;
 begin
-  UpdateBitmap;
+  DrawFontIcon;
   Result := inherited Bitmap;
 end;
 
-function TIconFontFixedBitmapItem.GetCharacter: WideChar;
+function TIconFontFixedBitmapItem.GetCharacter: WideString;
 begin
-  Result := FCharacter;
+  {$WARN SYMBOL_DEPRECATED OFF}
+  Result := ConvertFromUtf32(FFontIconDec);
 end;
 
 function TIconFontFixedBitmapItem.GetDisplayName: string;
@@ -227,13 +231,13 @@ end;
 
 function TIconFontFixedBitmapItem.GetFontIconDec: Integer;
 begin
-  Result := ord(FCharacter);
+  Result := FFontIconDec;
 end;
 
 function TIconFontFixedBitmapItem.GetFontIconHex: string;
 begin
-  if FCharacter <> #0 then
-    Result := IntToHex(Ord(FCharacter), 4)
+  if FFontIconDec <> 0 then
+    Result := IntToHex(FFontIconDec, 1)
   else
     Result := '';
 end;
@@ -244,37 +248,39 @@ begin
   inherited Bitmap.BitmapScale := Scale;
 end;
 
-procedure TIconFontFixedBitmapItem.SetCharacter(const AValue: WideChar);
-begin
-  if AValue <> FCharacter then
-  begin
-    FCharacter := AValue;
-    UpdateBitmap;
-  end;
-end;
-
 procedure TIconFontFixedBitmapItem.SetFontColor(const AValue: TAlphaColor);
 begin
   if FFontColor <> AValue then
   begin
     FFontColor := AValue;
-    UpdateBitmap;
+    DrawFontIcon;
   end;
 end;
 
 procedure TIconFontFixedBitmapItem.SetFontIconDec(const AValue: Integer);
 begin
-  Character := WideChar(AValue);
+  if AValue <> FFontIconDec then
+  begin
+    FFontIconDec := AValue;
+    DrawFontIcon;
+  end;
 end;
 
 procedure TIconFontFixedBitmapItem.SetFontIconHex(const AValue: string);
 begin
-  if (Length(AValue) = 4) then
-    Character := WideChar(StrToInt('$' + AValue))
-  else if (Length(AValue) = 0) then
-    Character := #0
-  else
-    raise Exception.CreateFmt('Value %s not accepted!',[AValue]);
+  try
+    if (Length(AValue) = 4) or (Length(AValue) = 5) then
+      FontIconDec := StrToInt('$' + AValue)
+    else if (Length(AValue) = 0) then
+      FFontIconDec := 0
+    else
+      raise Exception.CreateFmt(ERR_ICONFONTSFMX_VALUE_NOT_ACCEPTED,[AValue]);
+  except
+    On E: EConvertError do
+      raise Exception.CreateFmt(ERR_ICONFONTSFMX_VALUE_NOT_ACCEPTED,[AValue])
+    else
+      raise;
+  end;
 end;
 
 procedure TIconFontFixedBitmapItem.SetFontName(const AValue: string);
@@ -282,7 +288,7 @@ begin
   if FFontName <> AValue then
   begin
     FFontName := AValue;
-    UpdateBitmap;
+    DrawFontIcon;
   end;
 end;
 
@@ -294,7 +300,7 @@ end;
 procedure TIconFontFixedBitmapItem.SetOpacity(const AValue: Single);
 begin
   FOpacity := AValue;
-  UpdateBitmap;
+  DrawFontIcon;
 end;
 
 procedure TIconFontFixedBitmapItem.SetSize(const AValue: Single);
@@ -302,7 +308,7 @@ begin
   if (Trunc(AValue) > 0) and (AValue <> FSize) then
   begin
     FSize := AValue;
-    UpdateBitmap;
+    DrawFontIcon;
   end;
 end;
 

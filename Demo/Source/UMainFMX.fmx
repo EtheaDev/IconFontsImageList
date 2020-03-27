@@ -130,8 +130,6 @@ object IconFontImageListForm: TIconFontImageListForm
         IconName = 'Account'
         FontName = 'Material Design Icons'
         FontIconDec = 61444
-        FontColor = claBlack
-        Opacity = 1.000000000000000000
       end
       item
         MultiResBitmap = <
@@ -141,8 +139,6 @@ object IconFontImageListForm: TIconFontImageListForm
         IconName = 'User'
         FontName = 'Material Design Icons'
         FontIconDec = 61449
-        FontColor = claBlack
-        Opacity = 1.000000000000000000
       end>
     Destination = <
       item
@@ -157,6 +153,10 @@ object IconFontImageListForm: TIconFontImageListForm
             Name = 'User'
           end>
       end>
+    AutoSizeBitmaps = False
+    FontName = 'Material Design Icons'
+    FontColor = claBlack
+    Opacity = 1.000000000000000000
     Left = 48
     Top = 16
   end
