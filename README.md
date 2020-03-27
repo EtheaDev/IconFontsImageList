@@ -7,7 +7,7 @@
 27 March 2020: official 1.5 version (VCL) and first 1.0 version (FMX)
 - Added support for Icon Fonts that contains surrogate pair characters (VCL & FMX)!
 
-Now you can use all the icons present in the material design icons collection Font (for example): [http://materialdesignicons.com/](http://materialdesignicons.com/) or any other "font collection" with this type of special characters: [look here for more informations](https://github.com/EtheaDev/IconFontsImageList/wiki/Icon-Fonts-with-surrogate-pair).
+Now you can use all the icons present in any "font collection" that containts those special characters: [look here for more informations](https://github.com/EtheaDev/IconFontsImageList/wiki/Icon-Fonts-with-surrogate-pair).
 
 24 March 2020: official 1.4 version (VCL) and first Beta version (FMX)
 - Improved performances into IDE (VCL)
