@@ -294,7 +294,7 @@ var
 begin
   if FUpdating then Exit;
   LText := (Sender as TEdit).Text;
-  if (Length(LText) = 4) or (Length(LText)=0) then
+  if (Length(LText) = 4) or (Length(LText) = 5) or (Length(LText)=0) then
   begin
     if Sender = FontIconHex then
       SetImageFontIconHex(FontIconHex.Text);
@@ -532,6 +532,7 @@ begin
   CharsEdit.Visible := False;
   BuildButton.Visible := False;
   IconBuilderGroupBox.Height := IconBuilderGroupBox.Height - BuildButton.Height -4;
+  FontIconHex.MaxLength := 4;
   {$ENDIF}
   InitColorBox(DefaultFontColorColorBox);
   InitColorBox(DefaultMaskColorColorBox);
@@ -628,7 +629,7 @@ end;
 procedure TIconFontsImageListEditor.BuildButtonClick(Sender: TObject);
 {$IFDEF UNICODE}
 var
-  C: Char;
+  C: WideChar;
 {$ENDIF}
 begin
   {$IFDEF UNICODE}
@@ -644,9 +645,9 @@ begin
   Screen.Cursor := crHourGlass;
   try
     FEditingList.AddIcons(
-      WideChar(StrToInt('$' + FromHexNum.Text)), //From Chr
-      WideChar(StrToInt('$' + ToHexNum.Text)), //To Chr
-      'Material Design Icons'
+      StrToInt('$' + FromHexNum.Text), //From Chr
+      StrToInt('$' + ToHexNum.Text), //To Chr
+      FontName.Text
       );
     UpdateIconFontListView(ImageView);
   finally

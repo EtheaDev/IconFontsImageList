@@ -394,7 +394,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           Hint = 'Hexadecimal value'
           Anchors = [akTop, akRight]
           CharCase = ecUpperCase
-          MaxLength = 4
+          MaxLength = 5
           TabOrder = 2
           OnChange = FontIconHexChange
         end

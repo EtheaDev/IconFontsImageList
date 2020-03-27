@@ -74,6 +74,12 @@ begin
   LRand1 := 61441+Random(4000);
   LRand2 := LRand1+LRandomCount-1;
 
+  //Test for Icons with surrogate pairs
+  (*
+  LRand1 := $F0100;
+  LRand2 := $F0207;
+  *)
+
   //Generate Icons
   Glyph.ImageIndex := -1;
   for I := LRand1 to LRand2 do
@@ -81,7 +87,7 @@ begin
     LItem := IconFontsImageList.Source.Add as TIconFontsSourceItem;
     LItem.MultiResBitmap.Add;
     LItem.FontName := 'Material Design Icons';
-    LItem.Character := WideChar(I);
+    LItem.FontIconDec := I;
     LItem.FontColor := TAlphaColors.Black;
     LItem.Name := LItem.FontIconHex;
     LDest := IconFontsImageList.Destination.Add;

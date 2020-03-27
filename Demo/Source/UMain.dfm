@@ -4,8 +4,8 @@ object MainForm: TMainForm
   Caption = 
     'Icon Fonts ImageList Demo - Copyright (c) Ethea S.r.l. - Apache ' +
     '2.0 Open Source License'
-  ClientHeight = 592
-  ClientWidth = 946
+  ClientHeight = 547
+  ClientWidth = 709
   Color = clBtnFace
   Constraints.MinHeight = 300
   Constraints.MinWidth = 400
@@ -22,14 +22,14 @@ object MainForm: TMainForm
     Left = 0
     Top = 38
     Width = 201
-    Height = 554
+    Height = 509
     Align = alLeft
     TabOrder = 0
     object SelectThemeRadioGroup: TRadioGroup
       Left = 1
       Top = 1
       Width = 199
-      Height = 372
+      Height = 327
       Align = alClient
       Caption = 'Select Theme/Color'
       ItemIndex = 0
@@ -45,7 +45,7 @@ object MainForm: TMainForm
     end
     object GroupBox1: TGroupBox
       Left = 1
-      Top = 373
+      Top = 328
       Width = 199
       Height = 77
       Align = alBottom
@@ -80,7 +80,7 @@ object MainForm: TMainForm
     end
     object SliderPanel: TPanel
       Left = 1
-      Top = 491
+      Top = 446
       Width = 199
       Height = 62
       Align = alBottom
@@ -110,7 +110,7 @@ object MainForm: TMainForm
     end
     object ButtonsPanel: TPanel
       Left = 1
-      Top = 450
+      Top = 405
       Width = 199
       Height = 41
       Align = alBottom
@@ -139,7 +139,7 @@ object MainForm: TMainForm
   object TopToolBar: TToolBar
     Left = 0
     Top = 0
-    Width = 946
+    Width = 709
     Height = 38
     AutoSize = True
     ButtonHeight = 38
@@ -149,12 +149,12 @@ object MainForm: TMainForm
     object ToolButton1: TToolButton
       Left = 0
       Top = 0
-      ImageIndex = 0
+      Action = DisabledAction
     end
     object ToolButton2: TToolButton
       Left = 39
       Top = 0
-      ImageIndex = 1
+      Action = DeleteIconAction
     end
     object ToolButton3: TToolButton
       Left = 78
@@ -174,19 +174,20 @@ object MainForm: TMainForm
     object ToolButton6: TToolButton
       Left = 195
       Top = 0
-      ImageIndex = 5
+      Action = ChangeIconAction
     end
     object ToolButton7: TToolButton
       Left = 234
       Top = 0
-      ImageIndex = 6
+      Action = ChangeColorAction
+      Enabled = False
     end
   end
   object Panel2: TPanel
-    Left = 864
+    Left = 627
     Top = 38
     Width = 82
-    Height = 554
+    Height = 509
     Align = alRight
     TabOrder = 2
     object DeleteButton: TBitBtn
@@ -223,14 +224,14 @@ object MainForm: TMainForm
   object ClientPanel: TPanel
     Left = 201
     Top = 38
-    Width = 663
-    Height = 554
+    Width = 426
+    Height = 509
     Align = alClient
     TabOrder = 3
     object ImageListLabel: TLabel
       Left = 1
       Top = 223
-      Width = 661
+      Width = 424
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -240,7 +241,7 @@ object MainForm: TMainForm
     object TreeView: TTreeView
       Left = 1
       Top = 1
-      Width = 661
+      Width = 424
       Height = 222
       Align = alTop
       Images = IconFontsImageList
@@ -260,8 +261,8 @@ object MainForm: TMainForm
     object ImageView: TListView
       Left = 1
       Top = 236
-      Width = 661
-      Height = 317
+      Width = 424
+      Height = 272
       Align = alClient
       Columns = <>
       IconOptions.AutoArrange = True
@@ -335,6 +336,12 @@ object MainForm: TMainForm
       Caption = 'Change Color'
       ImageIndex = 7
       OnExecute = ChangeColorActionExecute
+    end
+    object DisabledAction: TAction
+      Category = 'Edit'
+      Caption = 'Disabled'
+      Enabled = False
+      ImageIndex = 0
     end
   end
   object ColorDialog: TColorDialog

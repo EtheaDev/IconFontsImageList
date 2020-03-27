@@ -74,6 +74,7 @@ type
     ChangeColorButton: TBitBtn;
     ChangeColorAction: TAction;
     ColorDialog: TColorDialog;
+    DisabledAction: TAction;
     procedure AssignIconsButtonClick(Sender: TObject);
     procedure ChangeIconActionExecute(Sender: TObject);
     procedure SelectThemeRadioGroupClick(Sender: TObject);
@@ -85,6 +86,8 @@ type
     procedure IconFontsImageListFontMissing(const AFontName: string);
     procedure ChangeColorActionExecute(Sender: TObject);
   private
+    FIconFontsImageListHot: TIconFontsImageList;
+    FIconFontsImageListDisabled: TIconFontsImageList;
     procedure FormAfterMonitorDpiChanged(Sender: TObject; OldDPI, NewDPI: Integer);
     procedure UpdateButtons;
     procedure UpdateGUI;
@@ -131,11 +134,17 @@ begin
     LRand1 := 61441+Random(4000);
     LRand2 := LRand1+NumSpinEdit.Value-1;
 
+    (*
+    //Test for Icons with surrogate pairs
+    LRand1 := $F0100;
+    LRand2 := $F0207;
+    *)
+
     LStart := GetTickCount;
     //Generate Icons
     IconFontsImageList.AddIcons(
-      WideChar(LRand1), //From Chr
-      WideChar(LRand2), //To Chr
+      LRand1, //From Chr
+      LRand2, //To Chr
       'Material Design Icons'
       );
     LStop := GetTickCount;
@@ -152,6 +161,7 @@ begin
   ColorDialog.Color := IconFontsImageList.FontColor;
   if ColorDialog.Execute then
     IconFontsImageList.FontColor := ColorDialog.Color;
+  UpdateGUI;
 end;
 
 procedure TMainForm.ChangeIconActionExecute(Sender: TObject);
@@ -193,10 +203,10 @@ end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
 var
-  I, SelectedIndex: integer;
+  I: integer;
 begin
-  TrackBar.Position := IconFontsImageList.Height;
-  TrackBarChange(TrackBar);
+  FIconFontsImageListHot := TIconFontsImageList.Create(Self);
+  FIconFontsImageListDisabled := TIconFontsImageList.Create(Self);
 
   {$IFDEF HiDPISupport}
   OnAfterMonitorDpiChanged := FormAfterMonitorDpiChanged;
@@ -215,6 +225,10 @@ begin
     SelectThemeRadioGroup.OnClick := SelectThemeRadioGroupClick;
   end;
   {$ENDIF}
+  SelectThemeRadioGroupClick(SelectThemeRadioGroup);
+
+  TrackBar.Position := IconFontsImageList.Height;
+  TrackBarChange(TrackBar);
 end;
 
 procedure TMainForm.IconFontsImageListFontMissing(const AFontName: string);
@@ -245,7 +259,6 @@ end;
 procedure TMainForm.SelectThemeRadioGroupClick(Sender: TObject);
 var
   LStyleName: string;
-  LStyleFontColor, LStyleMaskColor: TColor;
 begin
   Screen.Cursor := crHourGlass;
   try
@@ -270,7 +283,14 @@ begin
     TopToolBar.Invalidate;
     {$ENDIF}
 
-    UpdateButtons;
+    //Override default: use Windows 10 blue color for Windows and Windows10 Style
+    if SameText(LStyleName,'Windows') or SameText(LStyleName,'Windows10') then
+    begin
+      IconFontsImageList.FontColor := RGB(0, 120, 215); //Windows 10 Blue
+      IconFontsImageList.MaskColor := clBtnFace;
+    end;
+
+    UpdateGUI;
   finally
     Screen.Cursor := crDefault;
   end;
@@ -292,6 +312,16 @@ begin
   TopToolBar.ButtonWidth := LSize + 2;
   TopToolBar.Height := LSize + 6;
   TreeView.Indent := LSize;
+
+  //Auto update for Disabled and Hot ImageList
+  FIconFontsImageListHot.Assign(IconFontsImageList);
+  FIconFontsImageListHot.FontColor := HotColor(IconFontsImageList.FontColor, 30);
+  FIconFontsImageListHot.Size := Trunc(IconFontsImageList.Size * 1.1);
+  FIconFontsImageListDisabled.Assign(IconFontsImageList);
+  FIconFontsImageListDisabled.FontColor := DisabledColor(IconFontsImageList.FontColor, 30);
+  TopToolBar.DisabledImages := FIconFontsImageListDisabled;
+  TopToolBar.HotImages := FIconFontsImageListHot;
+
   UpdateButtons;
   UpdateListView;
   UpdateTreeView;

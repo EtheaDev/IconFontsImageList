@@ -47,6 +47,10 @@ uses
   , FMX.Objects
   ;
 
+resourcestring
+  ERR_ICONFONTSFMX_VALUE_NOT_ACCEPTED = 'Value %s not accepted!';
+  ERR_ICONFONTSFMX_FONT_NOT_INSTALLED = 'Font "%s" is not installed!';
+
 type
   TIconFontMissing = procedure (const AFontName: string) of object;
 
@@ -62,7 +66,7 @@ type
     function GetBitmap: TBitmapOfItem;
     procedure SetSize(const AValue: Single);
     procedure DrawFontIcon;
-    function GetCharacter: WideChar;
+    function GetCharacter: WideString;
     function GetFontName: string;
     function GetFontColor: TAlphaColor;
     function GetOpacity: Single;
@@ -78,7 +82,7 @@ type
     property Size: Single read GetSize write SetSize;
     //Readonly properties from Source Item
     property FontName: string read GetFontName;
-    property Character: WideChar read GetCharacter stored false;
+    property Character: WideString read GetCharacter stored false;
     property FontColor: TAlphaColor read GetFontColor stored false;
     property Opacity: Single read GetOpacity  stored false;
   end;
@@ -88,7 +92,6 @@ type
   TIconFontMultiResBitmap = class(TMultiResBitmap)
   private
     FOwnerSourceItem: TIconFontsSourceItem;
-    //function OwnerImageList: TIconFontsImageList;
     procedure UpdateImageSize(const ASize: Single);
   protected
     constructor Create(AOwner: TPersistent; ItemClass: TIconFontBitmapItemClass); overload;
@@ -98,15 +101,14 @@ type
   TIconFontsSourceItem = class(TCustomSourceItem)
   private
     FOwnerImageList: TIconFontsImageList;
-    FCharacter: WideChar;
+    FFontIconDec: Integer;
     FOpacity: Single;
     FFontName: string;
     FFontColor: TAlphaColor;
     procedure UpdateAllItems;
-    function GetCharacter: WideChar;
+    function GetCharacter: WideString;
     function GetFontIconDec: Integer;
     function GetFontIconHex: string;
-    procedure SetCharacter(const AValue: WideChar);
     procedure SetFontColor(const AValue: TAlphaColor);
     procedure SetFontIconDec(const AValue: Integer);
     procedure SetFontIconHex(const AValue: string);
@@ -115,35 +117,53 @@ type
     procedure AutoSizeBitmap(const ASize: Single);
     function GetIconName: string;
     procedure SetIconName(const Value: string);
+    function GetFontName: string;
+    function GetFontColor: TAlphaColor;
+    function GetOpacity: Single;
   protected
     function GetDisplayName: string; override;
     function CreateMultiResBitmap: TMultiResBitmap; override;
+    function StoreFontName: Boolean; virtual;
+    function StoreFontColor: Boolean; virtual;
+    function StoreOpacity: Boolean; virtual;
   public
     constructor Create(Collection: TCollection); override;
   published
     property MultiResBitmap;
     property IconName: string read GetIconName write SetIconName;
-    property FontName: string read FFontName write SetFontName;
+    property FontName: string read GetFontName write SetFontName stored StoreFontName;
     property FontIconDec: Integer read GetFontIconDec write SetFontIconDec stored true default 0;
     property FontIconHex: string read GetFontIconHex write SetFontIconHex stored false;
-    property Character: WideChar read GetCharacter write SetCharacter stored false default #0;
-    property FontColor: TAlphaColor read FFontColor write SetFontColor;
-    property Opacity: Single read FOpacity write SetOpacity;
+    property Character: WideString read GetCharacter;
+    property FontColor: TAlphaColor read GetFontColor write SetFontColor stored StoreFontColor;
+    property Opacity: Single read GetOpacity write SetOpacity stored StoreOpacity;
   end;
 
   TIconFontsImageList = class(TCustomImageList)
   private
     FAutoSizeBitmaps: Boolean;
+    FFontName: string;
+    FFontColor: TAlphaColor;
+    FOpacity: Single;
     procedure SetAutoSizeBitmaps(const Value: Boolean);
+    procedure SetFontName(const Value: string);
+    procedure UpdateSourceItems;
+    procedure SetFontColor(const Value: TAlphaColor);
+    procedure SetOpacity(const Value: Single);
   protected
     function CreateSource: TSourceCollection; override;
     function DoBitmap(Size: TSize; const Index: Integer): TBitmap; override;
+  public
+    constructor Create(AOwner: TComponent); override;
   published
     property Source;
     property Destination;
     property OnChange;
     property OnChanged;
-    property AutoSizeBitmaps: Boolean read FAutoSizeBitmaps write SetAutoSizeBitmaps default False;
+    property AutoSizeBitmaps: Boolean read FAutoSizeBitmaps write SetAutoSizeBitmaps default True;
+    property FontName: string read FFontName write SetFontName;
+    property FontColor: TAlphaColor read FFontColor write SetFontColor;
+    property Opacity: Single read FOpacity write SetOpacity;
   end;
 
 implementation
@@ -152,6 +172,7 @@ uses
   System.Math
   , System.RTLConsts
   , System.SysUtils
+  , System.Character
   , FMX.Forms
   , FMX.Consts;
 
@@ -209,7 +230,7 @@ begin
   Result := inherited Bitmap;
 end;
 
-function TIconFontBitmapItem.GetCharacter: WideChar;
+function TIconFontBitmapItem.GetCharacter: WideString;
 begin
   Result := FOwnerMultiResBitmap.FOwnerSourceItem.Character;
 end;
@@ -268,16 +289,6 @@ begin
     FOwnerSourceItem := nil;
 end;
 
-(*
-function TIconFontMultiResBitmap.OwnerImageList: TIconFontsImageList;
-begin
-  if Assigned(FOwnerSourceItem) then
-    Result := FOwnerSourceItem.FOwnerImageList
-  else
-    Result := nil;
-end;
-*)
-
 procedure TIconFontMultiResBitmap.UpdateImageSize(const ASize: Single);
 var
   I, J: Integer;
@@ -310,10 +321,10 @@ end;
 constructor TIconFontsSourceItem.Create(Collection: TCollection);
 begin
   inherited Create(Collection);
-  FOpacity := 1;
-  FFontName := 'Material Design Icons';
-  FCharacter := WideChar(StrToInt('$F008'));
-  FFontColor := TAlphaColors.Black;
+  FOpacity := 0;
+  FFontName := '';
+  FFontIconDec := 0;
+  FFontColor := TAlphaColors.null;
 end;
 
 function TIconFontsSourceItem.CreateMultiResBitmap: TMultiResBitmap;
@@ -322,32 +333,49 @@ begin
   FOwnerImageList := Result.ImageList as TIconFontsImageList;
 end;
 
-function TIconFontsSourceItem.GetCharacter: WideChar;
+function TIconFontsSourceItem.GetCharacter: WideString;
 begin
-  Result := FCharacter;
+  {$WARN SYMBOL_DEPRECATED OFF}
+  Result := ConvertFromUtf32(FFontIconDec);
 end;
 
 function TIconFontsSourceItem.GetDisplayName: string;
 begin
   if Name <> '' then
     Result := Format('%s - Hex: %s - (%s)',
-      [FFontName, FontIconHex, Name])
+      [FontName, FontIconHex, Name])
   else
     Result := Format('%s - Hex: %s',
-      [FFontName, FontIconHex]);
+      [FontName, FontIconHex]);
+end;
+
+function TIconFontsSourceItem.GetFontColor: TAlphaColor;
+begin
+  if FFontColor = TAlphaColors.Null then
+    Result := FOwnerImageList.FFontColor
+  else
+    Result := FFontColor;
 end;
 
 function TIconFontsSourceItem.GetFontIconDec: Integer;
 begin
-  Result := ord(FCharacter);
+  Result := FFontIconDec;
 end;
 
 function TIconFontsSourceItem.GetFontIconHex: string;
 begin
-  if FCharacter <> #0 then
-    Result := IntToHex(Ord(FCharacter), 4)
+  if FFontIconDec <> 0 then
+    Result := IntToHex(FFontIconDec, 1)
   else
     Result := '';
+end;
+
+function TIconFontsSourceItem.GetFontName: string;
+begin
+  if FFontName = '' then
+    Result := FOwnerImageList.FFontName
+  else
+    Result := FFontName;
 end;
 
 function TIconFontsSourceItem.GetIconName: string;
@@ -355,13 +383,12 @@ begin
   Result := inherited Name;
 end;
 
-procedure TIconFontsSourceItem.SetCharacter(const AValue: WideChar);
+function TIconFontsSourceItem.GetOpacity: Single;
 begin
-  if AValue <> FCharacter then
-  begin
-    FCharacter := AValue;
-    UpdateAllItems;
-  end;
+  if FOpacity = 0 then
+    Result := FOwnerImageList.FOpacity
+  else
+    Result := FOpacity;
 end;
 
 procedure TIconFontsSourceItem.SetFontColor(const AValue: TAlphaColor);
@@ -372,23 +399,42 @@ end;
 
 procedure TIconFontsSourceItem.SetFontIconDec(const AValue: Integer);
 begin
-  Character := WideChar(AValue);
+  if AValue <> FFontIconDec then
+  begin
+    FFontIconDec := AValue;
+    UpdateAllItems;
+  end;
 end;
 
 procedure TIconFontsSourceItem.SetFontIconHex(const AValue: string);
 begin
-  if (Length(AValue) = 4) then
-    Character := WideChar(StrToInt('$' + AValue))
-  else if (Length(AValue) = 0) then
-    Character := #0
-  else
-    raise Exception.CreateFmt('Value %s not accepted!',[AValue]);
+  try
+    if (Length(AValue) = 4) or (Length(AValue) = 5) then
+      FontIconDec := StrToInt('$' + AValue)
+    else if (Length(AValue) = 0) then
+      FFontIconDec := 0
+    else
+      raise Exception.CreateFmt(ERR_ICONFONTSFMX_VALUE_NOT_ACCEPTED,[AValue]);
+  except
+    On E: EConvertError do
+      raise Exception.CreateFmt(ERR_ICONFONTSFMX_VALUE_NOT_ACCEPTED,[AValue])
+    else
+      raise;
+  end;
 end;
 
 procedure TIconFontsSourceItem.SetFontName(const AValue: string);
 begin
-  FFontName := AValue;
-  UpdateAllItems;
+  if (FontName <> AValue) then
+  begin
+    if (AValue = FOwnerImageList.FontName) then
+      FFontName := AValue
+    else
+    begin
+      FFontName := AValue;
+      UpdateAllItems;
+    end;
+  end;
 end;
 
 procedure TIconFontsSourceItem.SetIconName(const Value: string);
@@ -400,6 +446,21 @@ procedure TIconFontsSourceItem.SetOpacity(const AValue: Single);
 begin
   FOpacity := AValue;
   UpdateAllItems;
+end;
+
+function TIconFontsSourceItem.StoreFontColor: Boolean;
+begin
+  Result := (FOwnerImageList = nil) or (FFontColor <> FOwnerImageList.FFontColor);
+end;
+
+function TIconFontsSourceItem.StoreFontName: Boolean;
+begin
+  Result := (FOwnerImageList = nil) or (FFontName <> FOwnerImageList.FFontName);
+end;
+
+function TIconFontsSourceItem.StoreOpacity: Boolean;
+begin
+  Result := (FOwnerImageList = nil) or (FOpacity <> FOwnerImageList.FOpacity);
 end;
 
 procedure TIconFontsSourceItem.UpdateAllItems;
@@ -415,6 +476,14 @@ begin
 end;
 
 { TIconFontsImageList }
+
+constructor TIconFontsImageList.Create(AOwner: TComponent);
+begin
+  inherited;
+  FAutoSizeBitmaps := True;
+  FFontColor := TAlphaColors.Black;
+  FOpacity := 1;
+end;
 
 function TIconFontsImageList.CreateSource: TSourceCollection;
 begin
@@ -456,6 +525,47 @@ end;
 procedure TIconFontsImageList.SetAutoSizeBitmaps(const Value: Boolean);
 begin
   FAutoSizeBitmaps := Value;
+end;
+
+procedure TIconFontsImageList.UpdateSourceItems;
+var
+  I: Integer;
+  LSourceItem: TIconFontsSourceItem;
+begin
+  for I := 0 to Source.Count -1 do
+  begin
+    LSourceItem := Source[I] as TIconFontsSourceItem;
+    LSourceItem.FontName := FFontName;
+    LSourceItem.FontColor := FFontColor;
+    LSourceItem.Opacity := FOpacity;
+  end;
+end;
+
+procedure TIconFontsImageList.SetFontColor(const Value: TAlphaColor);
+begin
+  if FFontColor <> Value then
+  begin
+    FFontColor := Value;
+    UpdateSourceItems;
+  end;
+end;
+
+procedure TIconFontsImageList.SetFontName(const Value: string);
+begin
+  if FFontName <> Value then
+  begin
+    FFontName := Value;
+    UpdateSourceItems;
+  end;
+end;
+
+procedure TIconFontsImageList.SetOpacity(const Value: Single);
+begin
+  if FOpacity <> Value then
+  begin
+    FOpacity := Value;
+    UpdateSourceItems;
+  end;
 end;
 
 initialization
