@@ -344,7 +344,7 @@ begin
     ClearAllButton.Enabled := FEditingList.Count > 0;
     ExportButton.Enabled := FEditingList.Count > 0;
     BuildButton.Enabled := CharsEdit.Text <> '';
-    BuildFromHexButton.Enabled := (Length(FromHexNum.Text) = 4) and (Length(ToHexNum.Text) = 4);
+    BuildFromHexButton.Enabled := (Length(FromHexNum.Text) in [4,5]) and (Length(ToHexNum.Text) in [4,5]);
     DeleteButton.Enabled := LIsItemSelected;
     FontColor.Enabled := LIsItemSelected;
     MaskColor.Enabled := LIsItemSelected;

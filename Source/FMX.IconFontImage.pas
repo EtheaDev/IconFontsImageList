@@ -199,6 +199,7 @@ begin
       LBitmap.Canvas.Fill.Color := FontColor;
       LBitmap.Canvas.Font.Assign(LFont);
       LRect.Create(0,0,Size,Size);
+      {$WARN SYMBOL_DEPRECATED OFF}
       LCharacter := ConvertFromUtf32(FontIconDec);
       LBitmap.Canvas.FillText(LRect,
         Character, False, Opacity,

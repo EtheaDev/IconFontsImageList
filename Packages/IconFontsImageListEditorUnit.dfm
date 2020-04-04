@@ -124,7 +124,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Height = 21
       Anchors = [akTop, akRight]
       CharCase = ecUpperCase
-      MaxLength = 4
+      MaxLength = 5
       TabOrder = 0
       OnChange = EditChangeUpdateGUI
     end
@@ -135,7 +135,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Height = 21
       Anchors = [akTop, akRight]
       CharCase = ecUpperCase
-      MaxLength = 4
+      MaxLength = 5
       TabOrder = 1
       OnChange = EditChangeUpdateGUI
     end
