@@ -75,6 +75,8 @@ type
     ChangeColorAction: TAction;
     ColorDialog: TColorDialog;
     DisabledAction: TAction;
+    ShowCharMapButton: TBitBtn;
+    ShowCharMapAction: TAction;
     procedure AssignIconsButtonClick(Sender: TObject);
     procedure ChangeIconActionExecute(Sender: TObject);
     procedure SelectThemeRadioGroupClick(Sender: TObject);
@@ -85,6 +87,7 @@ type
     procedure DeleteIconActionExecute(Sender: TObject);
     procedure IconFontsImageListFontMissing(const AFontName: string);
     procedure ChangeColorActionExecute(Sender: TObject);
+    procedure ShowCharMapActionExecute(Sender: TObject);
   private
     FIconFontsImageListHot: TIconFontsImageList;
     FIconFontsImageListDisabled: TIconFontsImageList;
@@ -106,6 +109,7 @@ implementation
 uses
   Themes
   , IconFontsUtils
+  , IconFontsCharMapUnit
   , IconFontsImageListEditorUnit;
 
 procedure TMainForm.UpdateButtons;
@@ -113,6 +117,7 @@ begin
   DeleteButton.Action := DeleteIconAction;
   ChangeIconButton.Action := ChangeIconAction;
   ChangeColorButton.Action :=ChangeColorAction;
+  ShowCharMapButton.Action :=ShowCharMapAction;
 end;
 
 procedure TMainForm.UpdateListView;
@@ -294,6 +299,12 @@ begin
   finally
     Screen.Cursor := crDefault;
   end;
+end;
+
+procedure TMainForm.ShowCharMapActionExecute(Sender: TObject);
+begin
+  ShowIconFontsCharMap(IconFontsImageList.FontName,
+    24, IconFontsImageList.FontColor, IconFontsImageList.MaskColor);
 end;
 
 procedure TMainForm.ShowImageEditorButtonClick(Sender: TObject);

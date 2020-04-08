@@ -37,7 +37,8 @@ uses
   , ComCtrls;
 
 function UpdateIconFontListView(const AListView: TListView): Integer;
-function UpdateIconFontListViewCaptions(const AListView: TListView): Integer;
+function UpdateIconFontListViewCaptions(const AListView: TListView;
+  const AShowCaption: Boolean = True): Integer;
 procedure UpdateIconFontsColorByStyle(const IconFontsImageList: TIconFontsImageList;
     const AReplaceCustomColors: Boolean = False);
 function DarkerColor(AColor: TColor; APercent: Integer): TColor;
@@ -81,7 +82,8 @@ begin
   end;
 end;
 
-function UpdateIconFontListViewCaptions(const AListView: TListView): Integer;
+function UpdateIconFontListViewCaptions(const AListView: TListView;
+  const AShowCaption: Boolean = True): Integer;
 var
   I: Integer;
   LItem: TIconFontItem;
@@ -96,10 +98,15 @@ begin
     begin
       LItem := LIconFontsImageList.IconFontItems[I];
       LListItem := AListView.Items[I];
-      LListItem.Caption := Format('%d%s$%s%s%s',
-        [LItem.FontIconDec,sLineBreak,
-         LItem.FontIconHex,sLineBreak,
-         Litem.IconName]);
+      if AShowCaption then
+      begin
+        LListItem.Caption := Format('%d%s$%s%s%s',
+          [LItem.FontIconDec,sLineBreak,
+           LItem.FontIconHex,sLineBreak,
+           Litem.IconName]);
+      end
+      else
+        LListItem.Caption := '';
     end;
   finally
     AListView.Items.EndUpdate;

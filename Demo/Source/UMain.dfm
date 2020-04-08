@@ -220,6 +220,16 @@ object MainForm: TMainForm
       Layout = blGlyphTop
       TabOrder = 2
     end
+    object ShowCharMapButton: TBitBtn
+      Left = 6
+      Top = 201
+      Width = 73
+      Height = 60
+      Action = ShowCharMapAction
+      Caption = 'Char Map...'
+      Layout = blGlyphTop
+      TabOrder = 3
+    end
   end
   object ClientPanel: TPanel
     Left = 201
@@ -306,6 +316,9 @@ object MainForm: TMainForm
       item
         FontIconDec = 62424
         IconName = 'font-color'
+      end
+      item
+        FontIconDec = 63189
       end>
     FontName = 'Material Design Icons'
     FontColor = clBlack
@@ -342,6 +355,13 @@ object MainForm: TMainForm
       Caption = 'Disabled'
       Enabled = False
       ImageIndex = 0
+    end
+    object ShowCharMapAction: TAction
+      Category = 'Edit'
+      Caption = 'CharMap...'
+      Hint = 'Show Char Map...'
+      ImageIndex = 8
+      OnExecute = ShowCharMapActionExecute
     end
   end
   object ColorDialog: TColorDialog

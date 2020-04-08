@@ -4,7 +4,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
   HelpContext = 26140
   Caption = 'Icon Fonts ImageList Editor %s - Copyright Ethea S.r.l.'
   ClientHeight = 580
-  ClientWidth = 687
+  ClientWidth = 691
   Color = clBtnFace
   Constraints.MinHeight = 400
   Constraints.MinWidth = 500
@@ -14,6 +14,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  ShowHint = True
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
@@ -23,16 +24,16 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
   object ImageListGroup: TGroupBox
     Left = 0
     Top = 213
-    Width = 687
-    Height = 289
+    Width = 691
+    Height = 248
     Align = alClient
     Caption = ' Icons of Imagelist'
     TabOrder = 1
     object ImageView: TListView
       Left = 2
       Top = 15
-      Width = 683
-      Height = 272
+      Width = 687
+      Height = 231
       Align = alClient
       Columns = <>
       HideSelection = False
@@ -46,16 +47,16 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
   object IconBuilderGroupBox: TGroupBox
     Left = 0
     Top = 502
-    Width = 687
+    Width = 691
     Height = 78
     Align = alBottom
     Caption = 'Icons Builder'
-    TabOrder = 2
+    TabOrder = 3
     DesignSize = (
-      687
+      691
       78)
     object FromHexNumLabel: TLabel
-      Left = 299
+      Left = 303
       Top = 16
       Width = 68
       Height = 13
@@ -66,7 +67,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Transparent = True
     end
     object ToHexNumLabel: TLabel
-      Left = 431
+      Left = 435
       Top = 16
       Width = 68
       Height = 13
@@ -86,9 +87,9 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Transparent = True
     end
     object CharsEdit: TEdit
-      Left = 7
-      Top = 43
-      Width = 568
+      Left = 8
+      Top = 40
+      Width = 572
       Height = 21
       Hint = 'Icon Name'
       Anchors = [akLeft, akTop, akRight]
@@ -96,8 +97,8 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       OnChange = EditChangeUpdateGUI
     end
     object BuildButton: TButton
-      Left = 582
-      Top = 43
+      Left = 586
+      Top = 40
       Width = 98
       Height = 30
       Anchors = [akTop, akRight]
@@ -107,7 +108,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       OnClick = BuildButtonClick
     end
     object BuildFromHexButton: TButton
-      Left = 582
+      Left = 586
       Top = 9
       Width = 98
       Height = 30
@@ -118,7 +119,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       OnClick = BuildFromHexButtonClick
     end
     object FromHexNum: TEdit
-      Left = 369
+      Left = 373
       Top = 13
       Width = 74
       Height = 21
@@ -129,7 +130,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       OnChange = EditChangeUpdateGUI
     end
     object ToHexNum: TEdit
-      Left = 501
+      Left = 505
       Top = 13
       Width = 74
       Height = 21
@@ -143,7 +144,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
   object paTop: TPanel
     Left = 0
     Top = 0
-    Width = 687
+    Width = 691
     Height = 213
     Align = alTop
     BevelOuter = bvNone
@@ -151,7 +152,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
     object paClient: TPanel
       Left = 0
       Top = 0
-      Width = 604
+      Width = 608
       Height = 213
       Align = alClient
       BevelOuter = bvNone
@@ -159,13 +160,13 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       object BuilderGroupBox: TGroupBox
         Left = 0
         Top = 0
-        Width = 604
+        Width = 608
         Height = 103
         Align = alTop
         Caption = 'Properties of ImageList'
         TabOrder = 0
         DesignSize = (
-          604
+          608
           103)
         object DefaultFontNameLabel: TLabel
           Left = 95
@@ -206,7 +207,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
         object DefaultFontName: TComboBox
           Left = 95
           Top = 30
-          Width = 395
+          Width = 499
           Height = 21
           Anchors = [akLeft, akTop, akRight]
           TabOrder = 1
@@ -255,30 +256,20 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           TabOrder = 2
           OnClick = StoreBitmapCheckBoxClick
         end
-        object ShowCharMapButton: TButton
-          Left = 499
-          Top = 24
-          Width = 99
-          Height = 33
-          Anchors = [akTop, akRight]
-          Caption = 'Show Char Map...'
-          TabOrder = 5
-          OnClick = ShowCharMapButtonClick
-        end
       end
       object ImageGroup: TGroupBox
         Left = 0
         Top = 103
-        Width = 604
+        Width = 608
         Height = 104
         Align = alTop
         Caption = 'Properties of Selected Icon n.%d'
         TabOrder = 1
         DesignSize = (
-          604
+          608
           104)
         object IconNameLabel: TLabel
-          Left = 427
+          Left = 438
           Top = 59
           Width = 87
           Height = 13
@@ -296,7 +287,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           Transparent = True
         end
         object FontIconHexLabel: TLabel
-          Left = 434
+          Left = 438
           Top = 18
           Width = 74
           Height = 13
@@ -306,7 +297,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           Transparent = True
         end
         object FontIconDecLabel: TLabel
-          Left = 512
+          Left = 516
           Top = 18
           Width = 78
           Height = 13
@@ -356,9 +347,9 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           end
         end
         object IconName: TEdit
-          Left = 426
+          Left = 438
           Top = 74
-          Width = 160
+          Width = 158
           Height = 21
           Hint = 'Icon Name'
           TabOrder = 6
@@ -367,14 +358,14 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
         object FontName: TComboBox
           Left = 95
           Top = 34
-          Width = 333
+          Width = 337
           Height = 21
           Anchors = [akLeft, akTop, akRight]
           TabOrder = 1
           OnChange = FontNameChange
         end
         object FontIconDec: TSpinEdit
-          Left = 512
+          Left = 516
           Top = 34
           Width = 80
           Height = 22
@@ -387,7 +378,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           OnChange = FontIconDecChange
         end
         object FontIconHex: TEdit
-          Left = 434
+          Left = 438
           Top = 34
           Width = 74
           Height = 21
@@ -423,7 +414,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       end
     end
     object paButtons: TPanel
-      Left = 604
+      Left = 608
       Top = 0
       Width = 83
       Height = 213
@@ -450,25 +441,6 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
         ModalResult = 2
         TabOrder = 1
       end
-      object AddButton: TButton
-        Left = 2
-        Top = 90
-        Width = 75
-        Height = 25
-        Caption = '&Add...'
-        TabOrder = 3
-        OnClick = AddButtonClick
-      end
-      object DeleteButton: TButton
-        Left = 2
-        Top = 116
-        Width = 75
-        Height = 25
-        Caption = '&Delete'
-        Enabled = False
-        TabOrder = 4
-        OnClick = DeleteButtonClick
-      end
       object HelpButton: TButton
         Left = 2
         Top = 60
@@ -478,26 +450,65 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
         TabOrder = 2
         OnClick = HelpButtonClick
       end
-      object ClearAllButton: TButton
+      object ShowCharMapButton: TButton
         Left = 2
-        Top = 152
+        Top = 157
         Width = 75
-        Height = 25
-        Caption = '&Clear all'
-        Enabled = False
-        TabOrder = 5
-        OnClick = ClearAllButtonClick
+        Height = 50
+        Anchors = [akTop, akRight]
+        Caption = 'Show Char Map...'
+        TabOrder = 3
+        WordWrap = True
+        OnClick = ShowCharMapButtonClick
       end
-      object ExportButton: TButton
-        Left = 2
-        Top = 178
-        Width = 75
-        Height = 25
-        Caption = '&Export...'
-        Enabled = False
-        TabOrder = 6
-        OnClick = ExportButtonClick
-      end
+    end
+  end
+  object BottomPanel: TPanel
+    Left = 0
+    Top = 473
+    Width = 691
+    Height = 29
+    Align = alBottom
+    BevelOuter = bvNone
+    TabOrder = 2
+    object AddButton: TButton
+      Left = 6
+      Top = 4
+      Width = 75
+      Height = 25
+      Caption = '&Add...'
+      TabOrder = 0
+      OnClick = AddButtonClick
+    end
+    object DeleteButton: TButton
+      Left = 87
+      Top = 4
+      Width = 75
+      Height = 25
+      Caption = '&Delete'
+      Enabled = False
+      TabOrder = 1
+      OnClick = DeleteButtonClick
+    end
+    object ClearAllButton: TButton
+      Left = 168
+      Top = 4
+      Width = 75
+      Height = 25
+      Caption = '&Clear all'
+      Enabled = False
+      TabOrder = 2
+      OnClick = ClearAllButtonClick
+    end
+    object ExportButton: TButton
+      Left = 249
+      Top = 4
+      Width = 75
+      Height = 25
+      Caption = '&Export...'
+      Enabled = False
+      TabOrder = 3
+      OnClick = ExportButtonClick
     end
   end
   object SaveDialog: TSavePictureDialog

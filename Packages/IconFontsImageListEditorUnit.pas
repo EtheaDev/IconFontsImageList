@@ -46,12 +46,10 @@ uses
   , ImgList
   , ExtDlgs
   , Spin
+  , IconFontsCharMapUnit
   , IconFontsImageList;
 
 type
-  TIconFontsImageListEditor = class;
-
-
   TIconFontsImageListEditor = class(TForm)
     OKButton: TButton;
     CancelButton: TButton;
@@ -99,6 +97,7 @@ type
     ToHexNumLabel: TLabel;
     ToHexNum: TEdit;
     CharsEditLabel: TLabel;
+    BottomPanel: TPanel;
     ShowCharMapButton: TButton;
     ExportButton: TButton;
     procedure FormCreate(Sender: TObject);
@@ -131,10 +130,12 @@ type
       Shift: TShiftState);
     procedure ExportButtonClick(Sender: TObject);
   private
+    FCharMap: TIconFontsCharMapForm;
     FIconIndexLabel: string;
     FUpdating: Boolean;
     FEditingList: TIconFontsImageList;
     FIconFontItems: TIconFontItems;
+    procedure CloseCharMap(Sender: TObject; var Action: TCloseAction);
     procedure AddColor(const S: string);
     procedure AddNewItem;
     procedure DeleteSelectedItem;
@@ -148,6 +149,8 @@ type
     procedure SetImageIconName(IconName: String);
     procedure SetImageFontName(FontName: String);
     function SelectedIconFont: TIconFontItem;
+  public
+    destructor Destroy; override;
   end;
 
 function EditIconFontsImageList(const AImageList: TIconFontsImageList): Boolean;
@@ -160,6 +163,9 @@ uses
   CommCtrl
   , TypInfo
   , ShellApi
+  {$IFDEF UNICODE}
+  , System.Character
+  {$ENDIF}
   , IconFontsUtils;
 
 const
@@ -170,13 +176,10 @@ var
 
 function EditIconFontsImageList(const AImageList: TIconFontsImageList): Boolean;
 var
-  ListItems: TIconFontsImageListEditor;
+  LEditor: TIconFontsImageListEditor;
 begin
-  if (AImageList.Width > 256) or (AImageList.Height > 256) then
-    raise Exception.Create('ImageList Too Big');
-
-  ListItems := TIconFontsImageListEditor.Create(nil);
-  with ListItems do
+  LEditor := TIconFontsImageListEditor.Create(nil);
+  with LEditor do
   begin
     try
       Screen.Cursor := crHourglass;
@@ -218,7 +221,7 @@ end;
 procedure TIconFontsImageListEditor.HelpButtonClick(Sender: TObject);
 begin
   ShellExecute(handle, 'open',
-    PChar('https://github.com/EtheaDev/IconFontsImageList/wiki/Home'), nil, nil,
+    PChar('https://github.com/EtheaDev/IconFontsImageList/wiki/Image-Editor'), nil, nil,
     SW_SHOWNORMAL)
 end;
 
@@ -229,9 +232,18 @@ begin
 end;
 
 procedure TIconFontsImageListEditor.ShowCharMapButtonClick(Sender: TObject);
+var
+  LFontName: string;
 begin
   ShowCharMapButton.SetFocus;
-  ShellExecute(Handle, 'open', 'charmap', '', '', SW_SHOWNORMAL);
+  if not Assigned(FCharMap) then
+  begin
+    FCharMap := TIconFontsCharMapForm.CreateForImageList(Self, FEditingList, FontName.Text);
+    FCharMap.OnClose := CloseCharMap;
+  end
+  else
+    FCharMap.AssignImageList(FEditingList, FontName.Text);
+  FCharMap.Show;
 end;
 
 procedure TIconFontsImageListEditor.SizeSpinEditChange(Sender: TObject);
@@ -256,18 +268,21 @@ procedure TIconFontsImageListEditor.SetImageFontIconDec(IconDec: Integer);
 begin
   SelectedIconFont.FontIconDec := IconDec;
   UpdateGUI;
+  UpdateIconFontListViewCaptions(ImageView);
 end;
 
 procedure TIconFontsImageListEditor.SetImageFontIconHex(IconHex: String);
 begin
   SelectedIconFont.FontIconHex := IconHex;
   UpdateGUI;
+  UpdateIconFontListViewCaptions(ImageView);
 end;
 
 procedure TIconFontsImageListEditor.SetImageIconName(IconName: String);
 begin
   SelectedIconFont.IconName := IconName;
   UpdateGUI;
+  UpdateIconFontListViewCaptions(ImageView);
 end;
 
 procedure TIconFontsImageListEditor.SetImageFontName(FontName: String);
@@ -304,8 +319,11 @@ end;
 procedure TIconFontsImageListEditor.FontNameChange(Sender: TObject);
 begin
   if FUpdating then Exit;
-  SetImageFontName(FontName.Text);
-  UpdateCharsToBuild;
+  if Screen.Fonts.IndexOf(FontName.Text) >= 0 then
+  begin
+    SetImageFontName(FontName.Text);
+    UpdateCharsToBuild;
+  end;
 end;
 
 procedure TIconFontsImageListEditor.UpdateCharsToBuild;
@@ -405,8 +423,6 @@ begin
       MainImage.Canvas.TextOut(0, 0, LIconFontItem.Character);
       {$ENDIF}
     end;
-
-    UpdateIconFontListViewCaptions(ImageView);
   finally
     FUpdating := False;
   end;
@@ -426,6 +442,12 @@ begin
   UpdateGUI;
 end;
 
+destructor TIconFontsImageListEditor.Destroy;
+begin
+  FCharMap.Free;
+  inherited;
+end;
+
 procedure TIconFontsImageListEditor.ClearAllImages;
 begin
   Screen.Cursor := crHourglass;
@@ -436,8 +458,18 @@ begin
   end;
 end;
 
-type
-  THackPanel = class(TPanel);
+procedure TIconFontsImageListEditor.CloseCharMap(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  if FCharMap.ModalResult = mrOK then
+  begin
+    if FCharMap.CharsEdit.Text <> '' then
+    begin
+      FEditingList.AddIcons(FCharMap.CharsEdit.Text);
+      UpdateIconFontListView(ImageView);
+    end;
+  end;
+end;
 
 procedure TIconFontsImageListEditor.ClearAllButtonClick(Sender: TObject);
 begin
@@ -579,7 +611,7 @@ begin
 
   IconName.Left := MaskColor.Left + MaskColor.Width + 2;
   IconNameLabel.Left := IconName.Left;
-  IconName.Width := LEditSize;
+  IconName.Width := LEditSize - 3;
 end;
 
 procedure TIconFontsImageListEditor.EditChangeUpdateGUI(Sender: TObject);
@@ -627,15 +659,9 @@ begin
 end;
 
 procedure TIconFontsImageListEditor.BuildButtonClick(Sender: TObject);
-{$IFDEF UNICODE}
-var
-  C: WideChar;
-{$ENDIF}
 begin
   {$IFDEF UNICODE}
-  for C in CharsEdit.Text do
-    FEditingList.AddIcon(C);
-  FEditingList.RedrawImages;
+  FEditingList.AddIcons(CharsEdit.Text);
   UpdateIconFontListView(ImageView);
   {$ENDIF}
 end;

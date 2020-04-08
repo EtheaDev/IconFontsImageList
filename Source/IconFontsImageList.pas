@@ -116,6 +116,9 @@ type
   end;
 
   {TIconFontsImageList}
+  TDrawIconEvent = procedure (const ASender: TObject; const ACount: Integer;
+    const AItem: TIconFontItem; var AProceed: Boolean) of Object;
+
   TIconFontsImageList = class(TCustomImageList)
   private
     FStopDrawing: Integer;
@@ -125,6 +128,8 @@ type
     FFontColor: TColor;
     FOnFontMissing: TIconFontMissing;
     FFontNamesChecked: TStrings;
+    FOnDrawIcon: TDrawIconEvent;
+    FIconsAdded: Integer;
     {$IFDEF HiDPISupport}
     FScaled: Boolean;
     FDPIChangedMessageID: Integer;
@@ -136,8 +141,8 @@ type
     procedure SetIconSize(const ASize: Integer);
     procedure SetIconFontItems(const AValue: TIconFontItems);
     procedure UpdateImage(const AIndex: Integer);
-    procedure DrawFontIcon(const AIndex: Integer; const ABitmap: TBitmap;
-      const AAdd: Boolean);
+    function DrawFontIcon(const AIndex: Integer; const ABitmap: TBitmap;
+      const AAdd: Boolean): Boolean;
     procedure SetFontColor(const AValue: TColor);
     procedure SetFontName(const AValue: TFontName);
     procedure SetMaskColor(const AValue: TColor);
@@ -149,6 +154,8 @@ type
     procedure SetHeight(const AValue: Integer);
     procedure SetWidth(const AValue: Integer);
     procedure InternalRedrawImages;
+    function IsCharAvailable(const ABitmap: TBitmap;
+      const AFontIconDec: Integer): Boolean;
     {$IFDEF HiDPISupport}
     procedure DPIChangedMessageHandler(const Sender: TObject; const Msg: Messaging.TMessage);
     {$ENDIF}
@@ -160,6 +167,7 @@ type
     {$ENDIF}
     procedure Loaded; override;
   public
+    procedure DPIChanged(Sender: TObject; const OldDPI, NewDPI: Integer); virtual;
     procedure Change; override;
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -171,15 +179,18 @@ type
     procedure Replace(const AIndex: Integer; const AChar: Integer;
       const AFontName: TFontName = ''; const AFontColor: TColor = clNone;
       AMaskColor: TColor = clNone); overload;
-    procedure AddIcon(const AChar: WideChar; const AFontName: TFontName = '';
-      const AFontColor: TColor = clNone; const AMaskColor: TColor = clNone); overload;
-    procedure AddIcon(const AChar: Integer; const AFontName: TFontName = '';
-      const AFontColor: TColor = clNone; const AMaskColor: TColor = clNone); overload;
+    function AddIcon(const AChar: WideChar; const AFontName: TFontName = '';
+      const AFontColor: TColor = clNone; const AMaskColor: TColor = clNone): TIconFontItem; overload;
+    function AddIcon(const AChar: Integer; const AFontName: TFontName = '';
+      const AFontColor: TColor = clNone; const AMaskColor: TColor = clNone): TIconFontItem; overload;
     //Multiple icons methods
     function AddIcons(const AFrom, ATo: WideChar; const AFontName: TFontName = '';
-      const AFontColor: TColor = clNone; AMaskColor: TColor = clNone): Integer;  overload;
+      const AFontColor: TColor = clNone; AMaskColor: TColor = clNone;
+      const ACheckValid: Boolean = False): Integer;  overload;
     function AddIcons(const AFrom, ATo: Integer; const AFontName: TFontName = '';
-      const AFontColor: TColor = clNone; AMaskColor: TColor = clNone): Integer;  overload;
+      const AFontColor: TColor = clNone; AMaskColor: TColor = clNone;
+      const ACheckValid: Boolean = False): Integer;  overload;
+    function AddIcons(const ASourceString: WideString): Integer; overload;
     procedure UpdateIconsAttributes(const AFontColor, AMaskColor: TColor;
       const AReplaceFontColor: Boolean = True; const AFontName: string = ''); overload;
     procedure UpdateIconsAttributes(const ASize: Integer; const AFontColor, AMaskColor: TColor;
@@ -205,6 +216,7 @@ type
     property MaskColor: TColor read FMaskColor write SetMaskColor default clNone;
     property Size: Integer read GetSize write SetSize default 16;
     property OnFontMissing: TIconFontMissing read FOnFontMissing write FOnFontMissing;
+    property OnDrawIcon: TDrawIconEvent read FOnDrawIcon write FOnDrawIcon;
     {$IFDEF HasStoreBitmapProperty}
     property StoreBitmap default False;
     {$ENDIF}
@@ -226,6 +238,13 @@ uses
   , System.Character
   {$ENDIF}
   , StrUtils;
+
+function IsValidValue(const AFontIconDec: Integer): Boolean;
+begin
+  Result := ((AFontIconDec >= $0000) and (AFontIconDec <= $D7FF)) or
+    ((AFontIconDec >= $E000) and (AFontIconDec <= $FFFF)) or  //D800 to DFFF are reserved for code point values for Surrogate Pairs
+    ((AFontIconDec >= $010000) and (AFontIconDec <= $10FFFF)); //Surrogate Pairs
+end;
 
 { TIconFontItem }
 
@@ -287,6 +306,7 @@ begin
 {$IFDEF UNICODE}
   {$WARN SYMBOL_DEPRECATED OFF}
   Result := ConvertFromUtf32(FFontIconDec);
+  {$WARN SYMBOL_DEPRECATED ON}
 {$ELSE}
   Result := WideChar(FFontIconDec);
 {$ENDIF}
@@ -332,6 +352,8 @@ procedure TIconFontItem.SetFontIconDec(const AValue: Integer);
 begin
   if AValue <> FFontIconDec then
   begin
+    if not IsValidValue(AValue) then
+      raise EArgumentOutOfRangeException.CreateFmt(ERR_ICONFONTS_VALUE_NOT_ACCEPTED,[IntToHex(AValue, 1)]);
     FFontIconDec := AValue;
     Changed;
   end;
@@ -482,6 +504,19 @@ begin
   end;
 end;
 
+procedure TIconFontsImageList.DPIChanged(Sender: TObject; const OldDPI, NewDPI: Integer);
+var
+  LSizeScaled: Integer;
+begin
+  LSizeScaled := MulDiv(Size, NewDPI, OldDPI);
+  FScaling := True;
+  try
+    SetSize(LSizeScaled);
+  finally
+    FScaling := False;
+  end;
+end;
+
 {$IFDEF HiDPISupport}
 procedure TIconFontsImageList.DPIChangedMessageHandler(const Sender: TObject;
   const Msg: Messaging.TMessage);
@@ -576,51 +611,88 @@ begin
     Dec(FStopDrawing);
 end;
 
-procedure TIconFontsImageList.AddIcon(const AChar: WideChar;
+function TIconFontsImageList.AddIcon(const AChar: WideChar;
   const AFontName: TFontName = ''; const AFontColor: TColor = clNone;
-  const AMaskColor: TColor = clNone);
+  const AMaskColor: TColor = clNone): TIconFontItem;
 begin
-  AddIcon(Ord(AChar), AFontName, AFontColor, AMaskColor);
+  Result := AddIcon(Ord(AChar), AFontName, AFontColor, AMaskColor);
 end;
 
-procedure TIconFontsImageList.AddIcon(const AChar: Integer;
+function TIconFontsImageList.AddIcon(const AChar: Integer;
   const AFontName: TFontName = ''; const AFontColor: TColor = clNone;
-  const AMaskColor: TColor = clNone);
-var
-  LIconFontItem: TIconFontItem;
+  const AMaskColor: TColor = clNone): TIconFontItem;
 begin
-  LIconFontItem := FIconFontItems.Add;
-  LIconFontItem.FFontIconDec := AChar;
-  if (AFontName <> '') and (AFontName <> FontName) then
-    LIconFontItem.FFontName := AFontName;
-  if AFontColor <> clNone then
-    LIconFontItem.FFontColor := AFontColor;
-  if AMaskColor <> clNone then
-    LIconFontItem.FMaskColor := AMaskColor;
+  Result := FIconFontItems.Add;
+  try
+    Result.FontIconDec := AChar;
+    if (AFontName <> '') and (AFontName <> FontName) then
+      Result.FFontName := AFontName;
+    if AFontColor <> clNone then
+      Result.FFontColor := AFontColor;
+    if AMaskColor <> clNone then
+      Result.FMaskColor := AMaskColor;
+  except
+    FIconFontItems.Delete(Result.Index);
+    raise;
+  end;
 end;
 
 function TIconFontsImageList.AddIcons(const AFrom, ATo: WideChar;
   const AFontName: TFontName = '';
-  const AFontColor: TColor = clNone; AMaskColor: TColor = clNone): Integer;
+  const AFontColor: TColor = clNone; AMaskColor: TColor = clNone;
+  const ACheckValid: Boolean = False): Integer;
 begin
-  Result := AddIcons(Ord(AFrom), Ord(ATo), AFontName, AFontColor, AMaskColor);
+  Result := AddIcons(Ord(AFrom), Ord(ATo), AFontName, AFontColor, AMaskColor, ACheckValid);
 end;
 
 function TIconFontsImageList.AddIcons(const AFrom, ATo: Integer;
   const AFontName: TFontName = '';
-  const AFontColor: TColor = clNone; AMaskColor: TColor = clNone): Integer;
+  const AFontColor: TColor = clNone; AMaskColor: TColor = clNone;
+  const ACheckValid: Boolean = False): Integer;
 var
   LChar: Integer;
+  LFontName: string;
+  LIsValid: Boolean;
+  LBitmap: TBitmap;
 begin
+  CheckFontName(AFontName);
   StopDrawing(True);
+  LBitmap := nil;
   try
     Result := 0;
+    if ACheckValid then
+    begin
+      if AFontName <> '' then
+        LFontName := AFontName
+      else
+        LFontName := FFontName;
+      LBitmap := TBitmap.Create;
+      LBitmap.Width := 10;
+      LBitmap.Height := 10;
+      with LBitmap.Canvas do
+      begin
+        Font.Name := LFontName;
+        Font.Height := 10;
+        Font.Color := clBlack;
+        Brush.Color := clWhite;
+      end;
+    end;
+    FIconsAdded := 0;
     for LChar := AFrom to ATo do
     begin
-      AddIcon(LChar, AFontName, AFontColor, AMaskColor);
-      Inc(Result);
+      if ACheckValid then
+        LIsValid := IsValidValue(LChar) and IsCharAvailable(LBitmap, LChar)
+      else
+        LIsValid := IsValidValue(LChar);
+      if LIsValid then
+      begin
+        AddIcon(LChar, AFontName, AFontColor, AMaskColor);
+        Inc(Result);
+      end;
     end;
+    FIconsAdded := Result;
   finally
+    LBitmap.Free;
     StopDrawing(False);
   end;
   if not (csLoading in ComponentState) then
@@ -650,17 +722,75 @@ begin
   end;
 end;
 
-procedure TIconFontsImageList.DrawFontIcon(const AIndex: Integer;
-  const ABitmap: TBitmap; const AAdd: Boolean);
+function TIconFontsImageList.IsCharAvailable(
+  const ABitmap: TBitmap;
+  const AFontIconDec: Integer): Boolean;
+var
+  GlyphIndicesA: PWordArray;
+  Cnt: DWORD;
+  I: Integer;
+  S: UnicodeString;
+  msBlank, msIcon: TMemoryStream;
+  LIsSurrogate: Boolean;
+  LRect: TRect;
+begin
+  Result := False;
+  if Assigned(ABitmap) then
+  begin
+    LIsSurrogate := (AFontIconDec >= $010000) and (AFontIconDec <= $10FFFF);
+    if LIsSurrogate then
+    begin
+      //To support surrogate Characters I cannot use GetGlyphIndicesW so I'm drawing the Character on a Canvas and
+      //check if is already blank: this method is quite slow
+      LRect := Rect(0,0, ABitmap.Width, ABitmap.Height);
+      ABitmap.Canvas.FillRect(LRect);
+      msBlank := TMemoryStream.Create;
+      msIcon := TMemoryStream.Create;
+      try
+        ABitmap.SaveToStream(msBlank);
+        {$IFDEF UNICODE}
+        {$WARN SYMBOL_DEPRECATED OFF}
+        S := ConvertFromUtf32(AFontIconDec);
+        {$WARN SYMBOL_DEPRECATED ON}
+        ABitmap.Canvas.TextOut(0, 0, S);
+        {$ELSE}
+        S := WideChar(AFontIconDec);
+        TextOutW(ABitmap.Canvas.Handle, 0, 0, PWideChar(S), 1);
+        {$ENDIF}
+        ABitmap.SaveToStream(msIcon);
+        Result := not ((msBlank.Size = msIcon.Size) and CompareMem(msBlank.Memory, msIcon.Memory, msBlank.Size));
+      finally
+        msBlank.Free;
+        msIcon.Free;
+      end;
+    end
+    else
+    begin
+      //Check for non surrogate pairs, using GetGlyphIndices
+      S := WideChar(AFontIconDec);
+      GetMem(GlyphIndicesA, SizeOf(S));
+      try
+        Cnt := GetGlyphIndices(ABitmap.Canvas.Handle, PChar(S), Length(S), PWord(GlyphIndicesA), GGI_MARK_NONEXISTING_GLYPHS);
+        if not (Cnt = GDI_ERROR) then
+          for I := 0 to Cnt - 1 do
+            Result := GlyphIndicesA[I] <> $FFFF;
+      finally
+        Dispose(GlyphIndicesA);
+      end;
+    end;
+  end;
+end;
+
+function TIconFontsImageList.DrawFontIcon(const AIndex: Integer;
+  const ABitmap: TBitmap; const AAdd: Boolean): Boolean;
 var
   LIconFontItem: TIconFontItem;
-  {$IFNDEF UNICODE}
   S: WideString;
-  {$ENDIF}
   LFontName: string;
   LMaskColor, LFontColor: TColor;
   LRect: TRect;
 begin
+  Result := False;
   if Assigned(ABitmap) then
   begin
     LIconFontItem := IconFontItems.GetItem(AIndex);
@@ -692,7 +822,8 @@ begin
       LRect.Bottom := Height;
       FillRect(LRect);
       {$IFDEF UNICODE}
-      TextOut(0, 0, LIconFontItem.Character);
+      S := LIconFontItem.Character;
+      TextOut(0, 0, S);
       {$ELSE}
       S := WideChar(LIconFontItem.FFontIconDec);
       TextOutW(ABitmap.Canvas.Handle, 0, 0, PWideChar(S), 1);
@@ -702,6 +833,9 @@ begin
       AddMasked(ABitmap, LMaskColor)
     else
       ReplaceMasked(AIndex, ABitmap, LMaskColor);
+    Result := True;
+    if Assigned(FOnDrawIcon) then
+      FOnDrawIcon(Self, FIconsAdded, LIconFontItem, Result);
   end;
 end;
 
@@ -892,7 +1026,10 @@ begin
     LBitmap := TBitmap.Create;
     try
       for I := 0 to FIconFontItems.Count -1 do
-        DrawFontIcon(I, LBitmap, True);
+      begin
+        if not DrawFontIcon(I, LBitmap, True) then
+          Break;
+      end;
       Self.Change;
     finally
       LBitmap.Free;
@@ -921,6 +1058,38 @@ begin
     LIconFontItem.UpdateIconAttributes(AFontColor, AMaskColor,
       True, AFontName);
   end;
+end;
+
+function TIconFontsImageList.AddIcons(const ASourceString: WideString): Integer;
+{$IFDEF UNICODE}
+var
+  LChar: UCS4Char;
+  I, L, ICharLen: Integer;
+{$ENDIF}
+begin
+  Result := 0;
+  {$IFDEF UNICODE}
+  L := Length(ASourceString);
+  I := 1;
+  while I <= L do
+  begin
+    {$WARN SYMBOL_DEPRECATED OFF}
+    if IsSurrogate(UCS4Char(ASourceString[I])) then
+    begin
+      LChar := ConvertToUtf32(ASourceString, I, ICharLen);
+    end
+    else
+    begin
+      ICharLen := 1;
+      LChar := UCS4Char(ASourceString[I]);
+    end;
+    {$WARN SYMBOL_DEPRECATED ON}
+    AddIcon(Ord(LChar));
+    Inc(I, ICharLen);
+    Inc(Result);
+  end;
+  RedrawImages;
+  {$ENDIF}
 end;
 
 { TIconFontItems }
@@ -998,7 +1167,5 @@ begin
   if Owner <> nil then
     TIconFontsImageList(Owner).UpdateImage(AIndex);
 end;
-
-{ TIconFontsImageCollection }
 
 end.
