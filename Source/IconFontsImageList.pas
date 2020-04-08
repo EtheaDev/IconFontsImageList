@@ -353,7 +353,7 @@ begin
   if AValue <> FFontIconDec then
   begin
     if not IsValidValue(AValue) then
-      raise EArgumentOutOfRangeException.CreateFmt(ERR_ICONFONTS_VALUE_NOT_ACCEPTED,[IntToHex(AValue, 1)]);
+      raise Exception.CreateFmt(ERR_ICONFONTS_VALUE_NOT_ACCEPTED,[IntToHex(AValue, 1)]);
     FFontIconDec := AValue;
     Changed;
   end;
@@ -509,12 +509,16 @@ var
   LSizeScaled: Integer;
 begin
   LSizeScaled := MulDiv(Size, NewDPI, OldDPI);
+  {$IFDEF D10_3+}
   FScaling := True;
   try
     SetSize(LSizeScaled);
   finally
     FScaling := False;
   end;
+  {$ELSE}
+    SetSize(LSizeScaled);
+  {$ENDIF}
 end;
 
 {$IFDEF HiDPISupport}
@@ -729,7 +733,7 @@ var
   GlyphIndicesA: PWordArray;
   Cnt: DWORD;
   I: Integer;
-  S: UnicodeString;
+  S: WideString;
   msBlank, msIcon: TMemoryStream;
   LIsSurrogate: Boolean;
   LRect: TRect;
@@ -1074,7 +1078,7 @@ begin
   while I <= L do
   begin
     {$WARN SYMBOL_DEPRECATED OFF}
-    if IsSurrogate(UCS4Char(ASourceString[I])) then
+    if IsSurrogate(ASourceString[I]) then
     begin
       LChar := ConvertToUtf32(ASourceString, I, ICharLen);
     end

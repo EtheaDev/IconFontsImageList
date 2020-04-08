@@ -23,7 +23,7 @@ package dclIconFontsImageListPackage;
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
-{$DESCRIPTION 'Ethea IconFontsImageList component'}
+{$DESCRIPTION 'Ethea IconFontsImageList VCL components'}
 {$LIBSUFFIX '_D7'}
 {$DESIGNONLY}
 {$IMPLICITBUILD ON}
@@ -36,6 +36,7 @@ requires
 contains
   RegisterIconFontsImageList in '..\RegisterIconFontsImageList.pas',
   IconFontsImageListEditor in '..\IconFontsImageListEditor.pas',
+  IconFontsCharMapUnit in '..\..\Source\IconFontsCharMapUnit.pas',
   IconFontsImageListEditorUnit in '..\IconFontsImageListEditorUnit.pas';
 
 end.

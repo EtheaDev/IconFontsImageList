@@ -46,7 +46,7 @@ uses
   , ImgList
   , ExtDlgs
   , Spin
-  , IconFontsImageList, System.Actions, Vcl.ActnList, Vcl.StdActns;
+  , IconFontsImageList, ActnList;
 
 type
   TIconFontsCharMapForm = class(TForm)
@@ -104,6 +104,7 @@ type
     FBuilding: Boolean;
     FFirstTime: Boolean;
     FMaxIcons: Integer;
+    FFirstIcon: Integer;
     FIconsCount: Integer;
     FIconIndexLabel: string;
     FUpdating: Boolean;
@@ -301,7 +302,7 @@ var
   LPosition: Integer;
   LListItem: TListItem;
 begin
-  LPosition := Round(FMaxIcons/ACount*AItem.Index/FMaxIcons*100);
+  LPosition := Round((FMaxIcons-FFirstIcon)/(ACount)*AItem.Index/(FMaxIcons-FFirstIcon)*100);
   if ProgressBar.Position <> LPosition then
   begin
     ProgressBar.Position := LPosition;
@@ -316,7 +317,7 @@ begin
        AItem.FontIconHex,sLineBreak,
        AItem.IconName]);
   end;
-  LListItem.ImageIndex := AItem.Index;
+  LListItem.ImageIndex := LListItem.Index;
 end;
 
 constructor TIconFontsCharMapForm.Create(AOwner: TComponent);
@@ -571,7 +572,6 @@ end;
 procedure TIconFontsCharMapForm.BuildAllIcons(const ASurrogate: Boolean = False);
 var
   LStart, LEnd: Integer;
-  LFirstIcon: Integer;
 begin
   Screen.Cursor := crHourGlass;
   try
@@ -587,7 +587,6 @@ begin
       CharsEdit.Text := '';
       ImageListGroup.Caption := '';
       FCharMapList.ClearIcons;
-      ImageView.Clear;
       //Normal Chars
       LStart := $0001;
       LEnd := $FFFF;
@@ -598,9 +597,10 @@ begin
       LStart := $F0000;
       LEnd := $FFFFF;
     end;
-    LFirstIcon := FCharMapList.Count-1;
-    ProgressBar.Position := 0;
+    ImageView.Clear;
+    FFirstIcon := FCharMapList.Count-1;
     FMaxIcons := LEnd - LStart;
+    ProgressBar.Position := 0;
     FBuilding := True;
     Try
       ImageView.Items.BeginUpdate;
@@ -619,7 +619,7 @@ begin
       FBuilding := False;
       ProgressBar.Visible := False;
     End;
-    ImageView.ItemIndex := LFirstIcon;
+    ImageView.ItemIndex := FFirstIcon;
   finally
     IconBuilderGroupBox.Enabled := True;
     ImageView.Enabled := True;

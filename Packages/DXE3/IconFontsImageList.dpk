@@ -25,7 +25,7 @@ package IconFontsImageList;
 {$IMAGEBASE $400000}
 {$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
-{$DESCRIPTION 'Extended ImageList to simplify use of icons with material icon fonts'}
+{$DESCRIPTION 'Ethea IconFontsImageList VCL components'}
 {$LIBSUFFIX '_DXE3'}
 {$RUNONLY}
 {$IMPLICITBUILD ON}

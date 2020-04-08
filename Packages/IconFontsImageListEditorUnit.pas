@@ -232,8 +232,6 @@ begin
 end;
 
 procedure TIconFontsImageListEditor.ShowCharMapButtonClick(Sender: TObject);
-var
-  LFontName: string;
 begin
   ShowCharMapButton.SetFocus;
   if not Assigned(FCharMap) then

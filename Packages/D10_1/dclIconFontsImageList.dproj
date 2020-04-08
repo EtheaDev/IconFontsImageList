@@ -78,6 +78,7 @@
         <DCCReference Include="VclSmp.dcp"/>
         <DCCReference Include="..\RegisterIconFontsImageList.pas"/>
         <DCCReference Include="..\IconFontsImageListEditor.pas"/>
+        <DCCReference Include="..\..\Source\IconFontsCharMapUnit.pas"/>
         <DCCReference Include="..\IconFontsImageListEditorUnit.pas"/>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>

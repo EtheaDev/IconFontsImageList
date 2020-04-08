@@ -1,10 +1,10 @@
 object IconFontsImageListEditor: TIconFontsImageListEditor
   Left = 352
   Top = 227
+  Width = 724
+  Height = 619
   HelpContext = 26140
   Caption = 'Icon Fonts ImageList Editor %s - Copyright Ethea S.r.l.'
-  ClientHeight = 580
-  ClientWidth = 691
   Color = clBtnFace
   Constraints.MinHeight = 400
   Constraints.MinWidth = 500
@@ -24,16 +24,16 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
   object ImageListGroup: TGroupBox
     Left = 0
     Top = 213
-    Width = 691
-    Height = 248
+    Width = 708
+    Height = 260
     Align = alClient
     Caption = ' Icons of Imagelist'
     TabOrder = 1
     object ImageView: TListView
       Left = 2
       Top = 15
-      Width = 687
-      Height = 231
+      Width = 704
+      Height = 243
       Align = alClient
       Columns = <>
       HideSelection = False
@@ -47,13 +47,13 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
   object IconBuilderGroupBox: TGroupBox
     Left = 0
     Top = 502
-    Width = 691
+    Width = 708
     Height = 78
     Align = alBottom
     Caption = 'Icons Builder'
     TabOrder = 3
     DesignSize = (
-      691
+      708
       78)
     object FromHexNumLabel: TLabel
       Left = 303
@@ -144,7 +144,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
   object paTop: TPanel
     Left = 0
     Top = 0
-    Width = 691
+    Width = 708
     Height = 213
     Align = alTop
     BevelOuter = bvNone
@@ -152,7 +152,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
     object paClient: TPanel
       Left = 0
       Top = 0
-      Width = 608
+      Width = 625
       Height = 213
       Align = alClient
       BevelOuter = bvNone
@@ -160,13 +160,13 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       object BuilderGroupBox: TGroupBox
         Left = 0
         Top = 0
-        Width = 608
+        Width = 625
         Height = 103
         Align = alTop
         Caption = 'Properties of ImageList'
         TabOrder = 0
         DesignSize = (
-          608
+          625
           103)
         object DefaultFontNameLabel: TLabel
           Left = 95
@@ -210,6 +210,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           Width = 499
           Height = 21
           Anchors = [akLeft, akTop, akRight]
+          ItemHeight = 13
           TabOrder = 1
           OnChange = DefaultFontNameChange
         end
@@ -221,6 +222,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           DefaultColorColor = clNone
           NoneColorColor = clNone
           Selected = clScrollBar
+          ItemHeight = 16
           TabOrder = 3
           OnChange = DefaultFontColorColorBoxChange
         end
@@ -232,6 +234,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           DefaultColorColor = clNone
           NoneColorColor = clNone
           Selected = clScrollBar
+          ItemHeight = 16
           TabOrder = 4
           OnChange = DefaultMaskColorColorBoxChange
         end
@@ -260,13 +263,13 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       object ImageGroup: TGroupBox
         Left = 0
         Top = 103
-        Width = 608
+        Width = 625
         Height = 104
         Align = alTop
         Caption = 'Properties of Selected Icon n.%d'
         TabOrder = 1
         DesignSize = (
-          608
+          625
           104)
         object IconNameLabel: TLabel
           Left = 438
@@ -361,6 +364,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           Width = 337
           Height = 21
           Anchors = [akLeft, akTop, akRight]
+          ItemHeight = 13
           TabOrder = 1
           OnChange = FontNameChange
         end
@@ -397,6 +401,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           DefaultColorColor = clNone
           NoneColorColor = clNone
           Selected = clScrollBar
+          ItemHeight = 16
           TabOrder = 4
           OnChange = FontColorChange
         end
@@ -408,19 +413,23 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           DefaultColorColor = clNone
           NoneColorColor = clNone
           Selected = clScrollBar
+          ItemHeight = 16
           TabOrder = 5
           OnChange = MaskColorChange
         end
       end
     end
     object paButtons: TPanel
-      Left = 608
+      Left = 625
       Top = 0
       Width = 83
       Height = 213
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 1
+      DesignSize = (
+        83
+        213)
       object OKButton: TButton
         Left = 2
         Top = 8
@@ -466,7 +475,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
   object BottomPanel: TPanel
     Left = 0
     Top = 473
-    Width = 691
+    Width = 708
     Height = 29
     Align = alBottom
     BevelOuter = bvNone
