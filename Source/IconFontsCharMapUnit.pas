@@ -76,7 +76,6 @@ type
     CopyToCipboardAction: TAction;
     ShowCaptionsCheckBox: TCheckBox;
     procedure FormCreate(Sender: TObject);
-    procedure ClearAllButtonClick(Sender: TObject);
     procedure DeleteButtonClick(Sender: TObject);
     procedure AddButtonClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -113,8 +112,8 @@ type
     FImageListCaption: string;
     procedure DrawIconProgress(const ASender: TObject; const ACount: Integer;
       const AItem: TIconFontItem; var AProceed: Boolean);
-    procedure AssignSource(AIconFontsImageList: TIconFontsImageList;
-      const AFontName: string = '');
+    function AssignSource(AIconFontsImageList: TIconFontsImageList;
+      const AFontName: string = ''): Boolean;
     procedure AddNewItem;
     procedure DeleteSelectedItem;
     procedure ClearAllImages;
@@ -289,6 +288,7 @@ begin
   Screen.Cursor := crHourglass;
   try
     FCharMapList.ClearIcons;
+    ImageView.Clear;
   finally
     Screen.Cursor := crDefault;
   end;
@@ -345,17 +345,42 @@ begin
     FCharMapList.MaskColor := clBtnFace;
 end;
 
-procedure TIconFontsCharMapForm.AssignSource(AIconFontsImageList: TIconFontsImageList;
-  const AFontName: string = '');
+function TIconFontsCharMapForm.AssignSource(AIconFontsImageList: TIconFontsImageList;
+  const AFontName: string = ''): Boolean;
+var
+  LFontName: string;
 begin
+  Result := False;
   if AFontName <> '' then
-    FCharMapList.FontName := AFontName
+    LFontName := AFontName
   else
-    FCharMapList.FontName := AIconFontsImageList.FontName;
-  FCharMapList.Size := AIconFontsImageList.Size;
-  FCharMapList.FontColor := AIconFontsImageList.FontColor;
-  FCharMapList.MaskColor := AIconFontsImageList.MaskColor;
-  UpdateCharsToBuild;
+    LFontName := AIconFontsImageList.FontName;
+  if FCharMapList.FontName <> LFontName then
+  begin
+    ClearAllImages;
+    FCharMapList.FontName := LFontName;
+    Result := True;
+  end;
+  if FCharMapList.Size <> AIconFontsImageList.Size then
+  begin
+    ClearAllImages;
+    FCharMapList.Size := AIconFontsImageList.Size;
+    Result := True;
+  end;
+  if FCharMapList.FontColor <> AIconFontsImageList.FontColor then
+  begin
+    ClearAllImages;
+    FCharMapList.FontColor := AIconFontsImageList.FontColor;
+    Result := True;
+  end;
+  if FCharMapList.MaskColor <> AIconFontsImageList.MaskColor then
+  begin
+    ClearAllImages;
+    FCharMapList.MaskColor := AIconFontsImageList.MaskColor;
+    Result := True;
+  end;
+  if Result then
+    UpdateCharsToBuild;
 end;
 
 constructor TIconFontsCharMapForm.CreateForImageList(
@@ -365,13 +390,6 @@ constructor TIconFontsCharMapForm.CreateForImageList(
 begin
   Create(AOwner);
   AssignSource(AIconFontsImageList, AFontName);
-end;
-
-procedure TIconFontsCharMapForm.ClearAllButtonClick(Sender: TObject);
-begin
-  ClearAllImages;
-  UpdateIconFontListView(ImageView);
-  UpdateGUI;
 end;
 
 procedure TIconFontsCharMapForm.ImageViewDblClick(Sender: TObject);
@@ -474,11 +492,13 @@ end;
 
 procedure TIconFontsCharMapForm.FormShow(Sender: TObject);
 begin
-  if FStopped then
+  CharsEdit.Text := '';
+  if FFirstTime or FStopped then
   begin
     FStopped := False;
     FCharMapList.ClearIcons;
     DefaultFontName.ItemIndex := -1;
+    DefaultFontName.Text := '';
     FFirstTime := True;
   end;
 end;
@@ -503,7 +523,7 @@ end;
 
 procedure TIconFontsCharMapForm.SetFontName(const Value: string);
 begin
-  if DefaultFontName.Text <> Value then
+  if (Value <> '') and (DefaultFontName.Text <> Value) then
   begin
     DefaultFontName.ItemIndex := DefaultFontName.Items.IndexOf(Value);
     BuildAllIcons;
@@ -554,8 +574,11 @@ procedure TIconFontsCharMapForm.AssignImageList(
   const AIconFontsImageList: TIconFontsImageList;
   const AFontName: string = '');
 begin
-  AssignSource(AIconFontsImageList, AFontName);
-  UpdateGUI;
+  if AssignSource(AIconFontsImageList, AFontName) then
+  begin
+    FontName := '';
+    FFirstTime := True;
+  end;
 end;
 
 procedure TIconFontsCharMapForm.CopyToCipboardActionExecute(Sender: TObject);
@@ -586,9 +609,10 @@ begin
       FIconsCount := 0;
       CharsEdit.Text := '';
       ImageListGroup.Caption := '';
-      FCharMapList.ClearIcons;
+      ClearAllImages;
       //Normal Chars
-      LStart := $0001;
+      //LStart := $0001;
+      LStart := $F001;
       LEnd := $FFFF;
     end
     else

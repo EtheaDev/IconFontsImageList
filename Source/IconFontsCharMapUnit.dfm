@@ -1,10 +1,10 @@
 object IconFontsCharMapForm: TIconFontsCharMapForm
   Left = 352
   Top = 227
-  Width = 704
-  Height = 619
   HelpContext = 26140
   Caption = 'Icon Fonts CharMap %s - Copyright Ethea S.r.l.'
+  ClientHeight = 580
+  ClientWidth = 688
   Color = clBtnFace
   Constraints.MinHeight = 400
   Constraints.MinWidth = 500
@@ -181,7 +181,6 @@ object IconFontsCharMapForm: TIconFontsCharMapForm
           Height = 21
           Style = csDropDownList
           Anchors = [akLeft, akTop, akRight]
-          ItemHeight = 13
           TabOrder = 1
           OnSelect = DefaultFontNameSelect
         end

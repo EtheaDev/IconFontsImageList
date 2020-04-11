@@ -118,7 +118,6 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure BuildButtonClick(Sender: TObject);
     procedure SizeSpinEditChange(Sender: TObject);
-    procedure DefaultFontNameChange(Sender: TObject);
     procedure StoreBitmapCheckBoxClick(Sender: TObject);
     procedure DefaultFontColorColorBoxChange(Sender: TObject);
     procedure DefaultMaskColorColorBoxChange(Sender: TObject);
@@ -129,6 +128,7 @@ type
     procedure ImageViewKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure ExportButtonClick(Sender: TObject);
+    procedure DefaultFontNameSelect(Sender: TObject);
   private
     FCharMap: TIconFontsCharMapForm;
     FIconIndexLabel: string;
@@ -232,15 +232,16 @@ begin
 end;
 
 procedure TIconFontsImageListEditor.ShowCharMapButtonClick(Sender: TObject);
+var
+  LFontName: string;
 begin
   ShowCharMapButton.SetFocus;
   if not Assigned(FCharMap) then
   begin
     FCharMap := TIconFontsCharMapForm.CreateForImageList(Self, FEditingList, FontName.Text);
     FCharMap.OnClose := CloseCharMap;
-  end
-  else
-    FCharMap.AssignImageList(FEditingList, FontName.Text);
+  end;
+  FCharMap.AssignImageList(FEditingList, FontName.Text);
   FCharMap.Show;
 end;
 
@@ -463,7 +464,7 @@ begin
   begin
     if FCharMap.CharsEdit.Text <> '' then
     begin
-      FEditingList.AddIcons(FCharMap.CharsEdit.Text);
+      FEditingList.AddIcons(FCharMap.CharsEdit.Text, FCharMap.DefaultFontName.Text);
       UpdateIconFontListView(ImageView);
     end;
   end;
@@ -513,7 +514,7 @@ begin
   FEditingList.FontColor := DefaultFontColorColorBox.Selected;
 end;
 
-procedure TIconFontsImageListEditor.DefaultFontNameChange(Sender: TObject);
+procedure TIconFontsImageListEditor.DefaultFontNameSelect(Sender: TObject);
 begin
   FEditingList.FontName := DefaultFontName.Text;
   UpdateCharsToBuild;

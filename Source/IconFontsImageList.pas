@@ -190,7 +190,8 @@ type
     function AddIcons(const AFrom, ATo: Integer; const AFontName: TFontName = '';
       const AFontColor: TColor = clNone; AMaskColor: TColor = clNone;
       const ACheckValid: Boolean = False): Integer;  overload;
-    function AddIcons(const ASourceString: WideString): Integer; overload;
+    function AddIcons(const ASourceString: WideString;
+      const AFontName: TFontName = ''): Integer; overload;
     procedure UpdateIconsAttributes(const AFontColor, AMaskColor: TColor;
       const AReplaceFontColor: Boolean = True; const AFontName: string = ''); overload;
     procedure UpdateIconsAttributes(const ASize: Integer; const AFontColor, AMaskColor: TColor;
@@ -490,17 +491,20 @@ end;
 
 procedure TIconFontsImageList.CheckFontName(const AFontName: string);
 begin
-  if FFontNamesChecked.IndexOf(AFontName) = -1 then //Speed-up check of a Font already checked
+  if AFontName <> '' then
   begin
-    FFontNamesChecked.Add(AFontName);
-    if Screen.Fonts.IndexOf(AFontName) = -1 then
+    if FFontNamesChecked.IndexOf(AFontName) = -1 then //Speed-up check of a Font already checked
     begin
-      if Assigned(OnFontMissing) then
-        OnFontMissing(AFontName) else
-        raise Exception.CreateFmt(ERR_ICONFONTS_FONT_NOT_INSTALLED,[AFontName]);
-    end
-    else
       FFontNamesChecked.Add(AFontName);
+      if (Screen.Fonts.IndexOf(AFontName) = -1) then
+      begin
+        if Assigned(OnFontMissing) then
+          OnFontMissing(AFontName) else
+          raise Exception.CreateFmt(ERR_ICONFONTS_FONT_NOT_INSTALLED,[AFontName]);
+      end
+      else
+        FFontNamesChecked.Add(AFontName);
+    end;
   end;
 end;
 
@@ -730,8 +734,9 @@ function TIconFontsImageList.IsCharAvailable(
   const ABitmap: TBitmap;
   const AFontIconDec: Integer): Boolean;
 var
-  GlyphIndicesA: PWordArray;
   Cnt: DWORD;
+  len: Integer;
+  buf : array of WORD;
   I: Integer;
   S: WideString;
   msBlank, msIcon: TMemoryStream;
@@ -772,14 +777,13 @@ begin
     begin
       //Check for non surrogate pairs, using GetGlyphIndices
       S := WideChar(AFontIconDec);
-      GetMem(GlyphIndicesA, SizeOf(S));
-      try
-        Cnt := GetGlyphIndices(ABitmap.Canvas.Handle, PChar(S), Length(S), PWord(GlyphIndicesA), GGI_MARK_NONEXISTING_GLYPHS);
-        if not (Cnt = GDI_ERROR) then
-          for I := 0 to Cnt - 1 do
-            Result := GlyphIndicesA[I] <> $FFFF;
-      finally
-        Dispose(GlyphIndicesA);
+      len := Length(S);
+      SetLength( buf, len);
+      Cnt := GetGlyphIndicesW( ABitmap.Canvas.Handle, PWideChar(S), len, @buf[0], GGI_MARK_NONEXISTING_GLYPHS);
+      if Cnt > 0 then
+      begin
+        for i := 0 to Cnt-1 do
+          Result := buf[i] <> $FFFF;
       end;
     end;
   end;
@@ -1064,7 +1068,8 @@ begin
   end;
 end;
 
-function TIconFontsImageList.AddIcons(const ASourceString: WideString): Integer;
+function TIconFontsImageList.AddIcons(const ASourceString: WideString;
+  const AFontName: TFontName = ''): Integer;
 {$IFDEF UNICODE}
 var
   LChar: UCS4Char;
@@ -1088,7 +1093,7 @@ begin
       LChar := UCS4Char(ASourceString[I]);
     end;
     {$WARN SYMBOL_DEPRECATED ON}
-    AddIcon(Ord(LChar));
+    AddIcon(Ord(LChar), AFontName);
     Inc(I, ICharLen);
     Inc(Result);
   end;
