@@ -123,12 +123,12 @@ type
     procedure DefaultMaskColorColorBoxChange(Sender: TObject);
     procedure ImportButtonClick(Sender: TObject);
     procedure BuildFromHexButtonClick(Sender: TObject);
-    procedure FontIconHexChange(Sender: TObject);
     procedure EditChangeUpdateGUI(Sender: TObject);
     procedure ImageViewKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure ExportButtonClick(Sender: TObject);
     procedure DefaultFontNameSelect(Sender: TObject);
+    procedure FontIconHexExit(Sender: TObject);
   private
     FCharMap: TIconFontsCharMapForm;
     FIconIndexLabel: string;
@@ -302,7 +302,7 @@ begin
   SetImageFontIconDec(FontIconDec.Value);
 end;
 
-procedure TIconFontsImageListEditor.FontIconHexChange(Sender: TObject);
+procedure TIconFontsImageListEditor.FontIconHexExit(Sender: TObject);
 var
   LText: string;
 begin
@@ -517,7 +517,7 @@ end;
 procedure TIconFontsImageListEditor.DefaultFontNameSelect(Sender: TObject);
 begin
   FEditingList.FontName := DefaultFontName.Text;
-  UpdateCharsToBuild;
+  UpdateGUI;
 end;
 
 procedure TIconFontsImageListEditor.DefaultMaskColorColorBoxChange(

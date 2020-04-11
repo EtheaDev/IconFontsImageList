@@ -213,8 +213,8 @@ begin
     LIconFontItem := SelectedIconFont;
     LIsItemSelected := LIconFontItem <> nil;
     CopyToClipboardButton.Enabled := CharsEdit.Text <> '';
-    FontIconDec.Enabled := LIsItemSelected;
-    FontIconHex.Enabled := LIsItemSelected;
+    FontIconDec.Enabled := False;
+    FontIconHex.Enabled := False;
     if LIsItemSelected then
     begin
       ImageGroup.Caption := Format(FIconIndexLabel,[LIconFontItem.Index]);
@@ -611,8 +611,7 @@ begin
       ImageListGroup.Caption := '';
       ClearAllImages;
       //Normal Chars
-      //LStart := $0001;
-      LStart := $F001;
+      LStart := $0001;
       LEnd := $FFFF;
     end
     else
@@ -622,7 +621,7 @@ begin
       LEnd := $FFFFF;
     end;
     ImageView.Clear;
-    FFirstIcon := FCharMapList.Count-1;
+    FFirstIcon := FCharMapList.Count;
     FMaxIcons := LEnd - LStart;
     ProgressBar.Position := 0;
     FBuilding := True;

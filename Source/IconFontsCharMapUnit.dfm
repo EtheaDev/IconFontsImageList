@@ -163,6 +163,7 @@ object IconFontsCharMapForm: TIconFontsCharMapForm
           Height = 21
           Hint = 'Hexadecimal value'
           CharCase = ecUpperCase
+          Enabled = False
           MaxLength = 5
           TabOrder = 2
         end
@@ -172,6 +173,7 @@ object IconFontsCharMapForm: TIconFontsCharMapForm
           Width = 80
           Height = 21
           Hint = 'Decimal value'
+          Enabled = False
           TabOrder = 3
         end
         object DefaultFontName: TComboBox

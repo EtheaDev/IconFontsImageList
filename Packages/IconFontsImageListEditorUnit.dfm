@@ -389,7 +389,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           CharCase = ecUpperCase
           MaxLength = 5
           TabOrder = 2
-          OnChange = FontIconHexChange
+          OnExit = FontIconHexExit
         end
         object FontColor: TColorBox
           Left = 96

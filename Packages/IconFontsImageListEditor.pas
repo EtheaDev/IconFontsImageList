@@ -79,7 +79,7 @@ begin
   Result := '';
   case Index of
     0: Result := 'I&conFonts ImageList Editor...';
-    1: Result := Format('Version %s - Copyright (c) Ethea S.r.l.',[IconFontsImageListVersion]);
+    1: Result := Format('Ver. %s - (c) Ethea S.r.l. - show help...',[IconFontsImageListVersion]);
   end;
 end;
 

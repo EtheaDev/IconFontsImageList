@@ -50,7 +50,7 @@ resourcestring
   ERR_ICONFONTS_FONT_NOT_INSTALLED = 'Font "%s" is not installed!';
 
 const
-  IconFontsImageListVersion = '1.5.0';
+  IconFontsImageListVersion = '1.6.0';
 
 type
   TIconFontsImageList = class;
@@ -327,7 +327,7 @@ end;
 function TIconFontItem.GetFontIconHex: string;
 begin
   if FFontIconDec <> 0 then
-    Result := IntToHex(FFontIconDec, 1)
+    Result := RightStr('0000'+IntToHex(FFontIconDec, 1),5)
   else
     Result := '';
 end;
