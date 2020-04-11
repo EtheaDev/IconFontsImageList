@@ -4,6 +4,9 @@
 
 ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png](https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png)
 
+12 April 2020: official 1.6 version (VCL)
+- Added a custom CharMap form (VCL only) to show and collect icons more easily: [look here for more informations](https://github.com/EtheaDev/IconFontsImageList/wiki/CharMap).
+
 27 March 2020: official 1.5 version (VCL) and first 1.0 version (FMX)
 - Added support for Icon Fonts that contains surrogate pair characters (VCL & FMX)!
 
