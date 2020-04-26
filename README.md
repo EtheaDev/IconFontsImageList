@@ -2,6 +2,12 @@
 
 ## An extended ImageList for Delphi (VCL & FMX) to simple use and manage Icon Fonts.
 
+![https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/Sample.jpg](https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/Sample.jpg)
+
+Follow the [guide in Wiki section](https://github.com/EtheaDev/IconFontsImageList/wiki) to known how to use those components to modernize your Delphi VCL or FMX applications scalable, colored and beautiful with few lines of code.
+
+RELEASE NOTES:
+
 ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png](https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png)
 
 12 April 2020: official 1.6 version (VCL)
@@ -42,10 +48,6 @@ Now you can use all the icons present in any "font collection" that containts th
 - Demo to show how to change the size, fonts and colors of the icons.
 - Very high performance for building hundreds of icons.
 - Support from Delphi 2010 to 10.3 Rio
-
-![https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/Sample.jpg](https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/Sample.jpg)
-
-Follow the [guide in Wiki section](https://github.com/EtheaDev/IconFontsImageList/wiki) to known how to use those components to modernize your Delphi VCL or FMX applications scalable, colored and beautiful with few lines of code.
 
 Inspired by the "Font Icon Editor" project by Luca Minuti:
 [https://github.com/lminuti/FontIconEditor](https://github.com/lminuti/FontIconEditor)
