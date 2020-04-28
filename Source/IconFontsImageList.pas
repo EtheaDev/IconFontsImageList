@@ -74,7 +74,7 @@ type
     procedure Changed;
     function GetCharacter: WideString;
     procedure UpdateIconAttributes(const AFontColor, AMaskColor: TColor;
-      const AReplaceFontColor: Boolean = True; const AFontName: string = '');
+      const AReplaceFontColor: Boolean = False; const AFontName: string = '');
     function GetIconFontsImageList: TIconFontsImageList;
     function StoreFontColor: Boolean;
     function StoreMaskColor: Boolean;
@@ -193,9 +193,9 @@ type
     function AddIcons(const ASourceString: WideString;
       const AFontName: TFontName = ''): Integer; overload;
     procedure UpdateIconsAttributes(const AFontColor, AMaskColor: TColor;
-      const AReplaceFontColor: Boolean = True; const AFontName: string = ''); overload;
+      const AReplaceFontColor: Boolean = False; const AFontName: string = ''); overload;
     procedure UpdateIconsAttributes(const ASize: Integer; const AFontColor, AMaskColor: TColor;
-      const AReplaceFontColor: Boolean = True; const AFontName: string = ''); overload;
+      const AReplaceFontColor: Boolean = False; const AFontName: string = ''); overload;
     procedure ClearIcons; virtual;
     procedure RedrawImages; virtual;
     procedure SaveToFile(const AFileName: string);
@@ -413,20 +413,30 @@ begin
 end;
 
 procedure TIconFontItem.UpdateIconAttributes(const AFontColor, AMaskColor: TColor;
-  const AReplaceFontColor: Boolean = True; const AFontName: string = '');
+  const AReplaceFontColor: Boolean = False; const AFontName: string = '');
+var
+  LChanged: Boolean;
 begin
-  if (FFontColor <> AFontColor) or (FMaskColor <> AMaskColor) or (FFontName <> AFontName) or AReplaceFontColor then
+  LChanged := False;
+  //If AReplaceFontColor is false then the color of single icon is preserved
+  if AReplaceFontColor and (FFontColor <> clNone) then
   begin
-    //If AReplaceFontColor is false then the color of single icon is preserved
-    if AReplaceFontColor then
-      FFontColor := AFontColor;
-    //Always replace MaskColor
-    FMaskColor := AMaskColor;
-    //Replace FontName only if passed
-    if (AFontName <> '') then
-      FFontName := AFontName;
-    Changed;
+    FFontColor := AFontColor;
+    LChanged := True;
   end;
+  if AReplaceFontColor and (FMaskColor <> clNone) then
+  begin
+    FMaskColor := AMaskColor;
+    LChanged := True;
+  end;
+  //Replace FontName only if passed and different for specific Font
+  if (AFontName <> '') and (FFontName <> '') and (AFontName <> FFontName) then
+  begin
+    FFontName := AFontName;
+    LChanged := True;
+  end;
+  if LChanged then
+    Changed;
 end;
 
 procedure TIconFontItem.Changed;
@@ -499,7 +509,8 @@ begin
       if (Screen.Fonts.IndexOf(AFontName) = -1) then
       begin
         if Assigned(OnFontMissing) then
-          OnFontMissing(AFontName) else
+          OnFontMissing(AFontName)
+        else if not (csDesigning in ComponentState) then
           raise Exception.CreateFmt(ERR_ICONFONTS_FONT_NOT_INSTALLED,[AFontName]);
       end
       else
@@ -963,7 +974,7 @@ begin
 end;
 
 procedure TIconFontsImageList.UpdateIconsAttributes(const ASize: Integer;
-  const AFontColor, AMaskColor: TColor; const AReplaceFontColor: Boolean = True;
+  const AFontColor, AMaskColor: TColor; const AReplaceFontColor: Boolean = False;
   const AFontName: string = '');
 var
   I: Integer;

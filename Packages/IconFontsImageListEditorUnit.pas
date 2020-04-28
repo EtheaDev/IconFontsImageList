@@ -135,6 +135,7 @@ type
     FUpdating: Boolean;
     FEditingList: TIconFontsImageList;
     FIconFontItems: TIconFontItems;
+    procedure IconFontsImageListFontMissing(const AFontName: string);
     procedure CloseCharMap(Sender: TObject; var Action: TCloseAction);
     procedure AddColor(const S: string);
     procedure AddNewItem;
@@ -232,8 +233,6 @@ begin
 end;
 
 procedure TIconFontsImageListEditor.ShowCharMapButtonClick(Sender: TObject);
-var
-  LFontName: string;
 begin
   ShowCharMapButton.SetFocus;
   if not Assigned(FCharMap) then
@@ -477,6 +476,13 @@ begin
   UpdateGUI;
 end;
 
+procedure TIconFontsImageListEditor.IconFontsImageListFontMissing(
+  const AFontName: string);
+begin
+  MessageDlg(Format(ERR_ICONFONTS_FONT_NOT_INSTALLED,[AFontName]),
+    mtError, [mbOK], 0);
+end;
+
 procedure TIconFontsImageListEditor.IconNameExit(Sender: TObject);
 begin
   if FUpdating then Exit;
@@ -572,6 +578,8 @@ begin
   Caption := Format(Caption, [IconFontsImageListVersion]);
   FUpdating := True;
   FEditingList := TIconFontsImageList.Create(nil);
+  FEditingList.OnFontMissing := IconFontsImageListFontMissing;
+
   FIconFontItems := TIconFontItems.Create(FEditingList, TIconFontItem);
   GetColorValues(AddColor);
   FontColor.ItemIndex := -1;
