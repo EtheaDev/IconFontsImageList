@@ -10,6 +10,10 @@ RELEASE NOTES:
 
 ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png](https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png)
 
+2 May 2020: official 1.7 version (VCL)
+- Added utilities to manage Disabled and Hot Imagelist
+- Added a Video tutorial in Wiki section
+
 12 April 2020: official 1.6 version (VCL)
 - Added a custom CharMap form (VCL only) to show and collect icons more easily: [look here for more informations](https://github.com/EtheaDev/IconFontsImageList/wiki/CharMap).
 
