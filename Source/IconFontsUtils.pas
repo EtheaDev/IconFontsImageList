@@ -40,12 +40,17 @@ function UpdateIconFontListView(const AListView: TListView): Integer;
 function UpdateIconFontListViewCaptions(const AListView: TListView;
   const AShowCaption: Boolean = True): Integer;
 procedure UpdateIconFontsColorByStyle(const IconFontsImageList: TIconFontsImageList;
-    const AReplaceCustomColors: Boolean = False);
+  const AReplaceCustomColors: Boolean = False);
+procedure UpdateDisabledImageList(const ASourceImageList, ADestImageList: TIconFontsImageList;
+  const APercent: Integer = 30; const AReplaceCustomColors: Boolean = False);
+procedure UpdateHotImageList(const ASourceImageList, ADestImageList: TIconFontsImageList;
+  const APercent: Integer = 30; const AResizePercent: Integer = 0;
+  const AReplaceCustomColors: Boolean = False);
 function DarkerColor(AColor: TColor; APercent: Integer): TColor;
 function LighterColor(AColor: TColor; APercent: Integer): TColor;
 function DisabledColor(AColor: TColor; APercent: Integer): TColor;
 function IsLightColor(const AColor: TColor): Boolean;
-function HotColor(AColor: TColor; APercent: Integer): TColor;
+function HotColor(AColor: TColor; const APercent: Integer): TColor;
 
 implementation
 
@@ -128,6 +133,23 @@ begin
   {$ENDIF}
 end;
 
+procedure UpdateDisabledImageList(const ASourceImageList, ADestImageList: TIconFontsImageList;
+  const APercent: Integer = 30; const AReplaceCustomColors: Boolean = False);
+begin
+  ADestImageList.Assign(ASourceImageList);
+  ADestImageList.FontColor := DisabledColor(ADestImageList.FontColor, APercent);
+end;
+
+procedure UpdateHotImageList(const ASourceImageList, ADestImageList: TIconFontsImageList;
+  const APercent: Integer = 30; const AResizePercent: Integer = 0;
+  const AReplaceCustomColors: Boolean = False);
+begin
+  ADestImageList.Assign(ASourceImageList);
+  ADestImageList.FontColor := HotColor(ADestImageList.FontColor, APercent);
+  if AResizePercent <> 0 then
+    ADestImageList.Size := Round(ADestImageList.Size * (100+AResizePercent) / 100);
+end;
+
 function DarkerColor(AColor: TColor; APercent: Integer): TColor;
 var
   r,g,b: Byte;
@@ -178,7 +200,7 @@ begin
     Result := LighterColor(AColor, APercent);
 end;
 
-function HotColor(AColor: TColor; APercent: Integer): TColor;
+function HotColor(AColor: TColor; const APercent: Integer): TColor;
 begin
   if IsLightColor(AColor) then
     Result := LighterColor(AColor, APercent)

@@ -50,7 +50,7 @@ resourcestring
   ERR_ICONFONTS_FONT_NOT_INSTALLED = 'Font "%s" is not installed!';
 
 const
-  IconFontsImageListVersion = '1.6.0';
+  IconFontsImageListVersion = '1.7.0';
 
 type
   TIconFontsImageList = class;

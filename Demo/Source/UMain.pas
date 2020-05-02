@@ -324,12 +324,9 @@ begin
   TopToolBar.Height := LSize + 6;
   TreeView.Indent := LSize;
 
-  //Auto update for Disabled and Hot ImageList
-  FIconFontsImageListHot.Assign(IconFontsImageList);
-  FIconFontsImageListHot.FontColor := HotColor(IconFontsImageList.FontColor, 30);
-  FIconFontsImageListHot.Size := Trunc(IconFontsImageList.Size * 1.1);
-  FIconFontsImageListDisabled.Assign(IconFontsImageList);
-  FIconFontsImageListDisabled.FontColor := DisabledColor(IconFontsImageList.FontColor, 30);
+  //Update attributes for Disabled and Hot ImageList for the Toolbar
+  UpdateHotImageList(IconFontsImageList, FIconFontsImageListHot, 30, 10);
+  UpdateDisabledImageList(IconFontsImageList, FIconFontsImageListDisabled);
   TopToolBar.DisabledImages := FIconFontsImageListDisabled;
   TopToolBar.HotImages := FIconFontsImageListHot;
 
