@@ -54,6 +54,9 @@
 			<DCCReference Include="..\RegisterIconFontsImageList.pas"/>
 			<DCCReference Include="..\IconFontsImageListEditor.pas"/>
 			<DCCReference Include="..\IconFontsImageListEditorUnit.pas"/>
+			<DCCReference Include="..\..\Source\IconFontsCharMapUnit.pas">
+				<Form>IconFontsCharMapForm</Form>
+			</DCCReference>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>

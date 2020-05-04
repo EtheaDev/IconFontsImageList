@@ -35,7 +35,7 @@ object MainForm: TMainForm
       ItemIndex = 0
       Items.Strings = (
         'Black'
-        'White'
+        'Green'
         'Blue'
         'Silver'
         'Olive'

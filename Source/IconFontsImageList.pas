@@ -235,7 +235,7 @@ implementation
 uses
   SysUtils
   , Math
-  {$IFDEF UNICODE}
+  {$IFDEF DXE3+}
   , System.Character
   {$ENDIF}
   , StrUtils;
@@ -304,7 +304,7 @@ end;
 
 function TIconFontItem.GetCharacter: WideString;
 begin
-{$IFDEF UNICODE}
+{$IFDEF DXE3+}
   {$WARN SYMBOL_DEPRECATED OFF}
   Result := ConvertFromUtf32(FFontIconDec);
   {$WARN SYMBOL_DEPRECATED ON}
@@ -768,7 +768,7 @@ begin
       msIcon := TMemoryStream.Create;
       try
         ABitmap.SaveToStream(msBlank);
-        {$IFDEF UNICODE}
+        {$IFDEF DXE3+}
         {$WARN SYMBOL_DEPRECATED OFF}
         S := ConvertFromUtf32(AFontIconDec);
         {$WARN SYMBOL_DEPRECATED ON}
@@ -840,7 +840,7 @@ begin
       LRect.Right := Width;
       LRect.Bottom := Height;
       FillRect(LRect);
-      {$IFDEF UNICODE}
+      {$IFDEF DXE3+}
       S := LIconFontItem.Character;
       TextOut(0, 0, S);
       {$ELSE}
@@ -1081,14 +1081,14 @@ end;
 
 function TIconFontsImageList.AddIcons(const ASourceString: WideString;
   const AFontName: TFontName = ''): Integer;
-{$IFDEF UNICODE}
+{$IFDEF DXE3+}
 var
   LChar: UCS4Char;
   I, L, ICharLen: Integer;
 {$ENDIF}
 begin
   Result := 0;
-  {$IFDEF UNICODE}
+  {$IFDEF DXE3+}
   L := Length(ASourceString);
   I := 1;
   while I <= L do

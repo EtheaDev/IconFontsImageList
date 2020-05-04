@@ -164,7 +164,8 @@ uses
   CommCtrl
   , TypInfo
   , ShellApi
-  {$IFDEF UNICODE}
+  {$IFDEF DXE3+}
+  , UITypes
   , System.Character
   {$ENDIF}
   , IconFontsUtils;

@@ -204,7 +204,7 @@ var
   LIsItemSelected: Boolean;
   LItemFontName: string;
   LIconFontItem: TIconFontItem;
-  {$IFNDEF UNICODE}
+  {$IFNDEF DXE3+}
   S: WideString;
   {$ENDIF}
 begin
@@ -246,7 +246,7 @@ begin
       else
         MainImage.Canvas.Brush.Color := FCharMapList.MaskColor;
       MainImage.Canvas.FillRect(Rect(0, 0, MainImage.Height, MainImage.Height));
-      {$IFNDEF UNICODE}
+      {$IFNDEF DXE3+}
       S := LIconFontItem.Character;
       TextOutW(MainImage.Canvas.Handle, 0, 0, PWideChar(S), 1);
       {$ELSE}
@@ -457,7 +457,7 @@ procedure TIconFontsCharMapForm.FormCreate(Sender: TObject);
 
   procedure InitColorBox(AColorBox: TColorBox);
   begin
-    {$IFDEF UNICODE}
+    {$IFDEF DXE3+}
     AColorBox.Style := [cbStandardColors, cbExtendedColors, cbSystemColors,
       cbIncludeNone, cbIncludeDefault, cbCustomColor, cbCustomColors, cbPrettyNames];
     {$ENDIF}
@@ -465,6 +465,11 @@ procedure TIconFontsCharMapForm.FormCreate(Sender: TObject);
   end;
 
 begin
+  {$IFDEF DXE3+}
+  cbShowSurrogate.Visible := True;
+  {$ELSE}
+  cbShowSurrogate.Visible := False;
+  {$ENDIF}
   FImageListCaption := ImageListGroup.Caption;
   ImageView.LargeImages := FCharMapList;
   ImageView.SmallImages := FCharMapList;

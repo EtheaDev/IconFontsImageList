@@ -91,7 +91,9 @@ type
   private
     FIconFontsImageListHot: TIconFontsImageList;
     FIconFontsImageListDisabled: TIconFontsImageList;
+    {$IFDEF HiDPISupport}
     procedure FormAfterMonitorDpiChanged(Sender: TObject; OldDPI, NewDPI: Integer);
+    {$ENDIF}
     procedure UpdateButtons;
     procedure UpdateGUI;
     procedure UpdateListView;
@@ -108,6 +110,9 @@ implementation
 
 uses
   Themes
+  {$IFDEF DXE3+}
+  , UITypes
+  {$ENDIF}
   , IconFontsUtils
   , IconFontsCharMapUnit
   , IconFontsImageListEditorUnit;
@@ -201,14 +206,18 @@ begin
   end;
 end;
 
+{$IFDEF HiDPISupport}
 procedure TMainForm.FormAfterMonitorDpiChanged(Sender: TObject; OldDPI, NewDPI: Integer);
 begin
   UpdateGUI;
 end;
+{$ENDIF}
 
 procedure TMainForm.FormCreate(Sender: TObject);
+{$IFDEF DXE+}
 var
   I: integer;
+{$ENDIF}
 begin
   FIconFontsImageListHot := TIconFontsImageList.Create(Self);
   FIconFontsImageListDisabled := TIconFontsImageList.Create(Self);
@@ -274,8 +283,8 @@ begin
     {$ELSE}
     if LStyleName = 'Black' then
       IconFontsImageList.UpdateIconsAttributes(clBlack, clBtnFace)
-    else if LStyleName = 'White' then
-      IconFontsImageList.UpdateIconsAttributes(clWhite, clBtnFace)
+    else if LStyleName = 'Green' then
+      IconFontsImageList.UpdateIconsAttributes(clGreen, clBtnFace)
     else if LStyleName = 'Blue' then
       IconFontsImageList.UpdateIconsAttributes(clBlue, clBtnFace)
     else if LStyleName = 'Silver' then
