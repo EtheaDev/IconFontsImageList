@@ -48,14 +48,14 @@ uses
   ;
 
 type
-  TIconFontMissing = procedure (const AFontName: string) of object;
+  TIconFontMissing = procedure (const AFontName: TFontName) of object;
 
   TIconFontFixedMultiResBitmap = class;
 
   TIconFontFixedBitmapItem = class(TFixedBitmapItem)
   private
-    FSize: Single;
-    FFontName: string;
+    FSize: Integer;
+    FFontName: TFontName;
     FFontIconDec: Integer;
     FFontColor: TAlphaColor;
     FOpacity: Single;
@@ -63,9 +63,9 @@ type
     FIconName: string;
     procedure SetBitmap(const AValue: TBitmapOfItem);
     function GetBitmap: TBitmapOfItem;
-    procedure SetFontName(const AValue: string);
+    procedure SetFontName(const AValue: TFontName);
     procedure SetFontColor(const AValue: TAlphaColor);
-    procedure SetSize(const AValue: Single);
+    procedure SetSize(const AValue: Integer);
     procedure DrawFontIcon;
     procedure SetOpacity(const AValue: Single);
     procedure SetIconName(const AValue: string);
@@ -81,13 +81,13 @@ type
     constructor Create(Collection: TCollection); override;
   published
     property Bitmap: TBitmapOfItem read GetBitmap write SetBitmap stored False;
-    property FontName: string read FFontName write SetFontName;
+    property FontName: TFontName read FFontName write SetFontName;
     property FontIconDec: Integer read GetFontIconDec write SetFontIconDec stored true default 0;
     property FontIconHex: string read GetFontIconHex write SetFontIconHex stored false;
     property Character: WideString read GetCharacter stored false;
     property FontColor: TAlphaColor read FFontColor write SetFontColor;
     property Opacity: Single read FOpacity write SetOpacity;
-    property Size: Single read FSize write SetSize;
+    property Size: Integer read FSize write SetSize;
     property IconName: string read FIconName write SetIconName;
   end;
 
@@ -97,7 +97,7 @@ type
   TIconFontFixedMultiResBitmap = class(TFixedMultiResBitmap)
   private
     FOwnerImage: TIconFontImage;
-    procedure UpdateImageSize(const ASize: Single);
+    procedure UpdateImageSize(const ASize: Integer);
   public
     constructor Create(AOwner: TPersistent; ItemClass: TIconFontFixedBitmapItemClass); overload;
     constructor Create(AOwner: TPersistent); overload;
@@ -106,8 +106,8 @@ type
   TIconFontImage = class(TImage)
   private
     FIconFontMultiResBitmap: TIconFontFixedMultiResBitmap;
-    function GetBitmapSize: Single;
-    procedure SetBitmapSize(const AValue: Single);
+    function GetBitmapSize: Integer;
+    procedure SetBitmapSize(const AValue: Integer);
   protected
     function CreateMultiResBitmap: TFixedMultiResBitmap; override;
   public
@@ -115,7 +115,7 @@ type
     destructor Destroy; override;
     procedure SetBounds(X, Y, AWidth, AHeight: Single); override;
   published
-    property BitmapSize: Single read GetBitmapSize write SetBitmapSize;
+    property BitmapSize: Integer read GetBitmapSize write SetBitmapSize;
   end;
 
 implementation
@@ -145,7 +145,7 @@ begin
     FOwnerImage := TIconFontImage(AOwner);
 end;
 
-procedure TIconFontFixedMultiResBitmap.UpdateImageSize(const ASize: Single);
+procedure TIconFontFixedMultiResBitmap.UpdateImageSize(const ASize: Integer);
 var
   I, J: Integer;
   LItem: TFixedBitmapItem;
@@ -284,7 +284,7 @@ begin
   end;
 end;
 
-procedure TIconFontFixedBitmapItem.SetFontName(const AValue: string);
+procedure TIconFontFixedBitmapItem.SetFontName(const AValue: TFontName);
 begin
   if FFontName <> AValue then
   begin
@@ -304,7 +304,7 @@ begin
   DrawFontIcon;
 end;
 
-procedure TIconFontFixedBitmapItem.SetSize(const AValue: Single);
+procedure TIconFontFixedBitmapItem.SetSize(const AValue: Integer);
 begin
   if (Trunc(AValue) > 0) and (AValue <> FSize) then
   begin
@@ -333,12 +333,12 @@ begin
   FIconFontMultiResBitmap := nil;
 end;
 
-function TIconFontImage.GetBitmapSize: Single;
+function TIconFontImage.GetBitmapSize: Integer;
 begin
-  Result := Trunc(Inherited width);
+  Result := Round(Inherited width);
 end;
 
-procedure TIconFontImage.SetBitmapSize(const AValue: Single);
+procedure TIconFontImage.SetBitmapSize(const AValue: Integer);
 begin
   if AValue <> 0 then
     FIconFontMultiResBitmap.UpdateImageSize(AValue);

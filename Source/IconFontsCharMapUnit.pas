@@ -113,29 +113,29 @@ type
     procedure DrawIconProgress(const ASender: TObject; const ACount: Integer;
       const AItem: TIconFontItem; var AProceed: Boolean);
     function AssignSource(AIconFontsImageList: TIconFontsImageList;
-      const AFontName: string = ''): Boolean;
+      const AFontName: TFontName = ''): Boolean;
     procedure AddNewItem;
     procedure DeleteSelectedItem;
     procedure ClearAllImages;
     procedure UpdateGUI;
     procedure UpdateCharsToBuild;
     function SelectedIconFont: TIconFontItem;
-    function GetFontName: string;
-    procedure SetFontName(const Value: string);
+    function GetFontName: TFontName;
+    procedure SetFontName(const Value: TFontName);
   public
     constructor Create(AOwner: TComponent); override;
     constructor CreateForFont(AOwner: TComponent;
-      const AFontName: string; const ASize: Integer = 32;
+      const AFontName: TFontName; const ASize: Integer = 32;
       const AFontColor: TColor = clNone; const AMaskColor: TColor = clNone); virtual;
     constructor CreateForImageList(AOwner: TComponent;
       AIconFontsImageList: TIconFontsImageList;
-      const AFontName: string = ''); virtual;
+      const AFontName: TFontName = ''); virtual;
     procedure AssignImageList(const AIconFontsImageList: TIconFontsImageList;
-      const AFontName: string = '');
-    property FontName: string read GetFontName write SetFontName;
+      const AFontName: TFontName = '');
+    property FontName: TFontName read GetFontName write SetFontName;
   end;
 
-function ShowIconFontsCharMap(const AFontName: string;
+function ShowIconFontsCharMap(const AFontName: TFontName;
   const ASize: Integer = 32;
   const AFontColor: TColor = clBlack;
   const AMaskColor: TColor = clWhite): string;
@@ -156,7 +156,7 @@ const
 var
   SavedBounds: TRect = (Left: 0; Top: 0; Right: 0; Bottom: 0);
 
-function ShowIconFontsCharMap(const AFontName: string;
+function ShowIconFontsCharMap(const AFontName: TFontName;
   const ASize: Integer = 32;
   const AFontColor: TColor = clBlack;
   const AMaskColor: TColor = clWhite): string;
@@ -202,7 +202,7 @@ end;
 procedure TIconFontsCharMapForm.UpdateGUI;
 var
   LIsItemSelected: Boolean;
-  LItemFontName: string;
+  LItemFontName: TFontName;
   LIconFontItem: TIconFontItem;
   {$IFNDEF DXE3+}
   S: WideString;
@@ -329,7 +329,7 @@ begin
 end;
 
 constructor TIconFontsCharMapForm.CreateForFont(AOwner: TComponent;
-  const AFontName: string; const ASize: Integer = 32;
+  const AFontName: TFontName; const ASize: Integer = 32;
   const AFontColor: TColor = clNone; const AMaskColor: TColor = clNone);
 begin
   Create(AOwner);
@@ -346,9 +346,9 @@ begin
 end;
 
 function TIconFontsCharMapForm.AssignSource(AIconFontsImageList: TIconFontsImageList;
-  const AFontName: string = ''): Boolean;
+  const AFontName: TFontName = ''): Boolean;
 var
-  LFontName: string;
+  LFontName: TFontName;
 begin
   Result := False;
   if AFontName <> '' then
@@ -386,7 +386,7 @@ end;
 constructor TIconFontsCharMapForm.CreateForImageList(
   AOwner: TComponent;
   AIconFontsImageList: TIconFontsImageList;
-  const AFontName: string = '');
+  const AFontName: TFontName = '');
 begin
   Create(AOwner);
   AssignSource(AIconFontsImageList, AFontName);
@@ -508,7 +508,7 @@ begin
   end;
 end;
 
-function TIconFontsCharMapForm.GetFontName: string;
+function TIconFontsCharMapForm.GetFontName: TFontName;
 begin
   Result := DefaultFontName.Text;
 end;
@@ -526,7 +526,7 @@ begin
     Result := nil;
 end;
 
-procedure TIconFontsCharMapForm.SetFontName(const Value: string);
+procedure TIconFontsCharMapForm.SetFontName(const Value: TFontName);
 begin
   if (Value <> '') and (DefaultFontName.Text <> Value) then
   begin
@@ -577,7 +577,7 @@ end;
 
 procedure TIconFontsCharMapForm.AssignImageList(
   const AIconFontsImageList: TIconFontsImageList;
-  const AFontName: string = '');
+  const AFontName: TFontName = '');
 begin
   if AssignSource(AIconFontsImageList, AFontName) then
   begin

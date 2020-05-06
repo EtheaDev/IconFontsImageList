@@ -18,7 +18,7 @@ object IconFontImageForm: TIconFontImageForm
         FontIconDec = 61448
         FontColor = claBlack
         Opacity = 1.000000000000000000
-        Size = 205.000000000000000000
+        Size = 205
         IconName = 'Account'
       end
       item
@@ -27,7 +27,7 @@ object IconFontImageForm: TIconFontImageForm
         FontIconDec = 61449
         FontColor = claBlack
         Opacity = 1.000000000000000000
-        Size = 205.000000000000000000
+        Size = 205
         IconName = 'User'
       end>
     Align = Client
@@ -36,7 +36,7 @@ object IconFontImageForm: TIconFontImageForm
     Size.Height = 205.000000000000000000
     Size.PlatformDefault = False
     OnResize = IconFontImageResize
-    BitmapSize = 340.000000000000000000
+    BitmapSize = 340
   end
   object Panel1: TPanel
     Align = Bottom

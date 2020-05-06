@@ -40,14 +40,22 @@ procedure Register;
 implementation
 
 uses
-  FMX.IconFontsImageList, FMX.IconFontImage;
+  FMX.IconFontsImageList
+  , FmxAnimationEditors
+  , FMX.IconFontImage
+  , FMX.IconFontsImageListEditor;
 
 procedure Register;
 begin
+  RegisterPropertyEditor(TypeInfo(Single), TIconFontBitmapItem, '', TFmxFloatProperty);
+  RegisterPropertyEditor(TypeInfo(Single), TIconFontsSourceItem, '', TFmxFloatProperty);
+  RegisterPropertyEditor(TypeInfo(Single), TIconFontsImageList, '', TFmxFloatProperty);
+
   RegisterComponents('Ethea',
   [TIconFontImage,
    TIconFontsImageList
   ]);
+  RegisterComponentEditor(TIconFontsImageList, TIconFontsImageListCompEditorFMX);
 end;
 
 end.

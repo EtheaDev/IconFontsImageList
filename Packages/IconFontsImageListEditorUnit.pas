@@ -56,9 +56,9 @@ type
     SaveDialog: TSavePictureDialog;
     ImageListGroup: TGroupBox;
     ImageView: TListView;
-    ImageGroup: TGroupBox;
-    MainPanel: TPanel;
-    MainImage: TImage;
+    ItemGroupBox: TGroupBox;
+    IconPanel: TPanel;
+    IconImage: TImage;
     AddButton: TButton;
     DeleteButton: TButton;
     HelpButton: TButton;
@@ -67,7 +67,7 @@ type
     paTop: TPanel;
     paButtons: TPanel;
     paClient: TPanel;
-    BuilderGroupBox: TGroupBox;
+    ImageListGroupBox: TGroupBox;
     FontNameLabel: TLabel;
     FontName: TComboBox;
     FontIconHexLabel: TLabel;
@@ -121,7 +121,6 @@ type
     procedure StoreBitmapCheckBoxClick(Sender: TObject);
     procedure DefaultFontColorColorBoxChange(Sender: TObject);
     procedure DefaultMaskColorColorBoxChange(Sender: TObject);
-    procedure ImportButtonClick(Sender: TObject);
     procedure BuildFromHexButtonClick(Sender: TObject);
     procedure EditChangeUpdateGUI(Sender: TObject);
     procedure ImageViewKeyDown(Sender: TObject; var Key: Word;
@@ -134,8 +133,7 @@ type
     FIconIndexLabel: string;
     FUpdating: Boolean;
     FEditingList: TIconFontsImageList;
-    FIconFontItems: TIconFontItems;
-    procedure IconFontsImageListFontMissing(const AFontName: string);
+    procedure IconFontsImageListFontMissing(const AFontName: TFontName);
     procedure CloseCharMap(Sender: TObject; var Action: TCloseAction);
     procedure AddColor(const S: string);
     procedure AddNewItem;
@@ -148,7 +146,7 @@ type
     procedure SetImageFontIconDec(IconDec: Integer);
     procedure SetImageFontIconHex(IconHex: String);
     procedure SetImageIconName(IconName: String);
-    procedure SetImageFontName(FontName: String);
+    procedure SetImageFontName(FontName: TFontName);
     function SelectedIconFont: TIconFontItem;
   public
     destructor Destroy; override;
@@ -179,6 +177,7 @@ var
 function EditIconFontsImageList(const AImageList: TIconFontsImageList): Boolean;
 var
   LEditor: TIconFontsImageListEditor;
+  LCount: Integer;
 begin
   LEditor := TIconFontsImageListEditor.Create(nil);
   with LEditor do
@@ -194,15 +193,15 @@ begin
         {$IFDEF HasStoreBitmapProperty}
         StoreBitmapCheckBox.Checked := FEditingList.StoreBitmap;
         {$endif}
-        FEditinglist.IconFontItems.Assign(AImageList.IconFontItems);
         ImageView.LargeImages := FEditingList;
         ImageView.SmallImages := FEditingList;
-        UpdateIconFontListView(ImageView);
+        LCount := UpdateIconFontListView(ImageView);
+        if LCount > 0 then
+          ImageView.ItemIndex := LCount-1
+        else
+          ImageView.ItemIndex := -1;
         UpdateGUI;
         UpdateCharsToBuild;
-        if ImageView.Items.Count > 0 then
-          ImageView.ItemIndex := 0;
-
         if SavedBounds.Right - SavedBounds.Left > 0 then
           BoundsRect := SavedBounds;
       finally
@@ -284,7 +283,7 @@ begin
   UpdateIconFontListViewCaptions(ImageView);
 end;
 
-procedure TIconFontsImageListEditor.SetImageFontName(FontName: String);
+procedure TIconFontsImageListEditor.SetImageFontName(FontName: TFontName);
 begin
   SelectedIconFont.FontName := FontName;
   UpdateGUI;
@@ -348,7 +347,7 @@ end;
 procedure TIconFontsImageListEditor.UpdateGUI;
 var
   LIsItemSelected: Boolean;
-  LItemFontName: string;
+  LItemFontName: TFontName;
   LIconFontItem: TIconFontItem;
   {$IFNDEF UNICODE}
   S: WideString;
@@ -370,9 +369,11 @@ begin
     FontIconHex.Enabled := LIsItemSelected;
     IconName.Enabled := LIsItemSelected;
     ShowCharMapButton.Enabled := (FEditingList.FontName <> '');
+    IconImage.Canvas.Brush.Color :=  IconPanel.Color;
+    IconImage.Canvas.FillRect(Rect(0, 0, IconImage.Height, IconImage.Height));
     if LIsItemSelected then
     begin
-      ImageGroup.Caption := Format(FIconIndexLabel,[LIconFontItem.Index]);
+      ItemGroupBox.Caption := Format(FIconIndexLabel,[LIconFontItem.Index]);
       if LIconFontItem.MaskColor <> FEditingList.MaskColor then
         MaskColor.Selected := LIconFontItem.MaskColor
       else
@@ -386,7 +387,29 @@ begin
       IconName.Text := LIconFontItem.IconName;
       FontIconDec.Value := LIconFontItem.FontIconDec;
       FontIconHex.Text := LIconFontItem.FontIconHex;
-      MainPanel.Invalidate;
+      IconPanel.Invalidate;
+
+      //Draw Icon
+      if LIconFontItem.FontName <> '' then
+        IconImage.Canvas.Font.Name := LIconFontItem.FontName
+      else
+        IconImage.Canvas.Font.Name := FEditingList.FontName;
+      IconImage.Canvas.Font.Height := IconImage.Height;
+      if LIconFontItem.FontColor <> clNone then
+        IconImage.Canvas.Font.Color := LIconFontItem.FontColor
+      else
+        IconImage.Canvas.Font.Color := FEditingList.FontColor;
+      if LIconFontItem.MaskColor <> clNone then
+        IconImage.Canvas.Brush.Color := LIconFontItem.MaskColor
+      else
+        IconImage.Canvas.Brush.Color := FEditingList.MaskColor;
+      IconImage.Canvas.FillRect(Rect(0, 0, IconImage.Height, IconImage.Height));
+      {$IFNDEF UNICODE}
+      S := LIconFontItem.Character;
+      TextOutW(IconImage.Canvas.Handle, 0, 0, PWideChar(S), 1);
+      {$ELSE}
+      IconImage.Canvas.TextOut(0, 0, LIconFontItem.Character);
+      {$ENDIF}
     end
     else
     begin
@@ -396,31 +419,6 @@ begin
       IconName.Text := '';
       FontIconDec.Value := 0;
       FontIconHex.Text := '';
-    end;
-    MainImage.Canvas.Brush.Color :=  MainPanel.Color;
-    MainImage.Canvas.FillRect(Rect(0, 0, MainImage.Height, MainImage.Height));
-    if LIsItemSelected then
-    begin
-      if LIconFontItem.FontName <> '' then
-        MainImage.Canvas.Font.Name := LIconFontItem.FontName
-      else
-        MainImage.Canvas.Font.Name := FEditingList.FontName;
-      MainImage.Canvas.Font.Height := MainImage.Height;
-      if LIconFontItem.FontColor <> clNone then
-        MainImage.Canvas.Font.Color := LIconFontItem.FontColor
-      else
-        MainImage.Canvas.Font.Color := FEditingList.FontColor;
-      if LIconFontItem.MaskColor <> clNone then
-        MainImage.Canvas.Brush.Color := LIconFontItem.MaskColor
-      else
-        MainImage.Canvas.Brush.Color := FEditingList.MaskColor;
-      MainImage.Canvas.FillRect(Rect(0, 0, MainImage.Height, MainImage.Height));
-      {$IFNDEF UNICODE}
-      S := LIconFontItem.Character;
-      TextOutW(MainImage.Canvas.Handle, 0, 0, PWideChar(S), 1);
-      {$ELSE}
-      MainImage.Canvas.TextOut(0, 0, LIconFontItem.Character);
-      {$ENDIF}
     end;
   finally
     FUpdating := False;
@@ -478,7 +476,7 @@ begin
 end;
 
 procedure TIconFontsImageListEditor.IconFontsImageListFontMissing(
-  const AFontName: string);
+  const AFontName: TFontName);
 begin
   MessageDlg(Format(ERR_ICONFONTS_FONT_NOT_INSTALLED,[AFontName]),
     mtError, [mbOK], 0);
@@ -505,14 +503,6 @@ procedure TIconFontsImageListEditor.ImageViewSelectItem(Sender: TObject;
 begin
   if Selected then
     UpdateGUI;
-end;
-
-procedure TIconFontsImageListEditor.ImportButtonClick(Sender: TObject);
-var
-  LFont: TFont;
-begin
-  LFont := TFont.Create;
-  LFont.Name := FEditingList.FontName;
 end;
 
 procedure TIconFontsImageListEditor.DefaultFontColorColorBoxChange(
@@ -580,14 +570,12 @@ begin
   FUpdating := True;
   FEditingList := TIconFontsImageList.Create(nil);
   FEditingList.OnFontMissing := IconFontsImageListFontMissing;
-
-  FIconFontItems := TIconFontItems.Create(FEditingList, TIconFontItem);
   GetColorValues(AddColor);
   FontColor.ItemIndex := -1;
   MaskColor.ItemIndex := -1;
   FontName.Items := Screen.Fonts;
   DefaultFontName.Items := Screen.Fonts;
-  FIconIndexLabel := ImageGroup.Caption;
+  FIconIndexLabel := ItemGroupBox.Caption;
   {$IFNDEF HasStoreBitmapProperty}
   StoreBitmapCheckBox.Visible := False;
   {$ENDIF}
@@ -595,7 +583,6 @@ end;
 
 procedure TIconFontsImageListEditor.FormDestroy(Sender: TObject);
 begin
-  FreeAndNil(FIconFontItems);
   FreeAndNil(FEditingList);
   Screen.Cursors[crColorPick] := 0;
 end;
@@ -604,7 +591,7 @@ procedure TIconFontsImageListEditor.FormResize(Sender: TObject);
 var
   LEditSize: Integer;
 begin
-  LEditSize := (ImageGroup.Width - MainPanel.Width - 33) div 3;
+  LEditSize := (ItemGroupBox.Width - IconPanel.Width - 33) div 3;
 
   DefaultFontColorColorBox.Width := LEditSize;
   DefaultMaskColorColorBox.Left := DefaultFontColorColorBox.Left + DefaultFontColorColorBox.Width + 2;

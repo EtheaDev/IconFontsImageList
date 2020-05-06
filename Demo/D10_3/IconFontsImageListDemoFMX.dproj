@@ -212,6 +212,10 @@
             <Form>IconFontImageListForm</Form>
             <FormType>fmx</FormType>
         </DCCReference>
+        <DCCReference Include="..\..\Packages\FMX.IconFontsImageListEditorUnit.pas">
+            <Form>IconFontsImageListEditorFMX</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -313,12 +317,6 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="Win32\Debug\IconFontsImageListDemoFMX.exe" Configuration="Debug" Class="ProjectOutput">
-                    <Platform Name="Win32">
-                        <RemoteName>IconFontsImageListDemoFMX.exe</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
                 <DeployFile LocalName="$(NDKBasePath)\prebuilt\android-arm\gdbserver\gdbserver" Configuration="Debug" Class="AndroidGDBServer">
                     <Platform Name="Android">
                         <Overwrite>true</Overwrite>
@@ -355,6 +353,12 @@
                 </DeployFile>
                 <DeployFile LocalName="..\Bin\colors.xml" Configuration="Debug" Class="Android_Colors">
                     <Platform Name="Android">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\Bin\IconFontsImageListDemoFMX.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>IconFontsImageListDemoFMX.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

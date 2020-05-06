@@ -54,7 +54,7 @@ const
 
 type
   TIconFontsImageList = class;
-  TIconFontMissing = procedure (const AFontName: string) of object;
+  TIconFontMissing = procedure (const AFontName: TFontName) of object;
 
   TIconFontItem = class(TCollectionItem)
   private
@@ -74,7 +74,7 @@ type
     procedure Changed;
     function GetCharacter: WideString;
     procedure UpdateIconAttributes(const AFontColor, AMaskColor: TColor;
-      const AReplaceFontColor: Boolean = False; const AFontName: string = '');
+      const AReplaceFontColor: Boolean = False; const AFontName: TFontName = '');
     function GetIconFontsImageList: TIconFontsImageList;
     function StoreFontColor: Boolean;
     function StoreMaskColor: Boolean;
@@ -137,7 +137,7 @@ type
     {$IFDEF NeedStoreBitmapProperty}
     FStoreBitmap: Boolean;
     {$ENDIF}
-    procedure CheckFontName(const AFontName: string);
+    procedure CheckFontName(const AFontName: TFontName);
     procedure SetIconSize(const ASize: Integer);
     procedure SetIconFontItems(const AValue: TIconFontItems);
     procedure UpdateImage(const AIndex: Integer);
@@ -193,9 +193,9 @@ type
     function AddIcons(const ASourceString: WideString;
       const AFontName: TFontName = ''): Integer; overload;
     procedure UpdateIconsAttributes(const AFontColor, AMaskColor: TColor;
-      const AReplaceFontColor: Boolean = False; const AFontName: string = ''); overload;
+      const AReplaceFontColor: Boolean = False; const AFontName: TFontName = ''); overload;
     procedure UpdateIconsAttributes(const ASize: Integer; const AFontColor, AMaskColor: TColor;
-      const AReplaceFontColor: Boolean = False; const AFontName: string = ''); overload;
+      const AReplaceFontColor: Boolean = False; const AFontName: TFontName = ''); overload;
     procedure ClearIcons; virtual;
     procedure RedrawImages; virtual;
     procedure SaveToFile(const AFileName: string);
@@ -413,7 +413,7 @@ begin
 end;
 
 procedure TIconFontItem.UpdateIconAttributes(const AFontColor, AMaskColor: TColor;
-  const AReplaceFontColor: Boolean = False; const AFontName: string = '');
+  const AReplaceFontColor: Boolean = False; const AFontName: TFontName = '');
 var
   LChanged: Boolean;
 begin
@@ -499,7 +499,7 @@ begin
     inherited;
 end;
 
-procedure TIconFontsImageList.CheckFontName(const AFontName: string);
+procedure TIconFontsImageList.CheckFontName(const AFontName: TFontName);
 begin
   if AFontName <> '' then
   begin
@@ -670,7 +670,7 @@ function TIconFontsImageList.AddIcons(const AFrom, ATo: Integer;
   const ACheckValid: Boolean = False): Integer;
 var
   LChar: Integer;
-  LFontName: string;
+  LFontName: TFontName;
   LIsValid: Boolean;
   LBitmap: TBitmap;
 begin
@@ -790,7 +790,12 @@ begin
       S := WideChar(AFontIconDec);
       len := Length(S);
       SetLength( buf, len);
+      {$IFDEF D2010+}
       Cnt := GetGlyphIndicesW( ABitmap.Canvas.Handle, PWideChar(S), len, @buf[0], GGI_MARK_NONEXISTING_GLYPHS);
+      {$ELSE}
+      {$WARN SUSPICIOUS_TYPECAST OFF}
+      Cnt := GetGlyphIndicesW( ABitmap.Canvas.Handle, PAnsiChar(S), len, @buf[0], GGI_MARK_NONEXISTING_GLYPHS);
+      {$ENDIF}
       if Cnt > 0 then
       begin
         for i := 0 to Cnt-1 do
@@ -805,7 +810,7 @@ function TIconFontsImageList.DrawFontIcon(const AIndex: Integer;
 var
   LIconFontItem: TIconFontItem;
   S: WideString;
-  LFontName: string;
+  LFontName: TFontName;
   LMaskColor, LFontColor: TColor;
   LRect: TRect;
 begin
@@ -975,7 +980,7 @@ end;
 
 procedure TIconFontsImageList.UpdateIconsAttributes(const ASize: Integer;
   const AFontColor, AMaskColor: TColor; const AReplaceFontColor: Boolean = False;
-  const AFontName: string = '');
+  const AFontName: TFontName = '');
 var
   I: Integer;
   LIconFontItem: TIconFontItem;
@@ -1001,7 +1006,7 @@ begin
 end;
 
 procedure TIconFontsImageList.UpdateIconsAttributes(const AFontColor,
-  AMaskColor: TColor; const AReplaceFontColor: Boolean; const AFontName: string);
+  AMaskColor: TColor; const AReplaceFontColor: Boolean; const AFontName: TFontName);
 begin
   UpdateIconsAttributes(Self.Size, AFontColor, AMaskColor, AReplaceFontColor, AFontName);
 end;

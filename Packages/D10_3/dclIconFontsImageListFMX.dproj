@@ -3,7 +3,7 @@
         <ProjectGuid>{745E2DB3-8EE3-4647-B0C9-73C47702ECDF}</ProjectGuid>
         <MainSource>dclIconFontsImageListFMX.dpk</MainSource>
         <ProjectVersion>18.8</ProjectVersion>
-        <FrameworkType>None</FrameworkType>
+        <FrameworkType>FMX</FrameworkType>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Release</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
@@ -88,9 +88,14 @@
         </DelphiCompile>
         <DCCReference Include="..\IconFontsImageListNew.dcr"/>
         <DCCReference Include="DesignIDE.dcp"/>
-        <DCCReference Include="IconFontsImageListFMX.dcp"/>
+        <DCCReference Include="dclfmxstd.dcp"/>
         <DCCReference Include="rtl.dcp"/>
+        <DCCReference Include="IconFontsImageListFMX.dcp"/>
         <DCCReference Include="..\FMX.RegisterIconFontsImageList.pas"/>
+        <DCCReference Include="..\FMX.IconFontsImageListEditor.pas"/>
+        <DCCReference Include="..\FMX.IconFontsImageListEditorUnit.pas">
+            <Form>IconFontsImageListEditorFMX</Form>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -133,6 +138,12 @@
                     </Platform>
                 </DeployFile>
                 <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\20.0\Bpl\dclIconFontsImageListFMX.bpl" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>dclIconFontsImageListFMX.bpl</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\20.0\Bpl\dclIconFontsImageListFMX_D10_3.bpl" Configuration="Release" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>dclIconFontsImageListFMX.bpl</RemoteName>
                         <Overwrite>true</Overwrite>

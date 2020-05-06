@@ -4,8 +4,8 @@ object IconFontImageListForm: TIconFontImageListForm
   Caption = 
     'IconFont ImageList Demo - Copyright (c) Ethea S.r.l. - Apache 2.' +
     '0 Open Source License'
-  ClientHeight = 386
-  ClientWidth = 250
+  ClientHeight = 527
+  ClientWidth = 520
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
@@ -13,8 +13,8 @@ object IconFontImageListForm: TIconFontImageListForm
   DesignerMasterStyle = 0
   object Panel1: TPanel
     Align = Bottom
-    Position.Y = 276.000000000000000000
-    Size.Width = 250.000000000000000000
+    Position.Y = 417.000000000000000000
+    Size.Width = 520.000000000000000000
     Size.Height = 110.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
@@ -24,7 +24,7 @@ object IconFontImageListForm: TIconFontImageListForm
       Size.Width = 89.000000000000000000
       Size.Height = 33.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 1
+      TabOrder = 2
       Text = 'Next Image...'
       OnClick = NextButtonClick
     end
@@ -38,7 +38,7 @@ object IconFontImageListForm: TIconFontImageListForm
       Size.Width = 161.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 5
+      TabOrder = 6
       OnChange = edtColorChange
     end
     object RandomButton: TButton
@@ -47,7 +47,7 @@ object IconFontImageListForm: TIconFontImageListForm
       Size.Width = 89.000000000000000000
       Size.Height = 33.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 2
+      TabOrder = 3
       Text = 'Build random...'
       OnClick = RandomButtonClick
     end
@@ -55,18 +55,18 @@ object IconFontImageListForm: TIconFontImageListForm
       Position.X = 104.000000000000000000
       Position.Y = 44.000000000000000000
       Text = 'Icons:'
-      TabOrder = 3
+      TabOrder = 4
     end
     object CurrentLabel: TLabel
       Position.X = 104.000000000000000000
       Position.Y = 60.000000000000000000
       Text = 'Current:'
-      TabOrder = 4
+      TabOrder = 5
     end
     object AutoSizeCheckBox: TCheckBox
       Position.X = 176.000000000000000000
       Position.Y = 88.000000000000000000
-      TabOrder = 6
+      TabOrder = 7
       Text = 'AutoSize'
       OnChange = AutoSizeCheckBoxChange
     end
@@ -80,13 +80,102 @@ object IconFontImageListForm: TIconFontImageListForm
       Text = 'Prev.Image...'
       OnClick = PrevButtonClick
     end
+    object ShowEditorButton: TButton
+      Position.X = 416.000000000000000000
+      Position.Y = 8.000000000000000000
+      Size.Width = 89.000000000000000000
+      Size.Height = 33.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      Text = 'Show Editor...'
+      OnClick = ShowEditorButtonClick
+    end
+    object SpinBox1: TSpinBox
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 8
+      Cursor = crIBeam
+      DecimalDigits = 0
+      Max = 1200.000000000000000000
+      Value = 32.000000000000000000
+      Position.X = 208.000000000000000000
+      Position.Y = 16.000000000000000000
+      OnChange = SpinBox1Change
+    end
+  end
+  object ImageView: TListBox
+    Align = Left
+    Position.Y = 120.000000000000000000
+    Size.Width = 161.000000000000000000
+    Size.Height = 297.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 5
+    DisableFocusEffect = True
+    ItemHeight = 32.000000000000000000
+    ItemWidth = 150.000000000000000000
+    Images = IconFontsImageList
+    DefaultItemStyles.ItemStyle = ''
+    DefaultItemStyles.GroupHeaderStyle = ''
+    DefaultItemStyles.GroupFooterStyle = ''
+    Viewport.Width = 157.000000000000000000
+    Viewport.Height = 293.000000000000000000
+    object ListBoxItem1: TListBoxItem
+      AutoTranslate = False
+      ImageIndex = 0
+      Size.Width = 150.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      Text = 'ListBoxItem1'
+    end
+    object ListBoxItem2: TListBoxItem
+      ImageIndex = 1
+      Position.Y = 32.000000000000000000
+      Size.Width = 150.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      Text = 'ListBoxItem2'
+    end
+    object ListBoxItem3: TListBoxItem
+      ImageIndex = 2
+      Position.Y = 64.000000000000000000
+      Size.Width = 150.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 2
+      Text = 'ListBoxItem3'
+    end
+  end
+  object V: TPanel
+    Align = Top
+    Size.Width = 520.000000000000000000
+    Size.Height = 120.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 7
+    object Glyph2: TGlyph
+      Align = Left
+      Size.Width = 137.000000000000000000
+      Size.Height = 120.000000000000000000
+      Size.PlatformDefault = False
+      ImageIndex = 0
+      Images = IconFontsImageList
+    end
+    object Glyph1: TGlyph
+      Align = Left
+      Position.X = 137.000000000000000000
+      Size.Width = 96.000000000000000000
+      Size.Height = 120.000000000000000000
+      Size.PlatformDefault = False
+      ImageIndex = 1
+      Images = IconFontsImageList
+    end
   end
   object Glyph: TGlyph
     Align = Client
-    Size.Width = 250.000000000000000000
-    Size.Height = 276.000000000000000000
+    Size.Width = 359.000000000000000000
+    Size.Height = 297.000000000000000000
     Size.PlatformDefault = False
-    ImageIndex = 0
+    ImageIndex = 2
     Images = IconFontsImageList
   end
   object IconFontsImageList: TIconFontsImageList
@@ -97,67 +186,66 @@ object IconFontImageListForm: TIconFontImageListForm
         MultiResBitmap.LoadSize = 0
         MultiResBitmap = <
           item
-            Scale = 8.000000000000000000
-            Size = 16.000000000000000000
-          end
-          item
-            Size = 16.000000000000000000
-          end
-          item
-            Scale = 2.000000000000000000
-            Size = 16.000000000000000000
-          end
-          item
-            Scale = 3.000000000000000000
-            Size = 16.000000000000000000
-          end
-          item
-            Scale = 4.000000000000000000
-            Size = 16.000000000000000000
-          end
-          item
-            Scale = 5.000000000000000000
-            Size = 16.000000000000000000
-          end
-          item
-            Scale = 6.000000000000000000
-            Size = 16.000000000000000000
-          end
-          item
-            Scale = 7.000000000000000000
-            Size = 16.000000000000000000
           end>
-        IconName = 'Account'
+        IconName = 'mdi-account'
         FontName = 'Material Design Icons'
         FontIconDec = 61444
+        Opacity = 1.000000000000000000
       end
       item
         MultiResBitmap = <
           item
-            Size = 16.000000000000000000
+          end>
+        IconName = 'Login'
+        FontName = 'Material Design Icons'
+        FontIconDec = 61445
+        Opacity = 1.000000000000000000
+      end
+      item
+        MultiResBitmap = <
+          item
           end>
         IconName = 'User'
         FontName = 'Material Design Icons'
-        FontIconDec = 61449
+        FontIconDec = 61448
+        Opacity = 1.000000000000000000
       end>
     Destination = <
       item
         Layers = <
           item
-            Name = 'Account'
+            Name = 'mdi-account'
+            SourceRect.Right = 32.000000000000000000
+            SourceRect.Bottom = 32.000000000000000000
+          end>
+      end
+      item
+        Layers = <
+          item
+            Name = 'Login'
+            SourceRect.Right = 32.000000000000000000
+            SourceRect.Bottom = 32.000000000000000000
           end>
       end
       item
         Layers = <
           item
             Name = 'User'
+            SourceRect.Right = 32.000000000000000000
+            SourceRect.Bottom = 32.000000000000000000
           end>
       end>
     AutoSizeBitmaps = False
     FontName = 'Material Design Icons'
     FontColor = claBlack
     Opacity = 1.000000000000000000
-    Left = 48
-    Top = 16
+    Left = 208
+    Top = 144
+  end
+  object ImageList1: TImageList
+    Source = <>
+    Destination = <>
+    Left = 384
+    Top = 104
   end
 end

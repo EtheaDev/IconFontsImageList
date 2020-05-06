@@ -85,7 +85,7 @@ type
     procedure TrackBarChange(Sender: TObject);
     procedure ClearButtonClick(Sender: TObject);
     procedure DeleteIconActionExecute(Sender: TObject);
-    procedure IconFontsImageListFontMissing(const AFontName: string);
+    procedure IconFontsImageListFontMissing(const AFontName: TFontName);
     procedure ChangeColorActionExecute(Sender: TObject);
     procedure ShowCharMapActionExecute(Sender: TObject);
   private
@@ -245,7 +245,7 @@ begin
   TrackBarChange(TrackBar);
 end;
 
-procedure TMainForm.IconFontsImageListFontMissing(const AFontName: string);
+procedure TMainForm.IconFontsImageListFontMissing(const AFontName: TFontName);
 var
   LFontFileName: string;
 begin

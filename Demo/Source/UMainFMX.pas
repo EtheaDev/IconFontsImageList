@@ -7,26 +7,40 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.Controls.Presentation, FMX.StdCtrls, System.ImageList, FMX.ImgList,
   FMX.Objects, FMX.MultiresBitmap, System.Rtti, System.Messaging,
-  FMX.IconFontsImageList, FMX.ListBox, FMX.Colors;
+  FMX.IconFontsImageList, FMX.ListBox, FMX.Colors, FMX.Layouts,
+  FMX.ListView.Types, FMX.ListView.Appearances, FMX.ListView.Adapters.Base,
+  FMX.ListView, FMX.Edit, FMX.EditBox, FMX.SpinBox;
 
 type
   TIconFontImageListForm = class(TForm)
     NextButton: TButton;
     Panel1: TPanel;
     edtColor: TColorComboBox;
-    Glyph: TGlyph;
     IconFontsImageList: TIconFontsImageList;
     RandomButton: TButton;
     IconsLabel: TLabel;
     CurrentLabel: TLabel;
     AutoSizeCheckBox: TCheckBox;
     PrevButton: TButton;
+    ShowEditorButton: TButton;
+    ImageView: TListBox;
+    ListBoxItem1: TListBoxItem;
+    ListBoxItem2: TListBoxItem;
+    SpinBox1: TSpinBox;
+    ListBoxItem3: TListBoxItem;
+    V: TPanel;
+    Glyph2: TGlyph;
+    Glyph1: TGlyph;
+    Glyph: TGlyph;
+    ImageList1: TImageList;
     procedure FormCreate(Sender: TObject);
     procedure NextButtonClick(Sender: TObject);
     procedure edtColorChange(Sender: TObject);
     procedure RandomButtonClick(Sender: TObject);
     procedure AutoSizeCheckBoxChange(Sender: TObject);
     procedure PrevButtonClick(Sender: TObject);
+    procedure ShowEditorButtonClick(Sender: TObject);
+    procedure SpinBox1Change(Sender: TObject);
   private
     procedure UpdateGUI;
   public
@@ -40,7 +54,8 @@ implementation
 
 uses
   System.Math
-  , FMX.Consts;
+  , FMX.Consts
+  , FMX.IconFontsImageListEditorUnit;
 
 {$R *.fmx}
 
@@ -66,9 +81,6 @@ procedure TIconFontImageListForm.RandomButtonClick(Sender: TObject);
 var
   LRand1, LRand2: Integer;
   LRandomCount: Integer;
-  I: Integer;
-  LItem: TIconFontsSourceItem;
-  LDest: TCustomDestinationItem;
 begin
   LRandomCount := 100;
   LRand1 := 61441+Random(4000);
@@ -82,22 +94,19 @@ begin
 
   //Generate Icons
   Glyph.ImageIndex := -1;
-  for I := LRand1 to LRand2 do
-  begin
-    LItem := IconFontsImageList.Source.Add as TIconFontsSourceItem;
-    LItem.MultiResBitmap.Add;
-    LItem.FontName := 'Material Design Icons';
-    LItem.FontIconDec := I;
-    LItem.FontColor := TAlphaColors.Black;
-    LItem.Name := LItem.FontIconHex;
-    LDest := IconFontsImageList.Destination.Add;
-    with LDest.Layers.Add do
-    begin
-      Name := LItem.Name;
-    end;
-  end;
+  IconFontsImageList.AddIcons(LRand1, LRand2);
   Glyph.ImageIndex := IconFontsImageList.Count - LRandomCount;
   UpdateGUI;
+end;
+
+procedure TIconFontImageListForm.ShowEditorButtonClick(Sender: TObject);
+begin
+  EditIconFontsImageList(IconFontsImageList);
+end;
+
+procedure TIconFontImageListForm.SpinBox1Change(Sender: TObject);
+begin
+  IconFontsImageList.Size := Round(SpinBox1.Value);
 end;
 
 procedure TIconFontImageListForm.UpdateGUI;

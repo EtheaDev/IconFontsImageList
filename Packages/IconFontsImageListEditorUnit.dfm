@@ -157,7 +157,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
-      object BuilderGroupBox: TGroupBox
+      object ImageListGroupBox: TGroupBox
         Left = 0
         Top = 0
         Width = 608
@@ -259,7 +259,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           OnClick = StoreBitmapCheckBoxClick
         end
       end
-      object ImageGroup: TGroupBox
+      object ItemGroupBox: TGroupBox
         Left = 0
         Top = 103
         Width = 608
@@ -326,7 +326,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           Caption = 'MaskColor'
           Transparent = True
         end
-        object MainPanel: TPanel
+        object IconPanel: TPanel
           Left = 10
           Top = 18
           Width = 78
@@ -338,7 +338,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           Ctl3D = False
           ParentCtl3D = False
           TabOrder = 0
-          object MainImage: TImage
+          object IconImage: TImage
             Left = 2
             Top = 2
             Width = 72
