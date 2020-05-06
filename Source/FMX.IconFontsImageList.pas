@@ -572,8 +572,6 @@ begin
   LItem.FontIconDec := AFontIconDec;
   if AFontColor <> TAlphaColors.Null then
     LItem.FontColor := AFontColor;
-  if LItem.FontIconHex <> '' then
-    LItem.Name := LItem.FontIconHex;
   LDest := Self.Destination.Insert(AIndex);
   with LDest.Layers.Add do
     Name := LItem.Name;
@@ -588,7 +586,7 @@ var
 begin
   LIndex := Count;
   for LFontIconDec := AFromIconDec to AToIconDec do
-    LIndex := InsertIcon(LIndex, LFontIconDec, AFontName, AFontColor);
+    LIndex := InsertIcon(LIndex, LFontIconDec, AFontName, AFontColor) + 1;
   Result := AFromIconDec - AToIconDec + 1;
 end;
 
