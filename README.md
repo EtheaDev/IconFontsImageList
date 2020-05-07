@@ -11,7 +11,7 @@ RELEASE NOTES:
 ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png](https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png)
 
 7 May 2020: official 1.1 version (FMX)
-- Added Component Editor for FMX version!
+- Added Component Editor for FMX version: [look here...](https://github.com/EtheaDev/IconFontsImageList/wiki/Component-Editor-(FMX)).
 - Fixed some problems in FMX version
 - Updated Demo for FMX version
 
@@ -20,12 +20,12 @@ RELEASE NOTES:
 - Added a Video tutorial in Wiki section
 
 12 April 2020: official 1.6 version (VCL)
-- Added a custom CharMap form (VCL only) to show and collect icons more easily: [look here for more informations](https://github.com/EtheaDev/IconFontsImageList/wiki/CharMap).
+- Added a custom CharMap form (VCL only) to show and collect icons more easily: [look here...](https://github.com/EtheaDev/IconFontsImageList/wiki/CharMap).
 
 27 March 2020: official 1.5 version (VCL) and first 1.0 version (FMX)
 - Added support for Icon Fonts that contains surrogate pair characters (VCL & FMX)!
 
-Now you can use all the icons present in any "font collection" that containts those special characters: [look here for more informations](https://github.com/EtheaDev/IconFontsImageList/wiki/Icon-Fonts-with-surrogate-pair).
+Now you can use all the icons present in any "font collection" that containts those special characters: [look here...](https://github.com/EtheaDev/IconFontsImageList/wiki/Icon-Fonts-with-surrogate-pair).
 
 24 March 2020: official 1.4 version (VCL) and first Beta version (FMX)
 - Improved performances into IDE (VCL)
