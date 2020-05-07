@@ -10,6 +10,11 @@ RELEASE NOTES:
 
 ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png](https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png)
 
+7 May 2020: official 1.1 version (FMX)
+- Added Component Editor for FMX version!
+- Fixed some problems in FMX version
+- Updated Demo for FMX version
+
 2 May 2020: official 1.7 version (VCL)
 - Added utilities to manage Disabled and Hot Imagelist
 - Added a Video tutorial in Wiki section
