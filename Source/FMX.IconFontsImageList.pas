@@ -124,6 +124,8 @@ type
     function GetFontColor: TAlphaColor;
     function GetOpacity: single;
     function GetDestinationItem: TCustomDestinationItem;
+    procedure UpdateIconAttributes(const AFontColor: TAlphaColor;
+      const AReplaceFontColor: Boolean = False; const AFontName: TFontName = '');
   protected
     function GetDisplayName: string; override;
     function CreateMultiResBitmap: TMultiResBitmap; override;
@@ -177,6 +179,10 @@ type
       const AFontName: TFontName = '';
       const AFontColor: TAlphaColor = TAlphaColors.Null): Integer;
     procedure ClearIcons; virtual;
+    procedure UpdateIconAttributes(const ASize: Integer; const AFontColor: TAlphaColor;
+      const AReplaceFontColor: Boolean = False; const AFontName: TFontName = ''); overload;
+    procedure UpdateIconAttributes(const AFontColor: TAlphaColor;
+      const AReplaceFontColor: Boolean = False; const AFontName: TFontName = ''); overload;
   published
     property Source;
     property Destination;
@@ -533,6 +539,17 @@ begin
   Result := (FOwnerImageList = nil) or (FOpacity <> FOwnerImageList.FOpacity);
 end;
 
+procedure TIconFontsSourceItem.UpdateIconAttributes(const AFontColor: TAlphaColor;
+  const AReplaceFontColor: Boolean = False; const AFontName: TFontName = '');
+begin
+  //If AReplaceFontColor is false then the color of single icon is preserved
+  if AReplaceFontColor and (FFontColor <> TAlphaColors.Null) then
+    FFontColor := AFontColor;
+  //Replace FontName only if passed and different for specific Font
+  if (AFontName <> '') and (FFontName <> '') and (AFontName <> FFontName) then
+    FFontName := AFontName;
+end;
+
 procedure TIconFontsSourceItem.UpdateAllItems;
 var
   I: Integer;
@@ -658,6 +675,32 @@ begin
   end;
 end;
 
+procedure TIconFontsImageList.UpdateIconAttributes(
+  const AFontColor: TAlphaColor; const AReplaceFontColor: Boolean;
+  const AFontName: TFontName);
+begin
+  UpdateIconAttributes(Self.Size, AFontColor, AReplaceFontColor, AFontName);
+end;
+
+procedure TIconFontsImageList.UpdateIconAttributes(const ASize: Integer;
+  const AFontColor: TAlphaColor; const AReplaceFontColor: Boolean;
+  const AFontName: TFontName);
+var
+  I: Integer;
+  LIconFontItem: TIconFontsSourceItem;
+begin
+  if (AFontColor <> TAlphaColors.null) then
+  begin
+    Self.Size := ASize;
+    FFontColor := AFontColor;
+    for I := 0 to Source.Count -1 do
+    begin
+      LIconFontItem := Source.Items[I] as TIconFontsSourceItem;
+      LIconFontItem.UpdateIconAttributes(FFontColor, AReplaceFontColor, AFontName);
+    end;
+  end;
+end;
+
 procedure TIconFontsImageList.DeleteIcon(const AIndex: Integer);
 var
   LDest: TCustomDestinationItem;
@@ -692,8 +735,6 @@ begin
 end;
 
 procedure TIconFontsImageList.SetAutoSizeBitmaps(const Value: Boolean);
-var
-  LSize: TSize;
 begin
   FAutoSizeBitmaps := Value;
   if (Count > 0) then
@@ -708,9 +749,12 @@ begin
   for I := 0 to Source.Count -1 do
   begin
     LSourceItem := Source[I] as TIconFontsSourceItem;
-    LSourceItem.FontName := FFontName;
-    LSourceItem.FontColor := FFontColor;
-    LSourceItem.Opacity := FOpacity;
+    if LSourceItem.FFontName = '' then
+      LSourceItem.FontName := FFontName;
+    if LSourceItem.FFontColor = TAlphaColors.Null then
+      LSourceItem.FontColor := FFontColor;
+    if LSourceItem.FOpacity = -1 then
+      LSourceItem.Opacity := FOpacity;
     LSourceItem.UpdateAllItems;
   end;
 end;

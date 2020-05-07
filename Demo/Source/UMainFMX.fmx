@@ -4,8 +4,8 @@ object IconFontImageListForm: TIconFontImageListForm
   Caption = 
     'IconFont ImageList Demo - Copyright (c) Ethea S.r.l. - Apache 2.' +
     '0 Open Source License'
-  ClientHeight = 527
-  ClientWidth = 520
+  ClientHeight = 517
+  ClientWidth = 513
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
@@ -13,8 +13,8 @@ object IconFontImageListForm: TIconFontImageListForm
   DesignerMasterStyle = 0
   object Panel1: TPanel
     Align = Bottom
-    Position.Y = 417.000000000000000000
-    Size.Width = 520.000000000000000000
+    Position.Y = 407.000000000000000000
+    Size.Width = 513.000000000000000000
     Size.Height = 110.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
@@ -64,6 +64,7 @@ object IconFontImageListForm: TIconFontImageListForm
       TabOrder = 5
     end
     object AutoSizeCheckBox: TCheckBox
+      IsChecked = True
       Position.X = 176.000000000000000000
       Position.Y = 88.000000000000000000
       TabOrder = 7
@@ -104,9 +105,9 @@ object IconFontImageListForm: TIconFontImageListForm
   end
   object ImageView: TListBox
     Align = Left
-    Position.Y = 120.000000000000000000
+    Position.Y = 113.000000000000000000
     Size.Width = 161.000000000000000000
-    Size.Height = 297.000000000000000000
+    Size.Height = 294.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 5
     DisableFocusEffect = True
@@ -117,7 +118,7 @@ object IconFontImageListForm: TIconFontImageListForm
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     Viewport.Width = 157.000000000000000000
-    Viewport.Height = 293.000000000000000000
+    Viewport.Height = 290.000000000000000000
     object ListBoxItem1: TListBoxItem
       AutoTranslate = False
       ImageIndex = 0
@@ -148,14 +149,14 @@ object IconFontImageListForm: TIconFontImageListForm
   end
   object V: TPanel
     Align = Top
-    Size.Width = 520.000000000000000000
-    Size.Height = 120.000000000000000000
+    Size.Width = 513.000000000000000000
+    Size.Height = 113.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 7
     object Glyph2: TGlyph
       Align = Left
       Size.Width = 137.000000000000000000
-      Size.Height = 120.000000000000000000
+      Size.Height = 113.000000000000000000
       Size.PlatformDefault = False
       ImageIndex = 0
       Images = IconFontsImageList
@@ -164,7 +165,7 @@ object IconFontImageListForm: TIconFontImageListForm
       Align = Left
       Position.X = 137.000000000000000000
       Size.Width = 96.000000000000000000
-      Size.Height = 120.000000000000000000
+      Size.Height = 113.000000000000000000
       Size.PlatformDefault = False
       ImageIndex = 1
       Images = IconFontsImageList
@@ -172,8 +173,8 @@ object IconFontImageListForm: TIconFontImageListForm
   end
   object Glyph: TGlyph
     Align = Client
-    Size.Width = 359.000000000000000000
-    Size.Height = 297.000000000000000000
+    Size.Width = 352.000000000000000000
+    Size.Height = 294.000000000000000000
     Size.PlatformDefault = False
     ImageIndex = 2
     Images = IconFontsImageList
@@ -186,6 +187,7 @@ object IconFontImageListForm: TIconFontImageListForm
         MultiResBitmap.LoadSize = 0
         MultiResBitmap = <
           item
+            Size = 113
           end>
         IconName = 'mdi-account'
         FontName = 'Material Design Icons'
@@ -195,15 +197,18 @@ object IconFontImageListForm: TIconFontImageListForm
       item
         MultiResBitmap = <
           item
+            Size = 96
           end>
         IconName = 'Login'
         FontName = 'Material Design Icons'
         FontIconDec = 61445
+        FontColor = claRed
         Opacity = 1.000000000000000000
       end
       item
         MultiResBitmap = <
           item
+            Size = 294
           end>
         IconName = 'User'
         FontName = 'Material Design Icons'
@@ -215,37 +220,30 @@ object IconFontImageListForm: TIconFontImageListForm
         Layers = <
           item
             Name = 'mdi-account'
-            SourceRect.Right = 32.000000000000000000
-            SourceRect.Bottom = 32.000000000000000000
+            SourceRect.Right = 113.000000000000000000
+            SourceRect.Bottom = 113.000000000000000000
           end>
       end
       item
         Layers = <
           item
             Name = 'Login'
-            SourceRect.Right = 32.000000000000000000
-            SourceRect.Bottom = 32.000000000000000000
+            SourceRect.Right = 96.000000000000000000
+            SourceRect.Bottom = 96.000000000000000000
           end>
       end
       item
         Layers = <
           item
             Name = 'User'
-            SourceRect.Right = 32.000000000000000000
-            SourceRect.Bottom = 32.000000000000000000
+            SourceRect.Right = 294.000000000000000000
+            SourceRect.Bottom = 294.000000000000000000
           end>
       end>
-    AutoSizeBitmaps = False
     FontName = 'Material Design Icons'
     FontColor = claBlack
     Opacity = 1.000000000000000000
     Left = 208
     Top = 144
-  end
-  object ImageList1: TImageList
-    Source = <>
-    Destination = <>
-    Left = 384
-    Top = 104
   end
 end

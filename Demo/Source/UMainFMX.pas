@@ -32,7 +32,6 @@ type
     Glyph2: TGlyph;
     Glyph1: TGlyph;
     Glyph: TGlyph;
-    ImageList1: TImageList;
     procedure FormCreate(Sender: TObject);
     procedure NextButtonClick(Sender: TObject);
     procedure edtColorChange(Sender: TObject);
@@ -121,11 +120,8 @@ begin
 end;
 
 procedure TIconFontImageListForm.edtColorChange(Sender: TObject);
-var
-  I: Integer;
 begin
-  for I := 0 to IconFontsImageList.Source.Count-1 do
-    (IconFontsImageList.Source.Items[I] as TIconFontsSourceItem).FontColor := edtColor.Color;
+  IconFontsImageList.UpdateIconAttributes(edtColor.Color, False);
 end;
 
 procedure TIconFontImageListForm.FormCreate(Sender: TObject);
