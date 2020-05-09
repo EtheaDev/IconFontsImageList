@@ -2,7 +2,11 @@
 
 ## An extended ImageList for Delphi (VCL & FMX) to simple use and manage Icon Fonts.
 
+Sample image of VCL version
 ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/Sample.jpg](https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/Sample.jpg)
+
+Sample image of FMX version
+![https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/SampleFMX.jpg](https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/SampleFMX.jpg)
 
 Follow the [guide in Wiki section](https://github.com/EtheaDev/IconFontsImageList/wiki) to known how to use those components to modernize your Delphi VCL or FMX applications scalable, colored and beautiful with few lines of code.
 
