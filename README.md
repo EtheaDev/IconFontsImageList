@@ -10,6 +10,9 @@ RELEASE NOTES:
 
 ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png](https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png)
 
+9 May 2020: official 1.2 version (FMX)
+- Fixed component editor and packages for Delphi 10.1 and 10.2
+
 7 May 2020: official 1.1 version (FMX)
 - Added Component Editor for FMX version: [look here...](https://github.com/EtheaDev/IconFontsImageList/wiki/Component-Editor-(FMX)).
 - Fixed some problems in FMX version
