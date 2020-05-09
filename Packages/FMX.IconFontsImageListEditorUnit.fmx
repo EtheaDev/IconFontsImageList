@@ -208,7 +208,6 @@
           Size.Width = 74.000000000000000000
           Size.Height = 22.000000000000000000
           Size.PlatformDefault = False
-          CharCase = ecUpperCase
           OnExit = FontIconHexExit
         end
         object FontIconHexLabel: TLabel
@@ -376,7 +375,6 @@
         Size.Width = 71.000000000000000000
         Size.Height = 22.000000000000000000
         Size.PlatformDefault = False
-        CharCase = ecUpperCase
         OnChange = EditChangeUpdateGUI
       end
       object ToHexNum: TEdit
@@ -387,7 +385,6 @@
         Size.Width = 74.000000000000000000
         Size.Height = 22.000000000000000000
         Size.PlatformDefault = False
-        CharCase = ecUpperCase
         OnChange = EditChangeUpdateGUI
       end
       object ToLabel: TLabel

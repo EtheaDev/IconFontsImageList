@@ -29,6 +29,8 @@ unit FMX.IconFontsImageListEditorUnit;
 
 interface
 
+{$INCLUDE ..\Source\IconFontsImageList.inc}
+
 uses
   System.SysUtils, System.Types, System.UITypes, FMX.Controls, System.Classes,
   System.Actions, FMX.Forms, FMX.Graphics, FMX.ActnList, FMX.StdCtrls, FMX.Colors, FMX.ListBox,
@@ -550,6 +552,11 @@ begin
   DefaultFontName.Text := '';
   FIconIndexLabel := ItemGroupBox.Text;
   IconImage.Images := FEditingList;
+  {$IFDEF D10_2+}
+  FontIconHex.CharCase := TEditCharCase.ecUpperCase;
+  FromHexNum.CharCase := TEditCharCase.ecUpperCase;
+  ToHexNum.CharCase := TEditCharCase.ecUpperCase;
+  {$ENDIF}
 end;
 
 procedure TIconFontsImageListEditorFMX.FormDestroy(Sender: TObject);

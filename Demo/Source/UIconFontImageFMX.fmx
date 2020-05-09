@@ -52,7 +52,7 @@ object IconFontImageForm: TIconFontImageForm
       Size.Height = 33.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 1
-      Text = 'Next Char...'
+      Text = 'Next Icon...'
       OnClick = ButtonClick
     end
     object edtColor: TColorComboBox

@@ -124,7 +124,7 @@
   {$DEFINE D10_2+}
 {$ENDIF}
 
-// Delphi 10.3
+// Delphi 10.3 Rio
 {$IFDEF VER330}
   {$DEFINE D2010+}
   {$DEFINE DXE+}
