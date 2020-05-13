@@ -179,6 +179,9 @@ type
     procedure Replace(const AIndex: Integer; const AChar: Integer;
       const AFontName: TFontName = ''; const AFontColor: TColor = clNone;
       AMaskColor: TColor = clNone); overload;
+    function AddIcon(const AChar: Integer; const AIconName: string;
+      const AFontName: TFontName = ''; const AFontColor: TColor = clNone;
+      const AMaskColor: TColor = clNone): TIconFontItem; overload;
     function AddIcon(const AChar: WideChar; const AFontName: TFontName = '';
       const AFontColor: TColor = clNone; const AMaskColor: TColor = clNone): TIconFontItem; overload;
     function AddIcon(const AChar: Integer; const AFontName: TFontName = '';
@@ -638,7 +641,16 @@ begin
 end;
 
 function TIconFontsImageList.AddIcon(const AChar: Integer;
-  const AFontName: TFontName = ''; const AFontColor: TColor = clNone;
+  const AFontName: TFontName = '';
+  const AFontColor: TColor = clNone;
+  const AMaskColor: TColor = clNone): TIconFontItem;
+begin
+  Result := AddIcon(AChar, '', AFontName, AFontColor, AMaskColor);
+end;
+
+function TIconFontsImageList.AddIcon(const AChar: Integer;
+  const AIconName: string; const AFontName: TFontName = '';
+  const AFontColor: TColor = clNone;
   const AMaskColor: TColor = clNone): TIconFontItem;
 begin
   Result := FIconFontItems.Add;
@@ -650,6 +662,7 @@ begin
       Result.FFontColor := AFontColor;
     if AMaskColor <> clNone then
       Result.FMaskColor := AMaskColor;
+    Result.IconName := AIconName;
   except
     FIconFontItems.Delete(Result.Index);
     raise;
