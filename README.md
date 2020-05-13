@@ -12,11 +12,15 @@ Follow the [guide in Wiki section](https://github.com/EtheaDev/IconFontsImageLis
 
 **WARNING:**
 
-Take care of different versions of the same Font, as explained [here:](https://github.com/EtheaDev/IconFontsImageList/wiki/Deploy-Applications).
+Take care of changed Font file used in the Demos from v1.7(VCL)/v1.2(FMX) -> v1.8(VCL)/v1.3(FMX), as explained [here](https://github.com/EtheaDev/IconFontsImageList/wiki/Deploy-Applications).
 
 **RELEASE NOTES:**
 
 ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png](https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png)
+
+13 May 2020: official 1.8 (VCL) and 1.3 version (FMX)
+- Changed font used in the Demos to preserve future changes of char/mapping.
+- Added preview for new "Material Design Icons Desktop.ttf" in Demo/Fonts folder.
 
 9 May 2020: official 1.2 version (FMX)
 - Fixed component editor and packages for Delphi 10.1 and 10.2
