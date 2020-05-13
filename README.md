@@ -10,7 +10,11 @@ Sample image of FMX version
 
 Follow the [guide in Wiki section](https://github.com/EtheaDev/IconFontsImageList/wiki) to known how to use those components to modernize your Delphi VCL or FMX applications scalable, colored and beautiful with few lines of code.
 
-RELEASE NOTES:
+**WARNING:**
+
+Take care of different versions of the same Font, as explained here: [Deploy of the application](Deploy-Applications).
+
+**RELEASE NOTES:**
 
 ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png](https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png)
 
