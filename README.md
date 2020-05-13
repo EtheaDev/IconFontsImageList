@@ -12,7 +12,7 @@ Follow the [guide in Wiki section](https://github.com/EtheaDev/IconFontsImageLis
 
 **WARNING:**
 
-Take care of different versions of the same Font, as explained here: [Deploy of the application](Deploy-Applications).
+Take care of different versions of the same Font, as explained [here:](https://github.com/EtheaDev/IconFontsImageList/wiki/Deploy-Applications).
 
 **RELEASE NOTES:**
 
