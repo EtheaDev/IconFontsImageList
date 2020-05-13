@@ -41,15 +41,19 @@ implementation
 
 uses
   FMX.IconFontsImageList
+  {$IFDEF D10_3+}
   , FmxAnimationEditors
+  {$ENDIF}
   , FMX.IconFontImage
   , FMX.IconFontsImageListEditor;
 
 procedure Register;
 begin
+  {$IFDEF D10_3+}
   RegisterPropertyEditor(TypeInfo(Single), TIconFontBitmapItem, '', TFmxFloatProperty);
   RegisterPropertyEditor(TypeInfo(Single), TIconFontsSourceItem, '', TFmxFloatProperty);
   RegisterPropertyEditor(TypeInfo(Single), TIconFontsImageList, '', TFmxFloatProperty);
+  {$ENDIF}
 
   RegisterComponents('Ethea',
   [TIconFontImage,

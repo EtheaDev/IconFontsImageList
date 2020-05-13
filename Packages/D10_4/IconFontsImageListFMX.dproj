@@ -2,7 +2,7 @@
     <PropertyGroup>
         <ProjectGuid>{6CACE266-FA54-4F84-AD23-760B094187A3}</ProjectGuid>
         <MainSource>IconFontsImageListFMX.dpk</MainSource>
-        <ProjectVersion>18.8</ProjectVersion>
+        <ProjectVersion>19.0</ProjectVersion>
         <FrameworkType>FMX</FrameworkType>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Release</Config>

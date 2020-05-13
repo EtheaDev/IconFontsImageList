@@ -50,7 +50,7 @@ resourcestring
   ERR_ICONFONTS_FONT_NOT_INSTALLED = 'Font "%s" is not installed!';
 
 const
-  IconFontsImageListVersion = '1.7.0';
+  IconFontsImageListVersion = '1.8.0';
 
 type
   TIconFontsImageList = class;
@@ -86,6 +86,7 @@ type
     constructor Create(Collection: TCollection); override;
     destructor Destroy; override;
     procedure Assign(Source: TPersistent); override;
+    property Character: WideString read GetCharacter;
   published
     property IconFontsImageList: TIconFontsImageList read GetIconFontsImageList;
     property FontIconDec: Integer read GetFontIconDec write SetFontIconDec stored true default 0;
@@ -94,7 +95,6 @@ type
     property FontColor: TColor read FFontColor write SetFontColor stored StoreFontColor;
     property MaskColor: TColor read FMaskColor write SetMaskColor stored StoreMaskColor;
     property IconName: string read FIconName write SetIconName;
-    property Character: WideString read GetCharacter;
   end;
 
   {TIconFontItems}
@@ -243,7 +243,7 @@ uses
 function IsValidValue(const AFontIconDec: Integer): Boolean;
 begin
   Result := ((AFontIconDec >= $0000) and (AFontIconDec <= $D7FF)) or
-    ((AFontIconDec >= $E000) and (AFontIconDec <= $FFFF)) or  //D800 to DFFF are reserved for code point values for Surrogate Pairs
+    ((AFontIconDec >= $E000) and (AFontIconDec < $FFFF)) or  //D800 to DFFF are reserved for code point values for Surrogate Pairs
     ((AFontIconDec >= $010000) and (AFontIconDec <= $10FFFF)); //Surrogate Pairs
 end;
 

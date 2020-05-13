@@ -626,7 +626,10 @@ begin
       LEnd := $FFFFF;
     end;
     ImageView.Clear;
-    FFirstIcon := FCharMapList.Count;
+    if FCharMapList.Count > 0 then
+      FFirstIcon := FCharMapList.Count
+    else
+      FFirstIcon := -1;
     FMaxIcons := LEnd - LStart;
     ProgressBar.Position := 0;
     FBuilding := True;

@@ -79,13 +79,13 @@ type
     function GetDisplayName: string; override;
   public
     constructor Create(Collection: TCollection); override;
+    property Character: WideString read GetCharacter;
   published
     property Bitmap: TBitmapOfItem read GetBitmap write SetBitmap stored False;
     property Scale;
     property Size: Integer read GetSize write SetSize default 32;
     //Readonly properties from Source Item
     property FontName: TFontName read GetFontName;
-    property Character: WideString read GetCharacter stored false;
     property FontColor: TAlphaColor read GetFontColor stored false;
     property Opacity: single read GetOpacity stored false;
   end;
@@ -135,13 +135,13 @@ type
   public
     constructor Create(Collection: TCollection); override;
     procedure Assign(Source: TPersistent); override;
+    property Character: WideString read GetCharacter;
   published
     property MultiResBitmap;
     property IconName: string read GetIconName write SetIconName;
     property FontName: TFontName read GetFontName write SetFontName stored StoreFontName;
     property FontIconDec: Integer read GetFontIconDec write SetFontIconDec stored true default 0;
     property FontIconHex: string read GetFontIconHex write SetFontIconHex stored false;
-    property Character: WideString read GetCharacter;
     property FontColor: TAlphaColor read GetFontColor write SetFontColor stored StoreFontColor;
     property Opacity: single read GetOpacity write SetOpacity stored StoreOpacity;
   end;

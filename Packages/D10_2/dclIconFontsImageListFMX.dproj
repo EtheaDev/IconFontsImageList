@@ -89,9 +89,13 @@
         </DelphiCompile>
         <DCCReference Include="..\IconFontsImageListNew.dcr"/>
         <DCCReference Include="DesignIDE.dcp"/>
-        <DCCReference Include="IconFontsImageListFMX.dcp"/>
         <DCCReference Include="rtl.dcp"/>
+        <DCCReference Include="IconFontsImageListFMX.dcp"/>
         <DCCReference Include="..\FMX.RegisterIconFontsImageList.pas"/>
+        <DCCReference Include="..\FMX.IconFontsImageListEditor.pas"/>
+        <DCCReference Include="..\FMX.IconFontsImageListEditorUnit.pas">
+            <Form>IconFontsImageListEditorFMX</Form>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

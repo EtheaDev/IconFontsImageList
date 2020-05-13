@@ -82,14 +82,8 @@ var
   LRandomCount: Integer;
 begin
   LRandomCount := 100;
-  LRand1 := 61441+Random(4000);
+  LRand1 := $F0001+Random(5000);
   LRand2 := LRand1+LRandomCount-1;
-
-  //Test for Icons with surrogate pairs
-  (*
-  LRand1 := $F0100;
-  LRand2 := $F0207;
-  *)
 
   //Generate Icons
   Glyph.ImageIndex := -1;

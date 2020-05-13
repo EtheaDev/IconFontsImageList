@@ -141,7 +141,7 @@
   {$DEFINE D10_3+}
 {$ENDIF}
 
-// Delphi 10.4
+// Delphi 10.4 Sydney
 {$IFDEF VER340}
   {$DEFINE D2010+}
   {$DEFINE DXE+}

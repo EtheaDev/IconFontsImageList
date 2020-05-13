@@ -189,9 +189,9 @@ object IconFontImageListForm: TIconFontImageListForm
           item
             Size = 113
           end>
-        IconName = 'mdi-account'
-        FontName = 'Material Design Icons'
-        FontIconDec = 61444
+        IconName = 'account'
+        FontName = 'Material Design Icons Desktop'
+        FontIconDec = 983044
         Opacity = 1.000000000000000000
       end
       item
@@ -199,9 +199,9 @@ object IconFontImageListForm: TIconFontImageListForm
           item
             Size = 96
           end>
-        IconName = 'Login'
-        FontName = 'Material Design Icons'
-        FontIconDec = 61445
+        IconName = 'account-alert'
+        FontName = 'Material Design Icons Desktop'
+        FontIconDec = 983045
         FontColor = claRed
         Opacity = 1.000000000000000000
       end
@@ -210,16 +210,16 @@ object IconFontImageListForm: TIconFontImageListForm
           item
             Size = 294
           end>
-        IconName = 'User'
-        FontName = 'Material Design Icons'
-        FontIconDec = 61448
+        IconName = 'account-check'
+        FontName = 'Material Design Icons Desktop'
+        FontIconDec = 983048
         Opacity = 1.000000000000000000
       end>
     Destination = <
       item
         Layers = <
           item
-            Name = 'mdi-account'
+            Name = 'account'
             SourceRect.Right = 113.000000000000000000
             SourceRect.Bottom = 113.000000000000000000
           end>
@@ -227,7 +227,7 @@ object IconFontImageListForm: TIconFontImageListForm
       item
         Layers = <
           item
-            Name = 'Login'
+            Name = 'account-alert'
             SourceRect.Right = 96.000000000000000000
             SourceRect.Bottom = 96.000000000000000000
           end>
@@ -235,12 +235,12 @@ object IconFontImageListForm: TIconFontImageListForm
       item
         Layers = <
           item
-            Name = 'User'
+            Name = 'account-check'
             SourceRect.Right = 294.000000000000000000
             SourceRect.Bottom = 294.000000000000000000
           end>
       end>
-    FontName = 'Material Design Icons'
+    FontName = 'Material Design Icons Desktop'
     FontColor = claBlack
     Opacity = 1.000000000000000000
     Left = 208

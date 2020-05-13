@@ -284,43 +284,44 @@ object MainForm: TMainForm
   object IconFontsImageList: TIconFontsImageList
     IconFontItems = <
       item
-        FontIconDec = 61445
-        IconName = 'Account'
+        FontIconDec = 983044
+        IconName = 'account'
       end
       item
-        FontIconDec = 61888
+        FontIconDec = 983476
         FontColor = clMaroon
-        IconName = 'Delete'
+        IconName = 'delete'
       end
       item
-        FontIconDec = 61485
-        IconName = 'Amazon'
+        FontIconDec = 983085
+        IconName = 'amazon'
       end
       item
-        FontIconDec = 62127
-        IconName = 'Google chrome'
+        FontIconDec = 983727
+        IconName = 'google-chrome'
       end
       item
-        FontIconDec = 63375
+        FontIconDec = 983090
         FontColor = clTeal
-        IconName = 'Android head'
+        IconName = 'android'
       end
       item
-        FontIconDec = 64279
-        IconName = 'File-replace'
+        FontIconDec = 985906
+        IconName = 'file-replace'
       end
       item
-        FontIconDec = 61462
-        IconName = 'Account-search'
+        FontIconDec = 983062
+        IconName = 'account-search'
       end
       item
-        FontIconDec = 62424
-        IconName = 'font-color'
+        FontIconDec = 984024
+        IconName = 'palette'
       end
       item
-        FontIconDec = 63189
+        FontIconDec = 984790
+        IconName = 'format-font'
       end>
-    FontName = 'Material Design Icons'
+    FontName = 'Material Design Icons Desktop'
     FontColor = clBlack
     MaskColor = clBtnFace
     Size = 32

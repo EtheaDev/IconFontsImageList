@@ -141,21 +141,15 @@ begin
   Screen.Cursor := crHourGlass;
   try
     ImageView.Clear;
-    LRand1 := 61441+Random(4000);
+    LRand1 := $F0001+Random(5000);
     LRand2 := LRand1+NumSpinEdit.Value-1;
-
-    (*
-    //Test for Icons with surrogate pairs
-    LRand1 := $F0100;
-    LRand2 := $F0207;
-    *)
 
     LStart := GetTickCount;
     //Generate Icons
     IconFontsImageList.AddIcons(
       LRand1, //From Chr
       LRand2, //To Chr
-      'Material Design Icons'
+      'Material Design Icons Desktop'
       );
     LStop := GetTickCount;
     MessageDlg(Format('Built %d Icons in %d milliseconds!', 
@@ -250,8 +244,8 @@ var
   LFontFileName: string;
 begin
   inherited;
-  //The "material design web-font is not installed into system: load and install now from disk
-  LFontFileName := ExtractFilePath(Application.ExeName)+'..\Fonts\materialdesignicons-webfont.ttf';
+  //The "material desktop font is not installed into system: load and install now from disk
+  LFontFileName := ExtractFilePath(Application.ExeName)+'..\Fonts\Material Design Icons Desktop.ttf';
   if FileExists(LFontFileName) then
   begin
     {$IFNDEF D2010+}
@@ -369,5 +363,8 @@ begin
   IconFontsImageList.Size := TrackBar.Position;
   UpdateGUI;
 end;
+
+initialization
+//  ReportMemoryLeaksOnShutdown := True;
 
 end.

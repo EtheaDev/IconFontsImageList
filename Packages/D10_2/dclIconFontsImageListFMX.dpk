@@ -33,7 +33,6 @@ package dclIconFontsImageListFMX;
 
 requires
   DesignIDE
-  , dclfmxstd
   , rtl
   , IconFontsImageListFMX
   ;

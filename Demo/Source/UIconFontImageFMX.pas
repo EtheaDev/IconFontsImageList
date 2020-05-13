@@ -58,9 +58,7 @@ end;
 
 procedure TIconFontImageForm.FormCreate(Sender: TObject);
 begin
-  (IconFontImage.MultiResBitmap.Items[0] as TIconFontFixedBitmapItem).FontIconDec
-    := $F008;
-    //:= F0000; //Test for Icons with surrogate pairs
+  ;
 end;
 
 procedure TIconFontImageForm.IconFontImageResize(Sender: TObject);

@@ -26,17 +26,21 @@ package dclIconFontsImageListFMX;
 {$IMAGEBASE $400000}
 {$DEFINE RELEASE}
 {$ENDIF IMPLICITBUILDING}
-{$DESCRIPTION 'Ethea IconFontsImageList  FMX components'}
+{$DESCRIPTION 'Ethea IconFontsImageList FMX components'}
 {$LIBSUFFIX '_D10_4'}
 {$DESIGNONLY}
 {$IMPLICITBUILD ON}
 
 requires
-  DesignIDE,
-  IconFontsImageListFMX,
-  rtl;
+  DesignIDE
+  , dclfmxstd
+  , rtl
+  , IconFontsImageListFMX
+  ;
 
 contains
-  FMX.RegisterIconFontsImageList in '..\FMX.RegisterIconFontsImageList.pas';
+  FMX.RegisterIconFontsImageList in '..\FMX.RegisterIconFontsImageList.pas',
+  FMX.IconFontsImageListEditor in '..\FMX.IconFontsImageListEditor.pas',
+  FMX.IconFontsImageListEditorUnit in '..\FMX.IconFontsImageListEditorUnit.pas' {IconFontsImageListEditorFMX};
 
 end.
