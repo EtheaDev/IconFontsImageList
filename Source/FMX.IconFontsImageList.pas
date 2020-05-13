@@ -52,7 +52,7 @@ resourcestring
   ERR_ICONFONTSFMX_FONT_NOT_INSTALLED = 'Font "%s" is not installed!';
 
 const
-  IconFontsImageListVersion = '1.2.0';
+  IconFontsImageListVersion = '1.3.0';
 
 type
   //TIconFontMissing = procedure (const AFontName: TFontName) of object;
