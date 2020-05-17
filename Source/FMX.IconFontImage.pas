@@ -73,7 +73,7 @@ type
     function GetFontIconHex: string;
     procedure SetFontIconDec(const AValue: Integer);
     procedure SetFontIconHex(const AValue: string);
-    function GetCharacter: WideString;
+    function GetCharacter: String;
   protected
     function BitmapStored: Boolean; override;
     function GetDisplayName: string; override;
@@ -84,7 +84,7 @@ type
     property FontName: TFontName read FFontName write SetFontName;
     property FontIconDec: Integer read GetFontIconDec write SetFontIconDec stored true default 0;
     property FontIconHex: string read GetFontIconHex write SetFontIconHex stored false;
-    property Character: WideString read GetCharacter stored false;
+    property Character: String read GetCharacter stored false;
     property FontColor: TAlphaColor read FFontColor write SetFontColor;
     property Opacity: Single read FOpacity write SetOpacity;
     property Size: Integer read FSize write SetSize;
@@ -183,7 +183,7 @@ var
   LBitmap: TBitmap;
   LBitmapSize: Single;
   LRect: TRectF;
-  LCharacter: WideString;
+  LCharacter: String;
 begin
   LBitmap := inherited Bitmap;
   LBitmapSize := Size * Scale;
@@ -219,7 +219,7 @@ begin
   Result := inherited Bitmap;
 end;
 
-function TIconFontFixedBitmapItem.GetCharacter: WideString;
+function TIconFontFixedBitmapItem.GetCharacter: String;
 begin
   {$WARN SYMBOL_DEPRECATED OFF}
   Result := ConvertFromUtf32(FFontIconDec);

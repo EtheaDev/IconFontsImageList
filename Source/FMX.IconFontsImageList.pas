@@ -52,7 +52,7 @@ resourcestring
   ERR_ICONFONTSFMX_FONT_NOT_INSTALLED = 'Font "%s" is not installed!';
 
 const
-  IconFontsImageListVersion = '1.3.0';
+  IconFontsImageListVersion = '1.4.0';
 
 type
   //TIconFontMissing = procedure (const AFontName: TFontName) of object;
@@ -69,7 +69,7 @@ type
     function GetBitmap: TBitmapOfItem;
     procedure SetSize(const AValue: Integer);
     procedure DrawFontIcon;
-    function GetCharacter: WideString;
+    function GetCharacter: String;
     function GetFontName: TFontName;
     function GetFontColor: TAlphaColor;
     function GetOpacity: single;
@@ -79,7 +79,7 @@ type
     function GetDisplayName: string; override;
   public
     constructor Create(Collection: TCollection); override;
-    property Character: WideString read GetCharacter;
+    property Character: String read GetCharacter;
   published
     property Bitmap: TBitmapOfItem read GetBitmap write SetBitmap stored False;
     property Scale;
@@ -109,7 +109,7 @@ type
     FFontName: TFontName;
     FFontColor: TAlphaColor;
     procedure UpdateAllItems;
-    function GetCharacter: WideString;
+    function GetCharacter: String;
     function GetFontIconDec: Integer;
     function GetFontIconHex: string;
     procedure SetFontColor(const AValue: TAlphaColor);
@@ -135,7 +135,7 @@ type
   public
     constructor Create(Collection: TCollection); override;
     procedure Assign(Source: TPersistent); override;
-    property Character: WideString read GetCharacter;
+    property Character: String read GetCharacter;
   published
     property MultiResBitmap;
     property IconName: string read GetIconName write SetIconName;
@@ -260,7 +260,7 @@ begin
   Result := inherited Bitmap;
 end;
 
-function TIconFontBitmapItem.GetCharacter: WideString;
+function TIconFontBitmapItem.GetCharacter: String;
 begin
   Result := FOwnerMultiResBitmap.FOwnerSourceItem.Character;
 end;
@@ -379,7 +379,7 @@ begin
   FOwnerImageList := Result.ImageList as TIconFontsImageList;
 end;
 
-function TIconFontsSourceItem.GetCharacter: WideString;
+function TIconFontsSourceItem.GetCharacter: String;
 begin
   {$WARN SYMBOL_DEPRECATED OFF}
   if FFontIconDec <> 0 then
