@@ -3,7 +3,7 @@
 			<ProjectGuid>{A19836F9-6599-47A1-994A-71C8DEDAC5E0}</ProjectGuid>
 			<MainSource>IconFontsImageList.dpk</MainSource>
 			<ProjectVersion>12.0</ProjectVersion>
-			<Config Condition="'$(Config)'==''">Debug</Config>
+			<Config Condition="'$(Config)'==''">Release</Config>
 			<DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">

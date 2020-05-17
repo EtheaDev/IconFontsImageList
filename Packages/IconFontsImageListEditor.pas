@@ -26,6 +26,8 @@
 {******************************************************************************}
 unit IconFontsImageListEditor;
 
+{$INCLUDE ..\Source\IconFontsImageList.inc}
+
 interface
 
 uses
@@ -52,7 +54,9 @@ uses
   , Windows
   , IconFontsImageList
   , IconFontsImageListEditorUnit
+{$IFDEF D2010+}
   , MaterialFontConvert
+{$ENDIF}
   , Dialogs;
 
 { TIconFontsImageListCompEditor }
@@ -63,9 +67,11 @@ begin
 end;
 
 procedure TIconFontsImageListCompEditor.ExecuteVerb(Index: Integer);
+{$IFDEF D2010+}
 var
   LConvertCount : integer;
   LMissingCount : integer;
+{$ENDIF}
 begin
   inherited;
   if Index = 0 then
@@ -74,9 +80,12 @@ begin
       Designer.Modified;
   end
   else if Index = 1 then
+  begin
     ShellExecute(0, 'open',
       PChar('https://github.com/EtheaDev/IconFontsImageList/wiki/Home'), nil, nil,
       SW_SHOWNORMAL)
+{$IFDEF D2010+}
+  end    
   else //Index = 2
   begin
     ConvertFont((Component as TIconFontsImageList), LConvertCount, LMissingCount);
@@ -84,6 +93,7 @@ begin
       mtInformation, [mbOK], 0);
     if LConvertCount > 0 then
       Designer.Modified;
+{$ENDIF}
   end;
 end;
 
@@ -93,7 +103,9 @@ begin
   case Index of
     0: Result := 'I&conFonts ImageList Editor...';
     1: Result := Format('Ver. %s - (c) Ethea S.r.l. - show help...',[IconFontsImageListVersion]);
+{$IFDEF D2010+}
     2: Result := Format('Convert from "%s" to "%s"...',[OLD_FONT_NAME, NEW_FONT_NAME]);
+{$ENDIF}
   end;
 end;
 

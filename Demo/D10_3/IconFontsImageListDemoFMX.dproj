@@ -208,13 +208,11 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="..\Source\UMainFMX.pas">
-            <Form>IconFontImageListForm</Form>
-            <FormType>fmx</FormType>
-        </DCCReference>
         <DCCReference Include="..\..\Packages\FMX.IconFontsImageListEditorUnit.pas">
             <Form>IconFontsImageListEditorFMX</Form>
-            <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="..\Source\UMainFMX.pas">
+            <Form>IconFontImageListForm</Form>
         </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
@@ -1261,6 +1259,7 @@
     <Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')"/>
     <Import Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj" Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')"/>
     <Import Project="$(MSBuildProjectName).deployproj" Condition="Exists('$(MSBuildProjectName).deployproj')"/>
+    <ProjectExtensions/>
     <ProjectExtensions/>
     <ProjectExtensions/>
 </Project>

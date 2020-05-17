@@ -3,7 +3,7 @@
 			<ProjectGuid>{3894C2BA-DC8C-49B3-8CBC-195EAB62B073}</ProjectGuid>
 			<MainSource>dclIconFontsImageList.dpk</MainSource>
 			<ProjectVersion>12.0</ProjectVersion>
-			<Config Condition="'$(Config)'==''">Debug</Config>
+			<Config Condition="'$(Config)'==''">Release</Config>
 			<DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
@@ -53,10 +53,11 @@
 			<DCCReference Include="VclSmp.dcp"/>
 			<DCCReference Include="..\RegisterIconFontsImageList.pas"/>
 			<DCCReference Include="..\IconFontsImageListEditor.pas"/>
-			<DCCReference Include="..\IconFontsImageListEditorUnit.pas"/>
 			<DCCReference Include="..\..\Source\IconFontsCharMapUnit.pas">
 				<Form>IconFontsCharMapForm</Form>
 			</DCCReference>
+			<DCCReference Include="..\IconFontsImageListEditorUnit.pas"/>
+			<DCCReference Include="..\MaterialFontConvert.pas"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>
