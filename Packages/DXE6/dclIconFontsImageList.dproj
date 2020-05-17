@@ -3,10 +3,10 @@
         <ProjectGuid>{46EB4FDB-2AA6-4D29-82F2-B6BCE834F622}</ProjectGuid>
         <MainSource>dclIconFontsImageList.dpk</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <TargetedPlatforms>1</TargetedPlatforms>
         <AppType>Package</AppType>
-        <FrameworkType>None</FrameworkType>
+        <FrameworkType>VCL</FrameworkType>
         <ProjectVersion>18.4</ProjectVersion>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
     </PropertyGroup>
@@ -43,14 +43,13 @@
         <GenDll>true</GenDll>
         <GenPackage>true</GenPackage>
         <SanitizedProjectName>dclIconFontsImageList</SanitizedProjectName>
-        <DCC_Description>Ethea IconFontsImageList component</DCC_Description>
+        <DCC_Description>Ethea IconFontsImageList VCL components</DCC_Description>
         <DllSuffix>_DXE6</DllSuffix>
         <DesignOnlyPackage>true</DesignOnlyPackage>
         <DCC_Namespace>Winapi;System.Win;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;$(DCC_Namespace)</DCC_Namespace>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=Ethea S.r.l.;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0;Comments=;CFBundleName=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0;Comments=;CFBundleName=</VerInfo_Keys>
         <DCC_DcuOutput>..\..\Lib\DXE6\$(Platform)\$(Config)</DCC_DcuOutput>
-        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <DCC_UsePackage>VclSmp;IconFontsImageList;$(DCC_UsePackage)</DCC_UsePackage>
@@ -81,6 +80,7 @@
         <DCCReference Include="..\IconFontsImageListEditor.pas"/>
         <DCCReference Include="..\..\Source\IconFontsCharMapUnit.pas"/>
         <DCCReference Include="..\IconFontsImageListEditorUnit.pas"/>
+        <DCCReference Include="..\MaterialFontConvert.pas"/>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

@@ -10,21 +10,21 @@ package dclIconFontsImageList;
 {$EXTENDEDSYNTAX ON}
 {$IMPORTEDDATA ON}
 {$IOCHECKS ON}
-{$LOCALSYMBOLS ON}
+{$LOCALSYMBOLS OFF}
 {$LONGSTRINGS ON}
 {$OPENSTRINGS ON}
-{$OPTIMIZATION OFF}
+{$OPTIMIZATION ON}
 {$OVERFLOWCHECKS OFF}
 {$RANGECHECKS OFF}
-{$REFERENCEINFO ON}
+{$REFERENCEINFO OFF}
 {$SAFEDIVIDE OFF}
-{$STACKFRAMES ON}
+{$STACKFRAMES OFF}
 {$TYPEDADDRESS OFF}
 {$VARSTRINGCHECKS ON}
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
-{$DEFINE DEBUG}
+{$DEFINE RELEASE}
 {$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'Ethea IconFontsImageList VCL component'}
 {$LIBSUFFIX '_DXE3'}
@@ -40,6 +40,7 @@ contains
   RegisterIconFontsImageList in '..\RegisterIconFontsImageList.pas',
   IconFontsImageListEditor in '..\IconFontsImageListEditor.pas',
   IconFontsCharMapUnit in '..\..\Source\IconFontsCharMapUnit.pas',
-  IconFontsImageListEditorUnit in '..\IconFontsImageListEditorUnit.pas';
+  IconFontsImageListEditorUnit in '..\IconFontsImageListEditorUnit.pas',
+  MaterialFontConvert in '..\MaterialFontConvert.pas';
 
 end.

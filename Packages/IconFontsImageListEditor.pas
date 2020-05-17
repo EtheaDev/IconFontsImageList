@@ -51,7 +51,9 @@ uses
   ShellApi
   , Windows
   , IconFontsImageList
-  , IconFontsImageListEditorUnit;
+  , IconFontsImageListEditorUnit
+  , MaterialFontConvert
+  , Dialogs;
 
 { TIconFontsImageListCompEditor }
 
@@ -61,6 +63,9 @@ begin
 end;
 
 procedure TIconFontsImageListCompEditor.ExecuteVerb(Index: Integer);
+var
+  LConvertCount : integer;
+  LMissingCount : integer;
 begin
   inherited;
   if Index = 0 then
@@ -68,10 +73,18 @@ begin
     if EditIconFontsImageList(Component as TIconFontsImageList) then
       Designer.Modified;
   end
-  else
+  else if Index = 1 then
     ShellExecute(0, 'open',
       PChar('https://github.com/EtheaDev/IconFontsImageList/wiki/Home'), nil, nil,
       SW_SHOWNORMAL)
+  else //Index = 2
+  begin
+    ConvertFont((Component as TIconFontsImageList), LConvertCount, LMissingCount);
+    MessageDlg(Format(MSG_ICONFONTS_CONVERTED, [LConvertCount,LMissingCount]),
+      mtInformation, [mbOK], 0);
+    if LConvertCount > 0 then
+      Designer.Modified;
+  end;
 end;
 
 function TIconFontsImageListCompEditor.GetVerb(Index: Integer): string;
@@ -80,12 +93,13 @@ begin
   case Index of
     0: Result := 'I&conFonts ImageList Editor...';
     1: Result := Format('Ver. %s - (c) Ethea S.r.l. - show help...',[IconFontsImageListVersion]);
+    2: Result := Format('Convert from "%s" to "%s"...',[OLD_FONT_NAME, NEW_FONT_NAME]);
   end;
 end;
 
 function TIconFontsImageListCompEditor.GetVerbCount: Integer;
 begin
-  Result := 2;
+  Result := 3;
 end;
 
 end.

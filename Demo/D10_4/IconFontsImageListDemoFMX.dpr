@@ -14,7 +14,8 @@ program IconFontsImageListDemoFMX;
 uses
   System.StartUpCopy,
   FMX.Forms,
-  UMainFMX in '..\Source\UMainFMX.pas' {IconFontImageListForm};
+  UMainFMX in '..\Source\UMainFMX.pas' {IconFontImageListForm},
+  FMX.IconFontsImageListEditorUnit in '..\..\Packages\FMX.IconFontsImageListEditorUnit.pas' {IconFontsImageListEditorFMX};
 
 {$R *.res}
 
