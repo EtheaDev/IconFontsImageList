@@ -18,6 +18,11 @@ Take care of changed Font file used in the Demos from v1.7(VCL)/v1.2(FMX) -> v1.
 
 ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png](https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png)
 
+17 May 2020: official 1.9 (VCL) and 1.4 version (FMX)
+- Added component "menu option" to [convert "Material" Icons](https://github.com/EtheaDev/IconFontsImageList/wiki/Convert-Material-Icons) from old font "Material Design Icons" (materialdesignicons-webfont.ttf) to new font "Material Design Icons Desktop" (Material Design Icons Desktop.ttf)
+- Restored old font "Material Design Icons" only for use with Delphi 7 and Delphi 2010.
+- Fixed FMX components and demos to compile with mobile platforms
+
 13 May 2020: official 1.8 (VCL) and 1.3 version (FMX)
 - Changed font used in the Demos to preserve future changes of char/mapping.
 - Added preview for new "Material Design Icons Desktop.ttf" in Demo/Fonts folder.
