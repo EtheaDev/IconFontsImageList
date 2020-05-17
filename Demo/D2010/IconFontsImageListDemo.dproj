@@ -45,7 +45,7 @@
 			<DCCReference Include="..\..\Packages\IconFontsImageListEditorUnit.pas">
 				<Form>IconFontsImageListEditor</Form>
 			</DCCReference>
-			<DCCReference Include="..\Source\UMain.pas">
+			<DCCReference Include="..\Source\UMainOld.pas">
 				<Form>MainForm</Form>
 			</DCCReference>
 			<BuildConfiguration Include="Base">
