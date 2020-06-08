@@ -2,11 +2,13 @@
 
 ## An extended ImageList for Delphi (VCL & FMX) to simple use and manage Icon Fonts.
 
+![Delphi 10.4 Sydney Support](/Demo/Images/SupportingDelphi.jpg)
+
 Sample image of VCL version
-![https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/Sample.jpg](https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/Sample.jpg)
+![https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/Sample.jpg](/Demo/Images/Sample.jpg)
 
 Sample image of FMX version
-![https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/SampleFMX.jpg](https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/SampleFMX.jpg)
+![https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/SampleFMX.jpg](/Demo/Images/SampleFMX.jpg)
 
 Follow the [guide in Wiki section](https://github.com/EtheaDev/IconFontsImageList/wiki) to known how to use those components to modernize your Delphi VCL or FMX applications scalable, colored and beautiful with few lines of code.
 
@@ -19,6 +21,11 @@ If you are using the the old Font, you can automatically convert icons to the ne
 **RELEASE NOTES:**
 
 ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png](https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png)
+
+08 June 2020: official 1.10 (VCL) and 1.5 version (FMX)
+- Added IconManager and an example of metadata info form Material Design Icons Desktop Font
+- Updated CharMap with metadata support
+- Support for Delphi 10.4 Sydney
 
 17 May 2020: official 1.9 (VCL) and 1.4 version (FMX)
 - Added component "menu option" to [convert "Material" Icons](https://github.com/EtheaDev/IconFontsImageList/wiki/Convert-Material-Icons) from old font "Material Design Icons" (materialdesignicons-webfont.ttf) to new font "Material Design Icons Desktop" (Material Design Icons Desktop.ttf)
