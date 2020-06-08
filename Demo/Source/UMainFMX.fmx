@@ -190,7 +190,6 @@ object IconFontImageListForm: TIconFontImageListForm
             Size = 113
           end>
         IconName = 'account'
-        FontName = 'Material Design Icons Desktop'
         FontIconDec = 983044
         Opacity = 1.000000000000000000
       end
@@ -200,7 +199,6 @@ object IconFontImageListForm: TIconFontImageListForm
             Size = 96
           end>
         IconName = 'account-alert'
-        FontName = 'Material Design Icons Desktop'
         FontIconDec = 983045
         FontColor = claRed
         Opacity = 1.000000000000000000
@@ -211,7 +209,6 @@ object IconFontImageListForm: TIconFontImageListForm
             Size = 294
           end>
         IconName = 'account-check'
-        FontName = 'Material Design Icons Desktop'
         FontIconDec = 983048
         Opacity = 1.000000000000000000
       end>

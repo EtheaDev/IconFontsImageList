@@ -32,11 +32,10 @@ package dclIconFontsImageListFMX;
 {$IMPLICITBUILD ON}
 
 requires
-  DesignIDE
-  , dclfmxstd
-  , rtl
-  , IconFontsImageListFMX
-  ;
+  DesignIDE,
+  dclfmxstd,
+  rtl,
+  IconFontsImageListFMX;
 
 contains
   FMX.RegisterIconFontsImageList in '..\FMX.RegisterIconFontsImageList.pas',

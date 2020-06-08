@@ -9,6 +9,9 @@
 			<Projects Include="dclIconFontsImageList.dproj">
 				<Dependencies/>
 			</Projects>
+			<Projects Include="..\..\Demo\D2010\IconFontsImageListDemo.dproj">
+				<Dependencies/>
+			</Projects>
 		</ItemGroup>
 		<ProjectExtensions>
 			<Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -35,14 +38,23 @@
 		<Target Name="dclIconFontsImageList:Make">
 			<MSBuild Targets="Make" Projects="dclIconFontsImageList.dproj"/>
 		</Target>
+		<Target Name="IconFontsImageListDemo">
+			<MSBuild Projects="..\..\Demo\D2010\IconFontsImageListDemo.dproj"/>
+		</Target>
+		<Target Name="IconFontsImageListDemo:Clean">
+			<MSBuild Targets="Clean" Projects="..\..\Demo\D2010\IconFontsImageListDemo.dproj"/>
+		</Target>
+		<Target Name="IconFontsImageListDemo:Make">
+			<MSBuild Targets="Make" Projects="..\..\Demo\D2010\IconFontsImageListDemo.dproj"/>
+		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="IconFontsImageList;dclIconFontsImageList"/>
+			<CallTarget Targets="IconFontsImageList;dclIconFontsImageList;IconFontsImageListDemo"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="IconFontsImageList:Clean;dclIconFontsImageList:Clean"/>
+			<CallTarget Targets="IconFontsImageList:Clean;dclIconFontsImageList:Clean;IconFontsImageListDemo:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="IconFontsImageList:Make;dclIconFontsImageList:Make"/>
+			<CallTarget Targets="IconFontsImageList:Make;dclIconFontsImageList:Make;IconFontsImageListDemo:Make"/>
 		</Target>
 		<Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 	</Project>

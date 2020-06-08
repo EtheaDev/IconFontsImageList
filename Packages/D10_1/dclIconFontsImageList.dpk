@@ -41,6 +41,8 @@ contains
   IconFontsImageListEditor in '..\IconFontsImageListEditor.pas',
   IconFontsCharMapUnit in '..\..\Source\IconFontsCharMapUnit.pas',
   IconFontsImageListEditorUnit in '..\IconFontsImageListEditorUnit.pas',
-  MaterialFontConvert in '..\MaterialFontConvert.pas';
+  MaterialFontConvert in '..\MaterialFontConvert.pas',
+  Icons.Utils in '..\..\Source\Fonts\Icons.Utils.pas',
+  Icons.MaterialDesign in '..\..\Source\Fonts\Icons.MaterialDesign.pas';
 
 end.

@@ -54,7 +54,7 @@
         <SanitizedProjectName>dclIconFontsImageListFMX</SanitizedProjectName>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <DllSuffix>_D10_3</DllSuffix>
-        <DCC_Description>Ethea IconFontsImageList  FMX components</DCC_Description>
+        <DCC_Description>Ethea IconFontsImageList FMX components</DCC_Description>
         <DesignOnlyPackage>true</DesignOnlyPackage>
         <VerInfo_Locale>1033</VerInfo_Locale>
     </PropertyGroup>

@@ -19,6 +19,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnResize = FormResize
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object ImageListGroup: TGroupBox
@@ -27,7 +28,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
     Width = 691
     Height = 260
     Align = alClient
-    Caption = ' Icons of Imagelist'
+    Caption = '%d Icons of Imagelist'
     TabOrder = 1
     object ImageView: TListView
       Left = 2
@@ -36,10 +37,15 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Height = 243
       Align = alClient
       Columns = <>
+      DragMode = dmAutomatic
+      FullDrag = True
       HideSelection = False
       IconOptions.AutoArrange = True
+      MultiSelect = True
       ReadOnly = True
       TabOrder = 0
+      OnDragDrop = ImageViewDragDrop
+      OnDragOver = ImageViewDragOver
       OnKeyDown = ImageViewKeyDown
       OnSelectItem = ImageViewSelectItem
     end
@@ -438,21 +444,21 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       end
       object CancelButton: TButton
         Left = 2
-        Top = 34
+        Top = 64
         Width = 75
         Height = 25
         Cancel = True
         Caption = 'Cancel'
         ModalResult = 2
-        TabOrder = 1
+        TabOrder = 2
       end
       object HelpButton: TButton
         Left = 2
-        Top = 60
+        Top = 90
         Width = 75
         Height = 25
         Caption = '&Help'
-        TabOrder = 2
+        TabOrder = 3
         OnClick = HelpButtonClick
       end
       object ShowCharMapButton: TButton
@@ -462,9 +468,20 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
         Height = 50
         Anchors = [akTop, akRight]
         Caption = 'Show Char Map...'
-        TabOrder = 3
+        TabOrder = 4
         WordWrap = True
         OnClick = ShowCharMapButtonClick
+      end
+      object ApplyButton: TButton
+        Left = 2
+        Top = 35
+        Width = 75
+        Height = 25
+        Cancel = True
+        Caption = 'Apply'
+        ModalResult = 2
+        TabOrder = 1
+        OnClick = ApplyButtonClick
       end
     end
   end
@@ -520,7 +537,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
     HelpContext = 27010
     DefaultExt = 'bmp'
     Filter = 'Bitmaps (*.bmp)|*.bmp'
-    Options = [ofOverwritePrompt, ofEnableSizing]
+    Options = [ofOverwritePrompt, ofPathMustExist, ofEnableSizing]
     Title = 'Export Images'
     Left = 80
     Top = 296

@@ -347,13 +347,9 @@ begin
   begin
     LItem := TreeView.Items[I];
     if IconFontsImageList.IconFontItems.Count > LItem.ImageIndex then
-    begin
-      LItem.Text := IconFontsImageList.IconFontItems.Items[LItem.ImageIndex].IconName;
-    end
+      LItem.Text := IconFontsImageList.IconFontItems.Items[LItem.ImageIndex].IconName
     else
-    begin
       LItem.Text := '';
-    end;
   end;
 end;
 
@@ -365,6 +361,6 @@ begin
 end;
 
 initialization
-//  ReportMemoryLeaksOnShutdown := True;
+  ReportMemoryLeaksOnShutdown := True;
 
 end.

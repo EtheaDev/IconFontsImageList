@@ -50,7 +50,7 @@ resourcestring
   ERR_ICONFONTS_FONT_NOT_INSTALLED = 'Font "%s" is not installed!';
 
 const
-  IconFontsImageListVersion = '1.9.0';
+  IconFontsImageListVersion = '1.10.0';
 
 type
   TIconFontsImageList = class;
@@ -110,7 +110,7 @@ type
     procedure Assign(Source: TPersistent); override;
     function Insert(AIndex: Integer): TIconFontItem;
     procedure Delete(AIndex: Integer);
-    FUNCTION GetIconByName(const AIconName: string): TIconFontItem;
+    function GetIconByName(const AIconName: string): TIconFontItem;
     property IconFontsImageList: TIconFontsImageList read GetIconFontsImageList;
     property Items[Index: Integer]: TIconFontItem read GetItem write SetItem; default;
   end;
@@ -134,9 +134,6 @@ type
     FScaled: Boolean;
     FDPIChangedMessageID: Integer;
     {$ENDIF}
-    {$IFDEF NeedStoreBitmapProperty}
-    FStoreBitmap: Boolean;
-    {$ENDIF}
     procedure CheckFontName(const AFontName: TFontName);
     procedure SetIconSize(const ASize: Integer);
     procedure SetIconFontItems(const AValue: TIconFontItems);
@@ -146,7 +143,6 @@ type
     procedure SetFontColor(const AValue: TColor);
     procedure SetFontName(const AValue: TFontName);
     procedure SetMaskColor(const AValue: TColor);
-    procedure StopDrawing(const AStop: Boolean);
     function GetSize: Integer;
     procedure SetSize(const AValue: Integer);
     function GetHeight: Integer;
@@ -160,13 +156,9 @@ type
     procedure DPIChangedMessageHandler(const Sender: TObject; const Msg: Messaging.TMessage);
     {$ENDIF}
   protected
-    {$IFDEF NeedStoreBitmapProperty}
-    procedure DefineProperties(Filer: TFiler); override;
-    procedure ReadData(Stream: TStream); override;
-    procedure WriteData(Stream: TStream); override;
-    {$ENDIF}
     procedure Loaded; override;
   public
+    procedure StopDrawing(const AStop: Boolean);
     procedure DPIChanged(Sender: TObject; const OldDPI, NewDPI: Integer); virtual;
     procedure Change; override;
     constructor Create(AOwner: TComponent); override;
@@ -240,8 +232,11 @@ uses
   , Math
   {$IFDEF DXE3+}
   , System.Character
+  , GDIPOBJ
+  , GDIPAPI
   {$ENDIF}
-  , StrUtils;
+  , StrUtils
+  ;
 
 function IsValidValue(const AFontIconDec: Integer): Boolean;
 begin
@@ -655,6 +650,7 @@ function TIconFontsImageList.AddIcon(const AChar: Integer;
 begin
   Result := FIconFontItems.Add;
   try
+    Result.IconName := AIconName;
     Result.FontIconDec := AChar;
     if (AFontName <> '') and (AFontName <> FontName) then
       Result.FFontName := AFontName;
@@ -662,7 +658,6 @@ begin
       Result.FFontColor := AFontColor;
     if AMaskColor <> clNone then
       Result.FMaskColor := AMaskColor;
-    Result.IconName := AIconName;
   except
     FIconFontItems.Delete(Result.Index);
     raise;

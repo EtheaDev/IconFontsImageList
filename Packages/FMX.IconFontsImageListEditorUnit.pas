@@ -110,6 +110,7 @@ type
     procedure FormResize(Sender: TObject);
   private
     FIconIndexLabel: string;
+    FTotIconsLabel: string;
     FUpdating: Boolean;
     FEditingList: TIconFontsImageList;
     //procedure IconFontsImageListFontMissing(const AFontName: TFontName);
@@ -138,7 +139,8 @@ implementation
 
 uses
   Winapi.Messages
-  , Winapi.Windows;
+  , Winapi.Windows
+  , Winapi.ShellApi;
 
 function UpdateIconFontListView(const AListBox: TListBox): Integer;
 var
@@ -242,11 +244,9 @@ end;
 
 procedure TIconFontsImageListEditorFMX.HelpButtonClick(Sender: TObject);
 begin
-(*
-  ShellExecute(handle, 'open',
-    PChar('https://github.com/EtheaDev/IconFontsImageList/wiki/Image-Editor'), nil, nil,
+  ShellExecute(0, 'open',
+    PChar('https://github.com/EtheaDev/IconFontsImageList/wiki/Component-Editor-(FMX)'), nil, nil,
     SW_SHOWNORMAL)
-*)
 end;
 
 procedure TIconFontsImageListEditorFMX.ShowCharMapButtonClick(Sender: TObject);
@@ -396,6 +396,7 @@ begin
     OpacitySpinBox.Enabled := LIsItemSelected;
     IconName.Enabled := LIsItemSelected;
     //ShowCharMapButton.Enabled := (FEditingList.FontName <> '');
+    IconsGroupBox.Text := Format(FTotIconsLabel, [FEditingList.Count]);
     if LIsItemSelected then
     begin
       ItemGroupBox.Text := Format(FIconIndexLabel,[LIconFontItem.Index]);
@@ -551,6 +552,7 @@ begin
   //DefaultFontName.Items := Screen.Fonts;
   DefaultFontName.Text := '';
   FIconIndexLabel := ItemGroupBox.Text;
+  FTotIconsLabel := IconsGroupBox.Text;
   IconImage.Images := FEditingList;
   {$IFDEF D10_2+}
   FontIconHex.CharCase := TEditCharCase.ecUpperCase;

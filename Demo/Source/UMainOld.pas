@@ -110,9 +110,6 @@ implementation
 
 uses
   Themes
-  {$IFDEF DXE3+}
-  , UITypes
-  {$ENDIF}
   , IconFontsUtils
   , IconFontsCharMapUnit
   , IconFontsImageListEditorUnit;

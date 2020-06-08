@@ -78,6 +78,7 @@ type
     FontColor: TColorBox;
     MaskColorLabel: TLabel;
     MaskColor: TColorBox;
+    ApplyButton: TButton;
     ClearAllButton: TButton;
     DefaultFontNameLabel: TLabel;
     DefaultFontName: TComboBox;
@@ -101,6 +102,7 @@ type
     ShowCharMapButton: TButton;
     ExportButton: TButton;
     procedure FormCreate(Sender: TObject);
+    procedure ApplyButtonClick(Sender: TObject);
     procedure ClearAllButtonClick(Sender: TObject);
     procedure DeleteButtonClick(Sender: TObject);
     procedure AddButtonClick(Sender: TObject);
@@ -128,17 +130,24 @@ type
     procedure ExportButtonClick(Sender: TObject);
     procedure DefaultFontNameSelect(Sender: TObject);
     procedure FontIconHexExit(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure ImageViewDragOver(Sender, Source: TObject; X, Y: Integer;
+      State: TDragState; var Accept: Boolean);
+    procedure ImageViewDragDrop(Sender, Source: TObject; X, Y: Integer);
   private
+    FSourceList, FEditingList: TIconFontsImageList;
     FCharMap: TIconFontsCharMapForm;
     FIconIndexLabel: string;
+    FTotIconsLabel: string;
     FUpdating: Boolean;
-    FEditingList: TIconFontsImageList;
+    FChanged: Boolean;
+    FModified: Boolean;
     procedure IconFontsImageListFontMissing(const AFontName: TFontName);
     procedure CloseCharMap(Sender: TObject; var Action: TCloseAction);
     procedure AddColor(const S: string);
     procedure AddNewItem;
     procedure DeleteSelectedItem;
-    procedure ClearAllImages;
+    procedure Apply;
     procedure UpdateGUI;
     procedure UpdateCharsToBuild;
     procedure SetImageMaskColor(Color: TColor);
@@ -150,6 +159,8 @@ type
     function SelectedIconFont: TIconFontItem;
   public
     destructor Destroy; override;
+    property Modified: Boolean read FModified;
+    property IconFontsImageList: TIconFontsImageList read FEditingList;
   end;
 
 function EditIconFontsImageList(const AImageList: TIconFontsImageList): Boolean;
@@ -202,8 +213,6 @@ begin
           ImageView.ItemIndex := -1;
         UpdateGUI;
         UpdateCharsToBuild;
-        if SavedBounds.Right - SavedBounds.Left > 0 then
-          BoundsRect := SavedBounds;
       finally
         Screen.Cursor := crDefault;
       end;
@@ -222,7 +231,7 @@ end;
 procedure TIconFontsImageListEditor.HelpButtonClick(Sender: TObject);
 begin
   ShellExecute(handle, 'open',
-    PChar('https://github.com/EtheaDev/IconFontsImageList/wiki/Image-Editor'), nil, nil,
+    PChar('https://github.com/EtheaDev/IconFontsImageList/wiki/Component-Editor-(VCL)'), nil, nil,
     SW_SHOWNORMAL)
 end;
 
@@ -247,12 +256,14 @@ end;
 procedure TIconFontsImageListEditor.SizeSpinEditChange(Sender: TObject);
 begin
   FEditingList.Size := SizeSpinEdit.Value;
+  FChanged := True;
 end;
 
 procedure TIconFontsImageListEditor.StoreBitmapCheckBoxClick(Sender: TObject);
 begin
   {$IFDEF HasStoreBitmapProperty}
   FEditingList.StoreBitmap := StoreBitmapCheckBox.Checked;
+  FChanged := True;
   {$ENDIF}
 end;
 
@@ -362,6 +373,7 @@ begin
     BuildButton.Enabled := CharsEdit.Text <> '';
     BuildFromHexButton.Enabled := (Length(FromHexNum.Text) in [4,5]) and (Length(ToHexNum.Text) in [4,5]);
     DeleteButton.Enabled := LIsItemSelected;
+    ApplyButton.Enabled := FChanged;
     FontColor.Enabled := LIsItemSelected;
     MaskColor.Enabled := LIsItemSelected;
     FontName.Enabled := LIsItemSelected;
@@ -371,6 +383,7 @@ begin
     ShowCharMapButton.Enabled := (FEditingList.FontName <> '');
     IconImage.Canvas.Brush.Color :=  IconPanel.Color;
     IconImage.Canvas.FillRect(Rect(0, 0, IconImage.Height, IconImage.Height));
+    ImageListGroup.Caption := Format(FTotIconsLabel, [FEditingList.Count]);
     if LIsItemSelected then
     begin
       ItemGroupBox.Caption := Format(FIconIndexLabel,[LIconFontItem.Index]);
@@ -425,17 +438,50 @@ begin
   end;
 end;
 
+procedure TIconFontsImageListEditor.ImageViewDragDrop(Sender, Source: TObject; X,
+  Y: Integer);
+var
+  Target: TListItem;
+  Item: TCollectionItem;
+  SIndex, DIndex: Integer;
+begin
+  SIndex := ImageView.ItemIndex;
+  Target := ImageView.GetItemAt(X, Y);
+  if Target = nil then
+    Target := ImageView.GetNearestItem(Point(X, Y), sdRight);
+
+  if Assigned(Target) then
+    DIndex := ImageView.Items.IndexOf(Target)
+  else
+    DIndex := ImageView.Items.Count - 1;
+
+  Item := FEditingList.IconFontItems[SIndex];
+  Item.Index := DIndex;
+  UpdateIconFontListView(ImageView);
+  if SIndex <> DIndex then
+    FChanged := True;
+  UpdateGUI;
+end;
+
+procedure TIconFontsImageListEditor.ImageViewDragOver(Sender, Source: TObject; X,
+  Y: Integer; State: TDragState; var Accept: Boolean);
+begin
+  Accept := Source = Sender;
+end;
+
 procedure TIconFontsImageListEditor.DeleteSelectedItem;
 var
   LIndex: Integer;
 begin
   LIndex := ImageView.Selected.Index;
   FEditingList.Delete(LIndex);
+  FChanged := True;
   UpdateIconFontListView(ImageView);
   if LIndex < ImageView.Items.Count then
     ImageView.ItemIndex := LIndex
   else if ImageView.Items.Count > 0 then
     ImageView.ItemIndex := LIndex-1;
+  FChanged := True;
   UpdateGUI;
 end;
 
@@ -443,16 +489,6 @@ destructor TIconFontsImageListEditor.Destroy;
 begin
   FCharMap.Free;
   inherited;
-end;
-
-procedure TIconFontsImageListEditor.ClearAllImages;
-begin
-  Screen.Cursor := crHourglass;
-  try
-    FEditingList.ClearIcons;
-  finally
-    Screen.Cursor := crDefault;
-  end;
 end;
 
 procedure TIconFontsImageListEditor.CloseCharMap(Sender: TObject;
@@ -463,6 +499,7 @@ begin
     if FCharMap.CharsEdit.Text <> '' then
     begin
       FEditingList.AddIcons(FCharMap.CharsEdit.Text, FCharMap.DefaultFontName.Text);
+      FChanged := True;
       UpdateIconFontListView(ImageView);
     end;
   end;
@@ -470,9 +507,15 @@ end;
 
 procedure TIconFontsImageListEditor.ClearAllButtonClick(Sender: TObject);
 begin
-  ClearAllImages;
-  UpdateIconFontListView(ImageView);
-  UpdateGUI;
+  Screen.Cursor := crHourGlass;
+  try
+    ImageView.Clear;
+    FEditingList.ClearIcons;
+    FChanged := True;
+    UpdateGUI;
+  finally
+    Screen.Cursor := crDefault;
+  end;
 end;
 
 procedure TIconFontsImageListEditor.IconFontsImageListFontMissing(
@@ -509,11 +552,14 @@ procedure TIconFontsImageListEditor.DefaultFontColorColorBoxChange(
   Sender: TObject);
 begin
   FEditingList.FontColor := DefaultFontColorColorBox.Selected;
+  FChanged := True;
+  UpdateGUI;
 end;
 
 procedure TIconFontsImageListEditor.DefaultFontNameSelect(Sender: TObject);
 begin
   FEditingList.FontName := DefaultFontName.Text;
+  FChanged := True;
   UpdateGUI;
 end;
 
@@ -521,6 +567,8 @@ procedure TIconFontsImageListEditor.DefaultMaskColorColorBoxChange(
   Sender: TObject);
 begin
   FEditingList.MaskColor := DefaultMaskColorColorBox.Selected;
+  FChanged := True;
+  UpdateGUI;
 end;
 
 procedure TIconFontsImageListEditor.DeleteButtonClick(Sender: TObject);
@@ -576,9 +624,32 @@ begin
   FontName.Items := Screen.Fonts;
   DefaultFontName.Items := Screen.Fonts;
   FIconIndexLabel := ItemGroupBox.Caption;
+  FTotIconsLabel := ImageListGroup.Caption;
+  FChanged := False;
+  FModified := False;
   {$IFNDEF HasStoreBitmapProperty}
   StoreBitmapCheckBox.Visible := False;
   {$ENDIF}
+end;
+
+procedure TIconFontsImageListEditor.Apply;
+begin
+  if not FChanged then
+    Exit;
+  Screen.Cursor := crHourGlass;
+  try
+    FSourceList.StopDrawing(True);
+    Try
+      FSourceList.Assign(FEditingList);
+      FChanged := False;
+      FModified := True;
+    Finally
+      FSourceList.StopDrawing(False);
+      FSourceList.RedrawImages;
+    End;
+  finally
+    Screen.Cursor := crDefault;
+  end;
 end;
 
 procedure TIconFontsImageListEditor.FormDestroy(Sender: TObject);
@@ -609,6 +680,20 @@ begin
   IconName.Width := LEditSize - 3;
 end;
 
+procedure TIconFontsImageListEditor.FormShow(Sender: TObject);
+begin
+  {$IFDEF DXE8+}
+  if SavedBounds.Right - SavedBounds.Left > 0 then
+    SetBounds(SavedBounds.Left, SavedBounds.Top, SavedBounds.Width, SavedBounds.Height);
+  {$ELSE}
+  if SavedBounds.Right - SavedBounds.Left > 0 then
+    SetBounds(SavedBounds.Left, SavedBounds.Top, SavedBounds.Right-SavedBounds.Left,
+      SavedBounds.Bottom-SavedBounds.Top);
+  {$ENDIF}
+  if ImageView.CanFocus then
+    ImageView.SetFocus;
+end;
+
 procedure TIconFontsImageListEditor.EditChangeUpdateGUI(Sender: TObject);
 begin
   UpdateGUI;
@@ -617,7 +702,14 @@ end;
 procedure TIconFontsImageListEditor.ExportButtonClick(Sender: TObject);
 begin
   if SaveDialog.Execute then
-    FEditingList.SaveToFile(SaveDialog.FileName);
+  begin
+    Screen.Cursor := crHourGlass;
+    try
+      FEditingList.SaveToFile(SaveDialog.FileName);
+    finally
+      Screen.Cursor := crDefault;
+    end;
+  end;
 end;
 
 function TIconFontsImageListEditor.SelectedIconFont: TIconFontItem;
@@ -643,8 +735,15 @@ begin
     LInsertIndex := ImageView.Items.Count;
   ImageView.Selected := nil;
   FEditingList.IconFontItems.Insert(LInsertIndex);
+  FChanged := True;
   UpdateIconFontListView(ImageView);
   ImageView.ItemIndex := LInsertIndex;
+end;
+
+procedure TIconFontsImageListEditor.ApplyButtonClick(Sender: TObject);
+begin
+  Apply;
+  UpdateGUI;
 end;
 
 procedure TIconFontsImageListEditor.AddColor(const S: string);
@@ -657,6 +756,7 @@ procedure TIconFontsImageListEditor.BuildButtonClick(Sender: TObject);
 begin
   {$IFDEF UNICODE}
   FEditingList.AddIcons(CharsEdit.Text);
+  FChanged := True;
   UpdateIconFontListView(ImageView);
   {$ENDIF}
 end;
@@ -670,6 +770,7 @@ begin
       StrToInt('$' + ToHexNum.Text), //To Chr
       FontName.Text
       );
+    FChanged := True;
     UpdateIconFontListView(ImageView);
   finally
     Screen.Cursor := crDefault;

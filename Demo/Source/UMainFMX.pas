@@ -54,7 +54,8 @@ implementation
 uses
   System.Math
   , FMX.Consts
-  , FMX.IconFontsImageListEditorUnit;
+  {$IFDEF MSWINDOWS}, FMX.IconFontsImageListEditorUnit{$ENDIF}
+  ;
 
 {$R *.fmx}
 
@@ -94,7 +95,7 @@ end;
 
 procedure TIconFontImageListForm.ShowEditorButtonClick(Sender: TObject);
 begin
-  EditIconFontsImageList(IconFontsImageList);
+  {$IFDEF MSWINDOWS}EditIconFontsImageList(IconFontsImageList);{$ENDIF}
 end;
 
 procedure TIconFontImageListForm.SpinBox1Change(Sender: TObject);
@@ -120,6 +121,7 @@ end;
 
 procedure TIconFontImageListForm.FormCreate(Sender: TObject);
 begin
+  {$IFNDEF MSWINDOWS}ShowEditorButton.Visible := False;{$ENDIF}
   UpdateGUI;
 end;
 

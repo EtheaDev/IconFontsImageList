@@ -413,7 +413,7 @@
     Size.Width = 632.000000000000000000
     Size.Height = 244.000000000000000000
     Size.PlatformDefault = False
-    Text = ' Icons of Imagelist'
+    Text = '%d Icons of Imagelist'
     TabOrder = 0
     object ImageView: TListBox
       Align = Client

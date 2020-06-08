@@ -76,9 +76,8 @@ begin
     begin
       LItem := LIconFontsImageList.IconFontItems[I];
       LListItem := AListView.Items.Add;
-      LListItem.Caption := Format('%d%s$%s%s%s',
-        [LItem.FontIconDec,sLineBreak,
-         LItem.FontIconHex,sLineBreak,
+      LListItem.Caption := Format('$%s%s%s',
+        [LItem.FontIconHex,sLineBreak,
          Litem.IconName]);
       LListItem.ImageIndex := I;
     end;
@@ -105,9 +104,8 @@ begin
       LListItem := AListView.Items[I];
       if AShowCaption then
       begin
-        LListItem.Caption := Format('%d%s$%s%s%s',
-          [LItem.FontIconDec,sLineBreak,
-           LItem.FontIconHex,sLineBreak,
+        LListItem.Caption := Format('$%s%s%s',
+          [LItem.FontIconHex,sLineBreak,
            Litem.IconName]);
       end
       else

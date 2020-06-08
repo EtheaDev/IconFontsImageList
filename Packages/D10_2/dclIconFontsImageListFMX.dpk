@@ -34,8 +34,7 @@ package dclIconFontsImageListFMX;
 requires
   DesignIDE
   , rtl
-  , IconFontsImageListFMX
-  ;
+  , IconFontsImageListFMX;
 
 contains
   FMX.RegisterIconFontsImageList in '..\FMX.RegisterIconFontsImageList.pas',

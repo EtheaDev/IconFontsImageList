@@ -58,6 +58,8 @@
 			</DCCReference>
 			<DCCReference Include="..\IconFontsImageListEditorUnit.pas"/>
 			<DCCReference Include="..\MaterialFontConvert.pas"/>
+			<DCCReference Include="..\..\Source\Fonts\Icons.MaterialDesign.pas"/>
+			<DCCReference Include="..\..\Source\Fonts\Icons.Utils.pas"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>

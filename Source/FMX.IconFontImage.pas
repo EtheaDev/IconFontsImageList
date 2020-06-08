@@ -191,8 +191,8 @@ begin
   try
     LFont.Family := FontName;
     LFont.Size := Size;
-    LBitmap.Width  := Trunc(LBitmapSize);
-    LBitmap.Height := Trunc(LBitmapSize);
+    LBitmap.Width  := Round(LBitmapSize);
+    LBitmap.Height := Round(LBitmapSize);
     LBitmap.Canvas.BeginScene;
     try
       LBitmap.Canvas.Clear(TAlphaColors.Null);

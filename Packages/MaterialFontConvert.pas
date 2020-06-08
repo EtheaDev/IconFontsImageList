@@ -31,9 +31,9 @@ interface
 uses
   IconFontsImageList
   , Generics.Collections
-  , System.SysUtils
-  , System.StrUtils
-  , System.Classes
+  , SysUtils
+  , StrUtils
+  , Classes
   ;
 
 resourcestring
@@ -42,11 +42,11 @@ resourcestring
 const
   //Posizione dei valori nell'array
   FontIconHex = 1;
-  FontName = 2;
+  IconName = 2;
   MAX_FONT_OLD = 4596;
   MAX_FONT_NEW = 5146;
 
-  ArrOldFont : Array [1..MAX_FONT_OLD,FontIconHex..FontName] of String =(
+  ArrOldFont : Array [1..MAX_FONT_OLD,FontIconHex..IconName] of String =(
    ( 'F001C', 'ab-testing'),
    ( 'F002', 'access-point'),
    ( 'F003', 'access-point-network'),
@@ -4645,7 +4645,7 @@ const
    ( 'F68C', 'blank')
   );
 
-  ArrNewFont : Array [1..MAX_FONT_NEW,FontIconHex..FontName] of String =(
+  ArrNewFont : Array [1..MAX_FONT_NEW,FontIconHex..IconName] of String =(
    ('F01C9', 'ab-testing'),
    ('F1328', 'abjad-arabic'),
    ('F1329', 'abjad-hebrew'),
@@ -9796,7 +9796,7 @@ const
 Type
   TFontMaterialInfo = class
     FontIconHex: String;
-    FontName: String;
+    IconName: String;
   end;
 
 var
@@ -9825,7 +9825,7 @@ begin
   begin
     LFont := TFontMaterialInfo.Create;
     LFont.FontIconHex := ArrOldFont[I, FontIconHex];
-    LFont.FontName := ArrOldFont[I,FontName];
+    LFont.IconName := ArrOldFont[I,IconName];
     if not OldFont.ContainsKey(RightStr('0000'+LFont.FontIconHex,5))  then
       OldFont.Add(RightStr('0000'+LFont.FontIconHex,5), LFont);
   end;
@@ -9842,9 +9842,9 @@ begin
   begin
     LFont := TFontMaterialInfo.Create;
     LFont.FontIconHex := ArrNewFont[I, FontIconHex];
-    LFont.FontName := ArrNewFont[I,FontName];
-    if not NewFont.ContainsKey(LFont.FontName)  then
-      NewFont.Add(LFont.FontName, LFont);
+    LFont.IconName := ArrNewFont[I,IconName];
+    if not NewFont.ContainsKey(LFont.IconName)  then
+      NewFont.Add(LFont.IconName, LFont);
   end;
 end;
 
@@ -9873,26 +9873,24 @@ begin
       begin
         if OldFont.TryGetValue(LIconFontItem.FontIconHex, LFontOld) then
         begin
-          if NewFont.TryGetValue(LFontOld.FontName, LFontNew) then
+          if NewFont.TryGetValue(LFontOld.IconName, LFontNew) then
           begin
             if SameText(LIconFontItem.FontName, OLD_FONT_NAME) then
               LIconFontItem.FontName := NEW_FONT_NAME;
 
             LIconFontItem.FontIconHex := LFontNew.FontIconHex;
-
+            LIconFontItem.IconName := LFontNew.IconName;
             inc(ConvertCount);
           end
           else
           begin
             LIconFontItem.FontName := OLD_FONT_NAME;
-            LIconFontItem.FontColor := $00FFFF;
             inc(MissedCount);
           end;
         end
         else
         begin
           LIconFontItem.FontName := OLD_FONT_NAME;
-          LIconFontItem.FontColor := $0000FF;
           inc(MissedCount);
         end;
       end;
@@ -9904,7 +9902,6 @@ begin
       OldFont.Items[Key].Free;
 
     OldFont.Clear;
-
 
     OldFont.Free;
 
