@@ -80,7 +80,7 @@ begin
   AListView.Items.BeginUpdate;
   try
     AListView.Clear;
-    Result := AListView.Items.Count;
+    Result := LIconFontsImageList.IconFontItems.Count;
     for I := 0 to Result -1 do
     begin
       LItem := LIconFontsImageList.IconFontItems[I];
