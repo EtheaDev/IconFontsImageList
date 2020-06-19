@@ -717,7 +717,7 @@ procedure TIconFontsImageListEditor.FormResize(Sender: TObject);
 var
   LEditSize: Integer;
 begin
-  LEditSize := (ItemGroupBox.Width - IconPanel.Width - 33) div 3;
+  LEditSize := (ItemGroupBox.Width - IconPanel.Width - (FontIconHex.Width div 2)) div 3;
 
   DefaultFontColorColorBox.Width := LEditSize;
   DefaultMaskColorColorBox.Left := DefaultFontColorColorBox.Left + DefaultFontColorColorBox.Width + 2;
@@ -732,7 +732,7 @@ begin
 
   IconName.Left := MaskColor.Left + MaskColor.Width + 2;
   IconNameLabel.Left := IconName.Left;
-  IconName.Width := LEditSize - 3;
+  IconName.Width := LEditSize;
 end;
 
 procedure TIconFontsImageListEditor.FormShow(Sender: TObject);
