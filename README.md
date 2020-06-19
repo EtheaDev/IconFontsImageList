@@ -26,7 +26,7 @@ If you are using the the old Font, you can automatically convert icons to the ne
 **RELEASE NOTES:**
 
 19 June 2020: official 2.0 (VCL) and 1.5 version (FMX)
-- Added ![GDI+ support](https://github.com/EtheaDev/IconFontsImageList/wiki/GDI) (from DXE6)
+- Added [GDI+ support](https://github.com/EtheaDev/IconFontsImageList/wiki/GDI) (from DXE6)
 - Added new TIconFontsImage component
 - Added Width, Height, DisabledFactor, Opacity properties for TIconFontsImageList
 
