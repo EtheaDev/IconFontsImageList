@@ -139,8 +139,9 @@ object IconFontsCharMapForm: TIconFontsCharMapForm
           Top = 55
           Width = 201
           Height = 13
+          Anchors = [akLeft, akTop, akRight]
           AutoSize = False
-          Caption = 'Icon Name (fro metadata)'
+          Caption = 'Icon Name (from metadata)'
           Transparent = True
           Visible = False
         end
@@ -224,6 +225,7 @@ object IconFontsCharMapForm: TIconFontsCharMapForm
           Width = 202
           Height = 21
           Hint = 'Icon Name (from metadata registered)'
+          Anchors = [akLeft, akTop, akRight]
           ReadOnly = True
           TabOrder = 4
           Visible = False
