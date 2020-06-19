@@ -5,7 +5,7 @@
 | Component | Description |
 | - | - |
 | ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png](https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png) | **IconFontsImageList is an extended ImageList for Delphi (VCL+FMX) to simplify use of Icon Fonts (resize, color, grayscale and more...)** |
-| ![https://github.com/EtheaDev/SVGIconImageList/blob/master/Packages/IconFontsImageComponentIcon.png](https://github.com/EtheaDev/SVGIconImageList/blob/master/Packages/IconFontsImageComponentIcon.png) | **IconFontsImage is an extended Image component for Delphi (VCL+FMX) to show any Icon Font directly or included into a an IconFontsImageList with all functionality (stretch, color, opacity, grayscale and more...)** |
+| ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageComponentIcon.png](https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageComponentIcon.png) | **IconFontsImage is an extended Image component for Delphi (VCL+FMX) to show any Icon Font directly or included into a an IconFontsImageList with all functionality (stretch, color, opacity, grayscale and more...)** |
 
 ![Delphi 10.4 Sydney Support](/Demo/Images/SupportingDelphi.jpg)
 
