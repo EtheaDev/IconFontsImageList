@@ -175,7 +175,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           608
           103)
         object DefaultFontNameLabel: TLabel
-          Left = 95
+          Left = 266
           Top = 15
           Width = 161
           Height = 13
@@ -210,15 +210,33 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           Caption = 'Size (in pixel)'
           Transparent = True
         end
+        object WidthLabel: TLabel
+          Left = 94
+          Top = 15
+          Width = 80
+          Height = 13
+          AutoSize = False
+          Caption = 'Width (in pixel)'
+          Transparent = True
+        end
+        object HeightLabel: TLabel
+          Left = 181
+          Top = 15
+          Width = 80
+          Height = 13
+          AutoSize = False
+          Caption = 'Height (in pixel)'
+          Transparent = True
+        end
         object DefaultFontName: TComboBox
-          Left = 95
+          Left = 269
           Top = 30
-          Width = 499
+          Width = 327
           Height = 22
           Style = csOwnerDrawFixed
           Anchors = [akLeft, akTop, akRight]
           DropDownCount = 30
-          TabOrder = 1
+          TabOrder = 3
           OnSelect = DefaultFontNameSelect
         end
         object DefaultFontColorColorBox: TColorBox
@@ -229,7 +247,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           DefaultColorColor = clNone
           NoneColorColor = clNone
           Selected = clScrollBar
-          TabOrder = 3
+          TabOrder = 5
           OnChange = DefaultFontColorColorBoxChange
         end
         object DefaultMaskColorColorBox: TColorBox
@@ -240,7 +258,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           DefaultColorColor = clNone
           NoneColorColor = clNone
           Selected = clScrollBar
-          TabOrder = 4
+          TabOrder = 6
           OnChange = DefaultMaskColorColorBoxChange
         end
         object SizeSpinEdit: TSpinEdit
@@ -261,8 +279,32 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           Width = 85
           Height = 17
           Caption = 'StoreBitmap'
-          TabOrder = 2
+          TabOrder = 4
           OnClick = StoreBitmapCheckBoxClick
+        end
+        object WidthSpinEdit: TSpinEdit
+          Left = 95
+          Top = 30
+          Width = 81
+          Height = 22
+          Hint = 'Decimal value'
+          MaxValue = 0
+          MinValue = 0
+          TabOrder = 1
+          Value = 0
+          OnChange = WidthSpinEditChange
+        end
+        object HeightSpinEdit: TSpinEdit
+          Left = 182
+          Top = 30
+          Width = 81
+          Height = 22
+          Hint = 'Decimal value'
+          MaxValue = 0
+          MinValue = 0
+          TabOrder = 2
+          Value = 0
+          OnChange = HeightSpinEditChange
         end
       end
       object ItemGroupBox: TGroupBox
@@ -352,6 +394,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
             Align = alClient
             Stretch = True
             Transparent = True
+            ExplicitLeft = 6
           end
         end
         object IconName: TEdit
@@ -477,9 +520,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
         Top = 35
         Width = 75
         Height = 25
-        Cancel = True
         Caption = 'Apply'
-        ModalResult = 2
         TabOrder = 1
         OnClick = ApplyButtonClick
       end

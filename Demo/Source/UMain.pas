@@ -36,7 +36,7 @@ uses
   Controls, Forms, Dialogs, ImgList,
   StdCtrls, Buttons, StdActns,
   ActnList, ExtCtrls, ComCtrls, ToolWin,
-  Spin, IconFontsImageList;
+  Spin, IconFontsImageList, IconFontsImage;
 
 type
   TMainForm = class(TForm)
@@ -53,9 +53,9 @@ type
     ToolButton5: TToolButton;
     ToolButton6: TToolButton;
     ToolButton7: TToolButton;
-    Panel2: TPanel;
-    DeleteButton: TBitBtn;
-    ChangeIconButton: TBitBtn;
+    paButtons: TPanel;
+    DeleteButton: TButton;
+    ChangeIconButton: TButton;
     ClientPanel: TPanel;
     TreeView: TTreeView;
     ImageView: TListView;
@@ -63,20 +63,22 @@ type
     GroupBox1: TGroupBox;
     NumSpinEdit: TSpinEdit;
     Label2: TLabel;
-    AssignIconsButton: TBitBtn;
+    AssignIconsButton: TButton;
     DeleteIconAction: TAction;
     SliderPanel: TPanel;
     TrackBar: TTrackBar;
     IconSizeLabel: TLabel;
     ButtonsPanel: TPanel;
-    ClearButton: TBitBtn;
-    ShowImageEditorButton: TBitBtn;
-    ChangeColorButton: TBitBtn;
+    ClearButton: TButton;
+    ShowImageEditorButton: TButton;
+    ChangeColorButton: TButton;
     ChangeColorAction: TAction;
     ColorDialog: TColorDialog;
     DisabledAction: TAction;
-    ShowCharMapButton: TBitBtn;
+    ShowCharMapButton: TButton;
     ShowCharMapAction: TAction;
+    Splitter: TSplitter;
+    IconFontImage: TIconFontImage;
     procedure AssignIconsButtonClick(Sender: TObject);
     procedure ChangeIconActionExecute(Sender: TObject);
     procedure SelectThemeRadioGroupClick(Sender: TObject);
@@ -88,9 +90,11 @@ type
     procedure IconFontsImageListFontMissing(const AFontName: TFontName);
     procedure ChangeColorActionExecute(Sender: TObject);
     procedure ShowCharMapActionExecute(Sender: TObject);
+    procedure paButtonsResize(Sender: TObject);
+    procedure ImageViewSelectItem(Sender: TObject; Item: TListItem;
+      Selected: Boolean);
   private
     FIconFontsImageListHot: TIconFontsImageList;
-    FIconFontsImageListDisabled: TIconFontsImageList;
     {$IFDEF HiDPISupport}
     procedure FormAfterMonitorDpiChanged(Sender: TObject; OldDPI, NewDPI: Integer);
     {$ENDIF}
@@ -214,7 +218,6 @@ var
 {$ENDIF}
 begin
   FIconFontsImageListHot := TIconFontsImageList.Create(Self);
-  FIconFontsImageListDisabled := TIconFontsImageList.Create(Self);
 
   {$IFDEF HiDPISupport}
   OnAfterMonitorDpiChanged := FormAfterMonitorDpiChanged;
@@ -264,6 +267,18 @@ begin
   end;
 end;
 
+procedure TMainForm.ImageViewSelectItem(Sender: TObject; Item: TListItem;
+  Selected: Boolean);
+begin
+  if Item.Index <> -1 then
+    IconFontImage.ImageIndex := Item.Index;
+end;
+
+procedure TMainForm.paButtonsResize(Sender: TObject);
+begin
+  IconFontImage.Height := IconFontImage.width;
+end;
+
 procedure TMainForm.SelectThemeRadioGroupClick(Sender: TObject);
 var
   LStyleName: string;
@@ -273,7 +288,11 @@ begin
     LStyleName := SelectThemeRadioGroup.Items[SelectThemeRadioGroup.ItemIndex];
     {$IFDEF DXE+}
     TStyleManager.TrySetStyle(LStyleName);
-    UpdateIconFontsColorByStyle(IconFontsImageList);
+    //Override default: use Windows 10 blue color for Windows and Windows10 Style
+    if SameText(LStyleName,'Windows') or SameText(LStyleName,'Windows10') then
+      IconFontsImageList.UpdateIconsAttributes(RGB(0, 120, 215), clBtnFace)
+    else
+      UpdateIconFontsColorByStyle(IconFontsImageList);
     {$ELSE}
     if LStyleName = 'Black' then
       IconFontsImageList.UpdateIconsAttributes(clBlack, clBtnFace)
@@ -290,14 +309,6 @@ begin
     ImageView.Invalidate;
     TopToolBar.Invalidate;
     {$ENDIF}
-
-    //Override default: use Windows 10 blue color for Windows and Windows10 Style
-    if SameText(LStyleName,'Windows') or SameText(LStyleName,'Windows10') then
-    begin
-      IconFontsImageList.FontColor := RGB(0, 120, 215); //Windows 10 Blue
-      IconFontsImageList.MaskColor := clBtnFace;
-    end;
-
     UpdateGUI;
   finally
     Screen.Cursor := crDefault;
@@ -307,7 +318,7 @@ end;
 procedure TMainForm.ShowCharMapActionExecute(Sender: TObject);
 begin
   ShowIconFontsCharMap(IconFontsImageList.FontName,
-    24, IconFontsImageList.FontColor, IconFontsImageList.MaskColor);
+    IconFontsImageList.Size, IconFontsImageList.FontColor, IconFontsImageList.MaskColor);
 end;
 
 procedure TMainForm.ShowImageEditorButtonClick(Sender: TObject);
@@ -326,11 +337,10 @@ begin
   TopToolBar.ButtonWidth := LSize + 2;
   TopToolBar.Height := LSize + 6;
   TreeView.Indent := LSize;
+  Splitter.MinSize := DeleteButton.Width + 8;
 
-  //Update attributes for Disabled and Hot ImageList for the Toolbar
+  //Update attributes for Hot ImageList for the Toolbar
   UpdateHotImageList(IconFontsImageList, FIconFontsImageListHot, 30, 10);
-  UpdateDisabledImageList(IconFontsImageList, FIconFontsImageListDisabled);
-  TopToolBar.DisabledImages := FIconFontsImageListDisabled;
   TopToolBar.HotImages := FIconFontsImageListHot;
 
   UpdateButtons;

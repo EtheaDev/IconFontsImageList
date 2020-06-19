@@ -61,6 +61,8 @@
         </DelphiCompile>
         <DCCReference Include="rtl.dcp"/>
         <DCCReference Include="vcl.dcp"/>
+        <DCCReference Include="vclwinx.dcp"/>
+        <DCCReference Include="..\..\Source\IconFontsImage.pas"/>
         <DCCReference Include="..\..\Source\IconFontsImageList.pas"/>
         <DCCReference Include="..\..\Source\IconFontsUtils.pas"/>
         <BuildConfiguration Include="Debug">

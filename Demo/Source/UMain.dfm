@@ -18,6 +18,17 @@ object MainForm: TMainForm
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
+  object Splitter: TSplitter
+    Left = 626
+    Top = 38
+    Height = 509
+    Align = alRight
+    AutoSnap = False
+    MinSize = 80
+    ExplicitLeft = 9
+    ExplicitTop = 9
+    ExplicitHeight = 427
+  end
   object Panel1: TPanel
     Left = 0
     Top = 38
@@ -68,7 +79,7 @@ object MainForm: TMainForm
         TabOrder = 0
         Value = 100
       end
-      object AssignIconsButton: TBitBtn
+      object AssignIconsButton: TButton
         Left = 64
         Top = 36
         Width = 115
@@ -116,7 +127,7 @@ object MainForm: TMainForm
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 3
-      object ClearButton: TBitBtn
+      object ClearButton: TButton
         Left = 5
         Top = 5
         Width = 76
@@ -125,7 +136,7 @@ object MainForm: TMainForm
         TabOrder = 0
         OnClick = ClearButtonClick
       end
-      object ShowImageEditorButton: TBitBtn
+      object ShowImageEditorButton: TButton
         Left = 86
         Top = 5
         Width = 106
@@ -183,65 +194,77 @@ object MainForm: TMainForm
       Enabled = False
     end
   end
-  object Panel2: TPanel
-    Left = 627
+  object paButtons: TPanel
+    Left = 629
     Top = 38
-    Width = 82
+    Width = 80
     Height = 509
     Align = alRight
     TabOrder = 2
-    object DeleteButton: TBitBtn
-      Left = 5
+    OnResize = paButtonsResize
+    object IconFontImage: TIconFontImage
+      Left = 1
+      Top = 430
+      Width = 78
+      Height = 78
+      ImageList = IconFontsImageList
+      ImageIndex = 0
+      Align = alBottom
+      ExplicitLeft = 2
+    end
+    object DeleteButton: TButton
+      Left = 2
       Top = 6
       Width = 73
       Height = 60
       Action = DeleteIconAction
-      Caption = 'Delete Icon'
-      Layout = blGlyphTop
+      ImageAlignment = iaTop
+      Images = IconFontsImageList
       TabOrder = 0
     end
-    object ChangeIconButton: TBitBtn
-      Left = 5
+    object ChangeIconButton: TButton
+      Left = 2
       Top = 71
       Width = 73
       Height = 60
       Action = ChangeIconAction
-      Caption = 'Change icon'
-      Layout = blGlyphTop
+      ImageAlignment = iaTop
+      Images = IconFontsImageList
       TabOrder = 1
     end
-    object ChangeColorButton: TBitBtn
-      Left = 6
+    object ChangeColorButton: TButton
+      Left = 3
       Top = 137
       Width = 73
       Height = 60
       Action = ChangeColorAction
-      Caption = 'Change Color'
-      Layout = blGlyphTop
+      ImageAlignment = iaTop
+      Images = IconFontsImageList
       TabOrder = 2
     end
-    object ShowCharMapButton: TBitBtn
-      Left = 6
+    object ShowCharMapButton: TButton
+      Left = 3
       Top = 201
       Width = 73
       Height = 60
       Action = ShowCharMapAction
       Caption = 'Char Map...'
-      Layout = blGlyphTop
+      ImageAlignment = iaTop
+      Images = IconFontsImageList
       TabOrder = 3
     end
   end
   object ClientPanel: TPanel
     Left = 201
     Top = 38
-    Width = 426
+    Width = 425
     Height = 509
     Align = alClient
     TabOrder = 3
     object ImageListLabel: TLabel
       Left = 1
       Top = 223
-      Width = 424
+      Width = 423
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -251,7 +274,7 @@ object MainForm: TMainForm
     object TreeView: TTreeView
       Left = 1
       Top = 1
-      Width = 424
+      Width = 423
       Height = 222
       Align = alTop
       Images = IconFontsImageList
@@ -271,7 +294,7 @@ object MainForm: TMainForm
     object ImageView: TListView
       Left = 1
       Top = 236
-      Width = 424
+      Width = 423
       Height = 272
       Align = alClient
       Columns = <>
@@ -279,6 +302,7 @@ object MainForm: TMainForm
       LargeImages = IconFontsImageList
       SmallImages = IconFontsImageList
       TabOrder = 1
+      OnSelectItem = ImageViewSelectItem
     end
   end
   object IconFontsImageList: TIconFontsImageList

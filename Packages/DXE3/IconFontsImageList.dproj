@@ -40,9 +40,8 @@
         <RuntimeOnlyPackage>true</RuntimeOnlyPackage>
         <DCC_Namespace>Winapi;System.Win;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;$(DCC_Namespace)</DCC_Namespace>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=Ethea S.r.l.;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0;Comments=;CFBundleName=</VerInfo_Keys>
+        <VerInfo_Keys>FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0;Comments=;CFBundleName=</VerInfo_Keys>
         <DCC_DcuOutput>..\..\Lib\DXE3\$(Platform)\$(Config)</DCC_DcuOutput>
-        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <DCC_OutputNeverBuildDcps>true</DCC_OutputNeverBuildDcps>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1)'!=''">
@@ -62,6 +61,7 @@
         </DelphiCompile>
         <DCCReference Include="rtl.dcp"/>
         <DCCReference Include="vcl.dcp"/>
+        <DCCReference Include="..\..\Source\IconFontsImage.pas"/>
         <DCCReference Include="..\..\Source\IconFontsImageList.pas"/>
         <DCCReference Include="..\..\Source\IconFontsUtils.pas"/>
         <BuildConfiguration Include="Debug">

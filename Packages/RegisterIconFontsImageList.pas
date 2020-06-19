@@ -41,17 +41,15 @@ implementation
 
 uses
   IconFontsImageList
+  , IconFontsImage
   , IconFontsImageListEditor;
 
 procedure Register;
 begin
-  RegisterComponents('Ethea', [TIconFontsImageList
-(*
-  {$IFDEF D10_3+}
-  , TIconFontsImageCollection
-  {$ENDIF}
-*)
-  ]);
+  RegisterComponents('Ethea', [
+    TIconFontImage,
+    TIconFontsImageList]);
+
   RegisterComponentEditor(TIconFontsImageList, TIconFontsImageListCompEditor);
 end;
 

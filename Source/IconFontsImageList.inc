@@ -159,6 +159,11 @@
   {$DEFINE D10_4+}
 {$ENDIF}
 
+//GDI+ support available from DXE6
+{$IFDEF DXE6+}
+  {$Define GDI+}
+{$ENDIF}
+
 //StoreBitmap option introduced in Delphi 10.3 Rio
 {$IFDEF D10_3+}
   {$Define HasStoreBitmapProperty}

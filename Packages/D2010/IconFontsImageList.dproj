@@ -22,7 +22,7 @@
 		<PropertyGroup Condition="'$(Base)'!=''">
 			<DesignOnlyPackage>false</DesignOnlyPackage>
 			<DllSuffix>_D2010</DllSuffix>
-			<DCC_Description>Ethea IconFontsImageList component</DCC_Description>
+			<DCC_Description>Ethea IconFontsImageList VCL components</DCC_Description>
 			<RuntimeOnlyPackage>true</RuntimeOnlyPackage>
 			<DCC_DcuOutput>..\..\Lib\D2010\Win32\$(Config)</DCC_DcuOutput>
 			<DCC_UnitAlias>WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;$(DCC_UnitAlias)</DCC_UnitAlias>
@@ -48,6 +48,7 @@
 			</DelphiCompile>
 			<DCCReference Include="rtl.dcp"/>
 			<DCCReference Include="vcl.dcp"/>
+                        <DCCReference Include="..\..\Source\IconFontsImage.pas"/>
 			<DCCReference Include="..\..\Source\IconFontsImageList.pas"/>
 			<DCCReference Include="..\..\Source\IconFontsUtils.pas"/>
 			<BuildConfiguration Include="Base">

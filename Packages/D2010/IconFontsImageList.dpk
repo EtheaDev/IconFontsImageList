@@ -32,6 +32,7 @@ requires
   vcl;
 
 contains
+  IconFontsImage in '..\..\Source\IconFontsImage.pas',
   IconFontsImageList in '..\..\Source\IconFontsImageList.pas',
   IconFontsUtils in '..\..\Source\IconFontsUtils.pas';
 

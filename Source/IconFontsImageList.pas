@@ -43,6 +43,10 @@ uses
 {$IFDEF HiDPISupport}
   , Messaging
 {$ENDIF}
+{$IFDEF GDI+}
+  , Winapi.GDIPOBJ
+  , Winapi.GDIPAPI
+{$ENDIF}
   , Forms;
 
 resourcestring
@@ -50,14 +54,44 @@ resourcestring
   ERR_ICONFONTS_FONT_NOT_INSTALLED = 'Font "%s" is not installed!';
 
 const
-  IconFontsImageListVersion = '1.10.0';
+  IconFontsImageListVersion = '2.0.0';
+  DEFAULT_SIZE = 16;
 
 type
   TIconFontsImageList = class;
   TIconFontMissing = procedure (const AFontName: TFontName) of object;
 
+  TIconFont = class(TObject)
+  private
+    FFontName: TFontName;
+    FFontIconDec: Integer;
+    FFontColor: TColor;
+    FMaskColor: TColor;
+    FOpacity: Byte;
+    FIconName: string;
+    FDisabledFactor: Byte;
+  public
+    procedure Assign(Source: TIconFont);
+    {$IFDEF GDI+}
+    procedure PaintToGDI(const AGraphics: TGPGraphics;
+      const X, Y, AWidth, AHeight: Single;
+      const AFontName: TFontName; AFontIconDec: Integer;
+      const AFontColor: TColor;
+      const AEnabled: Boolean = True;
+      const AOpacity: Byte = 255;
+      const ADisabledFactor: Byte = 100);
+    {$ENDIF}
+    procedure PaintTo(const ACanvas: TCanvas;
+      const X, Y, AWidth, AHeight: Integer;
+      const AFontName: TFontName; AFontIconDec: Integer;
+      const AFontColor, AMaskColor: TColor;
+      const AEnabled: Boolean = True;
+      const ADisabledFactor: Byte = 100);
+  end;
+
   TIconFontItem = class(TCollectionItem)
   private
+    FIconFont: TIconFont;
     FFontName: TFontName;
     FFontIconDec: Integer;
     FFontColor: TColor;
@@ -79,6 +113,19 @@ type
     function StoreFontColor: Boolean;
     function StoreMaskColor: Boolean;
     function StoreFontName: Boolean;
+    {$IFDEF GDI+}
+    procedure PaintToGDI(const AGraphics: TGPGraphics;
+      const X, Y, AWidth, AHeight: Integer;
+      const AEnabled: Boolean = True;
+      const AOpacity: Byte = 255;
+      const ADisabledFactor: Byte = 100);
+    {$ENDIF}
+    procedure PaintTo(const ACanvas: TCanvas;
+      const X, Y, AWidth, AHeight: Integer;
+      out AMaskColor: TColor;
+      const AEnabled: Boolean = True;
+      const ADisabledFactor: Byte = 100);
+    function GetIconFont: TIconFont;
   protected
     procedure SetIndex(Value: Integer); override;
   public
@@ -88,6 +135,7 @@ type
     procedure Assign(Source: TPersistent); override;
     property Character: WideString read GetCharacter;
   published
+    property IconFont: TIconFont read GetIconFont;
     property IconFontsImageList: TIconFontsImageList read GetIconFontsImageList;
     property FontIconDec: Integer read GetFontIconDec write SetFontIconDec stored true default 0;
     property FontIconHex: string read GetFontIconHex write SetFontIconHex stored false;
@@ -111,13 +159,14 @@ type
     function Insert(AIndex: Integer): TIconFontItem;
     procedure Delete(AIndex: Integer);
     function GetIconByName(const AIconName: string): TIconFontItem;
+    function IndexOf(const S: string): Integer; virtual;
     property IconFontsImageList: TIconFontsImageList read GetIconFontsImageList;
     property Items[Index: Integer]: TIconFontItem read GetItem write SetItem; default;
   end;
 
   {TIconFontsImageList}
   TDrawIconEvent = procedure (const ASender: TObject; const ACount: Integer;
-    const AItem: TIconFontItem; var AProceed: Boolean) of Object;
+    const AItem: TIconFontItem) of Object;
 
   TIconFontsImageList = class(TCustomImageList)
   private
@@ -130,34 +179,55 @@ type
     FFontNamesChecked: TStrings;
     FOnDrawIcon: TDrawIconEvent;
     FIconsAdded: Integer;
+    FDisabledFactor: Byte;
+    {$IFDEF GDI+}
+    FOpacity: Byte;
+    {$ENDIF}
     {$IFDEF HiDPISupport}
     FScaled: Boolean;
     FDPIChangedMessageID: Integer;
     {$ENDIF}
+    function GetNames(Index: Integer): string;
     procedure CheckFontName(const AFontName: TFontName);
     procedure SetIconSize(const ASize: Integer);
     procedure SetIconFontItems(const AValue: TIconFontItems);
     procedure UpdateImage(const AIndex: Integer);
-    function DrawFontIcon(const AIndex: Integer; const ABitmap: TBitmap;
-      const AAdd: Boolean): Boolean;
     procedure SetFontColor(const AValue: TColor);
     procedure SetFontName(const AValue: TFontName);
     procedure SetMaskColor(const AValue: TColor);
     function GetSize: Integer;
     procedure SetSize(const AValue: Integer);
+    procedure SetNames(Index: Integer; const Value: string);
     function GetHeight: Integer;
     function GetWidth: Integer;
     procedure SetHeight(const AValue: Integer);
     procedure SetWidth(const AValue: Integer);
-    procedure InternalRedrawImages;
     function IsCharAvailable(const ABitmap: TBitmap;
       const AFontIconDec: Integer): Boolean;
+    function StoreWidth: Boolean;
+    function StoreHeight: Boolean;
+    function StoreSize: Boolean;
     {$IFDEF HiDPISupport}
     procedure DPIChangedMessageHandler(const Sender: TObject; const Msg: Messaging.TMessage);
     {$ENDIF}
+    {$IFNDEF DXE8+}
+    function GetCount: Integer;
+    {$ENDIF}
+    {$IFDEF GDI+}
+    procedure SetOpacity(const Value: Byte);
+    {$ENDIF}
+    procedure SetDisabledFactor(const Value: Byte);
   protected
+    {$IFDEF DXE8+}
+    function GetCount: Integer; override;
+    {$ENDIF}
+    {$IFDEF GDI+}
+    procedure DoDraw(Index: Integer; Canvas: TCanvas; X, Y: Integer;
+      Style: Cardinal; Enabled: Boolean = True); override;
+    {$ENDIF}
     procedure Loaded; override;
   public
+    procedure RecreateBitmaps;
     procedure StopDrawing(const AStop: Boolean);
     procedure DPIChanged(Sender: TObject; const OldDPI, NewDPI: Integer); virtual;
     procedure Change; override;
@@ -194,33 +264,45 @@ type
     procedure ClearIcons; virtual;
     procedure RedrawImages; virtual;
     procedure SaveToFile(const AFileName: string);
+    procedure PaintTo(const ACanvas: TCanvas; const AIndex: Integer;
+      const X, Y, AWidth, AHeight: Integer;
+      const AEnabled: Boolean = True;
+      const ADisabledFactor: Byte = 100); overload;
+    procedure PaintTo(const ACanvas: TCanvas; const AName: string;
+      const X, Y, AWidth, AHeight: Integer;
+      const AEnabled: Boolean = True;
+      const ADisabledFactor: Byte = 100); overload;
     {$IFDEF D10_4+}
     function IsImageNameAvailable: Boolean; override;
     function IsScaled: Boolean; override;
     function GetIndexByName(const AName: TImageName): TImageIndex; override;
     function GetNameByIndex(AIndex: TImageIndex): TImageName; override;
     {$ENDIF}
-    property Width: Integer read GetWidth write SetWidth;
-    property Height: Integer read GetHeight write SetHeight;
+    property Names[Index: Integer]: string read GetNames write SetNames;
+    property Count: Integer read GetCount;
   published
+    //Publishing properties of standard ImageList
+    property Width: Integer read GetWidth write SetWidth stored StoreWidth default DEFAULT_SIZE;
+    property Height: Integer read GetHeight write SetHeight stored StoreHeight default DEFAULT_SIZE;
     //Publishing properties of Custom Class
     property OnChange;
     //New properties
     property IconFontItems: TIconFontItems read FIconFontItems write SetIconFontItems;
+    property DisabledFactor: Byte read FDisabledFactor write SetDisabledFactor default 100;
     property FontName: TFontName read FFontName write SetFontName;
     property FontColor: TColor read FFontColor write SetFontColor default clNone;
     property MaskColor: TColor read FMaskColor write SetMaskColor default clNone;
-    property Size: Integer read GetSize write SetSize default 16;
+    property Size: Integer read GetSize write SetSize stored StoreSize default DEFAULT_SIZE;
     property OnFontMissing: TIconFontMissing read FOnFontMissing write FOnFontMissing;
     property OnDrawIcon: TDrawIconEvent read FOnDrawIcon write FOnDrawIcon;
     {$IFDEF HasStoreBitmapProperty}
     property StoreBitmap default False;
     {$ENDIF}
-    /// <summary>
-    /// Enable and disable scaling with form
-    /// </summary>
     {$IFDEF HiDPISupport}
     property Scaled: Boolean read FScaled write FScaled default True;
+    {$ENDIF}
+    {$IFDEF GDI+}
+    property Opacity: Byte read FOpacity write SetOpacity default 255;
     {$ENDIF}
   end;
 
@@ -229,21 +311,102 @@ implementation
 
 uses
   SysUtils
+  , IconFontsUtils
   , Math
+  , ComCtrls
   {$IFDEF DXE3+}
   , System.Character
-  , GDIPOBJ
-  , GDIPAPI
+  , Themes
+  {$ENDIF}
+  {$IFDEF GDI+}
+  , Winapi.CommCtrl
   {$ENDIF}
   , StrUtils
   ;
 
-function IsValidValue(const AFontIconDec: Integer): Boolean;
+
+{$IFDEF GDI+}
+(*
+type
+  TBoxAlignment = (baTopLeft, baTopCenter, baTopRight,
+    baCenterLeft, baCenterCenter, baCenterRight,
+    baBottomLeft, baBottomCenter, baBottomRight);
+
+function CalcRect(const Bounds: TGPRectF; const Width, Height: Double;
+  const Alignment: TBoxAlignment): TGPRectF;
+var
+  R: Double;
 begin
-  Result := ((AFontIconDec >= $0000) and (AFontIconDec <= $D7FF)) or
-    ((AFontIconDec >= $E000) and (AFontIconDec < $FFFF)) or  //D800 to DFFF are reserved for code point values for Surrogate Pairs
-    ((AFontIconDec >= $010000) and (AFontIconDec <= $10FFFF)); //Surrogate Pairs
+  if Height > 0 then
+    R :=  Width / Height
+  else
+    R := 1;
+
+  if (Bounds.Height <> 0) and
+     (Bounds.Width / Bounds.Height > R) then
+  begin
+    Result.Width := Bounds.Height * R;
+    Result.Height := Bounds.Height;
+  end else
+  begin
+    Result.Width := Bounds.Width;
+    Result.Height := Bounds.Width / R;
+  end;
+
+  case Alignment of
+    baTopCenter, baCenterCenter, baBottomCenter:
+      Result.X := (Bounds.Width - Result.Width) / 2;
+    baTopRight, baCenterRight, baBottomRight:
+      Result.X := Bounds.Width - Result.Width;
+    else
+      Result.X := 0;
+  end;
+
+  case Alignment of
+    baCenterLeft, baCenterCenter, baCenterRight:
+      Result.Y := (Bounds.Height - Result.Height) / 2;
+    baBottomLeft, baBottomCenter, baBottomRight:
+      Result.Y := Bounds.Height - Result.Height;
+    else
+      Result.Y := 0;
+  end;
+
+  Result.X := Result.X + Bounds.X;
+  Result.Y := Result.Y + Bounds.Y;
 end;
+*)
+
+function GPColor(Col: TColor; Alpha: Byte): TGPColor;
+
+type
+  TInvRGBQUAD = packed record
+  rgbRed: Byte;
+  rgbGreen: Byte;
+  rgbBlue: Byte;
+  rgbReserved: Byte;
+end;
+
+var
+  rec: TInvRGBQuad;
+  rec2: TRGBQuad;
+  ciCol: Cardinal;
+begin
+  { This will get the RGB color from a system colour, then we can
+  convert this value to a GDI+ colour }
+  rec := TInvRGBQuad(Col);
+  if rec.rgbReserved = 128 then // $80 then {or =128}
+  begin
+  ciCol := $80000000 XOR DWORD(Col);
+  ciCol := GetSysColor(ciCol);
+  rec2 := TRGBQuad(ciCol);
+  { Could also just use REC here, and pass Blue where red is
+  requested, and Red where blue is requested, should probably
+  still result in the same effect }
+  Result := MakeColor(Alpha, rec2.rgbRed, rec2.rgbGreen, rec2.rgbBlue);
+  end else
+  Result := MakeColor(Alpha, rec.rgbRed, rec.rgbGreen, rec.rgbBlue);
+end;
+{$ENDIF}
 
 { TIconFontItem }
 
@@ -264,6 +427,7 @@ end;
 constructor TIconFontItem.Create(Collection: TCollection);
 begin
   inherited Create(Collection);
+  FIconFont := TIconFont.Create;
   FFontIconDec := 0;
   FFontColor := clNone;
   FMaskColor := clNone;
@@ -274,6 +438,7 @@ var
   LIconFontsImageList: TIconFontsImageList;
 begin
   LIconFontsImageList := IconFontsImageList;
+  FIconFont.Free;
   inherited Destroy;
   if (LIconFontsImageList <> nil) and not (csDestroying in LIconFontsImageList.ComponentState) then
     LIconFontsImageList.RedrawImages;
@@ -330,12 +495,125 @@ begin
     Result := '';
 end;
 
+function TIconFontItem.GetIconFont: TIconFont;
+begin
+  Result := FIconFont;
+end;
+
 function TIconFontItem.GetIconFontsImageList: TIconFontsImageList;
 begin
   if Assigned(Collection) then
     Result := TIconFontItems(Collection).IconFontsImageList
   else
-    Result := nil;  
+    Result := nil;
+end;
+
+procedure TIconFontsImageList.SetDisabledFactor(const Value: Byte);
+begin
+  if FDisabledFactor <> Value then
+    FDisabledFactor := Value;
+end;
+
+{$IFDEF GDI+}
+procedure TIconFontsImageList.DoDraw(Index: Integer; Canvas: TCanvas; X, Y: Integer;
+  Style: Cardinal; Enabled: Boolean);
+(*
+var
+  LMasked: Boolean;
+  LDrawingStyle: TDrawingStyle;
+  LStyle: Longint;
+  I: Integer;
+*)
+begin
+(*
+    LMasked := (Style and Cardinal(ILD_MASK)) <> 0;
+    LStyle := LongInt(Style) and not LongInt(ILD_MASK);
+    case LStyle of
+      ILD_FOCUS: LDrawingStyle := TDrawingStyle.dsFocus;
+      ILD_SELECTED: LDrawingStyle := TDrawingStyle.dsSelected;
+      ILD_NORMAL: LDrawingStyle := TDrawingStyle.dsNormal;
+      ILD_TRANSPARENT: LDrawingStyle := TDrawingStyle.dsTransparent;
+    else
+      LDrawingStyle := TDrawingStyle.dsNormal;
+    end;
+*)
+  PaintTo(Canvas, Index, X, Y, Width, Height, Enabled);
+end;
+
+procedure TIconFontsImageList.SetOpacity(const Value: Byte);
+begin
+  if FOpacity <> Value then
+  begin
+    FOpacity := Value;
+    RecreateBitmaps;
+  end;
+end;
+
+procedure TIconFontItem.PaintToGDI(const AGraphics: TGPGraphics;
+  const X, Y, AWidth, AHeight: Integer;
+  const AEnabled: Boolean = True;
+  const AOpacity: Byte = 255;
+  const ADisabledFactor: Byte = 100);
+var
+  LFontColor: TColor;
+  LFontName: TFontName;
+begin
+  if FFontColor <> clNone then
+    LFontColor := FFontColor
+  else
+    LFontColor := IconFontsImageList.FFontColor;
+
+  if FFontName <> '' then
+    LFontName := FFontName
+  else
+    LFontName := IconFontsImageList.FFontName;
+  IconFontsImageList.CheckFontName(LFontName);
+
+  FIconFont.PaintToGDI(AGraphics, X, Y, AWidth, AHeight,
+    LFontName, FFontIconDec, LFontColor,
+    AEnabled, AOpacity, ADisabledFactor);
+
+  if Assigned(IconFontsImageList.OnDrawIcon) then
+    IconFontsImageList.OnDrawIcon(Self, IconFontsImageList.FIconsAdded, Self);
+end;
+{$ENDIF}
+
+procedure TIconFontItem.PaintTo(const ACanvas: TCanvas;
+  const X, Y, AWidth, AHeight: Integer;
+  out AMaskColor: TColor;
+  const AEnabled: Boolean = True;
+  const ADisabledFactor: Byte = 100);
+var
+  LFontColor: TColor;
+  LFontName: TFontName;
+begin
+  if IconFontsImageList = nil then
+    Exit;
+
+  //Default values from ImageList if not supplied from Item
+  if FMaskColor <> clNone then
+    AMaskColor := FMaskColor
+  else
+    AMaskColor := IconFontsImageList.FMaskColor;
+  if FFontColor <> clNone then
+    LFontColor := FFontColor
+  else
+    LFontColor := IconFontsImageList.FFontColor;
+
+  if not AEnabled then
+    LFontColor := GrayscaleColor(LFontColor);
+
+  if FFontName <> '' then
+    LFontName := FFontName
+  else
+    LFontName := IconFontsImageList.FFontName;
+  IconFontsImageList.CheckFontName(LFontName);
+
+  FIconFont.PaintTo(ACanvas, X, Y, AWidth, AHeight, LFontName,
+    FFontIconDec, LFontColor, AMaskColor, AEnabled, ADisabledFactor);
+
+  if Assigned(IconFontsImageList.OnDrawIcon) then
+    IconFontsImageList.OnDrawIcon(Self, IconFontsImageList.FIconsAdded, Self);
 end;
 
 procedure TIconFontItem.SetFontColor(const AValue: TColor);
@@ -351,7 +629,7 @@ procedure TIconFontItem.SetFontIconDec(const AValue: Integer);
 begin
   if AValue <> FFontIconDec then
   begin
-    if not IsValidValue(AValue) then
+    if not IsFontIconValidValue(AValue) then
       raise Exception.CreateFmt(ERR_ICONFONTS_VALUE_NOT_ACCEPTED,[IntToHex(AValue, 1)]);
     FFontIconDec := AValue;
     Changed;
@@ -364,7 +642,7 @@ begin
     if (Length(AValue) = 4) or (Length(AValue) = 5) then
       FontIconDec := StrToInt('$' + AValue)
     else if (Length(AValue) = 0) then
-      FFontIconDec := 0
+      FontIconDec := 0
     else
       raise Exception.CreateFmt(ERR_ICONFONTS_VALUE_NOT_ACCEPTED,[AValue]);
   except
@@ -462,6 +740,10 @@ begin
   FStopDrawing := 0;
   FFontColor := clNone;
   FMaskColor := clNone;
+  FDisabledFactor := 100;
+  {$IFDEF GDI+}
+  FOpacity := 255;
+  {$ENDIF}
   FFontNamesChecked := TStringList.Create;
   FIconFontItems := TIconFontItems.Create(Self, TIconFontItem);
   {$IFDEF HasStoreBitmapProperty}
@@ -546,8 +828,17 @@ begin
     LHeightScaled := MulDiv(Height, TChangeScaleMessage(Msg).M, TChangeScaleMessage(Msg).D);
     FScaling := True;
     try
-      //Use Minimum value of scaled size
-      SetSize(Min(LWidthScaled, LHeightScaled));
+      if (Width <> LWidthScaled) or (Height <> LHeightScaled) then
+      begin
+        StopDrawing(True);
+        try
+          Width := LWidthScaled;
+          Height := LHeightScaled;
+        finally
+          StopDrawing(False);
+        end;
+        RecreateBitmaps;
+      end;
     finally
       FScaling := False;
     end;
@@ -573,9 +864,26 @@ begin
   end;
 end;
 
+function TIconFontsImageList.GetCount: Integer;
+begin
+  Result := FIconFontItems.Count;
+end;
+
 procedure TIconFontsImageList.SetHeight(const AValue: Integer);
 begin
-  SetIconSize(AValue);
+  if Height <> AValue then
+  begin
+    inherited Height := AValue;
+    RecreateBitmaps;
+  end;
+end;
+
+function TIconFontsImageList.GetNames(Index: Integer): string;
+begin
+  if (Index >= 0) and (Index < FIconFontItems.Count) then
+    Result := FIconFontItems[Index].IconName
+  else
+    Result := '';
 end;
 
 procedure TIconFontsImageList.SetIconFontItems(const AValue: TIconFontItems);
@@ -610,14 +918,17 @@ begin
     finally
       StopDrawing(False);
     end;
-    if not (csLoading in ComponentState) then
-      InternalRedrawImages;
+  RecreateBitmaps;
   end;
 end;
 
 procedure TIconFontsImageList.SetWidth(const AValue: Integer);
 begin
-  SetIconSize(AValue);
+  if Width <> AValue then
+  begin
+    inherited Width := AValue;
+    RecreateBitmaps;
+  end;
 end;
 
 procedure TIconFontsImageList.StopDrawing(const AStop: Boolean);
@@ -633,6 +944,49 @@ function TIconFontsImageList.AddIcon(const AChar: WideChar;
   const AMaskColor: TColor = clNone): TIconFontItem;
 begin
   Result := AddIcon(Ord(AChar), AFontName, AFontColor, AMaskColor);
+end;
+
+procedure TIconFontsImageList.PaintTo(const ACanvas: TCanvas;
+  const AIndex: Integer;
+  const X, Y, AWidth, AHeight: Integer;
+  const AEnabled: Boolean = True;
+  const ADisabledFactor: Byte = 100);
+var
+{$IFDEF GDI+}
+  LGPGraphics: TGPGraphics;
+{$ELSE}
+  LMaskColor: TColor;
+{$ENDIF}
+  LItem: TIconFontItem;
+begin
+  if (AIndex >= 0) and (AIndex < FIconFontItems.Count) then
+  begin
+    LItem := FIconFontItems[AIndex];
+    {$IFDEF GDI+}
+    LGPGraphics := TGPGraphics.Create(ACanvas.Handle);
+    try
+      LItem.PaintToGDI(LGPGraphics, X, Y, AWidth, AHeight,
+        AEnabled, FOpacity, ADisabledFactor);
+    finally
+      LGPGraphics.Free;
+    end;
+    {$ELSE}
+    LItem.PaintTo(ACanvas, X, Y, AWidth, AHeight,
+      LMaskColor, AEnabled, ADisabledFactor);
+    {$ENDIF}
+  end;
+end;
+
+procedure TIconFontsImageList.PaintTo(const ACanvas: TCanvas; const AName: string;
+  const X, Y, AWidth, AHeight: Integer;
+  const AEnabled: Boolean = True;
+  const ADisabledFactor: Byte = 100);
+var
+  LIndex: Integer;
+begin
+  LIndex := FIconFontItems.IndexOf(Name);
+  PaintTo(ACanvas, LIndex, X, Y, AWidth, AHeight,
+    AEnabled, ADisabledFactor);
 end;
 
 function TIconFontsImageList.AddIcon(const AChar: Integer;
@@ -708,9 +1062,9 @@ begin
     for LChar := AFrom to ATo do
     begin
       if ACheckValid then
-        LIsValid := IsValidValue(LChar) and IsCharAvailable(LBitmap, LChar)
+        LIsValid := IsFontIconValidValue(LChar) and IsCharAvailable(LBitmap, LChar)
       else
-        LIsValid := IsValidValue(LChar);
+        LIsValid := IsFontIconValidValue(LChar);
       if LIsValid then
       begin
         AddIcon(LChar, AFontName, AFontColor, AMaskColor);
@@ -722,8 +1076,7 @@ begin
     LBitmap.Free;
     StopDrawing(False);
   end;
-  if not (csLoading in ComponentState) then
-    InternalRedrawImages;
+  RecreateBitmaps;
 end;
 
 procedure TIconFontsImageList.Assign(Source: TPersistent);
@@ -736,6 +1089,12 @@ begin
       FFontName := TIconFontsImageList(Source).FontName;
       FFontColor := TIconFontsImageList(Source).FontColor;
       FMaskColor := TIconFontsImageList(Source).FMaskColor;
+
+      {$IFDEF GDI+}
+      FDisabledFactor := TIconFontsImageList(Source).FDisabledFactor;
+      FOpacity := TIconFontsImageList(Source).FOpacity;
+      {$ENDIF}
+
       {$IFDEF HasStoreBitmapProperty}
       StoreBitmap := TIconFontsImageList(Source).StoreBitmap;
       {$ENDIF}
@@ -744,8 +1103,7 @@ begin
     finally
       StopDrawing(False);
     end;
-    if not (csLoading in ComponentState) then
-      InternalRedrawImages;
+    RecreateBitmaps;
   end;
 end;
 
@@ -813,64 +1171,6 @@ begin
   end;
 end;
 
-function TIconFontsImageList.DrawFontIcon(const AIndex: Integer;
-  const ABitmap: TBitmap; const AAdd: Boolean): Boolean;
-var
-  LIconFontItem: TIconFontItem;
-  S: WideString;
-  LFontName: TFontName;
-  LMaskColor, LFontColor: TColor;
-  LRect: TRect;
-begin
-  Result := False;
-  if Assigned(ABitmap) then
-  begin
-    LIconFontItem := IconFontItems.GetItem(AIndex);
-    //Default values from ImageList if not supplied from Item
-    if LIconFontItem.FMaskColor <> clNone then
-      LMaskColor := LIconFontItem.FMaskColor
-    else
-      LMaskColor := FMaskColor;
-    if LIconFontItem.FFontColor <> clNone then
-      LFontColor := LIconFontItem.FFontColor
-    else
-      LFontColor := FFontColor;
-    if LIconFontItem.FFontName <> '' then
-      LFontName := LIconFontItem.FFontName
-    else
-      LFontName := FFontName;
-    CheckFontName(LFontName);
-    ABitmap.Width := Width;
-    ABitmap.Height := Height;
-    with ABitmap.Canvas do
-    begin
-      Font.Name := LFontName;
-      Font.Height := Height;
-      Font.Color := LFontColor;
-      Brush.Color := LMaskColor;
-      LRect.Left := 0;
-      LRect.Top := 0;
-      LRect.Right := Width;
-      LRect.Bottom := Height;
-      FillRect(LRect);
-      {$IFDEF DXE3+}
-      S := LIconFontItem.Character;
-      TextOut(0, 0, S);
-      {$ELSE}
-      S := WideChar(LIconFontItem.FFontIconDec);
-      TextOutW(ABitmap.Canvas.Handle, 0, 0, PWideChar(S), 1);
-      {$ENDIF}
-    end;
-    if AAdd then
-      AddMasked(ABitmap, LMaskColor)
-    else
-      ReplaceMasked(AIndex, ABitmap, LMaskColor);
-    Result := True;
-    if Assigned(FOnDrawIcon) then
-      FOnDrawIcon(Self, FIconsAdded, LIconFontItem, Result);
-  end;
-end;
-
 procedure TIconFontsImageList.SaveToFile(const AFileName: string);
 var
   LImageStrip: TBitmap;
@@ -928,11 +1228,6 @@ begin
   end;
 end;
 
-function TIconFontsImageList.GetHeight: Integer;
-begin
-  Result := inherited Height;
-end;
-
 {$IFDEF D10_4+}
 function TIconFontsImageList.GetIndexByName(
   const AName: TImageName): TImageIndex;
@@ -964,7 +1259,7 @@ end;
 
 function TIconFontsImageList.GetSize: Integer;
 begin
-  Result := inherited Width;
+  Result := Max(Width, Height);
 end;
 
 function TIconFontsImageList.GetWidth: Integer;
@@ -972,18 +1267,26 @@ begin
   Result := inherited Width;
 end;
 
+function TIconFontsImageList.GetHeight: Integer;
+begin
+  Result := inherited Height;
+end;
+
 procedure TIconFontsImageList.Loaded;
 begin
   inherited;
-  if not (csLoading in ComponentState) then
-  begin
-    {$IFDEF HasStoreBitmapProperty}
-    if (not StoreBitmap) then
-      InternalRedrawImages;
-    {$ENDIF}
-    if (inherited Count = 0) or (csDesigning in ComponentState) then
-      InternalRedrawImages;
-  end;
+  {$IFDEF HasStoreBitmapProperty}
+  if (not StoreBitmap) then
+    RecreateBitmaps;
+  {$ENDIF}
+  if (inherited Count = 0) or (csDesigning in ComponentState) then
+    RecreateBitmaps;
+end;
+
+procedure TIconFontsImageList.SetNames(Index: Integer; const Value: string);
+begin
+  if (Index >= 0) and (Index < FIconFontItems.Count) then
+    FIconFontItems[Index].IconName := Value;
 end;
 
 procedure TIconFontsImageList.UpdateIconsAttributes(const ASize: Integer;
@@ -1008,8 +1311,7 @@ begin
     finally
       StopDrawing(False);
     end;
-    if not (csLoading in ComponentState) then
-      InternalRedrawImages;
+    RecreateBitmaps;
   end;
 end;
 
@@ -1020,56 +1322,209 @@ begin
 end;
 
 procedure TIconFontsImageList.UpdateImage(const AIndex: Integer);
-var
-  LBitmap: TBitmap;
 begin
   if (Height = 0) or (Width = 0) then
     Exit;
-  LBitmap := TBitmap.Create;
-  try
-    if FStopDrawing > 0 then
-      Exit;
-    DrawFontIcon(AIndex, LBitmap, Count <= AIndex);
-    Self.Change;
-  finally
-    LBitmap.Free;
-  end;
+  if FStopDrawing > 0 then
+    Exit;
+
+  RecreateBitmaps;
 end;
 
 procedure TIconFontsImageList.RedrawImages;
 begin
   if FStopDrawing > 0 then
     Exit;
-  if not (csLoading in ComponentState) then
-    InternalRedrawImages;
+  RecreateBitmaps;
 end;
 
-procedure TIconFontsImageList.InternalRedrawImages;
-var
-  I: Integer;
-  LBitmap: TBitmap;
+function TIconFontsImageList.StoreSize: Boolean;
 begin
-  if not Assigned(FIconFontItems) or
-    (csDestroying in ComponentState) then
-    Exit;
-  StopDrawing(True);
-  try
-    inherited Clear;
+  Result := (Width = Height) and (Width <> DEFAULT_SIZE);
+end;
+
+function TIconFontsImageList.StoreWidth: Boolean;
+begin
+  Result := (Width <> Height) and (Width <> DEFAULT_SIZE);
+end;
+
+function TIconFontsImageList.StoreHeight: Boolean;
+begin
+  Result := (Width <> Height) and (Height <> DEFAULT_SIZE);
+end;
+
+procedure TIconFontsImageList.RecreateBitmaps;
+var
+  C: Integer;
+  {$IFDEF GDI+}
+  LIcon: HIcon;
+  {$ENDIF}
+  LMaskColor: TColor;
+  LItem: TIconFontItem;
+
+  procedure AddMaskedIcon(AIconFontItem: TIconFontItem;
+    const AAdd: Boolean);
+  var
+    LBitmap: TBitmap;
+  begin
     LBitmap := TBitmap.Create;
     try
-      for I := 0 to FIconFontItems.Count -1 do
-      begin
-        if not DrawFontIcon(I, LBitmap, True) then
-          Break;
-      end;
-      Self.Change;
+      LBitmap.Width := Width;
+      LBitmap.Height := Height;
+      LBitmap.PixelFormat := pf32bit;
+      {$IFDEF DXE+}
+      LBitmap.alphaFormat := afIgnored;
+      {$ENDIF}
+      AIconFontItem.PaintTo(LBitmap.Canvas, 0, 0, Width, Height,
+        LMaskColor, True, FDisabledFactor);
+      if AAdd then
+        AddMasked(LBitmap, LMaskColor)
+      else
+        ReplaceMasked(AIconFontItem.Index, LBitmap, LMaskColor);
     finally
       LBitmap.Free;
     end;
+  end;
+
+  {$IFDEF GDI+}
+  function IconFontToIcon(AIconFontItem: TIconFontItem): HICON;
+
+    function IconFontToIcon24: HIcon;
+    var
+      ColorBitmap, MaskBitmap: TBitmap;
+      X: Integer;
+      Y: Integer;
+      Bits: PRGBQuad;
+      IconInfo: TIconInfo;
+      TransparentBitmap: TBitmap;
+      BF: TBlendFunction;
+      DC: THandle;
+      Graphics: TGPGraphics;
+    begin
+      ColorBitmap := TBitmap.Create;
+      MaskBitmap := TBitmap.Create;
+      TransparentBitmap := TBitmap.Create;
+      try
+        TransparentBitmap.PixelFormat := pf32bit;
+        TransparentBitmap.Width := Width;
+        TransparentBitmap.Height := Height;
+        FillChar(TransparentBitmap.Scanline[Height - 1]^, Width * Height * 4, 0);
+
+        Graphics := TGPGraphics.Create(TransparentBitmap.Canvas.Handle);
+        try
+          AIconFontItem.PaintToGDI(Graphics, 0, 0, Width, Height, True, FOpacity);
+        finally
+          Graphics.Free;
+        end;
+
+        ColorBitmap.PixelFormat := pf32bit;
+        ColorBitmap.Width := Width;
+        ColorBitmap.Height := Height;
+        MaskBitmap.PixelFormat := pf32bit;
+        MaskBitmap.Width := Width;
+        MaskBitmap.Height := Height;
+
+        ColorBitmap.Canvas.Brush.Color := BkColor;
+        ColorBitmap.Canvas.FillRect(Rect(0, 0, Width, Height));
+
+        BF.BlendOp := AC_SRC_OVER;
+        BF.BlendFlags := 0;
+        BF.SourceConstantAlpha := 255;
+        BF.AlphaFormat := AC_SRC_ALPHA;
+        AlphaBlend(ColorBitmap.Canvas.Handle, 0, 0, Width, Height,
+          TransparentBitmap.Canvas.Handle, 0, 0, Width, Height, BF);
+
+        DC := MaskBitmap.Canvas.Handle;
+        for Y := 0 to Height - 1 do
+        begin
+          Bits := TransparentBitmap.ScanLine[Y];
+          for X := 0 to Width - 1 do
+          begin
+            if Bits.rgbReserved = 0 then
+              SetPixelV(DC, X, Y, clWhite)
+            else
+              SetPixelV(DC, X, Y, clBlack);
+            Inc(Bits);
+          end;
+        end;
+
+        IconInfo.fIcon := True;
+        IconInfo.hbmColor := ColorBitmap.Handle;
+        IconInfo.hbmMask := MaskBitmap.Handle;
+        Result := CreateIconIndirect(IconInfo);
+      finally
+        TransparentBitmap.Free;
+        ColorBitmap.Free;
+        MaskBitmap.Free;
+      end;
+    end;
+
+    function IconFontToIcon32: HICON;
+    var
+      Bitmap: TGPBitmap;
+      Graphics: TGPGraphics;
+    begin
+      Bitmap := TGPBitmap.Create(Width, Height);
+      Graphics := TGPGraphics.Create(Bitmap);
+      AIconFontItem.PaintToGDI(Graphics, 0, 0, Width, Height, True, FOpacity);
+      Graphics.Free;
+
+      Bitmap.GetHICON(Result);
+      Bitmap.Free;
+    end;
+
+  begin
+    if GetFileVersion(comctl32) >= ComCtlVersionIE6 then
+      Result := IconFontToIcon32
+    else
+      Result := IconFontToIcon24;
+  end;
+  {$ENDIF}
+
+begin
+  if not Assigned(FIconFontItems) or
+    (FStopDrawing <> 0) or
+    (csDestroying in ComponentState) or
+    (csLoading in ComponentState) then
+    Exit;
+  StopDrawing(True);
+  try
+    begin
+      {$IFDEF GDI+}
+      ImageList_Remove(Handle, -1);
+      if (Width > 0) and (Height > 0) then
+      begin
+        Handle := ImageList_Create(Width, Height,
+          ILC_COLOR32 or (Integer(Masked) * ILC_MASK), 0, AllocBy);
+
+        FIconsAdded := 0;
+        for C := 0 to IconFontItems.Count - 1 do
+        begin
+          LItem := IconFontItems[C];
+          if Assigned(LItem) then
+          begin
+            LIcon := IconFontToIcon(LItem);
+            ImageList_AddIcon(Handle, LIcon);
+            DestroyIcon(LIcon);
+            Inc(FIconsAdded);
+          end;
+        end;
+      end;
+      {$ELSE}
+      inherited Clear;
+      FIconsAdded := 0;
+      for C := 0 to FIconFontItems.Count -1 do
+      begin
+        LItem := IconFontItems[C];
+        AddMaskedIcon(LItem, True);
+        Inc(FIconsAdded);
+      end;
+      {$ENDIF}
+    end;
   finally
     StopDrawing(False);
+    Change;
   end;
-  Change;
 end;
 
 procedure TIconFontsImageList.Replace(const AIndex: Integer; const AChar: WideChar;
@@ -1142,7 +1597,7 @@ begin
     finally
       IconFontsImageList.StopDrawing(False);
     end;
-    IconFontsImageList.InternalRedrawImages;
+    IconFontsImageList.RecreateBitmaps;
   end
   else
     inherited;
@@ -1172,7 +1627,7 @@ end;
 
 function TIconFontItems.GetIconFontsImageList: TIconFontsImageList;
 begin
-  if Owner <> nil then
+  if Owner is TIconFontsImageList then
     Result := TIconFontsImageList(Owner)
   else
     Result := nil;  
@@ -1181,6 +1636,14 @@ end;
 function TIconFontItems.GetItem(AIndex: Integer): TIconFontItem;
 begin
   Result := TIconFontItem(inherited GetItem(AIndex));
+end;
+
+function TIconFontItems.IndexOf(const S: string): Integer;
+begin
+  for Result := 0 to Count - 1 do
+    if SameText(Items[Result].IconName, S) then
+      Exit;
+  Result := -1;
 end;
 
 function TIconFontItems.Insert(AIndex: Integer): TIconFontItem;
@@ -1200,5 +1663,107 @@ begin
   if Owner <> nil then
     TIconFontsImageList(Owner).UpdateImage(AIndex);
 end;
+
+{ TIconFont }
+
+procedure TIconFont.Assign(Source: TIconFont);
+begin
+  FFontName := Source.FFontName;
+  FFontIconDec := Source.FFontIconDec;
+  FFontColor := Source.FFontColor;
+  FMaskColor := Source.FMaskColor;
+  FOpacity := Source.FOpacity;
+  FIconName := Source.FIconName;
+  FDisabledFactor :=  Source.FDisabledFactor;
+end;
+
+procedure TIconFont.PaintTo(const ACanvas: TCanvas;
+  const X, Y, AWidth, AHeight: Integer;
+  const AFontName: TFontName; AFontIconDec: Integer;
+  const AFontColor, AMaskColor: TColor;
+  const AEnabled: Boolean; const ADisabledFactor: Byte);
+var
+  S: WideString;
+  LRect: TRect;
+  LFontColor: TColor;
+begin
+  if not AEnabled then
+    LFontColor := DisabledColor(AFontColor, Round(100 * ADisabledFactor / 255))
+  else
+    LFontColor := AFontColor;
+
+  with ACanvas do
+  begin
+    Font.Name := AFontName;
+    Font.Height := AHeight;
+    Font.Color := LFontColor;
+    Brush.Color := AMaskColor;
+    LRect.Left := X;
+    LRect.Top := Y;
+    {$IFDEF DXE8+}
+    LRect.Width := AWidth;
+    LRect.Height := AHeight;
+    {$ELSE}
+    LRect.Right := X + AWidth;
+    LRect.Bottom := Y + AHeight;
+    {$ENDIF}
+    FillRect(LRect);
+    {$IFDEF DXE3+}
+    {$WARN SYMBOL_DEPRECATED OFF}
+    S := ConvertFromUtf32(AFontIconDec);
+    {$WARN SYMBOL_DEPRECATED ON}
+    TextOut(X, Y, S);
+    {$ELSE}
+    S := WideChar(FFontIconDec);
+    TextOutW(ACanvas.Handle, X, Y, PWideChar(S), 1);
+    {$ENDIF}
+  end;
+end;
+
+{$IFDEF GDI+}
+procedure TIconFont.PaintToGDI(const AGraphics: TGPGraphics;
+  const X, Y, AWidth, AHeight: Single;
+  const AFontName: TFontName; AFontIconDec: Integer;
+  const AFontColor: TColor; const AEnabled: Boolean;
+  const AOpacity: Byte; const ADisabledFactor: Byte);
+var
+  LSolidBrush: TGPSolidBrush;
+  LBounds: TGPRectF;
+  LFont: TGPFont;
+  LFontColor: TColor;
+  LPoint: TGPPointF;
+  S: WideString;
+begin
+  LSolidBrush := nil;
+  LFont := nil;
+  try
+    LBounds.X := X;
+    LBounds.Y := Y;
+    LBounds.Width := AWidth;
+    LBounds.Height := AHeight;
+
+    if not AEnabled then
+      LFontColor := DisabledColor(AFontColor, Round(100 * ADisabledFactor / 255))
+    else
+      LFontColor := AFontColor;
+
+    LSolidBrush := TGPSolidBrush.Create(GPColor(LFontColor, AOpacity));
+
+    LFont := TGPFont.Create(AFontName, LBounds.Height, FontStyleRegular, UnitPixel);
+
+    AGraphics.SetSmoothingMode(SmoothingModeAntiAlias);
+    AGraphics.SetTextRenderingHint(TextRenderingHintAntiAlias);
+    LPoint.X := LBounds.X - (LBounds.Width / 6);
+    LPoint.Y := LBounds.Y;
+    {$WARN SYMBOL_DEPRECATED OFF}
+    S := ConvertFromUtf32(AFontIconDec);
+    {$WARN SYMBOL_DEPRECATED ON}
+    AGraphics.DrawString(S, Length(S), LFont, LPoint, LSolidBrush);
+  finally
+    LFont.Free;
+    LSolidBrush.Free;
+  end;
+end;
+{$ENDIF}
 
 end.

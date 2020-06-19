@@ -101,6 +101,10 @@ type
     BottomPanel: TPanel;
     ShowCharMapButton: TButton;
     ExportButton: TButton;
+    WidthLabel: TLabel;
+    WidthSpinEdit: TSpinEdit;
+    HeightLabel: TLabel;
+    HeightSpinEdit: TSpinEdit;
     procedure FormCreate(Sender: TObject);
     procedure ApplyButtonClick(Sender: TObject);
     procedure ClearAllButtonClick(Sender: TObject);
@@ -134,6 +138,8 @@ type
     procedure ImageViewDragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
     procedure ImageViewDragDrop(Sender, Source: TObject; X, Y: Integer);
+    procedure WidthSpinEditChange(Sender: TObject);
+    procedure HeightSpinEditChange(Sender: TObject);
   private
     FSourceList, FEditingList: TIconFontsImageList;
     FCharMap: TIconFontsCharMapForm;
@@ -145,12 +151,15 @@ type
     procedure IconFontsImageListFontMissing(const AFontName: TFontName);
     procedure CloseCharMap(Sender: TObject; var Action: TCloseAction);
     procedure AddColor(const S: string);
+    procedure UpdateSizeGUI;
     procedure AddNewItem;
     procedure DeleteSelectedItem;
     procedure Apply;
     procedure UpdateGUI;
     procedure UpdateCharsToBuild;
+    {$IFNDEF GDI+}
     procedure SetImageMaskColor(Color: TColor);
+    {$ENDIF}
     procedure SetImageFontColor(Color: TColor);
     procedure SetImageFontIconDec(IconDec: Integer);
     procedure SetImageFontIconHex(IconHex: String);
@@ -175,6 +184,7 @@ uses
   , ShellApi
   {$IFDEF DXE3+}
   , UITypes
+  , System.Types
   , System.Character
   {$ENDIF}
   , IconFontsUtils;
@@ -197,6 +207,7 @@ begin
       Screen.Cursor := crHourglass;
       try
         FEditinglist.Assign(AImageList);
+        FSourceList := AImageList;
         SizeSpinEdit.Value := FEditinglist.Size;
         DefaultFontName.ItemIndex := DefaultFontName.Items.IndexOf(FEditingList.FontName);
         DefaultFontColorColorBox.Selected := FEditingList.FontColor;
@@ -228,6 +239,32 @@ end;
 
 { TIconFontsImageListEditor }
 
+procedure TIconFontsImageListEditor.UpdateSizeGUI;
+begin
+  WidthSpinEdit.Value := FEditingList.Width;
+  HeightSpinEdit.Value := FEditingList.Height;
+  SizeSpinEdit.Value := FEditingList.Size;
+  if FEditingList.Width = FEditingList.Height then
+  begin
+    SizeSpinEdit.Enabled := True;
+    IconImage.Align := alClient;
+  end
+  else
+  begin
+    SizeSpinEdit.Enabled := False;
+    if FEditingList.Width > FEditingList.Height then
+    begin
+      IconImage.Align := alTop;
+      IconImage.Height := Round(IconImage.Width * FEditingList.Height / FEditingList.Width);
+    end
+    else
+    begin
+      IconImage.Align := alLeft;
+      IconImage.Height := Round(IconImage.Height * FEditingList.Width / FEditingList.Height);
+    end;
+  end;
+end;
+
 procedure TIconFontsImageListEditor.HelpButtonClick(Sender: TObject);
 begin
   ShellExecute(handle, 'open',
@@ -235,11 +272,13 @@ begin
     SW_SHOWNORMAL)
 end;
 
+{$IFNDEF GDI+}
 procedure TIconFontsImageListEditor.SetImageMaskColor(Color: TColor);
 begin
   SelectedIconFont.MaskColor := Color;
   UpdateGUI;
 end;
+{$ENDIF}
 
 procedure TIconFontsImageListEditor.ShowCharMapButtonClick(Sender: TObject);
 begin
@@ -251,12 +290,6 @@ begin
   end;
   FCharMap.AssignImageList(FEditingList, FontName.Text);
   FCharMap.Show;
-end;
-
-procedure TIconFontsImageListEditor.SizeSpinEditChange(Sender: TObject);
-begin
-  FEditingList.Size := SizeSpinEdit.Value;
-  FChanged := True;
 end;
 
 procedure TIconFontsImageListEditor.StoreBitmapCheckBoxClick(Sender: TObject);
@@ -387,10 +420,12 @@ begin
     if LIsItemSelected then
     begin
       ItemGroupBox.Caption := Format(FIconIndexLabel,[LIconFontItem.Index]);
+      {$IFNDEF GDI+}
       if LIconFontItem.MaskColor <> FEditingList.MaskColor then
         MaskColor.Selected := LIconFontItem.MaskColor
       else
         MaskColor.Selected := clNone;
+      {$ENDIF}
       if LIconFontItem.FontColor <> FEditingList.FontColor then
         FontColor.Selected := LIconFontItem.FontColor
       else
@@ -412,10 +447,12 @@ begin
         IconImage.Canvas.Font.Color := LIconFontItem.FontColor
       else
         IconImage.Canvas.Font.Color := FEditingList.FontColor;
+      {$IFNDEF GDI+}
       if LIconFontItem.MaskColor <> clNone then
         IconImage.Canvas.Brush.Color := LIconFontItem.MaskColor
       else
         IconImage.Canvas.Brush.Color := FEditingList.MaskColor;
+      {$ENDIF}
       IconImage.Canvas.FillRect(Rect(0, 0, IconImage.Height, IconImage.Height));
       {$IFNDEF UNICODE}
       S := LIconFontItem.Character;
@@ -436,6 +473,13 @@ begin
   finally
     FUpdating := False;
   end;
+end;
+
+procedure TIconFontsImageListEditor.WidthSpinEditChange(Sender: TObject);
+begin
+  if FUpdating then Exit;
+  FEditingList.Width := WidthSpinEdit.Value;
+  UpdateSizeGUI;
 end;
 
 procedure TIconFontsImageListEditor.ImageViewDragDrop(Sender, Source: TObject; X,
@@ -548,6 +592,15 @@ begin
     UpdateGUI;
 end;
 
+procedure TIconFontsImageListEditor.SizeSpinEditChange(Sender: TObject);
+begin
+  if FUpdating then Exit;
+  if FEditingList.Width = FEditingList.Height then
+    FEditingList.Size := SizeSpinEdit.Value;
+  FChanged := True;
+  UpdateSizeGUI;
+end;
+
 procedure TIconFontsImageListEditor.DefaultFontColorColorBoxChange(
   Sender: TObject);
 begin
@@ -578,8 +631,10 @@ end;
 
 procedure TIconFontsImageListEditor.MaskColorChange(Sender: TObject);
 begin
+  {$IFNDEF GDI+}
   if FUpdating then Exit;
   SetImageMaskColor(MaskColor.Selected);
+  {$ENDIF}
 end;
 
 procedure TIconFontsImageListEditor.FormClose(Sender: TObject;
@@ -682,6 +737,7 @@ end;
 
 procedure TIconFontsImageListEditor.FormShow(Sender: TObject);
 begin
+  UpdateSizeGUI;
   {$IFDEF DXE8+}
   if SavedBounds.Right - SavedBounds.Left > 0 then
     SetBounds(SavedBounds.Left, SavedBounds.Top, SavedBounds.Width, SavedBounds.Height);
@@ -750,6 +806,13 @@ procedure TIconFontsImageListEditor.AddColor(const S: string);
 begin
   FontColor.Items.Add(S);
   MaskColor.Items.Add(S);
+end;
+
+procedure TIconFontsImageListEditor.HeightSpinEditChange(Sender: TObject);
+begin
+  if FUpdating then Exit;
+  FEditingList.Height := HeightSpinEdit.Value;
+  UpdateSizeGUI;
 end;
 
 procedure TIconFontsImageListEditor.BuildButtonClick(Sender: TObject);

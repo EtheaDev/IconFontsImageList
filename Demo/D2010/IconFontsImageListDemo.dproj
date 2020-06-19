@@ -48,6 +48,8 @@
 			<DCCReference Include="..\Source\UMainOld.pas">
 				<Form>MainForm</Form>
 			</DCCReference>
+			<DCCReference Include="..\..\Source\Fonts\Icons.MaterialDesign.pas"/>
+			<DCCReference Include="..\..\Source\Fonts\Icons.Utils.pas"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>

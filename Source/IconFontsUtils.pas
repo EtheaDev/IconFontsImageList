@@ -51,6 +51,8 @@ function LighterColor(AColor: TColor; APercent: Integer): TColor;
 function DisabledColor(AColor: TColor; APercent: Integer): TColor;
 function IsLightColor(const AColor: TColor): Boolean;
 function HotColor(AColor: TColor; const APercent: Integer): TColor;
+function GrayscaleColor(AColor : TColor) : TColor;
+function IsFontIconValidValue(const AFontIconDec: Integer): Boolean;
 
 implementation
 
@@ -59,6 +61,13 @@ uses
   , Windows
   , Themes
   ;
+
+function IsFontIconValidValue(const AFontIconDec: Integer): Boolean;
+begin
+  Result := ((AFontIconDec >= $0000) and (AFontIconDec <= $D7FF)) or
+    ((AFontIconDec >= $E000) and (AFontIconDec < $FFFF)) or  //D800 to DFFF are reserved for code point values for Surrogate Pairs
+    ((AFontIconDec >= $010000) and (AFontIconDec <= $10FFFF)); //Surrogate Pairs
+end;
 
 function UpdateIconFontListView(const AListView: TListView): Integer;
 var
@@ -71,7 +80,7 @@ begin
   AListView.Items.BeginUpdate;
   try
     AListView.Clear;
-    Result := LIconFontsImageList.IconFontItems.Count;
+    Result := AListView.Items.Count;
     for I := 0 to Result -1 do
     begin
       LItem := LIconFontsImageList.IconFontItems[I];
@@ -97,7 +106,7 @@ begin
   LIconFontsImageList := AListView.LargeImages as TIconFontsImageList;
   AListView.Items.BeginUpdate;
   try
-    Result := LIconFontsImageList.IconFontItems.Count;
+    Result := AListView.Items.Count;
     for I := 0 to Result -1 do
     begin
       LItem := LIconFontsImageList.IconFontItems[I];
@@ -142,10 +151,11 @@ procedure UpdateHotImageList(const ASourceImageList, ADestImageList: TIconFontsI
   const APercent: Integer = 30; const AResizePercent: Integer = 0;
   const AReplaceCustomColors: Boolean = False);
 begin
-  ADestImageList.Assign(ASourceImageList);
-  ADestImageList.FontColor := HotColor(ADestImageList.FontColor, APercent);
+  if ADestImageList.Count = 0 then
+    ADestImageList.Assign(ASourceImageList);
+  ADestImageList.FontColor := HotColor(ASourceImageList.FontColor, APercent);
   if AResizePercent <> 0 then
-    ADestImageList.Size := Round(ADestImageList.Size * (100+AResizePercent) / 100);
+    ADestImageList.Size := Round(ASourceImageList.Size * (100+AResizePercent) / 100);
 end;
 
 function DarkerColor(AColor: TColor; APercent: Integer): TColor;
@@ -204,6 +214,18 @@ begin
     Result := LighterColor(AColor, APercent)
   else
     Result := DarkerColor(AColor, APercent);
+end;
+
+// Converts any color to grayscale
+function GrayscaleColor(AColor : TColor) : TColor;
+var
+  LGray : byte;
+begin
+  // get the luminance according to https://www.w3.org/TR/AERT/#color-contrast
+  LGray  := round((0.299 * GetRValue(AColor)) + (0.587 * GetGValue(AColor)) + (0.114 * GetBValue(AColor)));
+
+  // set the result to the new grayscale color including the alpha info
+  Result := (AColor and $FF000000) or rgb(LGray, LGray, LGray);
 end;
 
 end.

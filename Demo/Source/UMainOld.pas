@@ -63,14 +63,14 @@ type
     GroupBox1: TGroupBox;
     NumSpinEdit: TSpinEdit;
     Label2: TLabel;
-    AssignIconsButton: TBitBtn;
+    AssignIconsButton: TButton;
     DeleteIconAction: TAction;
     SliderPanel: TPanel;
     TrackBar: TTrackBar;
     IconSizeLabel: TLabel;
     ButtonsPanel: TPanel;
-    ClearButton: TBitBtn;
-    ShowImageEditorButton: TBitBtn;
+    ClearButton: TButton;
+    ShowImageEditorButton: TButton;
     ChangeColorButton: TBitBtn;
     ChangeColorAction: TAction;
     ColorDialog: TColorDialog;
@@ -90,7 +90,6 @@ type
     procedure ShowCharMapActionExecute(Sender: TObject);
   private
     FIconFontsImageListHot: TIconFontsImageList;
-    FIconFontsImageListDisabled: TIconFontsImageList;
     {$IFDEF HiDPISupport}
     procedure FormAfterMonitorDpiChanged(Sender: TObject; OldDPI, NewDPI: Integer);
     {$ENDIF}
@@ -217,7 +216,6 @@ var
 {$ENDIF}
 begin
   FIconFontsImageListHot := TIconFontsImageList.Create(Self);
-  FIconFontsImageListDisabled := TIconFontsImageList.Create(Self);
 
   {$IFDEF HiDPISupport}
   OnAfterMonitorDpiChanged := FormAfterMonitorDpiChanged;
@@ -330,10 +328,8 @@ begin
   TopToolBar.Height := LSize + 6;
   TreeView.Indent := LSize;
 
-  //Update attributes for Disabled and Hot ImageList for the Toolbar
+  //Update attributes for Hot ImageList for the Toolbar
   UpdateHotImageList(IconFontsImageList, FIconFontsImageListHot, 30, 10);
-  UpdateDisabledImageList(IconFontsImageList, FIconFontsImageListDisabled);
-  TopToolBar.DisabledImages := FIconFontsImageListDisabled;
   TopToolBar.HotImages := FIconFontsImageListHot;
 
   UpdateButtons;
@@ -350,13 +346,9 @@ begin
   begin
     LItem := TreeView.Items[I];
     if IconFontsImageList.IconFontItems.Count > LItem.ImageIndex then
-    begin
-      LItem.Text := IconFontsImageList.IconFontItems.Items[LItem.ImageIndex].IconName;
-    end
+      LItem.Text := IconFontsImageList.IconFontItems.Items[LItem.ImageIndex].IconName
     else
-    begin
       LItem.Text := '';
-    end;
   end;
 end;
 
@@ -368,6 +360,6 @@ begin
 end;
 
 initialization
-//  ReportMemoryLeaksOnShutdown := True;
+  //ReportMemoryLeaksOnShutdown := True;
 
 end.

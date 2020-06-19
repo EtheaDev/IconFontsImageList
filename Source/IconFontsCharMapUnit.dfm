@@ -135,12 +135,12 @@ object IconFontsCharMapForm: TIconFontsCharMapForm
           Transparent = True
         end
         object IconNameLabel: TLabel
-          Left = 256
+          Left = 255
           Top = 55
           Width = 201
           Height = 13
           AutoSize = False
-          Caption = 'Icon Name (if metadata registered)'
+          Caption = 'Icon Name (fro metadata)'
           Transparent = True
           Visible = False
         end
@@ -223,7 +223,7 @@ object IconFontsCharMapForm: TIconFontsCharMapForm
           Top = 70
           Width = 202
           Height = 21
-          Hint = 'Decimal value'
+          Hint = 'Icon Name (from metadata registered)'
           ReadOnly = True
           TabOrder = 4
           Visible = False

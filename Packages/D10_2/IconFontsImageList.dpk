@@ -32,9 +32,11 @@ package IconFontsImageList;
 
 requires
   rtl,
-  vcl;
+  vcl,
+  vclwinx;
 
 contains
+  IconFontsImage in '..\..\Source\IconFontsImage.pas',
   IconFontsImageList in '..\..\Source\IconFontsImageList.pas',
   IconFontsUtils in '..\..\Source\IconFontsUtils.pas';
 

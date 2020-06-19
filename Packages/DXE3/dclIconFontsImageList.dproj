@@ -3,7 +3,7 @@
         <ProjectGuid>{462AFFE6-EFA9-4E88-92E2-1FAD0E7A1599}</ProjectGuid>
         <MainSource>dclIconFontsImageList.dpk</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <TargetedPlatforms>1</TargetedPlatforms>
         <AppType>Package</AppType>
         <FrameworkType>VCL</FrameworkType>
