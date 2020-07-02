@@ -472,9 +472,6 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 1
-      DesignSize = (
-        83
-        213)
       object OKButton: TButton
         Left = 2
         Top = 8
@@ -503,17 +500,6 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
         Caption = '&Help'
         TabOrder = 3
         OnClick = HelpButtonClick
-      end
-      object ShowCharMapButton: TButton
-        Left = 2
-        Top = 157
-        Width = 75
-        Height = 50
-        Anchors = [akTop, akRight]
-        Caption = 'Show Char Map...'
-        TabOrder = 4
-        WordWrap = True
-        OnClick = ShowCharMapButtonClick
       end
       object ApplyButton: TButton
         Left = 2
@@ -572,6 +558,28 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Enabled = False
       TabOrder = 3
       OnClick = ExportButtonClick
+    end
+    object WinCharMapButton: TButton
+      Left = 460
+      Top = 4
+      Width = 110
+      Height = 25
+      Anchors = [akTop, akRight]
+      Caption = 'System Char Map...'
+      TabOrder = 4
+      WordWrap = True
+      OnClick = WinCharMapButtonClick
+    end
+    object ShowCharMapButton: TButton
+      Left = 573
+      Top = 4
+      Width = 110
+      Height = 26
+      Anchors = [akTop, akRight]
+      Caption = 'Custom Char Map...'
+      TabOrder = 5
+      WordWrap = True
+      OnClick = ShowCharMapButtonClick
     end
   end
   object SaveDialog: TSavePictureDialog

@@ -99,12 +99,13 @@ type
     ToHexNum: TEdit;
     CharsEditLabel: TLabel;
     BottomPanel: TPanel;
-    ShowCharMapButton: TButton;
     ExportButton: TButton;
     WidthLabel: TLabel;
     WidthSpinEdit: TSpinEdit;
     HeightLabel: TLabel;
     HeightSpinEdit: TSpinEdit;
+    WinCharMapButton: TButton;
+    ShowCharMapButton: TButton;
     procedure FormCreate(Sender: TObject);
     procedure ApplyButtonClick(Sender: TObject);
     procedure ClearAllButtonClick(Sender: TObject);
@@ -140,6 +141,7 @@ type
     procedure ImageViewDragDrop(Sender, Source: TObject; X, Y: Integer);
     procedure WidthSpinEditChange(Sender: TObject);
     procedure HeightSpinEditChange(Sender: TObject);
+    procedure WinCharMapButtonClick(Sender: TObject);
   private
     FSourceList, FEditingList: TIconFontsImageList;
     FCharMap: TIconFontsCharMapForm;
@@ -482,6 +484,12 @@ begin
   UpdateSizeGUI;
 end;
 
+procedure TIconFontsImageListEditor.WinCharMapButtonClick(Sender: TObject);
+begin
+  WinCharMapButton.SetFocus;
+  ShellExecute(Handle, 'open', 'charmap', '', '', SW_SHOWNORMAL);
+end;
+
 procedure TIconFontsImageListEditor.ImageViewDragDrop(Sender, Source: TObject; X,
   Y: Integer);
 var
@@ -613,6 +621,7 @@ procedure TIconFontsImageListEditor.DefaultFontNameSelect(Sender: TObject);
 begin
   FEditingList.FontName := DefaultFontName.Text;
   FChanged := True;
+  UpdateCharsToBuild;
   UpdateGUI;
 end;
 

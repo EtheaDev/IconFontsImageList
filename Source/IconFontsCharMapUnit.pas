@@ -47,7 +47,7 @@ uses
   , ExtDlgs
   , Spin
   , IconFontsImageList
-  , ActnList
+  , ActnList, System.Actions
   ;
 
 type
@@ -490,7 +490,7 @@ end;
 procedure TIconFontsCharMapForm.FormShow(Sender: TObject);
 begin
   CharsEdit.Text := '';
-  if FFirstTime or FStopped then
+  if FFirstTime or FStopped or (ImageView.Items.Count = 0) then
   begin
     FStopped := False;
     FCharMapList.ClearIcons;
@@ -615,7 +615,7 @@ begin
       {$ENDIF}
     end;
     if FCharMapList.Count > 0 then
-      FFirstIcon := FCharMapList.Count
+      FFirstIcon := FCharMapList.Count-1
     else
       FFirstIcon := -1;
     ImageView.Clear;
@@ -707,7 +707,7 @@ begin
       End;
     end;
     if ImageView.Items.Count > 0 then
-      ImageView.ItemIndex := FFirstIcon+1
+      ImageView.ItemIndex := FFirstIcon
     else
       ImageView.ItemIndex := -1;
   finally
