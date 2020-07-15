@@ -47,7 +47,7 @@ uses
   , ExtDlgs
   , Spin
   , IconFontsImageList
-  , ActnList, System.Actions
+  , ActnList
   ;
 
 type

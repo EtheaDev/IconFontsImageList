@@ -394,7 +394,6 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
             Align = alClient
             Stretch = True
             Transparent = True
-            ExplicitLeft = 6
           end
         end
         object IconName: TEdit

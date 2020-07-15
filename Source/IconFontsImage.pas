@@ -38,9 +38,9 @@ uses
 {$IFDEF GDI+}
   , Winapi.GDIPOBJ
 {$ENDIF}
-  , System.Classes
-  , Vcl.Graphics
-  , Vcl.Controls
+  , Classes
+  , Graphics
+  , Controls
   , IconFontsImageList;
 
 type
@@ -225,8 +225,13 @@ var
     end
     else
     begin
+      {$IFDEF DXE8+}
       LBounds.Width := Round(ImageWidth * FScale);
       LBounds.Height := Round(ImageHeight * FScale);
+      {$ELSE}
+      LBounds.Right := Round(ImageWidth * FScale);
+      LBounds.Bottom := Round(ImageHeight * FScale);
+      {$ENDIF}
     end;
   end;
 
@@ -245,8 +250,13 @@ var
     LBounds.Top := 0;
     if FCenter then
     begin
+      {$IFDEF DXE8+}
       LBounds.Left := Round((Width - LBounds.Width) / 2);
-      LBounds. Top := Round((Height - LBounds.Height) / 2);
+      LBounds.Top := Round((Height - LBounds.Height) / 2);
+      {$ELSE}
+      LBounds.Left := Round((Width - LBounds.Right - LBounds.Left) / 2);
+      LBounds.Top := Round((Height - LBounds.Bottom - LBounds.Top) / 2);
+      {$ENDIF}
     end;
     {$ENDIF}
   end;
@@ -310,9 +320,15 @@ begin
       LGraphics.Free;
     end;
     {$ELSE}
-    LIconFont.PaintTo(Self.Canvas,
-      LBounds.Left, LBounds.Top, LBounds.Width, LBounds.Height, LFontName,
-        LFontIconDec, LFontColor, LMaskColor, Enabled, LDisabledFactor);
+      {$IFDEF DXE8+}
+      LIconFont.PaintTo(Self.Canvas,
+        LBounds.Left, LBounds.Top, LBounds.Width, LBounds.Height, LFontName,
+          LFontIconDec, LFontColor, LMaskColor, Enabled, LDisabledFactor);
+      {$ELSE}
+      LIconFont.PaintTo(Self.Canvas,
+        LBounds.Left, LBounds.Top, LBounds.Right - LBounds.Left, LBounds.Bottom - LBounds.Top, LFontName,
+          LFontIconDec, LFontColor, LMaskColor, Enabled, LDisabledFactor);
+      {$ENDIF}
     {$ENDIF}
   end;
 

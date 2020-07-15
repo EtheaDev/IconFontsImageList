@@ -54,7 +54,7 @@ resourcestring
   ERR_ICONFONTS_FONT_NOT_INSTALLED = 'Font "%s" is not installed!';
 
 const
-  IconFontsImageListVersion = '2.0.0';
+  IconFontsImageListVersion = '2.1.0';
   DEFAULT_SIZE = 16;
 
 type
@@ -324,58 +324,7 @@ uses
   , StrUtils
   ;
 
-
 {$IFDEF GDI+}
-(*
-type
-  TBoxAlignment = (baTopLeft, baTopCenter, baTopRight,
-    baCenterLeft, baCenterCenter, baCenterRight,
-    baBottomLeft, baBottomCenter, baBottomRight);
-
-function CalcRect(const Bounds: TGPRectF; const Width, Height: Double;
-  const Alignment: TBoxAlignment): TGPRectF;
-var
-  R: Double;
-begin
-  if Height > 0 then
-    R :=  Width / Height
-  else
-    R := 1;
-
-  if (Bounds.Height <> 0) and
-     (Bounds.Width / Bounds.Height > R) then
-  begin
-    Result.Width := Bounds.Height * R;
-    Result.Height := Bounds.Height;
-  end else
-  begin
-    Result.Width := Bounds.Width;
-    Result.Height := Bounds.Width / R;
-  end;
-
-  case Alignment of
-    baTopCenter, baCenterCenter, baBottomCenter:
-      Result.X := (Bounds.Width - Result.Width) / 2;
-    baTopRight, baCenterRight, baBottomRight:
-      Result.X := Bounds.Width - Result.Width;
-    else
-      Result.X := 0;
-  end;
-
-  case Alignment of
-    baCenterLeft, baCenterCenter, baCenterRight:
-      Result.Y := (Bounds.Height - Result.Height) / 2;
-    baBottomLeft, baBottomCenter, baBottomRight:
-      Result.Y := Bounds.Height - Result.Height;
-    else
-      Result.Y := 0;
-  end;
-
-  Result.X := Result.X + Bounds.X;
-  Result.Y := Result.Y + Bounds.Y;
-end;
-*)
-
 function GPColor(Col: TColor; Alpha: Byte): TGPColor;
 
 type
@@ -517,26 +466,7 @@ end;
 {$IFDEF GDI+}
 procedure TIconFontsImageList.DoDraw(Index: Integer; Canvas: TCanvas; X, Y: Integer;
   Style: Cardinal; Enabled: Boolean);
-(*
-var
-  LMasked: Boolean;
-  LDrawingStyle: TDrawingStyle;
-  LStyle: Longint;
-  I: Integer;
-*)
 begin
-(*
-    LMasked := (Style and Cardinal(ILD_MASK)) <> 0;
-    LStyle := LongInt(Style) and not LongInt(ILD_MASK);
-    case LStyle of
-      ILD_FOCUS: LDrawingStyle := TDrawingStyle.dsFocus;
-      ILD_SELECTED: LDrawingStyle := TDrawingStyle.dsSelected;
-      ILD_NORMAL: LDrawingStyle := TDrawingStyle.dsNormal;
-      ILD_TRANSPARENT: LDrawingStyle := TDrawingStyle.dsTransparent;
-    else
-      LDrawingStyle := TDrawingStyle.dsNormal;
-    end;
-*)
   PaintTo(Canvas, Index, X, Y, Width, Height, Enabled);
 end;
 
@@ -737,6 +667,9 @@ end;
 constructor TIconFontsImageList.Create(AOwner: TComponent);
 begin
   inherited;
+  {$IFDEF D2010+}
+  ColorDepth := cd32Bit;
+  {$ENDIF}
   FStopDrawing := 0;
   FFontColor := clNone;
   FMaskColor := clNone;
@@ -1714,7 +1647,7 @@ begin
     {$WARN SYMBOL_DEPRECATED ON}
     TextOut(X, Y, S);
     {$ELSE}
-    S := WideChar(FFontIconDec);
+    S := WideChar(AFontIconDec);
     TextOutW(ACanvas.Handle, X, Y, PWideChar(S), 1);
     {$ENDIF}
   end;
