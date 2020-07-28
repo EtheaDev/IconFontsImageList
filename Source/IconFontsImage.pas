@@ -225,7 +225,7 @@ var
     end
     else
     begin
-      {$IFDEF DXE8+}
+      {$IFDEF GDI+}
       LBounds.Width := Round(ImageWidth * FScale);
       LBounds.Height := Round(ImageHeight * FScale);
       {$ELSE}
