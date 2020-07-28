@@ -160,7 +160,7 @@
 {$ENDIF}
 
 //GDI+ support available from DXE6
-{$IFDEF DXE6+}
+{$IFDEF DXE4+}
   {$Define GDI+}
 {$ENDIF}
 
