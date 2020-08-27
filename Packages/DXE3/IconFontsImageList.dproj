@@ -3,7 +3,7 @@
         <ProjectGuid>{F038773E-89E7-469D-B8FA-EABC8D4D1315}</ProjectGuid>
         <MainSource>IconFontsImageList.dpk</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <TargetedPlatforms>1</TargetedPlatforms>
         <AppType>Package</AppType>
         <FrameworkType>VCL</FrameworkType>
@@ -62,6 +62,10 @@
         <DCCReference Include="rtl.dcp"/>
         <DCCReference Include="vcl.dcp"/>
         <DCCReference Include="..\..\Source\IconFontsImage.pas"/>
+        <DCCReference Include="..\..\Source\IconFontsImageListBase.pas"/>
+        <DCCReference Include="..\..\Source\IconFontsItems.pas"/>
+        <DCCReference Include="..\..\Source\IconFontsVirtualImageList.pas"/>
+        <DCCReference Include="..\..\Source\IconFontsImageCollection.pas"/>
         <DCCReference Include="..\..\Source\IconFontsImageList.pas"/>
         <DCCReference Include="..\..\Source\IconFontsUtils.pas"/>
         <BuildConfiguration Include="Debug">

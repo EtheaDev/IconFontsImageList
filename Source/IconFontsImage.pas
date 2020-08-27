@@ -41,12 +41,14 @@ uses
   , Classes
   , Graphics
   , Controls
-  , IconFontsImageList;
+  , IconFontsImageList
+  , IconFontsImageListBase
+  , IconFontsItems;
 
 type
   TIconFontImage = class(TGraphicControl)
   private
-    FIconFontsImageList: TIconFontsImageList;
+    FIconFontsImageList: TIconFontsImageListBase;
     FCenter: Boolean;
     FStretch: Boolean;
     FScale: Double;
@@ -65,7 +67,7 @@ type
     procedure SetImageIndex(const AValue: Integer);
     procedure SetStretch(const AValue: Boolean);
     procedure SetScale(const AValue: Double);
-    procedure SetImageList(const AValue: TIconFontsImageList);
+    procedure SetImageList(const AValue: TIconFontsImageListBase);
     procedure SetFontName(const AValue: TFontName);
     function GetFontIconDec: Integer;
     function GetFontIconHex: string;
@@ -95,7 +97,7 @@ type
     property Stretch: Boolean read FStretch write SetStretch default True;
     property Opacity: Byte read FOpacity write SetOpacity default 255;
     property Scale: Double read FScale write SetScale stored StoreScale;
-    property ImageList: TIconFontsImageList read FIconFontsImageList write SetImageList;
+    property ImageList: TIconFontsImageListBase read FIconFontsImageList write SetImageList;
     property ImageIndex: Integer read FImageIndex write SetImageIndex default -1;
     property FontName: TFontName read FFontName write SetFontName stored UsingIconFont;
     property FontIconDec: Integer read GetFontIconDec write SetFontIconDec stored true default 0;
@@ -140,7 +142,7 @@ begin
   FImageIndex := -1;
   FFontIconDec := 0;
   FDisabledFactor := 100;
-  FFontColor := clNone;
+  FFontColor := clDefault;
   FMaskColor := clNone;
 end;
 
@@ -225,7 +227,7 @@ var
     end
     else
     begin
-      {$IFDEF GDI+}
+      {$IFDEF DXE4+}
       LBounds.Width := Round(ImageWidth * FScale);
       LBounds.Height := Round(ImageHeight * FScale);
       {$ELSE}
@@ -270,9 +272,9 @@ begin
       LFontName := FIconFontsImageList.FontName
     else
       LFontName := LItem.FontName;
-    if FFontColor <> clNone then
+    if FFontColor <> clDefault then
       LFontColor := FFontColor
-    else if LItem.FontColor = clNone then
+    else if LItem.FontColor = clDefault then
       LFontColor := FIconFontsImageList.FontColor
     else
       LFontColor := LItem.FontColor;
@@ -308,14 +310,14 @@ begin
 
   CalcOffset;
 
-  if not UsingIconFont or (LFontColor <> clNone) then
+  if not UsingIconFont or (LFontColor <> clDefault) then
   begin
     {$IFDEF GDI+}
     LGraphics := TGPGraphics.Create(Canvas.Handle);
     try
       LIconFont.PaintToGDI(LGraphics,
         LBounds.X, LBounds.Y, LBounds.Width, LBounds.Height, LFontName,
-          LFontIconDec, LFontColor, Enabled, LOpacity, LDisabledFactor);
+          LFontIconDec, LFontColor, Enabled, LDisabledFactor, LOpacity);
     finally
       LGraphics.Free;
     end;
@@ -416,7 +418,7 @@ end;
 
 function TIconFontImage.StoreFontColor: Boolean;
 begin
-  Result := (FFontColor <> clNone) and
+  Result := (FFontColor <> clDefault) and
     (not Assigned(FIconFontsImageList) or
     (FFontColor <> FIconFontsImageList.FontColor));
 end;
@@ -502,7 +504,7 @@ begin
   end;
 end;
 
-procedure TIconFontImage.SetImageList(const AValue: TIconFontsImageList);
+procedure TIconFontImage.SetImageList(const AValue: TIconFontsImageListBase);
 begin
   if FIconFontsImageList <> AValue then
   begin

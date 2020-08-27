@@ -41,6 +41,8 @@ implementation
 
 uses
   IconFontsImageList
+  , IconFontsVirtualImageList
+  , IconFontsImageCollection
   , IconFontsImage
   , IconFontsImageListEditor;
 
@@ -48,9 +50,15 @@ procedure Register;
 begin
   RegisterComponents('Ethea', [
     TIconFontImage,
+    TIconFontsImageCollection,
+    TIconFontsVirtualImageList,
     TIconFontsImageList]);
 
   RegisterComponentEditor(TIconFontsImageList, TIconFontsImageListCompEditor);
+  RegisterComponentEditor(TIconFontsVirtualImageList, TIconFontsImageListCompEditor);
+  RegisterComponentEditor(TIconFontsImageCollection, TIconFontsImageCollectionCompEditor);
+  RegisterPropertyEditor(TypeInfo(TIconFontsItems), TIconFontsImageList, 'IconFontItems', TIconFontsImageListProperty);
+  RegisterPropertyEditor(TypeInfo(TIconFontsItems), TIconFontsImageCollection, 'IconFontItems', TIconFontsCollectionListProperty);
 end;
 
 end.

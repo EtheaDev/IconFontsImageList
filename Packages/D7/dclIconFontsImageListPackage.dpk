@@ -36,7 +36,6 @@ requires
 contains
   RegisterIconFontsImageList in '..\RegisterIconFontsImageList.pas',
   IconFontsImageListEditor in '..\IconFontsImageListEditor.pas',
-  IconFontsCharMapUnit in '..\..\Source\IconFontsCharMapUnit.pas',
+  IconFontsCharMapUnit in '..\..\Source\IconFontsCharMapUnit.pas' {IconFontsCharMapForm},
   IconFontsImageListEditorUnit in '..\IconFontsImageListEditorUnit.pas';
-
 end.

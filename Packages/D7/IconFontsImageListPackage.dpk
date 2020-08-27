@@ -22,7 +22,7 @@ package IconFontsImageListPackage;
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
-{$DESCRIPTION 'Ethea IconFontsImageList component'}
+{$DESCRIPTION 'Ethea IconFontsImageList VCL components'}
 {$LIBSUFFIX '_D7'}
 {$RUNONLY}
 {$IMPLICITBUILD ON}
@@ -33,6 +33,10 @@ requires
 
 contains
   IconFontsImage in '..\..\Source\IconFontsImage.pas',
+  IconFontsImageListBase in '..\..\Source\IconFontsImageListBase.pas',
+  IconFontsItems in '..\..\Source\IconFontsItems.pas',
+  IconFontsVirtualImageList in '..\..\Source\IconFontsVirtualImageList.pas',
+  IconFontsImageCollection in '..\..\Source\IconFontsImageCollection.pas',
   IconFontsImageList in '..\..\Source\IconFontsImageList.pas',
   IconFontsUtils in '..\..\Source\IconFontsUtils.pas';
 

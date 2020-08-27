@@ -11,7 +11,7 @@ object IconFontsCharMapForm: TIconFontsCharMapForm
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
-  Font.Name = 'Tahoma'
+  Font.Name = 'Segoe UI'
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = False
@@ -71,9 +71,9 @@ object IconFontsCharMapForm: TIconFontsCharMapForm
       OnChange = EditChangeUpdateGUI
     end
     object CopyToclipboardButton: TButton
-      Left = 582
+      Left = 579
       Top = 16
-      Width = 98
+      Width = 104
       Height = 30
       Action = CopyToCipboardAction
       Anchors = [akTop, akRight]
@@ -157,14 +157,12 @@ object IconFontsCharMapForm: TIconFontsCharMapForm
           Ctl3D = False
           ParentCtl3D = False
           TabOrder = 0
-          object MainImage: TImage
+          object MainImage: TIconFontImage
             Left = 2
             Top = 2
             Width = 72
             Height = 72
             Align = alClient
-            Stretch = True
-            Transparent = True
           end
         end
         object FontIconHex: TEdit
@@ -198,7 +196,7 @@ object IconFontsCharMapForm: TIconFontsCharMapForm
           OnSelect = DefaultFontNameSelect
         end
         object cbShowSurrogate: TCheckBox
-          Left = 469
+          Left = 465
           Top = 55
           Width = 131
           Height = 17
@@ -208,7 +206,7 @@ object IconFontsCharMapForm: TIconFontsCharMapForm
           OnClick = cbShowSurrogateClick
         end
         object ShowCaptionsCheckBox: TCheckBox
-          Left = 469
+          Left = 465
           Top = 74
           Width = 131
           Height = 17

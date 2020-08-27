@@ -34,13 +34,16 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics,
   Controls, Forms, Dialogs, ImgList,
-  StdCtrls, Buttons, StdActns,
+  StdCtrls, Buttons, StdActns, DImages,
   ActnList, ExtCtrls, ComCtrls, ToolWin,
-  Spin, IconFontsImageList, IconFontsImage;
+  Spin, IconFontsImageList, IconFontsImageListBase,
+  IconFontsItems, IconFontsVirtualImageList, IconFontsImageCollection,
+  System.ImageList, //if you are compiling with an older version of Delphi delete this line
+  System.Actions, //if you are compiling with an older version of Delphi delete this line
+  IconFontsImage;
 
 type
   TMainForm = class(TForm)
-    IconFontsImageList: TIconFontsImageList;
     ActionList: TActionList;
     ChangeIconAction: TAction;
     Panel1: TPanel;
@@ -79,6 +82,7 @@ type
     ShowCharMapAction: TAction;
     Splitter: TSplitter;
     IconFontImage: TIconFontImage;
+    IconFontsVirtualImageList: TIconFontsVirtualImageList;
     procedure AssignIconsButtonClick(Sender: TObject);
     procedure ChangeIconActionExecute(Sender: TObject);
     procedure SelectThemeRadioGroupClick(Sender: TObject);
@@ -93,8 +97,10 @@ type
     procedure paButtonsResize(Sender: TObject);
     procedure ImageViewSelectItem(Sender: TObject; Item: TListItem;
       Selected: Boolean);
+    procedure IconFontImageMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
   private
-    FIconFontsImageListHot: TIconFontsImageList;
+    FIconFontsVirtualImageListHot: TIconFontsVirtualImageList;
     {$IFDEF HiDPISupport}
     procedure FormAfterMonitorDpiChanged(Sender: TObject; OldDPI, NewDPI: Integer);
     {$ENDIF}
@@ -150,7 +156,7 @@ begin
 
     LStart := GetTickCount;
     //Generate Icons
-    IconFontsImageList.AddIcons(
+    IconFontsVirtualImageList.AddIcons(
       LRand1, //From Chr
       LRand2, //To Chr
       'Material Design Icons Desktop'
@@ -166,9 +172,9 @@ end;
 
 procedure TMainForm.ChangeColorActionExecute(Sender: TObject);
 begin
-  ColorDialog.Color := IconFontsImageList.FontColor;
+  ColorDialog.Color := IconFontsVirtualImageList.FontColor;
   if ColorDialog.Execute then
-    IconFontsImageList.FontColor := ColorDialog.Color;
+    IconFontsVirtualImageList.FontColor := ColorDialog.Color;
   UpdateGUI;
 end;
 
@@ -182,7 +188,7 @@ begin
   LAction := Sender as TAction;
   //Change icon of the connected action
   LAction.ImageIndex := 0;
-  LItem := IconFontsImageList.IconFontItems[0];
+  LItem := IconFontsVirtualImageList.IconFontItems[0];
   LItem.FontIconDec := LItem.FontIconDec+1;
   //Attach Action
   ChangeIconButton.Action := ChangeIconAction;
@@ -191,15 +197,15 @@ end;
 procedure TMainForm.ClearButtonClick(Sender: TObject);
 begin
   //Clear Collection
-  IconFontsImageList.ClearIcons;
+  IconFontsVirtualImageList.ClearIcons;
   UpdateGUI;
 end;
 
 procedure TMainForm.DeleteIconActionExecute(Sender: TObject);
 begin
-  if IconFontsImageList.IconFontItems.Count > 0 then
+  if IconFontsVirtualImageList.IconFontItems.Count > 0 then
   begin
-    IconFontsImageList.IconFontItems.Delete(0);
+    IconFontsVirtualImageList.IconFontItems.Delete(0);
     UpdateGUI;
   end;
 end;
@@ -217,7 +223,7 @@ var
   I: integer;
 {$ENDIF}
 begin
-  FIconFontsImageListHot := TIconFontsImageList.Create(Self);
+  FIconFontsVirtualImageListHot := TIconFontsVirtualImageList.Create(Self);
 
   {$IFDEF HiDPISupport}
   OnAfterMonitorDpiChanged := FormAfterMonitorDpiChanged;
@@ -238,8 +244,17 @@ begin
   {$ENDIF}
   SelectThemeRadioGroupClick(SelectThemeRadioGroup);
 
-  TrackBar.Position := IconFontsImageList.Height;
+  TrackBar.Position := IconFontsVirtualImageList.Height;
   TrackBarChange(TrackBar);
+end;
+
+procedure TMainForm.IconFontImageMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  if Button = mbLeft then
+    IconFontImage.ImageIndex := IconFontImage.ImageIndex + 1
+  else
+    IconFontImage.ImageIndex := IconFontImage.ImageIndex - 1;
 end;
 
 procedure TMainForm.IconFontsImageListFontMissing(const AFontName: TFontName);
@@ -290,22 +305,22 @@ begin
     TStyleManager.TrySetStyle(LStyleName);
     //Override default: use Windows 10 blue color for Windows and Windows10 Style
     if SameText(LStyleName,'Windows') or SameText(LStyleName,'Windows10') then
-      IconFontsImageList.UpdateIconsAttributes(RGB(0, 120, 215), clBtnFace)
+      IconFontsVirtualImageList.UpdateIconsAttributes(RGB(0, 120, 215), clBtnFace)
     else
-      UpdateIconFontsColorByStyle(IconFontsImageList);
+      UpdateIconFontsColorByStyle(IconFontsVirtualImageList);
     {$ELSE}
     if LStyleName = 'Black' then
-      IconFontsImageList.UpdateIconsAttributes(clBlack, clBtnFace)
+      IconFontsVirtualImageList.UpdateIconsAttributes(clBlack, clBtnFace)
     else if LStyleName = 'Green' then
-      IconFontsImageList.UpdateIconsAttributes(clGreen, clBtnFace)
+      IconFontsVirtualImageList.UpdateIconsAttributes(clGreen, clBtnFace)
     else if LStyleName = 'Blue' then
-      IconFontsImageList.UpdateIconsAttributes(clBlue, clBtnFace)
+      IconFontsVirtualImageList.UpdateIconsAttributes(clBlue, clBtnFace)
     else if LStyleName = 'Silver' then
-      IconFontsImageList.UpdateIconsAttributes(clSilver, clBtnFace)
+      IconFontsVirtualImageList.UpdateIconsAttributes(clSilver, clBtnFace)
     else if LStyleName = 'Olive' then
-      IconFontsImageList.UpdateIconsAttributes(clOlive, clBtnFace)
+      IconFontsVirtualImageList.UpdateIconsAttributes(clOlive, clBtnFace)
     else if LStyleName = 'Red' then
-      IconFontsImageList.UpdateIconsAttributes(clRed, clBtnFace);
+      IconFontsVirtualImageList.UpdateIconsAttributes(clRed, clBtnFace);
     ImageView.Invalidate;
     TopToolBar.Invalidate;
     {$ENDIF}
@@ -317,13 +332,18 @@ end;
 
 procedure TMainForm.ShowCharMapActionExecute(Sender: TObject);
 begin
-  ShowIconFontsCharMap(IconFontsImageList.FontName,
-    IconFontsImageList.Size, IconFontsImageList.FontColor, IconFontsImageList.MaskColor);
+  ShowIconFontsCharMap(IconFontsVirtualImageList.FontName,
+    IconFontsVirtualImageList.Size, IconFontsVirtualImageList.FontColor, IconFontsVirtualImageList.MaskColor);
 end;
 
 procedure TMainForm.ShowImageEditorButtonClick(Sender: TObject);
 begin
-  EditIconFontsImageList(IconFontsImageList);
+  //Image Editor for Image Collection
+  EditIconFontsImageCollection(dmImages.IconFontsImageCollection);
+
+  //Image Editor for VirtualImage List
+  //EditIconFontsImageList(IconFontsVirtualImageList);
+
   UpdateGUI;
 end;
 
@@ -331,7 +351,7 @@ procedure TMainForm.updateGUI;
 var
   LSize: Integer;
 begin
-  LSize := IconFontsImageList.Height;
+  LSize := IconFontsVirtualImageList.Height;
   IconSizeLabel.Caption := Format('Icons size: %d',[LSize]);
   TopToolBar.ButtonHeight := LSize + 2;
   TopToolBar.ButtonWidth := LSize + 2;
@@ -340,8 +360,8 @@ begin
   Splitter.MinSize := DeleteButton.Width + 8;
 
   //Update attributes for Hot ImageList for the Toolbar
-  UpdateHotImageList(IconFontsImageList, FIconFontsImageListHot, 30, 10);
-  TopToolBar.HotImages := FIconFontsImageListHot;
+  UpdateHotImageList(IconFontsVirtualImageList, FIconFontsVirtualImageListHot, 30, 10);
+  //TopToolBar.HotImages := FIconFontsVirtualImageListHot;
 
   UpdateButtons;
   UpdateListView;
@@ -356,8 +376,8 @@ begin
   for I := 0 to TreeView.Items.Count - 1 do
   begin
     LItem := TreeView.Items[I];
-    if IconFontsImageList.IconFontItems.Count > LItem.ImageIndex then
-      LItem.Text := IconFontsImageList.IconFontItems.Items[LItem.ImageIndex].IconName
+    if IconFontsVirtualImageList.IconFontItems.Count > LItem.ImageIndex then
+      LItem.Text := IconFontsVirtualImageList.IconFontItems.Items[LItem.ImageIndex].IconName
     else
       LItem.Text := '';
   end;
@@ -366,7 +386,7 @@ end;
 procedure TMainForm.TrackBarChange(Sender: TObject);
 begin
   //Resize all icons into ImageList
-  IconFontsImageList.Size := TrackBar.Position;
+  IconFontsVirtualImageList.Size := TrackBar.Position;
   UpdateGUI;
 end;
 

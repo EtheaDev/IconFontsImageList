@@ -107,6 +107,11 @@
         </DCCReference>
         <DCCReference Include="..\..\Source\Fonts\Icons.MaterialDesign.pas"/>
         <DCCReference Include="..\..\Source\Fonts\Icons.Utils.pas"/>
+        <DCCReference Include="..\Source\DImages.pas">
+            <Form>dmImages</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

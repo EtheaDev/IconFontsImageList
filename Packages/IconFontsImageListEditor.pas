@@ -44,7 +44,35 @@ type
     function GetVerbCount: Integer; override;
     function GetVerb(Index: Integer): string; override;
     procedure ExecuteVerb(Index: Integer); override;
+  end;
+
+  TIconFontsVirtualImageListCompEditor = class(TComponentEditor)
+  public
+    function GetVerbCount: Integer; override;
+    function GetVerb(Index: Integer): string; override;
+    procedure ExecuteVerb(Index: Integer); override;
+  end;
+
+  TIconFontsImageCollectionCompEditor = class(TComponentEditor)
+  public
+    function GetVerbCount: Integer; override;
+    function GetVerb(Index: Integer): string; override;
+    procedure ExecuteVerb(Index: Integer); override;
+  end;
+
+
+  TIconFontsImageListProperty = class(TClassProperty)
+  public
     procedure Edit; override;
+    function GetAttributes: TPropertyAttributes; override;
+    function GetValue: string; override;
+  end;
+
+  TIconFontsCollectionListProperty = class(TClassProperty)
+  public
+    procedure Edit; override;
+    function GetAttributes: TPropertyAttributes; override;
+    function GetValue: string; override;
   end;
 
 implementation
@@ -53,6 +81,9 @@ uses
   ShellApi
   , Windows
   , IconFontsImageList
+  , IconFontsImageListBase
+  , IconFontsVirtualImageList
+  , IconFontsImageCollection
   , IconFontsImageListEditorUnit
 {$IFDEF D2010+}
   , MaterialFontConvert
@@ -60,11 +91,6 @@ uses
   , Dialogs;
 
 { TIconFontsImageListCompEditor }
-
-procedure TIconFontsImageListCompEditor.Edit;
-begin
-  inherited;
-end;
 
 procedure TIconFontsImageListCompEditor.ExecuteVerb(Index: Integer);
 {$IFDEF D2010+}
@@ -76,7 +102,8 @@ begin
   inherited;
   if Index = 0 then
   begin
-    if EditIconFontsImageList(Component as TIconFontsImageList) then
+    if (Component is TIconFontsImageListBase) and
+      EditIconFontsImageList(TIconFontsImageListBase(Component)) then
       Designer.Modified;
   end
   else if Index = 1 then
@@ -112,6 +139,114 @@ end;
 function TIconFontsImageListCompEditor.GetVerbCount: Integer;
 begin
   Result := 3;
+end;
+
+{ TIconFontsImageListProperty }
+
+procedure TIconFontsImageListProperty.Edit;
+var
+  SVGImageList: TIconFontsImageList;
+begin
+  SVGImageList := TIconFontsImageList(GetComponent(0));
+  if EdiTIconFontsImageList(SVGImageList) then
+    Modified;
+end;
+
+function TIconFontsImageListProperty.GetAttributes: TPropertyAttributes;
+begin
+  Result := inherited GetAttributes + [paDialog];
+end;
+
+function TIconFontsImageListProperty.GetValue: string;
+begin
+  Result := 'IconFonts';
+end;
+
+
+{ TIconFontsCollectionListProperty }
+
+procedure TIconFontsCollectionListProperty.Edit;
+var
+  SVGImageCollection: TIconFontsImageCollection;
+begin
+  SVGImageCollection := TIconFontsImageCollection(GetComponent(0));
+  if EditIconFontsImageCollection(SVGImageCollection) then
+    Modified;
+end;
+
+function TIconFontsCollectionListProperty.GetAttributes: TPropertyAttributes;
+begin
+  Result := inherited GetAttributes + [paDialog];
+end;
+
+function TIconFontsCollectionListProperty.GetValue: string;
+begin
+  Result := 'IconFontsImageCollection';
+end;
+
+{ TIconFontsImageCollectionCompEditor }
+
+procedure TIconFontsImageCollectionCompEditor.ExecuteVerb(Index: Integer);
+begin
+  inherited;
+  if Index = 0 then
+  begin
+    if EdiTIconFontsImageCollection(Component as TIconFontsImageCollection) then
+      Designer.Modified;
+  end
+  else if Index = 1 then
+  begin
+    ShellExecute(0, 'open',
+      PChar('https://github.com/EtheaDev/SVGIconImageList/wiki/Home'), nil, nil,
+      SW_SHOWNORMAL)
+  end;
+
+end;
+
+function TIconFontsImageCollectionCompEditor.GetVerb(Index: Integer): string;
+begin
+  Result := '';
+  case Index of
+    0: Result := 'I&conFonts ImageCollection Editor...';
+    1: Result := Format('Ver. %s - (c) Ethea S.r.l. - show help...',[IconFontsImageListVersion]);
+  end;
+end;
+
+function TIconFontsImageCollectionCompEditor.GetVerbCount: Integer;
+begin
+  Result := 2;
+end;
+
+{ TIconFontsVirtualImageListCompEditor }
+
+procedure TIconFontsVirtualImageListCompEditor.ExecuteVerb(Index: Integer);
+begin
+  inherited;
+  if Index = 0 then
+  begin
+    if EdiTIconFontsVirtualImageList(Component as TIconFontsVirtualImageList) then
+      Designer.Modified;
+  end
+  else if Index = 1 then
+  begin
+    ShellExecute(0, 'open',
+      PChar('https://github.com/EtheaDev/SVGIconImageList/wiki/Home'), nil, nil,
+      SW_SHOWNORMAL)
+  end;
+end;
+
+function TIconFontsVirtualImageListCompEditor.GetVerb(Index: Integer): string;
+begin
+  Result := '';
+  case Index of
+    0: Result := 'I&conFonts VirtualImageList Editor...';
+    1: Result := Format('Ver. %s - (c) Ethea S.r.l. - show help...',[IconFontsImageListVersion]);
+  end;
+end;
+
+function TIconFontsVirtualImageListCompEditor.GetVerbCount: Integer;
+begin
+  result := 2;
 end;
 
 end.

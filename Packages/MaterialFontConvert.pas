@@ -30,6 +30,7 @@ interface
 
 uses
   IconFontsImageList
+  , IconFontsItems
   , Generics.Collections
   , SysUtils
   , StrUtils

@@ -32,18 +32,19 @@ interface
 uses
   Classes
   , ImgList
-  , IconFontsImageList
+  , IconFontsImageListBase
   , Graphics
   , ComCtrls;
 
-function UpdateIconFontListView(const AListView: TListView): Integer;
+function UpdateIconFontListView(const AListView: TListView;
+  const ACategory: string = ''): Integer;
 function UpdateIconFontListViewCaptions(const AListView: TListView;
   const AShowCaption: Boolean = True): Integer;
-procedure UpdateIconFontsColorByStyle(const IconFontsImageList: TIconFontsImageList;
+procedure UpdateIconFontsColorByStyle(const IconFontsImageList: TIconFontsImageListBase;
   const AReplaceCustomColors: Boolean = False);
-procedure UpdateDisabledImageList(const ASourceImageList, ADestImageList: TIconFontsImageList;
+procedure UpdateDisabledImageList(const ASourceImageList, ADestImageList: TIconFontsImageListBase;
   const APercent: Integer = 30; const AReplaceCustomColors: Boolean = False);
-procedure UpdateHotImageList(const ASourceImageList, ADestImageList: TIconFontsImageList;
+procedure UpdateHotImageList(const ASourceImageList, ADestImageList: TIconFontsImageListBase;
   const APercent: Integer = 30; const AResizePercent: Integer = 0;
   const AReplaceCustomColors: Boolean = False);
 function DarkerColor(AColor: TColor; APercent: Integer): TColor;
@@ -60,6 +61,7 @@ uses
   SysUtils
   , Windows
   , Themes
+  , IconFontsItems
   ;
 
 function IsFontIconValidValue(const AFontIconDec: Integer): Boolean;
@@ -69,14 +71,15 @@ begin
     ((AFontIconDec >= $010000) and (AFontIconDec <= $10FFFF)); //Surrogate Pairs
 end;
 
-function UpdateIconFontListView(const AListView: TListView): Integer;
+function UpdateIconFontListView(const AListView: TListView;
+  const ACategory: string = ''): Integer;
 var
   I: Integer;
   LItem: TIconFontItem;
   LListItem: TListItem;
-  LIconFontsImageList: TIconFontsImageList;
+  LIconFontsImageList: TIconFontsImageListBase;
 begin
-  LIconFontsImageList := AListView.LargeImages as TIconFontsImageList;
+  LIconFontsImageList := AListView.LargeImages as TIconFontsImageListBase;
   AListView.Items.BeginUpdate;
   try
     AListView.Clear;
@@ -84,11 +87,15 @@ begin
     for I := 0 to Result -1 do
     begin
       LItem := LIconFontsImageList.IconFontItems[I];
-      LListItem := AListView.Items.Add;
-      LListItem.Caption := Format('$%s%s%s',
-        [LItem.FontIconHex,sLineBreak,
-         Litem.IconName]);
-      LListItem.ImageIndex := I;
+      if (ACategory = '') or
+       (LowerCase(ACategory) = LowerCase(LItem.Category)) then
+      begin
+        LListItem := AListView.Items.Add;
+        LListItem.Caption := Format('$%s%s%s',
+          [LItem.FontIconHex,sLineBreak,
+           Litem.Name]);
+        LListItem.ImageIndex := I;
+      end;
     end;
   finally
     AListView.Items.EndUpdate;
@@ -101,9 +108,9 @@ var
   I: Integer;
   LItem: TIconFontItem;
   LListItem: TListItem;
-  LIconFontsImageList: TIconFontsImageList;
+  LIconFontsImageList: TIconFontsImageListBase;
 begin
-  LIconFontsImageList := AListView.LargeImages as TIconFontsImageList;
+  LIconFontsImageList := AListView.LargeImages as TIconFontsImageListBase;
   AListView.Items.BeginUpdate;
   try
     Result := AListView.Items.Count;
@@ -115,7 +122,7 @@ begin
       begin
         LListItem.Caption := Format('$%s%s%s',
           [LItem.FontIconHex,sLineBreak,
-           Litem.IconName]);
+           Litem.Name]);
       end
       else
         LListItem.Caption := '';
@@ -125,7 +132,7 @@ begin
   end;
 end;
 
-procedure UpdateIconFontsColorByStyle(const IconFontsImageList: TIconFontsImageList;
+procedure UpdateIconFontsColorByStyle(const IconFontsImageList: TIconFontsImageListBase;
   const AReplaceCustomColors: Boolean = False);
 {$IFDEF DXE+}
 var
@@ -140,14 +147,14 @@ begin
   {$ENDIF}
 end;
 
-procedure UpdateDisabledImageList(const ASourceImageList, ADestImageList: TIconFontsImageList;
+procedure UpdateDisabledImageList(const ASourceImageList, ADestImageList: TIconFontsImageListBase;
   const APercent: Integer = 30; const AReplaceCustomColors: Boolean = False);
 begin
   ADestImageList.Assign(ASourceImageList);
   ADestImageList.FontColor := DisabledColor(ADestImageList.FontColor, APercent);
 end;
 
-procedure UpdateHotImageList(const ASourceImageList, ADestImageList: TIconFontsImageList;
+procedure UpdateHotImageList(const ASourceImageList, ADestImageList: TIconFontsImageListBase;
   const APercent: Integer = 30; const AResizePercent: Integer = 0;
   const AReplaceCustomColors: Boolean = False);
 begin
