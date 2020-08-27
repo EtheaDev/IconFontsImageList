@@ -1,6 +1,6 @@
 # IconFontsImageList [![License](https://img.shields.io/badge/License-Apache%202.0-yellowgreen.svg)](https://opensource.org/licenses/Apache-2.0)
 
-## Components to simplify use of "Icon fonts" (resize, color...): TIconFontImage, TIconFontsImageCollection, TIconFontsVirtualImageList and TIconFontsImageList (for VCL and FMX). Support for rendering with GDI+
+## Components to simplify use of "Icon fonts": resize, color, opacity and more... with full support for High-DPI apps. Rendering optimized with GDI+
 
 ### Actual official version 2.2 (VCL) and 1.5 (FMX)
 
