@@ -1,6 +1,8 @@
 # IconFontsImageList [![License](https://img.shields.io/badge/License-Apache%202.0-yellowgreen.svg)](https://opensource.org/licenses/Apache-2.0)
 
-## An extended ImageList for Delphi (VCL & FMX) to simple use and manage Icon Fonts (with GDI+ support)
+## Components to simplify use of "Icon fonts" (resize, color...). Support for rendering with GDI+ and 4 components: TIconFontImage, TIconFontsImageCollection, TIconFontsVirtualImageList and TIconFontsImageList (for VCL and FMX).
+
+### Actual official version 2.2 (VCL) and 1.5 (FMX)
 
 | Component | Description |
 | - | - |
