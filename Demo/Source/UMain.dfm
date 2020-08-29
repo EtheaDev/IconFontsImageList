@@ -353,6 +353,7 @@ object MainForm: TMainForm
   object IconFontsVirtualImageList: TIconFontsVirtualImageList
     FontName = 'Material Design Icons Desktop'
     FontColor = clBlack
+    OnFontMissing = IconFontsImageListFontMissing
     Size = 32
     ImageCollection = dmImages.IconFontsImageCollection
     Left = 368

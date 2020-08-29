@@ -52,6 +52,8 @@ type
     FMaskColor: TColor;
     FFontColor: TColor;
     FNotifyItemChanged: TIconFontItemChangedProc;
+    FOnFontMissing: TIconFontMissing;
+    FFontNamesChecked: TStrings;
     procedure SetFontColor(const AValue: TColor);
     procedure SetFontName(const AValue: TFontName);
     procedure SetMaskColor(const AValue: TColor);
@@ -79,6 +81,8 @@ type
     {$ENDIF}
     property UpdateOwnerAttributes: TGetOwnerAttributesProc read FUpdateOwnerAttributes write FUpdateOwnerAttributes;
     property NotifyItemChanged: TIconFontItemChangedProc read FNotifyItemChanged write FNotifyItemChanged;
+    property NotifyFontUsed: TIconFontItemChangedProc read FNotifyItemChanged write FNotifyItemChanged;
+    property OnFontMissing: TIconFontMissing read FOnFontMissing write FOnFontMissing;
   published
     /// <summary>
     /// Collection of items with source images.
@@ -97,18 +101,35 @@ uses
   , Winapi.GDIPOBJ
   , Winapi.GDIPAPI
 {$ENDIF}
+  , Forms
   , Math
   ;
 { TIconFontsImageCollection }
 
 procedure TIconFontsImageCollection.CheckFontName(const AFontName: TFontName);
 begin
-  ;
+  if AFontName <> '' then
+  begin
+    if FFontNamesChecked.IndexOf(AFontName) = -1 then //Speed-up check of a Font already checked
+    begin
+      FFontNamesChecked.Add(AFontName);
+      if (Screen.Fonts.IndexOf(AFontName) = -1) then
+      begin
+        if Assigned(OnFontMissing) then
+          OnFontMissing(AFontName)
+        else if not (csDesigning in ComponentState) then
+          raise Exception.CreateFmt(ERR_ICONFONTS_FONT_NOT_INSTALLED,[AFontName]);
+      end
+      else
+        FFontNamesChecked.Add(AFontName);
+    end;
+  end;
 end;
 
 constructor TIconFontsImageCollection.Create(AOwner: TComponent);
 begin
   inherited;
+  FFontNamesChecked := TStringList.Create;
   FIconFontItems := TIconFontItems.Create(Self, TIconFontItem,
     OnItemChanged, CheckFontName, GetOwnerAttributes);
   FFontColor := clDefault;
@@ -118,6 +139,7 @@ end;
 destructor TIconFontsImageCollection.Destroy;
 begin
   FreeAndNil(FIconFontItems);
+  FreeAndNil(FFontNamesChecked);
   inherited;
 end;
 

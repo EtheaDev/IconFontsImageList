@@ -125,6 +125,7 @@ begin
     begin
       FImageCollection.UpdateOwnerAttributes := GetOwnerAttributes;
       FImageCollection.NotifyItemChanged := OnItemChanged;
+      FImageCollection.OnFontMissing := OnFontMissing;
     end;
     RecreateBitmaps;
   end;

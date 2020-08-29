@@ -259,7 +259,10 @@ var
   LEditor: TIconFontsImageListEditor;
 begin
   if AImageList.ImageCollection = nil then
+  begin
     Result := false;
+    Exit;
+  end;
   LEditor := TIconFontsImageListEditor.Create(nil);
   with LEditor do
   begin

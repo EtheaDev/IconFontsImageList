@@ -55,7 +55,7 @@ resourcestring
   ERR_ICONFONTS_FONT_NOT_INSTALLED = 'Font "%s" is not installed!';
 
 const
-  IconFontsImageListVersion = '2.2.0';
+  IconFontsImageListVersion = '2.2.1';
   DEFAULT_SIZE = 16;
 
 type
@@ -109,8 +109,8 @@ type
     {$ENDIF}
     procedure SetDisabledFactor(const Value: Byte);
   protected
-    //Events for notification from item to imagelist
     procedure CheckFontName(const AFontName: TFontName);
+    //Events for notification from item to imagelist
     procedure OnItemChanged(Sender: TIconFontItem);
     procedure GetOwnerAttributes(out AFontName: TFontName;
       out AFontColor, AMaskColor: TColor);
