@@ -46,7 +46,7 @@ uses
   , IconFontsItems;
 
 type
-  TIconFontImage = class(TGraphicControl)
+  TIconFontImage = class(TCustomControl)
   private
     FIconFontsImageList: TIconFontsImageListBase;
     FCenter: Boolean;
@@ -85,12 +85,12 @@ type
   protected
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
     procedure SetEnabled(Value: Boolean); override;
+    procedure Paint; override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure Clear;
     function Empty: Boolean;
-    procedure Paint; override;
     procedure Assign(Source: TPersistent); override;
   published
     property Center: Boolean read FCenter write SetCenter default True;
@@ -108,6 +108,9 @@ type
     property OnFontMissing: TIconFontMissing read FOnFontMissing write FOnFontMissing;
     property DisabledFactor: Byte read FDisabledFactor write SetDisabledFactor default 100;
 
+    property ParentDoubleBuffered;
+    property DoubleBuffered;
+    property ParentBackground default True;
     property Enabled;
     property Visible;
     property Constraints;
@@ -134,6 +137,7 @@ uses
 constructor TIconFontImage.Create(AOwner: TComponent);
 begin
   inherited;
+  ParentBackground := True;
   FIconFont := TIconFont.Create;
   FCenter := True;
   FStretch := True;

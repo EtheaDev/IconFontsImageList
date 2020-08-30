@@ -179,6 +179,8 @@ type
       const AOnItemChanged: TIconFontItemChangedProc;
       const AOnCheckFont: TCheckFontNameProc;
       const AGetOwnerAttributes: TGetOwnerAttributesProc);
+    procedure UpdateIconsAttributes(const AFontColor, AMaskColor: TColor;
+      const AFontName: TFontName = '');
     function Add: TIconFontItem;
     procedure Assign(Source: TPersistent); override;
     function Insert(AIndex: Integer): TIconFontItem;
@@ -633,6 +635,25 @@ procedure TIconFontItems.SetItem(AIndex: Integer;
   const Value: TIconFontItem);
 begin
   inherited SetItem(AIndex, Value);
+end;
+
+procedure TIconFontItems.UpdateIconsAttributes(const AFontColor, AMaskColor: TColor;
+  const AFontName: TFontName = '');
+var
+  I: Integer;
+  LIconFontItem: TIconFontItem;
+begin
+  if (AFontColor <> clNone) and (AMaskColor <> clNone) then
+  begin
+    for I := 0 to Count -1 do
+    begin
+      LIconFontItem := Items[I];
+      if AFontName <> '' then
+        LIconFontItem.FontName := AFontName;
+      LIconFontItem.FontColor := AFontColor;
+      LIconFontItem.MaskColor := AMaskColor;
+    end;
+  end;
 end;
 
 procedure TIconFontItems.UpdateOwnerAttributes;

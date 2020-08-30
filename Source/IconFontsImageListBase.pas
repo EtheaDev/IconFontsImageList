@@ -157,7 +157,7 @@ type
     procedure UpdateIconsAttributes(const AFontColor, AMaskColor: TColor;
       const AReplaceFontColor: Boolean = False; const AFontName: TFontName = ''); overload;
     procedure UpdateIconsAttributes(const ASize: Integer; const AFontColor, AMaskColor: TColor;
-      const AReplaceFontColor: Boolean = False; const AFontName: TFontName = ''); overload;
+      const AReplaceFontColor: Boolean = False; const AFontName: TFontName = ''); overload; virtual;
     procedure ClearIcons; virtual;
     procedure RedrawImages; virtual;
     procedure SaveToFile(const AFileName: string);
@@ -191,7 +191,7 @@ type
     //New properties
     property DisabledFactor: Byte read FDisabledFactor write SetDisabledFactor default 100;
     property FontName: TFontName read FFontName write SetFontName;
-    property FontColor: TColor read FFontColor write SetFontColor default clNone;
+    property FontColor: TColor read FFontColor write SetFontColor default clDefault;
     property MaskColor: TColor read FMaskColor write SetMaskColor default clNone;
     {$IFDEF GDI+}
     property Opacity: Byte read FOpacity write SetOpacity default 255;
@@ -293,7 +293,7 @@ begin
   ColorDepth := cd32Bit;
   {$ENDIF}
   FStopDrawing := 0;
-  FFontColor := clNone;
+  FFontColor := clDefault;
   FMaskColor := clNone;
   FDisabledFactor := 100;
   {$IFDEF GDI+}
@@ -881,21 +881,19 @@ procedure TIconFontsImageListBase.UpdateIconsAttributes(const ASize: Integer;
   const AFontColor, AMaskColor: TColor; const AReplaceFontColor: Boolean = False;
   const AFontName: TFontName = '');
 begin
-  if Assigned(IconFontItems) then
-  begin
-    if (AFontColor <> clNone) and (AMaskColor <> clNone) then
-    begin
-      StopDrawing(True);
-      try
-        SetIconSize(ASize);
-        FFontColor := AFontColor;
-        FMaskColor := AMaskColor;
-      finally
-        StopDrawing(False);
-      end;
-      RecreateBitmaps;
-    end;
+  StopDrawing(True);
+  try
+    if AFontName <> '' then
+      FFontName := AFontName;
+    SetIconSize(ASize);
+    FFontColor := AFontColor;
+    FMaskColor := AMaskColor;
+    if AReplaceFontColor and Assigned(IconFontItems) then
+      IconFontItems.UpdateIconsAttributes(AFontColor, AMaskColor, AFontName);
+  finally
+    StopDrawing(False);
   end;
+  RecreateBitmaps;
 end;
 
 procedure TIconFontsImageListBase.UpdateIconsAttributes(const AFontColor,
