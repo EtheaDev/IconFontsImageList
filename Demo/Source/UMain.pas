@@ -83,6 +83,8 @@ type
     Splitter: TSplitter;
     IconFontImage: TIconFontImage;
     IconFontsVirtualImageList: TIconFontsVirtualImageList;
+    NewFormAction: TAction;
+    NewFormButton: TButton;
     procedure AssignIconsButtonClick(Sender: TObject);
     procedure ChangeIconActionExecute(Sender: TObject);
     procedure SelectThemeRadioGroupClick(Sender: TObject);
@@ -99,6 +101,7 @@ type
       Selected: Boolean);
     procedure IconFontImageMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
+    procedure NewFormActionExecute(Sender: TObject);
   private
     FIconFontsVirtualImageListHot: TIconFontsVirtualImageList;
     {$IFDEF HiDPISupport}
@@ -133,6 +136,7 @@ begin
   ChangeIconButton.Action := ChangeIconAction;
   ChangeColorButton.Action :=ChangeColorAction;
   ShowCharMapButton.Action :=ShowCharMapAction;
+  NewFormButton.Action := NewFormAction;
 end;
 
 procedure TMainForm.UpdateListView;
@@ -287,6 +291,12 @@ procedure TMainForm.ImageViewSelectItem(Sender: TObject; Item: TListItem;
 begin
   if Item.Index <> -1 then
     IconFontImage.ImageIndex := Item.Index;
+end;
+
+procedure TMainForm.NewFormActionExecute(Sender: TObject);
+begin
+  with TMainForm.Create(Application) do
+    Show;
 end;
 
 procedure TMainForm.paButtonsResize(Sender: TObject);

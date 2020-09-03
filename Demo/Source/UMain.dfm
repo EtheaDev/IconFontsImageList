@@ -215,7 +215,6 @@ object MainForm: TMainForm
       ImageIndex = 0
       Align = alBottom
       OnMouseDown = IconFontImageMouseDown
-      ExplicitLeft = 2
     end
     object DeleteButton: TButton
       Left = 2
@@ -257,6 +256,16 @@ object MainForm: TMainForm
       ImageAlignment = iaTop
       Images = IconFontsVirtualImageList
       TabOrder = 3
+    end
+    object NewFormButton: TButton
+      Left = 3
+      Top = 265
+      Width = 73
+      Height = 60
+      Action = NewFormAction
+      ImageAlignment = iaTop
+      Images = IconFontsVirtualImageList
+      TabOrder = 5
     end
   end
   object ClientPanel: TPanel
@@ -344,6 +353,11 @@ object MainForm: TMainForm
       Hint = 'Show Char Map...'
       ImageIndex = 8
       OnExecute = ShowCharMapActionExecute
+    end
+    object NewFormAction: TAction
+      Caption = 'New Form...'
+      ImageIndex = 9
+      OnExecute = NewFormActionExecute
     end
   end
   object ColorDialog: TColorDialog
