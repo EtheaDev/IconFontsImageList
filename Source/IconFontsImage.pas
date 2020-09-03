@@ -108,7 +108,9 @@ type
     property OnFontMissing: TIconFontMissing read FOnFontMissing write FOnFontMissing;
     property DisabledFactor: Byte read FDisabledFactor write SetDisabledFactor default 100;
 
+   {$IFDEF D2010+}
     property ParentDoubleBuffered;
+   {$ENDIF}
     property DoubleBuffered;
     property ParentBackground default True;
     property Enabled;

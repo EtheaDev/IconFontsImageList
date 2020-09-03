@@ -33,9 +33,14 @@ uses
   Classes
   , ImgList
   , IconFontsImageListBase
+  , Windows
   , Graphics
   , ComCtrls;
 
+{$IFDEF UNICODE}
+function SaveToPngFiles(ImageList: TIconFontsImageListBase;
+  const AOutFolder: string): Integer;
+{$ENDIF}
 function UpdateIconFontListView(const AListView: TListView;
   const ACategory: string = ''): Integer;
 function UpdateIconFontListViewCaptions(const AListView: TListView;
@@ -59,10 +64,88 @@ implementation
 
 uses
   SysUtils
-  , Windows
+  {$IFDEF UNICODE}
+  , PngImage
+  {$ENDIF}
   , Themes
   , IconFontsItems
   ;
+
+{$IFDEF UNICODE}
+// Source: http://www.entwickler-ecke.de/topic_Bitmap+pf32bit+mit+Alpha+afPremultipied+zu+PNG+speichern_103159,0.html
+type
+  TRGB = packed record B, G, R: byte end;
+  TRGBA = packed record B, G, R, A: byte end;
+  TRGBAArray = array[0..0] of TRGBA;
+
+function PNG4TransparentBitMap(aBitmap: TBitmap): TPNGImage;
+var
+  X, Y: integer;
+  BmpRGBA: ^TRGBAArray;
+  PngRGB: ^TRGB;
+begin
+  //201011 Thomas Wassermann
+  Result := TPNGImage.CreateBlank(COLOR_RGBALPHA, 8, aBitmap.Width , aBitmap.Height);
+
+  Result.CreateAlpha;
+  Result.Canvas.CopyMode:= cmSrcCopy;
+  Result.Canvas.Draw(0, 0, aBitmap);
+
+  for Y := 0 to Pred(aBitmap.Height) do
+  begin
+    BmpRGBA := aBitmap.ScanLine[Y];
+    PngRGB:= Result.Scanline[Y];
+
+    for X := 0 to Pred(aBitmap.width) do
+    begin
+      Result.AlphaScanline[Y][X] :=  BmpRGBA[X].A;
+      if aBitmap.AlphaFormat in [afDefined, afPremultiplied] then
+      begin
+        if BmpRGBA[X].A <> 0 then
+        begin
+          PngRGB^.B := Round(BmpRGBA[X].B / BmpRGBA[X].A * 255);
+          PngRGB^.R := Round(BmpRGBA[X].R / BmpRGBA[X].A * 255);
+          PngRGB^.G := Round(BmpRGBA[X].G / BmpRGBA[X].A * 255);
+        end else begin
+          PngRGB^.B := Round(BmpRGBA[X].B * 255);
+          PngRGB^.R := Round(BmpRGBA[X].R * 255);
+          PngRGB^.G := Round(BmpRGBA[X].G * 255);
+        end;
+      end;
+      Inc(PngRGB);
+    end;
+  end;
+end;
+
+function SaveToPngFiles(ImageList: TIconFontsImageListBase;
+  const AOutFolder: string): Integer;
+var
+  LImagePng: TPngImage;
+  LBitmap: TBitmap;
+  LFileName: string;
+  I: Integer;
+  LItem: TIconFontItem;
+begin
+  Result := 0;
+  for I := 0 to ImageList.IconFontItems.Count -1 do
+  begin
+    LItem := ImageList.IconFontItems[I];
+    LBitmap := nil;
+    LImagePng := nil;
+    try
+      LBitmap := LItem.GetBitmap(ImageList.Width, ImageList.Height, True);
+      LImagePng := PNG4TransparentBitMap(LBitmap);
+      LFileName := IncludeTrailingPathDelimiter(AOutFolder)+
+        StringReplace(LItem.IconName, '\', '_',[rfReplaceAll])+'.png';
+      LImagePng.SaveToFile(LFileName);
+      Inc(Result);
+    finally
+      LBitmap.Free;
+      LImagePng.Free;
+    end;
+  end;
+end;
+{$ENDIF}
 
 function IsFontIconValidValue(const AFontIconDec: Integer): Boolean;
 begin

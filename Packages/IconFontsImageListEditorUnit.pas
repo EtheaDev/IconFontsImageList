@@ -56,7 +56,6 @@ uses
 
 type
   TIconFontsImageListEditor = class(TForm)
-    SaveDialog: TSavePictureDialog;
     paImages: TPanel;
     CategorySplitter: TSplitter;
     Panel1: TPanel;
@@ -206,6 +205,8 @@ implementation
 
 uses
   CommCtrl
+  {$WARN UNIT_PLATFORM OFF}
+  , FileCtrl
   , TypInfo
   , ShellApi
   {$IFDEF DXE3+}
@@ -869,6 +870,7 @@ begin
   BuildButton.Visible := False;
   IconBuilderGroupBox.Height := IconBuilderGroupBox.Height - BuildButton.Height -4;
   FontIconHex.MaxLength := 4;
+  ExportButton.Visible := False;
   {$ENDIF}
   InitColorBox(DefaultFontColorColorBox, clDefault);
   InitColorBox(DefaultMaskColorColorBox, clNone);
@@ -941,15 +943,20 @@ begin
 end;
 
 procedure TIconFontsImageListEditor.ExportButtonClick(Sender: TObject);
+var
+  LFolder: string;
+  LCount: Integer;
 begin
-  if SaveDialog.Execute then
+  LFolder := ExtractFileDrive(Application.ExeName);
+  if SelectDirectory(LFolder, [sdAllowCreate, sdPerformCreate, sdPrompt], 0) then
   begin
     Screen.Cursor := crHourGlass;
     try
-      FEditingList.SaveToFile(SaveDialog.FileName);
+      LCount := FEditingList.SaveToPngFiles(LFolder);
     finally
       Screen.Cursor := crDefault;
     end;
+    MessageDlg(Format(MSG_ICONS_EXPORTED, [LCount, LFolder]), mtInformation, [mbOK], 0);
   end;
 end;
 

@@ -29,7 +29,8 @@ package IconFontsImageList;
 
 requires
   rtl,
-  vcl;
+  vcl,
+  vclimg;
 
 contains
   IconFontsImage in '..\..\Source\IconFontsImage.pas',

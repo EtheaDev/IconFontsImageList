@@ -684,13 +684,4 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       OnChange = EditChangeUpdateGUI
     end
   end
-  object SaveDialog: TSavePictureDialog
-    HelpContext = 27010
-    DefaultExt = 'bmp'
-    Filter = 'Bitmaps (*.bmp)|*.bmp'
-    Options = [ofOverwritePrompt, ofPathMustExist, ofEnableSizing]
-    Title = 'Export Images'
-    Left = 376
-    Top = 200
-  end
 end

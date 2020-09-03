@@ -53,9 +53,10 @@ uses
 
 resourcestring
   ERR_ICONFONTS_FONT_NOT_INSTALLED = 'Font "%s" is not installed!';
+  MSG_ICONS_EXPORTED = '%d Icons exported in Png format into "%s" folder';
 
 const
-  IconFontsImageListVersion = '2.2.1';
+  IconFontsImageListVersion = '2.2.2';
   DEFAULT_SIZE = 16;
 
 type
@@ -160,7 +161,7 @@ type
       const AReplaceFontColor: Boolean = False; const AFontName: TFontName = ''); overload; virtual;
     procedure ClearIcons; virtual;
     procedure RedrawImages; virtual;
-    procedure SaveToFile(const AFileName: string);
+    function SaveToPngFiles(const AOutFolder: string): Integer;
     procedure PaintTo(const ACanvas: TCanvas; const AIndex: Integer;
       const X, Y, AWidth, AHeight: Integer;
       const AEnabled: Boolean = True;
@@ -738,61 +739,13 @@ begin
   end;
 end;
 
-procedure TIconFontsImageListBase.SaveToFile(const AFileName: string);
-var
-  LImageStrip: TBitmap;
-  LImageCount: Integer;
-  LStripWidth, LStripHeight: Integer;
-
-  procedure CreateLImageStrip(var AStrip: TBitmap);
-  var
-    I, J, K: Integer;
-  begin
-    with AStrip do
-    begin
-      Canvas.Brush.Color := MaskColor;
-      Canvas.FillRect(Rect(0, 0, AStrip.Width, AStrip.Height));
-      J := 0;
-      K := 0;
-      for I := 0 to Self.Count - 1 do
-      begin
-        Draw(Canvas, J * Width, K * Height, I, dsTransparent, itImage);
-        Inc(J);
-        if J >= LStripWidth then
-        begin
-          J := 0;
-          Inc(K);
-        end;
-      end;
-    end;
-  end;
-
-  procedure CalcDimensions(ACount: Integer; var AWidth, AHeight: Integer);
-  var
-    X: Double;
-  begin
-    X := Sqrt(ACount);
-    AWidth := Trunc(X);
-    if Frac(X) > 0 then
-      Inc(AWidth);
-    X := ACount / AWidth;
-    AHeight := Trunc(X);
-    if Frac(X) > 0 then
-      Inc(AHeight);
-  end;
-
+function TIconFontsImageListBase.SaveToPngFiles(const AOutFolder: string): Integer;
 begin
-  LImageStrip := TBitmap.Create;
-  try
-    LImageCount := Count;
-    CalcDimensions(LImageCount, LStripWidth, LStripHeight);
-    LImageStrip.Width := LStripWidth * Size;
-    LImageStrip.Height := LStripHeight * Size;
-    CreateLImageStrip(LImageStrip);
-    LImageStrip.SaveToFile(AFileName);
-  finally
-    LImageStrip.Free;
-  end;
+  {$IFDEF UNICODE}
+  Result := IconFontsUtils.SaveToPngFiles(Self, AOutFolder);
+  {$ELSE}
+  Result := 0;            
+  {$ENDIF}
 end;
 
 {$IFDEF D10_4+}
