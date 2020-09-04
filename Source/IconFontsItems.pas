@@ -140,6 +140,7 @@ type
     constructor Create(Collection: TCollection); override;
     destructor Destroy; override;
     procedure Assign(Source: TPersistent); override;
+    function FontNameOfIcon: TFontName;
     property Character: WideString read GetCharacter;
     property IconFontItems: TIconFontItems read GetIconFontItems;
     property IconFont: TIconFont read GetIconFont;
@@ -316,10 +317,7 @@ begin
   if not AEnabled then
     LFontColor := GrayscaleColor(LFontColor);
 
-  if FFontName <> '' then
-    LFontName := FFontName
-  else
-    LFontName := IconFontItems.FOwnerFontName;
+  LFontName := FontNameOfIcon;
 
   if Assigned(IconFontItems.FOnCheckFont) then
     IconFontItems.FOnCheckFont(LFontName);
@@ -417,10 +415,7 @@ begin
   if not AEnabled then
     LFontColor := GrayscaleColor(LFontColor);
 
-  if FFontName <> '' then
-    LFontName := FFontName
-  else
-    LFontName := IconFontItems.FOwnerFontName;
+  LFontName := FontNameOfIcon;
 
   {$IFDEF GDI+}
   LGPGraphics := TGPGraphics.Create(ACanvas.Handle);
@@ -459,6 +454,14 @@ begin
     Result := Copy(S, LPos+1, MaxInt)
   else
     Result := S;
+end;
+
+function TIconFontItem.FontNameOfIcon: TFontName;
+begin
+  if FFontName <> '' then
+    Result := FFontName
+  else
+    Result := IconFontItems.FOwnerFontName;
 end;
 
 function TIconFontItem.ExtractCategory(const S: String): String;

@@ -37,7 +37,7 @@ uses
   , Graphics
   , ComCtrls;
 
-{$IFDEF UNICODE}
+{$IFDEF D2010+}
 function SaveToPngFiles(ImageList: TIconFontsImageListBase;
   const AOutFolder: string): Integer;
 {$ENDIF}
@@ -64,14 +64,14 @@ implementation
 
 uses
   SysUtils
-  {$IFDEF UNICODE}
+  {$IFDEF D2010+}
   , PngImage
   {$ENDIF}
   , Themes
   , IconFontsItems
   ;
 
-{$IFDEF UNICODE}
+{$IFDEF D2010+}
 // Source: http://www.entwickler-ecke.de/topic_Bitmap+pf32bit+mit+Alpha+afPremultipied+zu+PNG+speichern_103159,0.html
 type
   TRGB = packed record B, G, R: byte end;
@@ -122,7 +122,7 @@ function SaveToPngFiles(ImageList: TIconFontsImageListBase;
 var
   LImagePng: TPngImage;
   LBitmap: TBitmap;
-  LFileName: string;
+  LIconName, LFileName: string;
   I: Integer;
   LItem: TIconFontItem;
 begin
@@ -135,8 +135,12 @@ begin
     try
       LBitmap := LItem.GetBitmap(ImageList.Width, ImageList.Height, True);
       LImagePng := PNG4TransparentBitMap(LBitmap);
+      if LItem.IconName <> '' then
+        LIconName := Format('%s - ($%s)', [LItem.IconName, LItem.FontIconHex])
+      else
+        LIconName := Format('%d - ($%s)', [LItem.Index, LItem.FontIconHex]);
       LFileName := IncludeTrailingPathDelimiter(AOutFolder)+
-        StringReplace(LItem.IconName, '\', '_',[rfReplaceAll])+'.png';
+        StringReplace(LIconName, '\', '_',[rfReplaceAll])+'.png';
       LImagePng.SaveToFile(LFileName);
       Inc(Result);
     finally

@@ -741,7 +741,7 @@ end;
 
 function TIconFontsImageListBase.SaveToPngFiles(const AOutFolder: string): Integer;
 begin
-  {$IFDEF UNICODE}
+  {$IFDEF D2010+}
   Result := IconFontsUtils.SaveToPngFiles(Self, AOutFolder);
   {$ELSE}
   Result := 0;            
