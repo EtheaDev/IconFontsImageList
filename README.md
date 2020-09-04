@@ -2,7 +2,7 @@
 
 ## Components to simplify use of "Icon fonts": resize, color, opacity and more... with full support for High-DPI apps. Rendering optimized with GDI+
 
-### Actual official version 2.2 (VCL) and 1.5 (FMX)
+### Actual official version 2.2.2 (VCL) and 1.5.1 (FMX)
 
 | Component | Description |
 | - | - |
@@ -34,8 +34,11 @@ Take care of changed Font file used in the Demos from v1.7(VCL)/v1.2(FMX) -> v1.
 If you are using the the old Font, you can automatically convert icons to the new ones as explained [here](https://github.com/EtheaDev/IconFontsImageList/wiki/Convert-Material-Icons).
 
 **RELEASE NOTES:**
-
-27 Aug 2020: version 2.2 (VCL) and 1.5 (FMX)
+04 Sep 2020: version 2.2.2 (VCL) and 1.5.1 (FMX)
+ - Export Icons in png files into component editor
+ - Updated "Material Design Font Desktop.ttf" font and metadata
+ 
+27 Aug 2020: version 2.2.1 (VCL) and 1.5.0 (FMX)
  - Complete refactoring for full support of High-DPI
  - New IconFontsImageCollection component
  - New IconFontsVirtualImageList component
