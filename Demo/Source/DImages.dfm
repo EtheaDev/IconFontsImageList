@@ -41,10 +41,13 @@ object dmImages: TdmImages
       item
         FontIconDec = 984790
         IconName = 'format-font'
+      end
+      item
+        FontIconDec = 984012
+        IconName = 'open-in-new'
       end>
     FontName = 'Material Design Icons Desktop'
     FontColor = clDefault
-    MaskColor = clDefault
     Left = 184
     Top = 152
   end
