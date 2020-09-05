@@ -38,7 +38,7 @@ uses
   ActnList, ExtCtrls, ComCtrls, ToolWin,
   Spin, IconFontsImageList, IconFontsImageListBase,
   IconFontsItems, IconFontsVirtualImageList, IconFontsImageCollection,
-  System.ImageList, //if you are compiling with an older version of Delphi delete this line
+  //System.ImageList, //if you are compiling with an older version of Delphi delete this line
   System.Actions, //if you are compiling with an older version of Delphi delete this line
   IconFontsImage;
 
