@@ -36,7 +36,8 @@ uses
   Controls, Forms, Dialogs, ImgList,
   StdCtrls, Buttons, StdActns,
   ActnList, ExtCtrls, ComCtrls, ToolWin,
-  Spin, IconFontsImageList, IconFontsItems, IconFontsImageListBase;
+  Spin, IconFontsImageList, IconFontsItems, IconFontsImageListBase,
+  IconFontsImage;
 
 type
   TMainForm = class(TForm)
@@ -77,6 +78,7 @@ type
     DisabledAction: TAction;
     ShowCharMapButton: TBitBtn;
     ShowCharMapAction: TAction;
+    IconFontImage: TIconFontImage;
     procedure AssignIconsButtonClick(Sender: TObject);
     procedure ChangeIconActionExecute(Sender: TObject);
     procedure SelectThemeRadioGroupClick(Sender: TObject);
@@ -88,6 +90,8 @@ type
     procedure IconFontsImageListFontMissing(const AFontName: TFontName);
     procedure ChangeColorActionExecute(Sender: TObject);
     procedure ShowCharMapActionExecute(Sender: TObject);
+    procedure ImageViewSelectItem(Sender: TObject; Item: TListItem;
+      Selected: Boolean);
   private
     FIconFontsImageListHot: TIconFontsImageList;
     {$IFDEF HiDPISupport}
@@ -357,6 +361,12 @@ begin
   //Resize all icons into ImageList
   IconFontsImageList.Size := TrackBar.Position;
   UpdateGUI;
+end;
+
+procedure TMainForm.ImageViewSelectItem(Sender: TObject; Item: TListItem;
+  Selected: Boolean);
+begin
+  IconFontImage.ImageIndex := Item.Index;
 end;
 
 initialization

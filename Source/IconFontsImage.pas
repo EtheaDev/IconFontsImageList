@@ -88,7 +88,9 @@ type
     function OwnerFontColor: TColor;
     function OwnerMaskColor: TColor;
     function OwnerDisabledFactor: Byte;
+    {$IFDEF GDI+}
     function OwnerOpacity: Byte;
+    {$ENDIF}
   protected
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
     procedure SetEnabled(Value: Boolean); override;
@@ -316,7 +318,7 @@ begin
     if FMaskColor <> clNone then
       LMaskColor := FMaskColor
     else if LItem.MaskColor = clNone then
-      LMaskColor := FImageList.MaskColor
+      LMaskColor := OwnerMaskColor
     else
       LMaskColor := LItem.MaskColor;
     {$ENDIF}
@@ -431,12 +433,14 @@ begin
   {$ENDIF}
 end;
 
+{$IFDEF GDI+}
 function TIconFontImage.OwnerOpacity: Byte;
 begin
   Result := FOpacity;
   if FImageList is TIconFontsImageListBase then
     Result := TIconFontsImageListBase(FImageList).Opacity;
 end;
+{$ENDIF}
 
 procedure TIconFontImage.Assign(Source: TPersistent);
 begin

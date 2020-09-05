@@ -753,6 +753,16 @@ object MainForm: TMainForm
         FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00}
       Layout = blGlyphTop
     end
+    object IconFontImage: TIconFontImage
+      Left = 1
+      Top = 424
+      Width = 80
+      Height = 80
+      ImageList = IconFontsImageList
+      ImageIndex = 0
+      DoubleBuffered = False
+      Align = alBottom
+    end
   end
   object ClientPanel: TPanel
     Left = 201
@@ -791,6 +801,7 @@ object MainForm: TMainForm
       LargeImages = IconFontsImageList
       SmallImages = IconFontsImageList
       TabOrder = 1
+      OnSelectItem = ImageViewSelectItem
     end
   end
   object IconFontsImageList: TIconFontsImageList
