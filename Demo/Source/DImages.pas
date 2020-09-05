@@ -35,7 +35,7 @@ uses
   WinApi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.ImgList,
   UITypes,
   System.ImageList, //if you are compiling with an older version of Delphi delete this line
-  Vcl.BaseImageCollection, //if you are compiling with an older version of 10.3 delete this line
+  Vcl.BaseImageCollection, //if you are compiling with an older version of Delphi delete this line
   IconFontsImageCollection,
   Vcl.Controls;
 
