@@ -41,14 +41,16 @@ uses
   , Classes
   , Graphics
   , Controls
-  , IconFontsImageList
+  , ImgList
   , IconFontsImageListBase
+  , IconFontsImageCollection
+  , ActnList
   , IconFontsItems;
 
 type
   TIconFontImage = class(TCustomControl)
   private
-    FIconFontsImageList: TIconFontsImageListBase;
+    FImageList: TCustomImageList;
     FCenter: Boolean;
     FStretch: Boolean;
     FScale: Double;
@@ -67,7 +69,7 @@ type
     procedure SetImageIndex(const AValue: Integer);
     procedure SetStretch(const AValue: Boolean);
     procedure SetScale(const AValue: Double);
-    procedure SetImageList(const AValue: TIconFontsImageListBase);
+    procedure SetImageList(const AValue: TCustomImageList);
     procedure SetFontName(const AValue: TFontName);
     function GetFontIconDec: Integer;
     function GetFontIconHex: string;
@@ -82,6 +84,11 @@ type
     function UsingIconFont: Boolean;
     procedure CheckFontName(const AFontName: TFontName);
     procedure SetDisabledFactor(const AValue: Byte);
+    function OwnerFontName: TFontName;
+    function OwnerFontColor: TColor;
+    function OwnerMaskColor: TColor;
+    function OwnerDisabledFactor: Byte;
+    function OwnerOpacity: Byte;
   protected
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
     procedure SetEnabled(Value: Boolean); override;
@@ -92,12 +99,13 @@ type
     procedure Clear;
     function Empty: Boolean;
     procedure Assign(Source: TPersistent); override;
+    function IconFontItems: TIconFontItems;
   published
     property Center: Boolean read FCenter write SetCenter default True;
     property Stretch: Boolean read FStretch write SetStretch default True;
     property Opacity: Byte read FOpacity write SetOpacity default 255;
     property Scale: Double read FScale write SetScale stored StoreScale;
-    property ImageList: TIconFontsImageListBase read FIconFontsImageList write SetImageList;
+    property ImageList: TCustomImageList read FImageList write SetImageList;
     property ImageIndex: Integer read FImageIndex write SetImageIndex default -1;
     property FontName: TFontName read FFontName write SetFontName stored UsingIconFont;
     property FontIconDec: Integer read GetFontIconDec write SetFontIconDec stored true default 0;
@@ -130,6 +138,9 @@ implementation
 
 uses
   IconFontsUtils
+  {$IFDEF D10_3+}
+  , Vcl.VirtualImageList
+  {$ENDIF}
 {$IFDEF GDI+}
   , Winapi.GDIPAPI
 {$ENDIF}
@@ -196,10 +207,24 @@ begin
     Result := '';
 end;
 
+function TIconFontImage.IconFontItems: TIconFontItems;
+begin
+  Result := nil;
+  if FImageList is TIconFontsImageListBase then
+    Result := TIconFontsImageListBase(FImageList).IconFontItems;
+  {$IFDEF D10_3+}
+  if (FImageList is TVirtualImageList) and
+    (TVirtualImageList(FImageList).ImageCollection is TIconFontsImageCollection) then
+    Result := TIconFontsImageCollection(TVirtualImageList(FImageList).ImageCollection).IconFontItems;
+  {$ENDIF}
+end;
+
 function TIconFontImage.UsingIconFont: Boolean;
 begin
-  Result := not (Assigned(FIconFontsImageList) and (FImageIndex >= 0) and
-     (FImageIndex < FIconFontsImageList.Count));
+  Result := not (Assigned(FImageList) and
+    (IconFontItems <> nil) and
+    (FImageIndex >= 0) and
+     (FImageIndex < FImageList.Count));
 end;
 
 procedure TIconFontImage.Paint;
@@ -272,31 +297,31 @@ var
 begin
   if not UsingIconFont then
   begin
-    LItem := FIconFontsImageList.IconFontItems.Items[FImageIndex];
+    LItem := IconFontItems.Items[FImageIndex];
     LIconFont := LItem.IconFont;
     if LItem.FontName = '' then
-      LFontName := FIconFontsImageList.FontName
+      LFontName := OwnerFontName
     else
       LFontName := LItem.FontName;
     if FFontColor <> clDefault then
       LFontColor := FFontColor
     else if LItem.FontColor = clDefault then
-      LFontColor := FIconFontsImageList.FontColor
+      LFontColor := OwnerFontColor
     else
       LFontColor := LItem.FontColor;
-    LDisabledFactor := FIconFontsImageList.DisabledFactor;
+    LDisabledFactor := OwnerDisabledFactor;
     {$IFDEF GDI+}
-    LOpacity := FIconFontsImageList.Opacity;
+    LOpacity := OwnerOpacity;
     {$ELSE}
     if FMaskColor <> clNone then
       LMaskColor := FMaskColor
     else if LItem.MaskColor = clNone then
-      LMaskColor := FIconFontsImageList.MaskColor
+      LMaskColor := FImageList.MaskColor
     else
       LMaskColor := LItem.MaskColor;
     {$ENDIF}
     LFontIconDec := LItem.FontIconDec;
-    CalcWidth(FIconFontsImageList.Width, FIconFontsImageList.Height);
+    CalcWidth(FImageList.Width, FImageList.Height);
   end
   else
   begin
@@ -352,11 +377,65 @@ end;
 procedure TIconFontImage.Notification(AComponent: TComponent; Operation: TOperation);
 begin
   inherited;
-  if (Operation = opRemove) and (AComponent = FIconFontsImageList) then
+  if (Operation = opRemove) and (AComponent = FImageList) then
   begin
-    FIconFontsImageList := nil;
+    FImageList := nil;
     Repaint;
   end;
+end;
+
+function TIconFontImage.OwnerDisabledFactor: Byte;
+begin
+  Result := FDisabledFactor;
+  if FImageList is TIconFontsImageListBase then
+    Result := TIconFontsImageListBase(FImageList).DisabledFactor
+  {$IFDEF D10_3+}
+  else if (FImageList is TVirtualImageList) then
+    Result := TVirtualImageList(FImageList).DisabledOpacity;
+  {$ENDIF}
+end;
+
+function TIconFontImage.OwnerFontColor: TColor;
+begin
+  Result := clDefault;
+  if FImageList is TIconFontsImageListBase then
+    Result := TIconFontsImageListBase(FImageList).FontColor
+  {$IFDEF D10_3+}
+  else if (FImageList is TVirtualImageList) and
+    (TVirtualImageList(FImageList).ImageCollection is TIconFontsImageCollection) then
+    Result := TIconFontsImageCollection(TVirtualImageList(FImageList).ImageCollection).FontColor;
+  {$ENDIF}
+end;
+
+function TIconFontImage.OwnerFontName: TFontName;
+begin
+  Result := FFontName;
+  if FImageList is TIconFontsImageListBase then
+    Result := TIconFontsImageListBase(FImageList).FontName
+  {$IFDEF D10_3+}
+  else if (FImageList is TVirtualImageList) and
+    (TVirtualImageList(FImageList).ImageCollection is TIconFontsImageCollection) then
+    Result := TIconFontsImageCollection(TVirtualImageList(FImageList).ImageCollection).FontName;
+  {$ENDIF}
+end;
+
+function TIconFontImage.OwnerMaskColor: TColor;
+begin
+  Result := FMaskColor;
+  if FImageList is TIconFontsImageListBase then
+    Result := TIconFontsImageListBase(FImageList).MaskColor
+  {$IFDEF D10_3+}
+  else if (FImageList is TVirtualImageList) and
+    (TVirtualImageList(FImageList).ImageCollection is TIconFontsImageCollection) then
+    Result := TIconFontsImageCollection(TVirtualImageList(FImageList).ImageCollection).MaskColor;
+  {$ENDIF}
+end;
+
+function TIconFontImage.OwnerOpacity: Byte;
+begin
+  Result := FOpacity;
+  if FImageList is TIconFontsImageListBase then
+    Result := TIconFontsImageListBase(FImageList).Opacity;
 end;
 
 procedure TIconFontImage.Assign(Source: TPersistent);
@@ -425,15 +504,15 @@ end;
 function TIconFontImage.StoreFontColor: Boolean;
 begin
   Result := (FFontColor <> clDefault) and
-    (not Assigned(FIconFontsImageList) or
-    (FFontColor <> FIconFontsImageList.FontColor));
+    (not Assigned(FImageList) or
+    (FFontColor <> OwnerFontColor));
 end;
 
 function TIconFontImage.StoreMaskColor: Boolean;
 begin
   Result := (FMaskColor <> clNone) and
-    (not Assigned(FIconFontsImageList) or
-    (FMaskColor <> FIconFontsImageList.MaskColor));
+    (not Assigned(FImageList) or
+    (FMaskColor <> OwnerMaskColor));
 end;
 
 function TIconFontImage.StoreScale: Boolean;
@@ -510,11 +589,11 @@ begin
   end;
 end;
 
-procedure TIconFontImage.SetImageList(const AValue: TIconFontsImageListBase);
+procedure TIconFontImage.SetImageList(const AValue: TCustomImageList);
 begin
-  if FIconFontsImageList <> AValue then
+  if FImageList <> AValue then
   begin
-    FIconFontsImageList := AValue;
+    FImageList := AValue;
     Repaint;
   end;
 end;

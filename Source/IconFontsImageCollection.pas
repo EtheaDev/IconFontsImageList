@@ -72,6 +72,33 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure Assign(Source: TPersistent); override;
+    //Single Icon Method
+    procedure Delete(const AIndex: Integer);
+    procedure Replace(const AIndex: Integer; const AChar: WideChar;
+      const AFontName: TFontName = ''; const AFontColor: TColor = clDefault;
+      AMaskColor: TColor = clNone); overload;
+    procedure Replace(const AIndex: Integer; const AChar: Integer;
+      const AFontName: TFontName = ''; const AFontColor: TColor = clDefault;
+      AMaskColor: TColor = clNone); overload;
+    function AddIcon(const AChar: Integer; const AIconName: string;
+      const AFontName: TFontName = ''; const AFontColor: TColor = clDefault;
+      const AMaskColor: TColor = clNone): TIconFontItem; overload;
+    function AddIcon(const AChar: WideChar; const AFontName: TFontName = '';
+      const AFontColor: TColor = clDefault; const AMaskColor: TColor = clNone): TIconFontItem; overload;
+    function AddIcon(const AChar: Integer; const AFontName: TFontName = '';
+      const AFontColor: TColor = clDefault; const AMaskColor: TColor = clNone): TIconFontItem; overload;
+    //Multiple icons methods
+    function AddIcons(const AFrom, ATo: WideChar; const AFontName: TFontName = '';
+      const AFontColor: TColor = clDefault; AMaskColor: TColor = clNone;
+      const ACheckValid: Boolean = False): Integer;  overload;
+    function AddIcons(const AFrom, ATo: Integer; const AFontName: TFontName = '';
+      const AFontColor: TColor = clDefault; AMaskColor: TColor = clNone;
+      const ACheckValid: Boolean = False): Integer;  overload;
+    function AddIcons(const ASourceString: WideString;
+      const AFontName: TFontName = ''): Integer; overload;
+    procedure UpdateIconsAttributes(const AFontColor, AMaskColor: TColor;
+      const AReplaceFontColor: Boolean = False; const AFontName: TFontName = ''); overload;
+    procedure ClearIcons;
     {$IFDEF D10_3+}
     function IsIndexAvailable(AIndex: Integer): Boolean; override;
     function GetIndexByName(const AName: String): Integer; override;
@@ -82,21 +109,24 @@ type
     property UpdateOwnerAttributes: TGetOwnerAttributesProc read FUpdateOwnerAttributes write FUpdateOwnerAttributes;
     property NotifyItemChanged: TIconFontItemChangedProc read FNotifyItemChanged write FNotifyItemChanged;
     property NotifyFontUsed: TIconFontItemChangedProc read FNotifyItemChanged write FNotifyItemChanged;
-    property OnFontMissing: TIconFontMissing read FOnFontMissing write FOnFontMissing;
   published
     /// <summary>
     /// Collection of items with source images.
     /// </summary>
     property IconFontItems: TIconFontItems read FIconFontItems write SetIconFontItems;
     property FontName: TFontName read FFontName write SetFontName;
-    property FontColor: TColor read FFontColor write SetFontColor default clNone;
+    property FontColor: TColor read FFontColor write SetFontColor default clDefault;
     property MaskColor: TColor read FMaskColor write SetMaskColor default clNone;
+    property OnFontMissing: TIconFontMissing read FOnFontMissing write FOnFontMissing;
   end;
 
 implementation
 
 uses
   SysUtils
+  {$IFDEF DXE3+}
+  , System.Character
+  {$ENDIF}
 {$IFDEF GDI+}
   , Winapi.GDIPOBJ
   , Winapi.GDIPAPI
@@ -133,7 +163,13 @@ begin
   FIconFontItems := TIconFontItems.Create(Self, TIconFontItem,
     OnItemChanged, CheckFontName, GetOwnerAttributes);
   FFontColor := clDefault;
-  FMaskColor := clDefault;
+  FMaskColor := clNone;
+end;
+
+procedure TIconFontsImageCollection.Delete(const AIndex: Integer);
+begin
+  IconFontItems.Delete(AIndex);
+  OnItemChanged(nil);
 end;
 
 destructor TIconFontsImageCollection.Destroy;
@@ -168,6 +204,19 @@ begin
     FMaskColor := AValue;
     OnItemChanged(nil);
   end;
+end;
+
+procedure TIconFontsImageCollection.UpdateIconsAttributes(
+  const AFontColor, AMaskColor: TColor; const AReplaceFontColor: Boolean;
+  const AFontName: TFontName);
+begin
+  if AFontName <> '' then
+    FFontName := AFontName;
+  FFontColor := AFontColor;
+  FMaskColor := AMaskColor;
+  if AReplaceFontColor and Assigned(IconFontItems) then
+    IconFontItems.UpdateIconsAttributes(AFontColor, AMaskColor, AFontName);
+  OnItemChanged(nil);
 end;
 
 procedure TIconFontsImageCollection.SetIconFontItems(Value: TIconFontItems);
@@ -256,44 +305,150 @@ var
   LFontColor, LMaskColor: TColor;
 begin
   if Assigned(FUpdateOwnerAttributes) then
-  begin
-    FUpdateOwnerAttributes(LFontName, LFontColor, LMaskColor);
-
-    if FFontName = '' then
-      AFontName := LFontName
-    else
-      AFontName := FFontName;
-
-    if FFontColor = clDefault then
-      AFontColor := LFontColor
-    else
-      AFontColor := FFontColor;
-
-    if FMaskColor = clDefault then
-      AMaskColor := LMaskColor
-    else
-      AMaskColor := LMaskColor;
-  end
+    FUpdateOwnerAttributes(LFontName, LFontColor, LMaskColor)
   else
   begin
-    LFontName := '';
-    LFontColor := clDefault;
-    LMaskColor := clDefault;
+    LFontName := FFontName;
+    LFontColor := FFontColor;
+    LMaskColor := FMaskColor;
   end;
+  if FFontName = '' then
+    AFontName := LFontName
+  else
+    AFontName := FFontName;
+
+  if FFontColor = clDefault then
+    AFontColor := LFontColor
+  else
+    AFontColor := FFontColor;
+
+  if FMaskColor = clDefault then
+    AMaskColor := LMaskColor
+  else
+    AMaskColor := LMaskColor;
 end;
 
 procedure TIconFontsImageCollection.OnItemChanged(Sender: TIconFontItem);
 begin
   if Assigned(NotifyItemChanged) then
-    NotifyItemChanged(Sender);
+    NotifyItemChanged(Sender)
+{$IFDEF D10_3+}
+  else
+    Change;
+{$ENDIF}
+end;
+
+function TIconFontsImageCollection.AddIcons(const AFrom, ATo: WideChar;
+  const AFontName: TFontName; const AFontColor: TColor; AMaskColor: TColor;
+  const ACheckValid: Boolean): Integer;
+begin
+  Result := AddIcons(Ord(AFrom), Ord(ATo), AFontName, AFontColor, AMaskColor, ACheckValid);
+end;
+
+function TIconFontsImageCollection.AddIcons(const ASourceString: WideString;
+  const AFontName: TFontName): Integer;
+{$IFDEF DXE3+}
+var
+  LChar: UCS4Char;
+  I, L, ICharLen: Integer;
+{$ENDIF}
+begin
+  Result := 0;
+  {$IFDEF DXE3+}
+  L := Length(ASourceString);
+  I := 1;
+  while I <= L do
+  begin
+    {$WARN SYMBOL_DEPRECATED OFF}
+    if IsSurrogate(ASourceString[I]) then
+    begin
+      LChar := ConvertToUtf32(ASourceString, I, ICharLen);
+    end
+    else
+    begin
+      ICharLen := 1;
+      LChar := UCS4Char(ASourceString[I]);
+    end;
+    {$WARN SYMBOL_DEPRECATED ON}
+    AddIcon(Ord(LChar), AFontName);
+    Inc(I, ICharLen);
+    Inc(Result);
+  end;
+  {$ENDIF}
+end;
+
+procedure TIconFontsImageCollection.Replace(const AIndex, AChar: Integer;
+  const AFontName: TFontName; const AFontColor: TColor; AMaskColor: TColor);
+var
+  LIconFontItem: TIconFontItem;
+begin
+  LIconFontItem := IconFontItems.Items[AIndex];
+  if Assigned(LIconFontItem) then
+    LIconFontItem.FontIconDec := AChar;
+  OnItemChanged(LIconFontItem);
+end;
+
+procedure TIconFontsImageCollection.Replace(const AIndex: Integer;
+  const AChar: WideChar; const AFontName: TFontName; const AFontColor: TColor;
+  AMaskColor: TColor);
+begin
+  Replace(AIndex, Ord(AChar), AFontName, AFontColor, AMaskColor);
 end;
 
 procedure TIconFontsImageCollection.Assign(Source: TPersistent);
 begin
   if Source is TIconFontsImageCollection then
-    TIconFontsImageCollection(Source).FIconFontItems.Assign(FIconFontItems)
+  begin
+    TIconFontsImageCollection(Source).FIconFontItems.Assign(FIconFontItems);
+    OnItemChanged(nil);
+  end
   else
     inherited;
+end;
+
+function TIconFontsImageCollection.AddIcons(const AFrom, ATo: Integer;
+  const AFontName: TFontName = '';
+  const AFontColor: TColor = clDefault; AMaskColor: TColor = clNone;
+  const ACheckValid: Boolean = False): Integer;
+var
+  LFontName: TFontName;
+begin
+  if AFontName <> '' then
+    LFontName := AFontName
+  else
+    LFontName := FFontName;
+  CheckFontName(LFontName);
+  Result := FIconFontItems.AddIcons(AFrom, ATo, LFontName,
+    AFontColor, AMaskColor);
+  OnItemChanged(nil);
+end;
+
+function TIconFontsImageCollection.AddIcon(const AChar: Integer;
+  const AFontName: TFontName; const AFontColor,
+  AMaskColor: TColor): TIconFontItem;
+begin
+  Result := AddIcon(AChar, '', AFontName, AFontColor, AMaskColor);
+end;
+
+function TIconFontsImageCollection.AddIcon(const AChar: WideChar;
+  const AFontName: TFontName; const AFontColor,
+  AMaskColor: TColor): TIconFontItem;
+begin
+  Result := AddIcon(Ord(AChar), AFontName, AFontColor, AMaskColor);
+end;
+
+function TIconFontsImageCollection.AddIcon(const AChar: Integer;
+  const AIconName: string; const AFontName: TFontName; const AFontColor,
+  AMaskColor: TColor): TIconFontItem;
+begin
+  Result := IconFontItems.AddIcon(AChar, AIconName, AFontName, AFontColor, AMaskColor);
+  OnItemChanged(Result);
+end;
+
+procedure TIconFontsImageCollection.ClearIcons;
+begin
+  IconFontItems.Clear;
+  OnItemChanged(nil);
 end;
 
 end.

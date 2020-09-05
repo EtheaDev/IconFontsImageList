@@ -32,16 +32,17 @@ unit DImages;
 interface
 
 uses
-  System.SysUtils, System.Classes, Vcl.ImgList,
-  IconFontsImageList,
+  WinApi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.ImgList,
+  UITypes,
   System.ImageList, //if you are compiling with an older version of Delphi delete this line
   Vcl.BaseImageCollection, //if you are compiling with an older version of 10.3 delete this line
   IconFontsImageCollection,
-  Vcl.Controls, IconFontsImageListBase, IconFontsVirtualImageList;
+  Vcl.Controls;
 
 type
   TdmImages = class(TDataModule)
     IconFontsImageCollection: TIconFontsImageCollection;
+    procedure IconFontsImageCollectionFontMissing(const AFontName: TFontName);
   private
   public
   end;
@@ -55,5 +56,31 @@ implementation
 
 uses
   Vcl.Graphics;
+
+procedure TdmImages.IconFontsImageCollectionFontMissing(
+  const AFontName: TFontName);
+var
+  LFontFileName: string;
+begin
+  inherited;
+  //The "material desktop font is not installed into system: load and install now from disk
+  LFontFileName := ExtractFilePath(ParamStr(0))+'..\Fonts\Material Design Icons Desktop.ttf';
+  if FileExists(LFontFileName) then
+  begin
+    {$IFNDEF D2010+}
+    AddFontResource(PChar(LFontFileName));
+    {$ELSE}
+    AddFontResource(PWideChar(LFontFileName));
+    {$ENDIF}
+    SendMessage(HWND_BROADCAST, WM_FONTCHANGE, 0, 0);
+  end
+  else
+  begin
+    //If the font file is not available
+    raise Exception.CreateFmt('Warning: "%s" font is not present in your system!'+sLineBreak+
+      'Please download at https://materialdesignicons.com and install it, because this demo is based on this font.',
+        [AFontName]);
+  end;
+end;
 
 end.

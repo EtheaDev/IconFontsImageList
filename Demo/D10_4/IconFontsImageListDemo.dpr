@@ -5,7 +5,7 @@ uses
   Vcl.Themes,
   Vcl.Styles,
   IconFontsImageListEditorUnit in '..\..\Packages\IconFontsImageListEditorUnit.pas' {IconFontsImageListEditor},
-  UMain in '..\Source\UMain.pas' {MainForm},
+  UMainNew in '..\Source\UMainNew.pas' {MainForm},
   Icons.MaterialDesign in '..\..\Source\Fonts\Icons.MaterialDesign.pas',
   Icons.Utils in '..\..\Source\Fonts\Icons.Utils.pas',
   DImages in '..\Source\DImages.pas' {dmImages: TDataModule};

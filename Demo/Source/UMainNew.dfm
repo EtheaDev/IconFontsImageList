@@ -156,7 +156,7 @@ object MainForm: TMainForm
     AutoSize = True
     ButtonHeight = 38
     ButtonWidth = 40
-    Images = IconFontsVirtualImageList
+    Images = VirtualImageList
     TabOrder = 1
     object ToolButton1: TToolButton
       Left = 0
@@ -211,7 +211,7 @@ object MainForm: TMainForm
       Hint = 
         'Click left - right mouse button to change icon into IconFontImag' +
         'e'
-      ImageList = IconFontsVirtualImageList
+      ImageList = VirtualImageList
       ImageIndex = 0
       Align = alBottom
       OnMouseDown = IconFontImageMouseDown
@@ -223,7 +223,7 @@ object MainForm: TMainForm
       Height = 60
       Action = DeleteIconAction
       ImageAlignment = iaTop
-      Images = IconFontsVirtualImageList
+      Images = VirtualImageList
       TabOrder = 0
     end
     object ChangeIconButton: TButton
@@ -233,7 +233,7 @@ object MainForm: TMainForm
       Height = 60
       Action = ChangeIconAction
       ImageAlignment = iaTop
-      Images = IconFontsVirtualImageList
+      Images = VirtualImageList
       TabOrder = 1
     end
     object ChangeColorButton: TButton
@@ -243,7 +243,7 @@ object MainForm: TMainForm
       Height = 60
       Action = ChangeColorAction
       ImageAlignment = iaTop
-      Images = IconFontsVirtualImageList
+      Images = VirtualImageList
       TabOrder = 2
     end
     object ShowCharMapButton: TButton
@@ -254,7 +254,7 @@ object MainForm: TMainForm
       Action = ShowCharMapAction
       Caption = 'Char Map...'
       ImageAlignment = iaTop
-      Images = IconFontsVirtualImageList
+      Images = VirtualImageList
       TabOrder = 3
     end
     object NewFormButton: TButton
@@ -264,7 +264,7 @@ object MainForm: TMainForm
       Height = 60
       Action = NewFormAction
       ImageAlignment = iaTop
-      Images = IconFontsVirtualImageList
+      Images = VirtualImageList
       TabOrder = 5
     end
   end
@@ -291,7 +291,7 @@ object MainForm: TMainForm
       Width = 423
       Height = 222
       Align = alTop
-      Images = IconFontsVirtualImageList
+      Images = VirtualImageList
       Indent = 35
       TabOrder = 0
       Items.NodeData = {
@@ -313,14 +313,14 @@ object MainForm: TMainForm
       Align = alClient
       Columns = <>
       IconOptions.AutoArrange = True
-      LargeImages = IconFontsVirtualImageList
-      SmallImages = IconFontsVirtualImageList
+      LargeImages = VirtualImageList
+      SmallImages = VirtualImageList
       TabOrder = 1
       OnSelectItem = ImageViewSelectItem
     end
   end
   object ActionList: TActionList
-    Images = IconFontsVirtualImageList
+    Images = VirtualImageList
     Left = 288
     Top = 296
     object ChangeIconAction: TAction
@@ -364,11 +364,73 @@ object MainForm: TMainForm
     Left = 496
     Top = 312
   end
-  object IconFontsVirtualImageList: TIconFontsVirtualImageList
-    FontName = 'Material Design Icons Desktop'
-    FontColor = clBlack
-    Size = 32
+  object VirtualImageList: TVirtualImageList
+    DisabledGrayscale = False
+    DisabledSuffix = '_Disabled'
+    Images = <
+      item
+        CollectionIndex = 0
+        CollectionName = 'account'
+        Disabled = False
+        Name = 'account'
+      end
+      item
+        CollectionIndex = 1
+        CollectionName = 'delete'
+        Disabled = False
+        Name = 'delete'
+      end
+      item
+        CollectionIndex = 2
+        CollectionName = 'amazon'
+        Disabled = False
+        Name = 'amazon'
+      end
+      item
+        CollectionIndex = 3
+        CollectionName = 'google-chrome'
+        Disabled = False
+        Name = 'google-chrome'
+      end
+      item
+        CollectionIndex = 4
+        CollectionName = 'android'
+        Disabled = False
+        Name = 'android'
+      end
+      item
+        CollectionIndex = 5
+        CollectionName = 'file-replace'
+        Disabled = False
+        Name = 'file-replace'
+      end
+      item
+        CollectionIndex = 6
+        CollectionName = 'account-search'
+        Disabled = False
+        Name = 'account-search'
+      end
+      item
+        CollectionIndex = 7
+        CollectionName = 'palette'
+        Disabled = False
+        Name = 'palette'
+      end
+      item
+        CollectionIndex = 8
+        CollectionName = 'format-font'
+        Disabled = False
+        Name = 'format-font'
+      end
+      item
+        CollectionIndex = 9
+        CollectionName = 'open-in-new'
+        Disabled = False
+        Name = 'open-in-new'
+      end>
     ImageCollection = dmImages.IconFontsImageCollection
+    Width = 32
+    Height = 32
     Left = 368
     Top = 384
   end

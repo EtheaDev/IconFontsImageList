@@ -47,7 +47,7 @@ object dmImages: TdmImages
         IconName = 'open-in-new'
       end>
     FontName = 'Material Design Icons Desktop'
-    FontColor = clDefault
+    OnFontMissing = IconFontsImageCollectionFontMissing
     Left = 184
     Top = 152
   end
