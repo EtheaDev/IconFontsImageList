@@ -31,7 +31,7 @@ We advise that TIconFontsVirtualImageList should be used only for versions of De
 
 Take care of changed Font file used in the Demos from v1.7(VCL)/v1.2(FMX) -> v1.8(VCL)/v1.3(FMX), as explained [here](https://github.com/EtheaDev/IconFontsImageList/wiki/Deploy-Applications). 
 
-If you are using the the old Font, you can automatically convert icons to the new ones as explained [here](https://github.com/EtheaDev/IconFontsImageList/wiki/Convert-Material-Icons).
+If you are using the old Font, you can automatically convert icons to the new ones as explained [here](https://github.com/EtheaDev/IconFontsImageList/wiki/Convert-Material-Icons).
 
 **RELEASE NOTES:**
 05 Sep 2020: version 2.3 (VCL) and 1.5.1 (FMX)
