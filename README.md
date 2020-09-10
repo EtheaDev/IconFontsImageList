@@ -2,7 +2,7 @@
 
 ## Components to simplify use of "Icon fonts": resize, color, opacity and more... with full support for High-DPI apps. Rendering optimized with GDI+
 
-### Actual official version 2.2.2 (VCL) and 1.5.1 (FMX)
+### Actual official version 2.3 (VCL) and 1.5.1 (FMX)
 
 | Component | Description |
 | - | - |
@@ -25,15 +25,21 @@ Follow the [guide in Wiki section](https://github.com/EtheaDev/IconFontsImageLis
 
 **TVirtualImageList** (available from D10.3) and **TIconFontsVirtualImageList** both use images from **TIconFontsImageCollection**. An important difference is that TVirtualImageList may use and create only a subset of the images in the collection, whereas TIconFontsVirtualImageList creates all images of the collection everytime it is needed (e,g. DPI change), which is slower and consumes more memory.
 
-We advise that TIconFontsVirtualImageList should be used only for versions of Delphi before 10.3. For recent versions of Delphi the recommended combination should be **TIconFontsImageCollection + TVirtualImageList**. Don't forget also the importance of PreserveItems when you have a large ImageCollection with many linked Actions. Without setting this property to "True", everytime you add or remove an icon in the collection, you have to check and change the ImageIndex of all the Actions.
+We advise that TIconFontsVirtualImageList should be used only for versions of Delphi before 10.3. For recent versions of Delphi the recommended combination should be **TIconFontsImageCollection + TVirtualImageList**. Don't forget also the importance of TVirtualImageList.PreserveItems when you have a large ImageCollection with many linked Actions. Without setting this property to "True", everytime you add or remove an icon in the collection, you have to check and change the ImageIndex of all the Actions.
 
 **Warning: "Material Font" has changed**
 
 Take care of changed Font file used in the Demos from v1.7(VCL)/v1.2(FMX) -> v1.8(VCL)/v1.3(FMX), as explained [here](https://github.com/EtheaDev/IconFontsImageList/wiki/Deploy-Applications). 
 
-If you are using the the old Font, you can automatically convert icons to the new ones as explained [here](https://github.com/EtheaDev/IconFontsImageList/wiki/Convert-Material-Icons).
+If you are using the old Font, you can automatically convert icons to the new ones as explained [here](https://github.com/EtheaDev/IconFontsImageList/wiki/Convert-Material-Icons).
 
 **RELEASE NOTES:**
+05 Sep 2020: version 2.3 (VCL) and 1.5.1 (FMX)
+ - Added demo with VirtualImageList form D10.3 and D10.4
+ - Refactoring to move methods from IconFontsImageList to IconFontsImageCollection
+ - Update IconFontImage to connect also to a VirtualImageList
+ - Fixed some packages and demos for older Delphi versions (Delphi7, DXE3, DXE6, DXE8)
+
 04 Sep 2020: version 2.2.2 (VCL) and 1.5.1 (FMX)
  - Export Icons in png files into component editor
  - Updated "Material Design Font Desktop.ttf" font and metadata
