@@ -102,7 +102,6 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure NewFormActionExecute(Sender: TObject);
   private
-    FIconFontsVirtualImageListHot: TIconFontsVirtualImageList;
     {$IFDEF HiDPISupport}
     procedure FormAfterMonitorDpiChanged(Sender: TObject; OldDPI, NewDPI: Integer);
     {$ENDIF}
@@ -226,8 +225,6 @@ var
   I: integer;
 {$ENDIF}
 begin
-  FIconFontsVirtualImageListHot := TIconFontsVirtualImageList.Create(Self);
-
   {$IFDEF HiDPISupport}
   OnAfterMonitorDpiChanged := FormAfterMonitorDpiChanged;
   {$ENDIF}
@@ -342,10 +339,6 @@ begin
   TopToolBar.Height := LSize + 6;
   TreeView.Indent := LSize;
   Splitter.MinSize := DeleteButton.Width + 8;
-
-  //Update attributes for Hot ImageList for the Toolbar
-  UpdateHotImageList(IconFontsVirtualImageList, FIconFontsVirtualImageListHot, 30, 10);
-  //TopToolBar.HotImages := FIconFontsVirtualImageListHot;
 
   UpdateButtons;
   UpdateListView;

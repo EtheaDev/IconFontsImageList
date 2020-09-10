@@ -106,7 +106,7 @@ type
     procedure FormAfterMonitorDpiChanged(Sender: TObject; OldDPI, NewDPI: Integer);
     {$ENDIF}
     procedure UpdateButtons;
-    procedure UpdateGUI;
+    procedure UpdateGUI(UpdateIcons: Boolean = True);
     procedure UpdateListView;
     procedure UpdateTreeView;
   public
@@ -164,10 +164,6 @@ begin
     LStop := GetTickCount;
     MessageDlg(Format('Built %d Icons in %d milliseconds!',
       [LRand2-LRand1+1, LStop - LStart]), mtInformation, [mbOK], 0);
-
-    //Assign all icons to VirtualImageList
-    VirtualImageList.Add('', dmImages.IconFontsImageCollection.Count-LCount,
-      dmImages.IconFontsImageCollection.Count-1);
   finally
     Screen.Cursor := crDefault;
   end;
@@ -218,7 +214,7 @@ end;
 {$IFDEF HiDPISupport}
 procedure TMainForm.FormAfterMonitorDpiChanged(Sender: TObject; OldDPI, NewDPI: Integer);
 begin
-  UpdateGUI;
+  UpdateGUI(False);
 end;
 {$ENDIF}
 
@@ -228,8 +224,6 @@ var
   I: integer;
 {$ENDIF}
 begin
-  FIconFontsVirtualImageListHot := TIconFontsVirtualImageList.Create(Self);
-
   {$IFDEF HiDPISupport}
   OnAfterMonitorDpiChanged := FormAfterMonitorDpiChanged;
   {$ENDIF}
@@ -311,10 +305,16 @@ begin
   UpdateGUI;
 end;
 
-procedure TMainForm.updateGUI;
+procedure TMainForm.updateGUI(UpdateIcons: Boolean = True);
 var
   LSize: Integer;
 begin
+  if UpdateIcons then
+  begin
+    //Assign all icons to VirtualImageList
+    VirtualImageList.Add('', 0, dmImages.IconFontsImageCollection.Count-1);
+  end;
+
   LSize := VirtualImageList.Height;
   IconSizeLabel.Caption := Format('Icons size: %d',[LSize]);
   TopToolBar.ButtonHeight := LSize + 2;
@@ -322,6 +322,7 @@ begin
   TopToolBar.Height := LSize + 6;
   TreeView.Indent := LSize;
   Splitter.MinSize := DeleteButton.Width + 8;
+
   UpdateButtons;
   UpdateListView;
   UpdateTreeView;
@@ -346,7 +347,7 @@ procedure TMainForm.TrackBarChange(Sender: TObject);
 begin
   //Resize all icons into ImageList
   VirtualImageList.SetSize(TrackBar.Position, TrackBar.Position);
-  UpdateGUI;
+  UpdateGUI(False);
 end;
 
 initialization
