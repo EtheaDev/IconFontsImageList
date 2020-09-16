@@ -1035,7 +1035,10 @@ begin
       FontName.Text
       );
     FChanged := True;
-    BuildList(ImageView.Items[ImageView.Items.Count-1].ImageIndex);
+    if ImageView.Items.Count > 0 then
+      BuildList(ImageView.Items[ImageView.Items.Count-1].ImageIndex)
+    else
+      BuildList(0);
   finally
     Screen.Cursor := crDefault;
   end;

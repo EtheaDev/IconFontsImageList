@@ -903,7 +903,10 @@ begin
   Result := TBitmap.Create;
   Result.PixelFormat := pf32bit;
   {$IFDEF GDI+}
-  Result.Canvas.Brush.Color := $00FFFFFF;
+  if TStyleManager.IsCustomStyleActive then
+    Result.Canvas.Brush.Color := StyleServices.GetSystemColor(clWindow)
+  else
+    Result.Canvas.Brush.Color := clWindow;
   Result.SetSize(AWidth, AHeight);
   {$ELSE}
     {$IFDEF DXE+}
