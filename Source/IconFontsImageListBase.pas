@@ -57,7 +57,7 @@ resourcestring
   ERR_COLLECTION_NOT_ASSIGNED = 'Error: image collection of "%s" not assigned!';
 
 const
-  IconFontsImageListVersion = '2.3.0';
+  IconFontsImageListVersion = '2.3.1';
   DEFAULT_SIZE = 16;
 
 type
