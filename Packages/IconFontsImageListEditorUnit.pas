@@ -627,13 +627,12 @@ end;
 
 procedure TIconFontsImageListEditor.DeleteSelectedItem;
 var
-  LIndex: Integer;
+  LSelectedImageIndex: Integer;
 begin
-  LIndex := ImageView.Selected.Index;
-  FEditingList.Delete(LIndex);
+  LSelectedImageIndex := ImageView.Items[ImageView.Selected.Index].ImageIndex;
+  FEditingList.Delete(ImageView.Selected.Index);
   FChanged := True;
-  if ImageView.Items.Count > 1 then
-    BuildList(ImageView.Items[LIndex-1].ImageIndex);
+  BuildList(LSelectedImageIndex);
   FChanged := True;
 end;
 

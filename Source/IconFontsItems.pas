@@ -906,7 +906,7 @@ begin
   if TStyleManager.IsCustomStyleActive then
     Result.Canvas.Brush.Color := StyleServices.GetSystemColor(clWindow)
   else
-    Result.Canvas.Brush.Color := clWindow;
+    Result.Canvas.Brush.Color := ColorToRGB(clWindow);
   Result.SetSize(AWidth, AHeight);
   {$ELSE}
     {$IFDEF DXE+}
