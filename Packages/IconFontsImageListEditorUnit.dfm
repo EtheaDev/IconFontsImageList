@@ -141,7 +141,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
         Left = 0
         Top = 0
         Width = 185
-        Height = 170
+        Height = 146
         Align = alClient
         Caption = 'Images/Categories'
         TabOrder = 0
@@ -149,7 +149,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           Left = 2
           Top = 15
           Width = 181
-          Height = 153
+          Height = 129
           Align = alClient
           ItemHeight = 13
           TabOrder = 0
@@ -158,15 +158,15 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       end
       object PropertiesGroupBox: TGroupBox
         Left = 0
-        Top = 170
+        Top = 146
         Width = 185
-        Height = 167
+        Height = 191
         Align = alBottom
         Caption = 'Global properties'
         TabOrder = 1
         DesignSize = (
           185
-          167)
+          191)
         object DefaultFontNameLabel: TLabel
           Left = 7
           Top = 15
@@ -194,6 +194,16 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           Caption = 'MaskColor (default)'
           Transparent = True
         end
+        object ZoomLabel: TLabel
+          Left = 11
+          Top = 167
+          Width = 72
+          Height = 13
+          Alignment = taRightJustify
+          AutoSize = False
+          Caption = 'Zoom %'
+          Transparent = True
+        end
         object DefaultFontName: TComboBox
           Left = 7
           Top = 30
@@ -202,7 +212,6 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           Style = csOwnerDrawFixed
           Anchors = [akLeft, akTop, akRight]
           DropDownCount = 30
-          ItemHeight = 16
           TabOrder = 0
           OnSelect = DefaultFontNameSelect
         end
@@ -216,7 +225,6 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           Selected = clDefault
           Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbIncludeDefault]
           Anchors = [akLeft, akTop, akRight]
-          ItemHeight = 16
           TabOrder = 1
           OnChange = DefaultFontColorColorBoxChange
         end
@@ -230,7 +238,6 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           Selected = clDefault
           Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbIncludeDefault]
           Anchors = [akLeft, akTop, akRight]
-          ItemHeight = 16
           TabOrder = 2
           OnChange = DefaultMaskColorColorBoxChange
         end
@@ -242,6 +249,18 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           Caption = 'StoreBitmap'
           TabOrder = 3
           OnClick = StoreBitmapCheckBoxClick
+        end
+        object ZoomSpinEdit: TSpinEdit
+          Left = 90
+          Top = 162
+          Width = 86
+          Height = 22
+          Increment = 10
+          MaxValue = 100
+          MinValue = 10
+          TabOrder = 4
+          Value = 100
+          OnChange = ZoomSpinEditChange
         end
       end
     end
@@ -510,7 +529,6 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
         Top = 21
         Width = 180
         Height = 21
-        ItemHeight = 13
         TabOrder = 0
         OnChange = FontNameChange
       end
@@ -544,7 +562,6 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
         NoneColorColor = clNone
         Selected = clDefault
         Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbIncludeDefault]
-        ItemHeight = 16
         TabOrder = 3
         OnChange = FontColorChange
       end
@@ -557,7 +574,6 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
         NoneColorColor = clNone
         Selected = clDefault
         Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbIncludeDefault]
-        ItemHeight = 16
         TabOrder = 4
         OnChange = MaskColorChange
       end

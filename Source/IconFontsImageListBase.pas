@@ -57,7 +57,7 @@ resourcestring
   ERR_COLLECTION_NOT_ASSIGNED = 'Error: image collection of "%s" not assigned!';
 
 const
-  IconFontsImageListVersion = '2.3.1';
+  IconFontsImageListVersion = '2.4.0';
   DEFAULT_SIZE = 16;
 
 type
@@ -78,6 +78,7 @@ type
     FOnDrawIcon: TDrawIconEvent;
     FIconsAdded: Integer;
     FDisabledFactor: Byte;
+    FZoom: Integer;
     {$IFDEF GDI+}
     FOpacity: Byte;
     {$ENDIF}
@@ -109,6 +110,7 @@ type
     {$ENDIF}
     procedure SetDisabledFactor(const Value: Byte);
     procedure CheckCollection;
+    procedure SetZoon(const Value: Integer);
   protected
     procedure CheckFontName(const AFontName: TFontName);
     //Events for notification from item to imagelist
@@ -167,11 +169,13 @@ type
     procedure PaintTo(const ACanvas: TCanvas; const AIndex: Integer;
       const X, Y, AWidth, AHeight: Integer;
       const AEnabled: Boolean = True;
-      const ADisabledFactor: Byte = 100); overload;
+      const ADisabledFactor: Byte = 100;
+      const AZoom: Integer = 100); overload;
     procedure PaintTo(const ACanvas: TCanvas; const AName: string;
       const X, Y, AWidth, AHeight: Integer;
       const AEnabled: Boolean = True;
-      const ADisabledFactor: Byte = 100); overload;
+      const ADisabledFactor: Byte = 100;
+      const AZoom: Integer = 100); overload;
     {$IFDEF D10_4+}
     function IsImageNameAvailable: Boolean; override;
     function IsScaled: Boolean; override;
@@ -208,6 +212,7 @@ type
     {$IFDEF HiDPISupport}
     property Scaled: Boolean read FScaled write FScaled default True;
     {$ENDIF}
+    property Zoom: Integer read FZoom write SetZoon default ZOOM_DEFAULT;
   end;
 
 implementation
@@ -262,7 +267,7 @@ end;
 procedure TIconFontsImageListBase.DoDraw(Index: Integer; Canvas: TCanvas; X, Y: Integer;
   Style: Cardinal; Enabled: Boolean);
 begin
-  PaintTo(Canvas, Index, X, Y, Width, Height, Enabled);
+  PaintTo(Canvas, Index, X, Y, Width, Height, Enabled, Zoom);
 end;
 
 { TIconFontsImageListBase }
@@ -299,6 +304,7 @@ begin
   FFontColor := clDefault;
   FMaskColor := clNone;
   FDisabledFactor := 100;
+  FZoom := ZOOM_DEFAULT;
   {$IFDEF GDI+}
   FOpacity := 255;
   {$ENDIF}
@@ -504,6 +510,15 @@ begin
   end;
 end;
 
+procedure TIconFontsImageListBase.SetZoon(const Value: Integer);
+begin
+  if FZoom <> Value then
+  begin
+    FZoom := Value;
+    RecreateBitmaps;
+  end;
+end;
+
 procedure TIconFontsImageListBase.StopDrawing(const AStop: Boolean);
 begin
   if AStop then
@@ -516,7 +531,8 @@ procedure TIconFontsImageListBase.PaintTo(const ACanvas: TCanvas;
   const AIndex: Integer;
   const X, Y, AWidth, AHeight: Integer;
   const AEnabled: Boolean = True;
-  const ADisabledFactor: Byte = 100);
+  const ADisabledFactor: Byte = 100;
+  const AZoom: Integer = 100);
 var
 {$IFNDEF GDI+}
   LMaskColor: TColor;
@@ -529,9 +545,9 @@ begin
     LItem := IconFontItems[AIndex];
 
     {$IFDEF GDI+}
-    LItem.PaintTo(ACanvas, X, Y, AWidth, AHeight, AEnabled, ADisabledFactor, FOpacity);
+    LItem.PaintTo(ACanvas, X, Y, AWidth, AHeight, AEnabled, ADisabledFactor, FOpacity, AZoom);
     {$ELSE}
-    LItem.PaintTo(ACanvas, X, Y, AWidth, AHeight, LMaskColor, AEnabled, ADisabledFactor);
+    LItem.PaintTo(ACanvas, X, Y, AWidth, AHeight, LMaskColor, AEnabled, ADisabledFactor, AZoom);
     {$ENDIF}
   end;
 end;
@@ -539,14 +555,15 @@ end;
 procedure TIconFontsImageListBase.PaintTo(const ACanvas: TCanvas; const AName: string;
   const X, Y, AWidth, AHeight: Integer;
   const AEnabled: Boolean = True;
-  const ADisabledFactor: Byte = 100);
+  const ADisabledFactor: Byte = 100;
+  const AZoom: Integer = 100);
 var
   LIndex: Integer;
 begin
   CheckCollection;
   LIndex := IconFontItems.IndexOf(Name);
   PaintTo(ACanvas, LIndex, X, Y, AWidth, AHeight,
-    AEnabled, ADisabledFactor);
+    AEnabled, ADisabledFactor, AZoom);
 end;
 
 function TIconFontsImageListBase.AddIcon(const AChar: WideChar;
@@ -614,7 +631,7 @@ begin
       FFontName := TIconFontsImageListBase(Source).FontName;
       FFontColor := TIconFontsImageListBase(Source).FontColor;
       FMaskColor := TIconFontsImageListBase(Source).FMaskColor;
-
+      FZoom := TIconFontsImageListBase(Source).FZoom;
       {$IFDEF GDI+}
       FDisabledFactor := TIconFontsImageListBase(Source).FDisabledFactor;
       FOpacity := TIconFontsImageListBase(Source).FOpacity;
@@ -787,10 +804,10 @@ var
       {$ENDIF}
       {$IFDEF GDI+}
       AIconFontItem.PaintTo(LBitmap.Canvas, 0, 0, Width, Height,
-        True, FDisabledFactor, FOpacity);
+        True, FDisabledFactor, FOpacity, FZoom);
       {$ELSE}
       AIconFontItem.PaintTo(LBitmap.Canvas, 0, 0, Width, Height,
-        LMaskColor, True, FDisabledFactor);
+        LMaskColor, True, FDisabledFactor, FZoom);
       AddMasked(LBitmap, LMaskColor);
       {$ENDIF}
     finally
@@ -820,7 +837,8 @@ begin
           LItem := IconFontItems[C];
           if Assigned(LItem) then
           begin
-            LBitmap := LItem.GetBitmap(Width, Height, True);
+            LBitmap := LItem.GetBitmap(Width, Height, True,
+              DEFAULT_OPACITY, DEFAULT_DISABLE_FACTOR, Zoom);
             try
               ImageList_Add(Handle, LBitmap.Handle, 0);
               if Assigned(OnDrawIcon) then

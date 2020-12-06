@@ -54,10 +54,12 @@ type
     FNotifyItemChanged: TIconFontItemChangedProc;
     FOnFontMissing: TIconFontMissing;
     FFontNamesChecked: TStrings;
+    FZoom: Integer;
     procedure SetFontColor(const AValue: TColor);
     procedure SetFontName(const AValue: TFontName);
     procedure SetMaskColor(const AValue: TColor);
     procedure SetIconFontItems(Value: TIconFontItems);
+    procedure SetZoom(const Value: Integer);
   protected
     //Events for notification from item to imagelist
     procedure CheckFontName(const AFontName: TFontName);
@@ -118,6 +120,7 @@ type
     property FontColor: TColor read FFontColor write SetFontColor default clDefault;
     property MaskColor: TColor read FMaskColor write SetMaskColor default clNone;
     property OnFontMissing: TIconFontMissing read FOnFontMissing write FOnFontMissing;
+    property Zoom: Integer read FZoom write SetZoom default ZOOM_DEFAULT;
   end;
 
 implementation
@@ -164,6 +167,7 @@ begin
     OnItemChanged, CheckFontName, GetOwnerAttributes);
   FFontColor := clDefault;
   FMaskColor := clNone;
+  FZoom := ZOOM_DEFAULT;
 end;
 
 procedure TIconFontsImageCollection.Delete(const AIndex: Integer);
@@ -202,6 +206,15 @@ begin
   if FMaskColor <> AValue then
   begin
     FMaskColor := AValue;
+    OnItemChanged(nil);
+  end;
+end;
+
+procedure TIconFontsImageCollection.SetZoom(const Value: Integer);
+begin
+  if FZoom <> Value then
+  begin
+    FZoom := Value;
     OnItemChanged(nil);
   end;
 end;
@@ -268,7 +281,8 @@ begin
   if (AIndex < 0) or (AIndex > Count-1) then
     Exit;
   LIconFontItem := FIconFontItems.Items[AIndex];
-  Result := LIconFontItem.GetBitmap(AWidth, AHeight, True);
+  Result := LIconFontItem.GetBitmap(AWidth, AHeight, True,
+    DEFAULT_OPACITY, DEFAULT_DISABLE_FACTOR, Zoom);
 end;
 
 procedure TIconFontsImageCollection.Draw(ACanvas: TCanvas; ARect: TRect; AIndex: Integer;
@@ -283,10 +297,13 @@ begin
     Exit;
   LIconFontItem := FIconFontItems.Items[AIndex];
   {$IFDEF GDI+}
-  LIconFontItem.PaintTo(ACanvas, ARect.Left, ARect.Top, ARect.Width, ARect.Height);
+  LIconFontItem.PaintTo(ACanvas, ARect.Left, ARect.Top, ARect.Width,
+    ARect.Height, True, DEFAULT_DISABLE_FACTOR, DEFAULT_OPACITY,
+    Zoom);
   {$ELSE}
-  LIconFontItem.PaintTo(ACanvas, ARect.Left, ARect.Top, ARect.Width, ARect.Height,
-    LMaskColor);
+  LIconFontItem.PaintTo(ACanvas, ARect.Left, ARect.Top, ARect.Width,
+    ARect.Height, LMaskColor, True, DEFAULT_DISABLE_FACTOR,
+    Zoom);
   {$ENDIF}
 end;
 {$ENDIF}

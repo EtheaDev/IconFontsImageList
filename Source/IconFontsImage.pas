@@ -64,6 +64,7 @@ type
     FFontIconDec: Integer;
     FIconName: string;
     FOnFontMissing: TIconFontMissing;
+    FZoom: Integer;
     procedure SetCenter(Value: Boolean);
     procedure SetOpacity(Value: Byte);
     procedure SetImageIndex(const AValue: Integer);
@@ -88,6 +89,7 @@ type
     function OwnerFontColor: TColor;
     function OwnerMaskColor: TColor;
     function OwnerDisabledFactor: Byte;
+    procedure SetZoom(const AValue: Integer);
     {$IFDEF GDI+}
     function OwnerOpacity: Byte;
     {$ENDIF}
@@ -112,6 +114,7 @@ type
     property FontName: TFontName read FFontName write SetFontName stored UsingIconFont;
     property FontIconDec: Integer read GetFontIconDec write SetFontIconDec stored true default 0;
     property FontIconHex: string read GetFontIconHex write SetFontIconHex stored false;
+    property Zoom: Integer read FZoom write SetZoom default ZOOM_DEFAULT;
     property FontColor: TColor read FFontColor write SetFontColor stored StoreFontColor;
     property MaskColor: TColor read FMaskColor write SetMaskColor stored StoreMaskColor;
     property IconName: string read FIconName write SetIconName;
@@ -163,6 +166,7 @@ begin
   FDisabledFactor := 100;
   FFontColor := clDefault;
   FMaskColor := clNone;
+  FZoom := ZOOM_DEFAULT;
 end;
 
 destructor TIconFontImage.Destroy;
@@ -350,7 +354,7 @@ begin
     try
       LIconFont.PaintToGDI(LGraphics,
         LBounds.X, LBounds.Y, LBounds.Width, LBounds.Height, LFontName,
-          LFontIconDec, LFontColor, Enabled, LDisabledFactor, LOpacity);
+          LFontIconDec, LFontColor, Enabled, LDisabledFactor, LOpacity, FZoom);
     finally
       LGraphics.Free;
     end;
@@ -358,11 +362,11 @@ begin
       {$IFDEF DXE8+}
       LIconFont.PaintTo(Self.Canvas,
         LBounds.Left, LBounds.Top, LBounds.Width, LBounds.Height, LFontName,
-          LFontIconDec, LFontColor, LMaskColor, Enabled, LDisabledFactor);
+          LFontIconDec, LFontColor, LMaskColor, Enabled, LDisabledFactor, FZoom);
       {$ELSE}
       LIconFont.PaintTo(Self.Canvas,
         LBounds.Left, LBounds.Top, LBounds.Right - LBounds.Left, LBounds.Bottom - LBounds.Top, LFontName,
-          LFontIconDec, LFontColor, LMaskColor, Enabled, LDisabledFactor);
+          LFontIconDec, LFontColor, LMaskColor, Enabled, LDisabledFactor, FZoom);
       {$ENDIF}
     {$ENDIF}
   end;
@@ -501,6 +505,15 @@ begin
   if AValue <> FStretch then
   begin
     FStretch := AValue;
+    Repaint;
+  end;
+end;
+
+procedure TIconFontImage.SetZoom(const AValue: Integer);
+begin
+  if (FZoom <> AValue) and (AValue <= 100) and (AValue >= 10) then
+  begin
+    FZoom := AValue;
     Repaint;
   end;
 end;

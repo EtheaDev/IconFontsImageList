@@ -26,9 +26,6 @@ object MainForm: TMainForm
     Align = alRight
     AutoSnap = False
     MinSize = 80
-    ExplicitLeft = 9
-    ExplicitTop = 9
-    ExplicitHeight = 427
   end
   object Panel1: TPanel
     Left = 0
@@ -41,7 +38,7 @@ object MainForm: TMainForm
       Left = 1
       Top = 1
       Width = 199
-      Height = 327
+      Height = 265
       Align = alClient
       Caption = 'Select Theme/Color'
       ItemIndex = 0
@@ -57,7 +54,7 @@ object MainForm: TMainForm
     end
     object GroupBox1: TGroupBox
       Left = 1
-      Top = 328
+      Top = 266
       Width = 199
       Height = 77
       Align = alBottom
@@ -92,7 +89,7 @@ object MainForm: TMainForm
     end
     object SliderPanel: TPanel
       Left = 1
-      Top = 446
+      Top = 384
       Width = 199
       Height = 62
       Align = alBottom
@@ -122,7 +119,7 @@ object MainForm: TMainForm
     end
     object ButtonsPanel: TPanel
       Left = 1
-      Top = 405
+      Top = 343
       Width = 199
       Height = 41
       Align = alBottom
@@ -145,6 +142,36 @@ object MainForm: TMainForm
         Caption = 'Show Image Editor'
         TabOrder = 1
         OnClick = ShowImageEditorButtonClick
+      end
+    end
+    object ZoomPanel: TPanel
+      Left = 1
+      Top = 446
+      Width = 199
+      Height = 62
+      Align = alBottom
+      BevelOuter = bvNone
+      TabOrder = 4
+      object ZoomLabel: TLabel
+        Left = 8
+        Top = 3
+        Width = 72
+        Height = 13
+        Caption = 'Icons zoom %:'
+      end
+      object ZoomTrackBar: TTrackBar
+        Left = 0
+        Top = 23
+        Width = 199
+        Height = 39
+        Align = alBottom
+        Max = 100
+        Min = 10
+        Frequency = 8
+        Position = 100
+        PositionToolTip = ptBottom
+        TabOrder = 0
+        OnChange = ZoomTrackBarChange
       end
     end
   end

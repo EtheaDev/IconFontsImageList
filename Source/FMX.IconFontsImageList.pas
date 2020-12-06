@@ -84,7 +84,7 @@ type
     function StoreWidth: Boolean;
     function StoreHeight: Boolean;
     function StoreSize: Boolean;
-    procedure SetZoom(const Value: Integer);
+    procedure SetZoom(const AValue: Integer);
   protected
     function BitmapStored: Boolean; override;
     function GetDisplayName: string; override;
@@ -182,7 +182,7 @@ type
     function GetWidth: Integer;
     procedure SetHeight(const AValue: Integer);
     procedure SetWidth(const AValue: Integer);
-    procedure SetZoom(const Value: Integer);
+    procedure SetZoom(const AValue: Integer);
     function StoreWidth: Boolean;
     function StoreHeight: Boolean;
     function StoreSize: Boolean;
@@ -361,11 +361,11 @@ begin
   end;
 end;
 
-procedure TIconFontBitmapItem.SetZoom(const Value: Integer);
+procedure TIconFontBitmapItem.SetZoom(const AValue: Integer);
 begin
-  if FZoom <> Value then
+  if (FZoom <> AValue) and (AValue <= 100) and (AValue >= 10) then
   begin
-    FZoom := Value;
+    FZoom := AValue;
     DrawFontIcon;
   end;
 end;
@@ -970,11 +970,11 @@ begin
   end;
 end;
 
-procedure TIconFontsImageList.SetZoom(const Value: Integer);
+procedure TIconFontsImageList.SetZoom(const AValue: Integer);
 begin
-  if FZoom <> Value then
+  if (FZoom <> AValue) and (AValue <= 100) and (AValue >= 10) then
   begin
-    FZoom := Value;
+    FZoom := AValue;
     UpdateSourceItems;
   end;
 end;

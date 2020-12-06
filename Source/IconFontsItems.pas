@@ -53,6 +53,11 @@ uses
 resourcestring
   ERR_ICONFONTS_VALUE_NOT_ACCEPTED = 'Value %s not accepted!';
 
+const
+  DEFAULT_OPACITY = 255;
+  DEFAULT_DISABLE_FACTOR = 100;
+  ZOOM_DEFAULT = 100;
+
 type
   TIconFontItem = class;
   TIconFontItems = class;
@@ -71,22 +76,26 @@ type
       const AFontName: TFontName; AFontIconDec: Integer;
       const AFontColor, AMaskColor: TColor;
       const AEnabled: Boolean = True;
-      const ADisabledFactor: Byte = 100;
-      const AOpacity: Byte = 255): TBitmap;
+      const ADisabledFactor: Byte = DEFAULT_DISABLE_FACTOR;
+      const AOpacity: Byte = DEFAULT_OPACITY;
+      const AZoom: Integer = ZOOM_DEFAULT): TBitmap;
     procedure Assign(Source: TIconFont);
     {$IFDEF GDI+}
     procedure PaintToGDI(const AGraphics: TGPGraphics;
       const X, Y, AWidth, AHeight: Single;
       const AFontName: TFontName; AFontIconDec: Integer;
       const AFontColor: TColor; const AEnabled: Boolean = True;
-      const ADisabledFactor: Byte = 100; const AOpacity: Byte = 255);
+      const ADisabledFactor: Byte = DEFAULT_DISABLE_FACTOR;
+      const AOpacity: Byte = DEFAULT_OPACITY;
+      const AZoom: Integer = ZOOM_DEFAULT);
     {$ENDIF}
     procedure PaintTo(const ACanvas: TCanvas;
       const X, Y, AWidth, AHeight: Integer;
       const AFontName: TFontName; AFontIconDec: Integer;
       const AFontColor, AMaskColor: TColor;
       const AEnabled: Boolean = True;
-      const ADisabledFactor: Byte = 100);
+      const ADisabledFactor: Byte = DEFAULT_DISABLE_FACTOR;
+      const AZoom: Integer = ZOOM_DEFAULT);
   end;
 
   TIconFontItem = class(TCollectionItem)
@@ -123,18 +132,22 @@ type
     procedure SetIndex(Value: Integer); override;
   public
     function GetBitmap(const AWidth, AHeight: Integer;
-      const AEnabled: Boolean; AOpacity: Byte = 255;
-      const ADisabledFactor: Byte = 100): TBitmap;
+      const AEnabled: Boolean; AOpacity: Byte = DEFAULT_OPACITY;
+      const ADisabledFactor: Byte = DEFAULT_DISABLE_FACTOR;
+      const AZoom: Integer = ZOOM_DEFAULT): TBitmap;
     {$IFDEF GDI+}
     procedure PaintTo(const ACanvas: TCanvas;
       const X, Y, AWidth, AHeight: Integer;
-      const AEnabled: Boolean = True; const ADisabledFactor: Byte = 100;
-      const AOpacity: Byte = 255);
+      const AEnabled: Boolean = True; const ADisabledFactor: Byte = DEFAULT_DISABLE_FACTOR;
+      const AOpacity: Byte = DEFAULT_OPACITY;
+      const AZoom: Integer = ZOOM_DEFAULT);
     {$ELSE}
-    procedure PaintTo(const ACanvas: TCanvas; const X, Y, AWidth, AHeight: Integer;
+    procedure PaintTo(const ACanvas: TCanvas;
+      const X, Y, AWidth, AHeight: Integer;
       out AMaskColor: TColor;
       const AEnabled: Boolean = True;
-      const ADisabledFactor: Byte = 100);
+      const ADisabledFactor: Byte = DEFAULT_DISABLE_FACTOR;
+      const AZoom: Integer = ZOOM_DEFAULT);
     {$ENDIF}
     function GetDisplayName: string; override;
     constructor Create(Collection: TCollection); override;
@@ -326,8 +339,9 @@ begin
 end;
 
 function TIconFontItem.GetBitmap(const AWidth, AHeight: Integer;
-  const AEnabled: Boolean; AOpacity: Byte = 255;
-  const ADisabledFactor: Byte = 100): TBitmap;
+  const AEnabled: Boolean; AOpacity: Byte = DEFAULT_OPACITY;
+  const ADisabledFactor: Byte = DEFAULT_DISABLE_FACTOR;
+  const AZoom: Integer = ZOOM_DEFAULT): TBitmap;
 var
   LFontColor, LMaskColor: TColor;
   LFontName: TFontName;
@@ -352,7 +366,8 @@ begin
     IconFontItems.FOnCheckFont(LFontName);
 
   Result := FIconFont.GetBitmap(AWidth, AHeight, LFontName,
-    FFontIconDec, LFontColor, LMaskColor, AEnabled, ADisabledFactor, AOpacity);
+    FFontIconDec, LFontColor, LMaskColor, AEnabled, ADisabledFactor,
+    AOpacity, AZoom);
 end;
 
 function TIconFontItem.GetName: string;
@@ -413,13 +428,15 @@ end;
 {$IFDEF GDI+}
 procedure TIconFontItem.PaintTo(const ACanvas: TCanvas;
   const X, Y, AWidth, AHeight: Integer;
-  const AEnabled: Boolean = True; const ADisabledFactor: Byte = 100;
-  const AOpacity: Byte = 255);
+  const AEnabled: Boolean = True; const ADisabledFactor: Byte = DEFAULT_DISABLE_FACTOR;
+  const AOpacity: Byte = DEFAULT_OPACITY;
+  const AZoom: Integer = ZOOM_DEFAULT);
 {$ELSE}
 procedure TIconFontItem.PaintTo(const ACanvas: TCanvas;
   const X, Y, AWidth, AHeight: Integer;
   out AMaskColor: TColor;
-  const AEnabled: Boolean = True; const ADisabledFactor: Byte = 100);
+  const AEnabled: Boolean = True; const ADisabledFactor: Byte = DEFAULT_DISABLE_FACTOR;
+  const AZoom: Integer = ZOOM_DEFAULT);
 {$ENDIF}
 var
   LFontColor: TColor;
@@ -452,13 +469,13 @@ begin
     LGPGraphics.SetSmoothingMode(SmoothingModeAntiAlias);
     FIconFont.PaintToGDI(LGPGraphics, X, Y, AWidth, AHeight,
       LFontName, FFontIconDec, LFontColor,
-      AEnabled, ADisabledFactor, AOpacity);
+      AEnabled, ADisabledFactor, AOpacity, AZoom);
   finally
     LGPGraphics.Free;
   end;
   {$ELSE}
   FIconFont.PaintTo(ACanvas, X, Y, AWidth, AHeight, LFontName,
-    FFontIconDec, LFontColor, AMaskColor, AEnabled, ADisabledFactor);
+    FFontIconDec, LFontColor, AMaskColor, AEnabled, ADisabledFactor, AZoom);
   {$ENDIF}
 
 //  if Assigned(IconFontsImageList.OnDrawIcon) then
@@ -893,8 +910,9 @@ function TIconFont.GetBitmap(const AWidth, AHeight: Integer;
   const AFontName: TFontName; AFontIconDec: Integer;
   const AFontColor, AMaskColor: TColor;
   const AEnabled: Boolean = True;
-  const ADisabledFactor: Byte = 100;
-  const AOpacity: Byte = 255): TBitmap;
+  const ADisabledFactor: Byte = DEFAULT_DISABLE_FACTOR;
+  const AOpacity: Byte = DEFAULT_OPACITY;
+  const AZoom: Integer = ZOOM_DEFAULT): TBitmap;
 {$IFDEF GDI+}
 var
   LGraphics: TGPGraphics;
@@ -922,13 +940,13 @@ begin
   try
     LGraphics.SetSmoothingMode(SmoothingModeAntiAlias);
     PaintToGDI(LGraphics, 0, 0, AWidth, AHeight, AFontName,
-      AFontIconDec, AFontColor, AEnabled, ADisabledFactor, AOpacity);
+      AFontIconDec, AFontColor, AEnabled, ADisabledFactor, AOpacity, AZoom);
   finally
     LGraphics.Free;
   end;
   {$ELSE}
   PaintTo(Result.Canvas, 0, 0, AWidth, AHeight, AFontName,
-    AFontIconDec, AFontColor, AMaskColor, AEnabled, ADisabledFactor);
+    AFontIconDec, AFontColor, AMaskColor, AEnabled, ADisabledFactor, AZoom);
   {$ENDIF}
 end;
 
@@ -936,21 +954,27 @@ procedure TIconFont.PaintTo(const ACanvas: TCanvas;
   const X, Y, AWidth, AHeight: Integer;
   const AFontName: TFontName; AFontIconDec: Integer;
   const AFontColor, AMaskColor: TColor;
-  const AEnabled: Boolean; const ADisabledFactor: Byte);
+  const AEnabled: Boolean = True;
+  const ADisabledFactor: Byte = DEFAULT_DISABLE_FACTOR;
+  const AZoom: Integer = ZOOM_DEFAULT);
 var
   S: WideString;
+  LX, LY: Integer;
   LRect: TRect;
   LFontColor: TColor;
+  LFontHeight: Integer;
 begin
   if not AEnabled then
-    LFontColor := DisabledColor(AFontColor, Round(100 * ADisabledFactor / 255))
+    LFontColor := DisabledColor(AFontColor,
+      Round(DEFAULT_DISABLE_FACTOR * ADisabledFactor / 255))
   else
     LFontColor := AFontColor;
 
   with ACanvas do
   begin
     Font.Name := AFontName;
-    Font.Height := AHeight;
+    LFontHeight := Round(AHeight * AZoom / ZOOM_DEFAULT);
+    Font.Height := LFontHeight;
     Font.Color := LFontColor;
     Brush.Color := AMaskColor;
     LRect.Left := X;
@@ -963,14 +987,26 @@ begin
     LRect.Bottom := Y + AHeight;
     {$ENDIF}
     FillRect(LRect);
+
+    if AZoom <> 100 then
+    begin
+      LX := Round((X + AWidth - (AZoom / ZOOM_DEFAULT * AWidth)) / 2);
+      LY := Round((Y + AHeight - (AZoom / ZOOM_DEFAULT * AHeight)) / 2);
+    end
+    else
+    begin
+      LX := X;
+      LY := Y;
+    end;
+
     {$IFDEF DXE3+}
     {$WARN SYMBOL_DEPRECATED OFF}
     S := ConvertFromUtf32(AFontIconDec);
     {$WARN SYMBOL_DEPRECATED ON}
-    TextOut(X, Y, S);
+    TextOut(LX, LY, S);
     {$ELSE}
     S := WideChar(AFontIconDec);
-    TextOutW(ACanvas.Handle, X, Y, PWideChar(S), 1);
+    TextOutW(ACanvas.Handle, LX, LY, PWideChar(S), 1);
     {$ENDIF}
   end;
 end;
@@ -979,8 +1015,9 @@ end;
 procedure TIconFont.PaintToGDI(const AGraphics: TGPGraphics;
   const X, Y, AWidth, AHeight: Single;
   const AFontName: TFontName; AFontIconDec: Integer;
-  const AFontColor: TColor; const AEnabled: Boolean;
-  const ADisabledFactor: Byte; const AOpacity: Byte);
+  const AFontColor: TColor; const AEnabled: Boolean = True;
+  const ADisabledFactor: Byte = DEFAULT_DISABLE_FACTOR; const AOpacity: Byte = DEFAULT_OPACITY;
+  const AZoom: Integer = ZOOM_DEFAULT);
 var
   LSolidBrush: TGPSolidBrush;
   LBounds: TGPRectF;
@@ -988,6 +1025,7 @@ var
   LFontColor: TColor;
   LPoint: TGPPointF;
   S: WideString;
+  LFontSize: Single;
 begin
   LSolidBrush := nil;
   LFont := nil;
@@ -998,18 +1036,30 @@ begin
     LBounds.Height := AHeight;
 
     if not AEnabled then
-      LFontColor := DisabledColor(AFontColor, Round(100 * ADisabledFactor / 255))
+      LFontColor := DisabledColor(AFontColor,
+        Round(DEFAULT_DISABLE_FACTOR * ADisabledFactor / 255))
     else
       LFontColor := AFontColor;
 
     LSolidBrush := TGPSolidBrush.Create(GPColor(LFontColor, AOpacity));
 
-    LFont := TGPFont.Create(AFontName, LBounds.Height, FontStyleRegular, UnitPixel);
+    LFontSize := AHeight * AZoom / ZOOM_DEFAULT;
+    LFont := TGPFont.Create(AFontName, LFontSize, FontStyleRegular, UnitPixel);
 
     AGraphics.SetSmoothingMode(SmoothingModeAntiAlias);
     AGraphics.SetTextRenderingHint(TextRenderingHintAntiAlias);
-    LPoint.X := LBounds.X - (LBounds.Width / 6);
-    LPoint.Y := LBounds.Y;
+    if AZoom <> 100 then
+    begin
+      LPoint.X := ((LBounds.X + AWidth - (AZoom / ZOOM_DEFAULT * AWidth)) / 2)
+        - ((AZoom / ZOOM_DEFAULT * AWidth) / 6);
+      LPoint.Y := (LBounds.Y + AHeight - (AZoom / ZOOM_DEFAULT * AHeight)) / 2;
+    end
+    else
+    begin
+      LPoint.X := LBounds.X - (AWidth / 6); //Offset to align character to left
+      LPoint.Y := LBounds.Y;
+    end;
+
     {$WARN SYMBOL_DEPRECATED OFF}
     S := ConvertFromUtf32(AFontIconDec);
     {$WARN SYMBOL_DEPRECATED ON}
