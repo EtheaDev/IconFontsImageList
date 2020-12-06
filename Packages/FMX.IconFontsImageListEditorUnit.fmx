@@ -1,11 +1,11 @@
-﻿object IconFontsImageListEditorFMX: TIconFontsImageListEditorFMX
+object IconFontsImageListEditorFMX: TIconFontsImageListEditorFMX
   Left = 0
   Top = 0
   Caption = 
     'FireMonkey Icon Fonts ImageList Editor %s - Copyright Ethea S.r.' +
     'l.'
-  ClientHeight = 540
-  ClientWidth = 632
+  ClientHeight = 480
+  ClientWidth = 708
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
@@ -13,293 +13,277 @@
   OnDestroy = FormDestroy
   OnResize = FormResize
   DesignerMasterStyle = 0
-  object ÿ: TPanel
-    Align = Top
-    Size.Width = 632.000000000000000000
-    Size.Height = 215.000000000000000000
+  object TopPanel: TPanel
+    Align = Client
+    Size.Width = 708.000000000000000000
+    Size.Height = 271.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 1
+    TabOrder = 2
     object Panel4: TPanel
       Align = Right
-      Position.X = 546.000000000000000000
-      Size.Width = 86.000000000000000000
-      Size.Height = 215.000000000000000000
+      Position.X = 596.000000000000000000
+      Size.Width = 112.000000000000000000
+      Size.Height = 271.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 3
-      object OKButton: TButton
-        Default = True
-        ModalResult = 1
-        Position.X = 6.000000000000000000
-        Position.Y = 5.000000000000000000
-        Size.Width = 75.000000000000000000
+      object AddButton: TButton
+        Position.X = 3.000000000000000000
+        Position.Y = 8.000000000000000000
+        Size.Width = 106.000000000000000000
         Size.Height = 22.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
-        Text = 'OK'
+        Text = 'Add...'
+        OnClick = AddButtonClick
       end
-      object CancelButton: TButton
-        Cancel = True
-        ModalResult = 2
-        Position.X = 6.000000000000000000
-        Position.Y = 31.000000000000000000
-        Size.Width = 75.000000000000000000
+      object DeleteButton: TButton
+        Position.X = 3.000000000000000000
+        Position.Y = 34.000000000000000000
+        Size.Width = 106.000000000000000000
         Size.Height = 22.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 1
-        Text = 'Cancel'
+        Text = 'Delete'
+        OnClick = DeleteButtonClick
       end
-      object HelpButton: TButton
-        Position.X = 6.000000000000000000
-        Position.Y = 57.000000000000000000
-        Size.Width = 75.000000000000000000
-        Size.Height = 22.000000000000000000
+      object ClearAllButton: TButton
+        Position.X = 2.000000000000000000
+        Position.Y = 60.000000000000000000
+        Size.Width = 106.000000000000000000
+        Size.Height = 24.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 2
-        Text = 'Help'
-        OnClick = HelpButtonClick
+        Text = 'Clear all'
+        OnClick = ClearAllButtonClick
+      end
+      object WinCharMap: TButton
+        Anchors = [akLeft, akBottom]
+        Position.X = 5.000000000000000000
+        Position.Y = 242.000000000000000000
+        Size.Width = 103.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 3
+        Text = 'CharMap...'
+        OnClick = WinCharMapClick
       end
     end
     object paClient: TPanel
       Align = Client
-      Size.Width = 546.000000000000000000
-      Size.Height = 215.000000000000000000
+      Size.Width = 596.000000000000000000
+      Size.Height = 271.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
-      object ImageListGroupBox: TGroupBox
-        Align = Top
-        Size.Width = 546.000000000000000000
-        Size.Height = 105.000000000000000000
-        Size.PlatformDefault = False
-        Text = 'Properties of ImageList'
-        TabOrder = 1
-        object DefaultFontName: TEdit
-          Touch.InteractiveGestures = [LongTap, DoubleTap]
-          TabOrder = 3
-          Position.X = 97.000000000000000000
-          Position.Y = 34.000000000000000000
-          Size.Width = 288.000000000000000000
-          Size.Height = 22.000000000000000000
-          Size.PlatformDefault = False
-          OnExit = DefaultFontNameSelect
-        end
-        object DefaultFontColorColorBox: TColorComboBox
-          DropDownKind = Custom
-          Color = claBlack
-          DisableFocusEffect = False
-          DropDownCount = 20
-          ItemIndex = 7
-          Position.X = 8.000000000000000000
-          Position.Y = 75.000000000000000000
-          Size.Width = 160.000000000000000000
-          Size.Height = 22.000000000000000000
-          Size.PlatformDefault = False
-          TabOrder = 6
-          OnChange = DefaultFontColorColorBoxChange
-        end
-        object DefaultFontNameLabel: TLabel
-          Position.X = 97.000000000000000000
-          Position.Y = 17.000000000000000000
-          Text = 'FontName (default)'
-          TabOrder = 2
-        end
-        object DefaultFontColorLabel: TLabel
-          Position.X = 8.000000000000000000
-          Position.Y = 57.000000000000000000
-          Text = 'FontColor (default)'
-          TabOrder = 5
-        end
-        object AutoSizeCheckBox: TCheckBox
-          Position.X = 281.000000000000000000
-          Position.Y = 76.000000000000000000
-          TabOrder = 4
-          Text = 'AutoSizeBitmaps'
-          OnChange = AutoSizeCheckBoxClick
-        end
-        object DefaultOpacitySpinBox: TSpinBox
-          Touch.InteractiveGestures = [LongTap, DoubleTap]
-          TabOrder = 8
-          Cursor = crIBeam
-          DecimalDigits = 1
-          Value = 100.000000000000000000
-          Position.X = 171.000000000000000000
-          Position.Y = 75.000000000000000000
-          OnChange = DefaultOpacitySpinBoxChange
-        end
-        object DefaultOpacityLabel: TLabel
-          Position.X = 171.000000000000000000
-          Position.Y = 57.000000000000000000
-          Size.Width = 118.000000000000000000
-          Size.Height = 17.000000000000000000
-          Size.PlatformDefault = False
-          Text = '% Opacity (default)'
-          TabOrder = 7
-        end
-        object SizeSpinBox: TSpinBox
-          Touch.InteractiveGestures = [LongTap, DoubleTap]
-          TabOrder = 1
-          Cursor = crIBeam
-          DecimalDigits = 0
-          Max = 256.000000000000000000
-          Value = 128.000000000000000000
-          Position.X = 8.000000000000000000
-          Position.Y = 34.000000000000000000
-          Size.Width = 84.000000000000000000
-          Size.Height = 22.000000000000000000
-          Size.PlatformDefault = False
-          OnChange = SizeChange
-        end
-        object SizeLabel: TLabel
-          Position.X = 9.000000000000000000
-          Position.Y = 17.000000000000000000
-          Size.Width = 88.000000000000000000
-          Size.Height = 17.000000000000000000
-          Size.PlatformDefault = False
-          Text = 'Size (in pixel)'
-          TabOrder = 0
-        end
-      end
-      object ItemGroupBox: TGroupBox
+      object Panel1: TPanel
         Align = Client
-        Size.Width = 546.000000000000000000
-        Size.Height = 110.000000000000000000
+        Size.Width = 596.000000000000000000
+        Size.Height = 271.000000000000000000
         Size.PlatformDefault = False
-        Text = 'Properties of Selected Icon n.%d'
-        TabOrder = 2
-        object FontNameLabel: TLabel
-          Position.X = 97.000000000000000000
-          Position.Y = 20.000000000000000000
-          Text = 'FontName'
+        TabOrder = 1
+        object IconsGroupBox: TGroupBox
+          Align = Client
+          Size.Width = 387.000000000000000000
+          Size.Height = 271.000000000000000000
+          Size.PlatformDefault = False
+          Text = '%d Icons of Imagelist'
           TabOrder = 1
-        end
-        object FontName: TEdit
-          Touch.InteractiveGestures = [LongTap, DoubleTap]
-          TabOrder = 2
-          Position.X = 97.000000000000000000
-          Position.Y = 37.000000000000000000
-          Size.Width = 230.000000000000000000
-          Size.Height = 22.000000000000000000
-          Size.PlatformDefault = False
-          OnExit = FontNameChange
-        end
-        object FontColorLabel: TLabel
-          Position.X = 96.000000000000000000
-          Position.Y = 60.000000000000000000
-          Text = 'FontColor'
-          TabOrder = 7
-        end
-        object FontColor: TColorComboBox
-          DropDownKind = Custom
-          Color = claNull
-          DisableFocusEffect = False
-          ItemIndex = 147
-          Position.X = 96.000000000000000000
-          Position.Y = 78.000000000000000000
-          Size.Width = 160.000000000000000000
-          Size.Height = 22.000000000000000000
-          Size.PlatformDefault = False
-          TabOrder = 8
-          OnChange = FontColorChange
-        end
-        object FontIconHex: TEdit
-          Touch.InteractiveGestures = [LongTap, DoubleTap]
-          TabOrder = 4
-          Position.X = 331.000000000000000000
-          Position.Y = 37.000000000000000000
-          Size.Width = 74.000000000000000000
-          Size.Height = 22.000000000000000000
-          Size.PlatformDefault = False
-          OnExit = FontIconHexExit
-        end
-        object FontIconHexLabel: TLabel
-          Position.X = 331.000000000000000000
-          Position.Y = 20.000000000000000000
-          Size.Width = 74.000000000000000000
-          Size.Height = 17.000000000000000000
-          Size.PlatformDefault = False
-          Text = 'FontIconHex'
-          TabOrder = 3
-        end
-        object FontIconDec: TSpinBox
-          Touch.InteractiveGestures = [LongTap, DoubleTap]
-          TabOrder = 6
-          Cursor = crIBeam
-          DecimalDigits = 0
-          Max = 1048575.000000000000000000
-          Position.X = 408.000000000000000000
-          Position.Y = 37.000000000000000000
-          Size.Width = 109.000000000000000000
-          Size.Height = 22.000000000000000000
-          Size.PlatformDefault = False
-          OnChange = FontIconDecChange
-        end
-        object FontIconDecLabel: TLabel
-          Position.X = 407.000000000000000000
-          Position.Y = 20.000000000000000000
-          Size.Width = 74.000000000000000000
-          Size.Height = 17.000000000000000000
-          Size.PlatformDefault = False
-          Text = 'FontIconDec'
-          TabOrder = 5
-        end
-        object IconName: TEdit
-          Touch.InteractiveGestures = [LongTap, DoubleTap]
-          TabOrder = 12
-          Position.X = 363.000000000000000000
-          Position.Y = 78.000000000000000000
-          Size.Width = 154.000000000000000000
-          Size.Height = 22.000000000000000000
-          Size.PlatformDefault = False
-          OnExit = IconNameExit
-        end
-        object IconNameLabel: TLabel
-          Position.X = 363.000000000000000000
-          Position.Y = 60.000000000000000000
-          Size.Width = 74.000000000000000000
-          Size.Height = 17.000000000000000000
-          Size.PlatformDefault = False
-          Text = 'IconName'
-          TabOrder = 11
-        end
-        object OpacityLabel: TLabel
-          Position.X = 259.000000000000000000
-          Position.Y = 60.000000000000000000
-          Size.Width = 97.000000000000000000
-          Size.Height = 17.000000000000000000
-          Size.PlatformDefault = False
-          Text = '% Opacity'
-          TabOrder = 9
-        end
-        object OpacitySpinBox: TSpinBox
-          Touch.InteractiveGestures = [LongTap, DoubleTap]
-          TabOrder = 10
-          Cursor = crIBeam
-          Value = 100.000000000000000000
-          Position.X = 259.000000000000000000
-          Position.Y = 78.000000000000000000
-          OnChange = OpacitySpinBoxChange
-        end
-        object IconPanel: TPanel
-          Align = Left
-          Margins.Left = 8.000000000000000000
-          Margins.Top = 20.000000000000000000
-          Margins.Right = 8.000000000000000000
-          Margins.Bottom = 8.000000000000000000
-          Position.X = 8.000000000000000000
-          Position.Y = 20.000000000000000000
-          Size.Width = 82.000000000000000000
-          Size.Height = 82.000000000000000000
-          Size.PlatformDefault = False
-          TabOrder = 0
-          object IconImage: TGlyph
+          object ImageView: TListBox
+            Align = Client
             Margins.Left = 4.000000000000000000
-            Margins.Top = 4.000000000000000000
+            Margins.Top = 16.000000000000000000
             Margins.Right = 4.000000000000000000
             Margins.Bottom = 4.000000000000000000
-            Align = Client
-            Size.Width = 74.000000000000000000
-            Size.Height = 74.000000000000000000
+            Size.Width = 379.000000000000000000
+            Size.Height = 251.000000000000000000
             Size.PlatformDefault = False
-            ImageIndex = 1
+            TabOrder = 0
+            Columns = 3
+            DisableFocusEffect = True
+            ItemHeight = 36.000000000000000000
+            ItemWidth = 120.000000000000000000
+            DefaultItemStyles.ItemStyle = ''
+            DefaultItemStyles.GroupHeaderStyle = ''
+            DefaultItemStyles.GroupFooterStyle = ''
+            OnChange = ImageViewSelectItem
+            Viewport.Width = 375.000000000000000000
+            Viewport.Height = 247.000000000000000000
+          end
+        end
+        object GlobalGroupBox: TGroupBox
+          Align = Left
+          Size.Width = 209.000000000000000000
+          Size.Height = 271.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'Properties of ImageList'
+          TabOrder = 0
+          object DefaultFontName: TComboBox
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            Position.X = 6.000000000000000000
+            Position.Y = 179.000000000000000000
+            Size.Width = 194.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 12
+            OnExit = DefaultFontNameSelect
+          end
+          object DefaultFontNameLabel: TLabel
+            Position.X = 6.000000000000000000
+            Position.Y = 162.000000000000000000
+            Size.Width = 107.000000000000000000
+            Size.Height = 17.000000000000000000
+            Size.PlatformDefault = False
+            Text = 'FontName (default)'
+            TabOrder = 11
+            TabStop = False
+          end
+          object DefaultFontColorLabel: TLabel
+            Position.X = 6.000000000000000000
+            Position.Y = 203.000000000000000000
+            Text = 'FontColor (default)'
+            TabOrder = 13
+            TabStop = False
+          end
+          object DefaultFontColorColorBox: TColorComboBox
+            DropDownKind = Custom
+            Color = claBlack
+            DisableFocusEffect = False
+            DropDownCount = 20
+            ItemIndex = 7
+            Position.X = 6.000000000000000000
+            Position.Y = 221.000000000000000000
+            Size.Width = 195.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 14
+            OnChange = DefaultFontColorColorBoxChange
+          end
+          object DefaultOpacityLabel: TLabel
+            Position.X = 93.000000000000000000
+            Position.Y = 112.000000000000000000
+            Size.Width = 104.000000000000000000
+            Size.Height = 17.000000000000000000
+            Size.PlatformDefault = False
+            Text = '% Opacity (default)'
+            TabOrder = 9
+            TabStop = False
+          end
+          object DefaultOpacitySpinBox: TSpinBox
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            TabOrder = 10
+            Cursor = crIBeam
+            DecimalDigits = 1
+            Value = 100.000000000000000000
+            Position.X = 93.000000000000000000
+            Position.Y = 130.000000000000000000
+            Size.Width = 80.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            OnChange = DefaultOpacitySpinBoxChange
+          end
+          object SizeLabel: TLabel
+            Position.X = 6.000000000000000000
+            Position.Y = 16.000000000000000000
+            Size.Width = 88.000000000000000000
+            Size.Height = 17.000000000000000000
+            Size.PlatformDefault = False
+            Text = 'Size (in pixel)'
+            TabOrder = 0
+            TabStop = False
+          end
+          object SizeSpinBox: TSpinBox
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            TabOrder = 1
+            Cursor = crIBeam
+            DecimalDigits = 0
+            Max = 256.000000000000000000
+            Value = 128.000000000000000000
+            Position.X = 8.000000000000000000
+            Position.Y = 34.000000000000000000
+            Size.Width = 80.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            OnChange = SizeChange
+          end
+          object WidthLabel: TLabel
+            Position.X = 6.000000000000000000
+            Position.Y = 64.000000000000000000
+            Size.Width = 88.000000000000000000
+            Size.Height = 17.000000000000000000
+            Size.PlatformDefault = False
+            Text = 'Width (in pixel)'
+            TabOrder = 3
+            TabStop = False
+          end
+          object WidthSpinBox: TSpinBox
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            TabOrder = 4
+            Cursor = crIBeam
+            DecimalDigits = 0
+            Max = 256.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 82.000000000000000000
+            Size.Width = 80.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            OnChange = SizeChange
+          end
+          object HeightLabel: TLabel
+            Position.X = 94.000000000000000000
+            Position.Y = 64.000000000000000000
+            Size.Width = 88.000000000000000000
+            Size.Height = 17.000000000000000000
+            Size.PlatformDefault = False
+            Text = 'Height (in pixel)'
+            TabOrder = 5
+            TabStop = False
+          end
+          object HeightSpinBox: TSpinBox
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            TabOrder = 6
+            Cursor = crIBeam
+            DecimalDigits = 0
+            Max = 256.000000000000000000
+            Value = 128.000000000000000000
+            Position.X = 93.000000000000000000
+            Position.Y = 82.000000000000000000
+            Size.Width = 80.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            OnChange = SizeChange
+          end
+          object ZoomLabel: TLabel
+            Position.X = 6.000000000000000000
+            Position.Y = 112.000000000000000000
+            Size.Width = 83.000000000000000000
+            Size.Height = 17.000000000000000000
+            Size.PlatformDefault = False
+            Text = 'Zoom %'
+            TabOrder = 7
+            TabStop = False
+          end
+          object ZoomSpinBox: TSpinBox
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            TabOrder = 8
+            Cursor = crIBeam
+            DecimalDigits = 0
+            Max = 256.000000000000000000
+            Value = 100.000000000000000000
+            Position.X = 5.000000000000000000
+            Position.Y = 130.000000000000000000
+            Size.Width = 80.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            OnChange = ZoomChange
+          end
+          object AutoSizeCheckBox: TCheckBox
+            Position.X = 104.000000000000000000
+            Position.Y = 35.000000000000000000
+            Size.Width = 89.000000000000000000
+            Size.Height = 19.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 2
+            Text = 'AutoSize'
+            OnChange = AutoSizeCheckBoxClick
           end
         end
       end
@@ -307,52 +291,57 @@
   end
   object PaButtons: TPanel
     Align = Bottom
-    Position.Y = 459.000000000000000000
-    Size.Width = 632.000000000000000000
+    Position.Y = 443.000000000000000000
+    Size.Width = 708.000000000000000000
     Size.Height = 37.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 2
-    object AddButton: TButton
-      Position.X = 8.000000000000000000
-      Position.Y = 8.000000000000000000
-      Size.Width = 81.000000000000000000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 0
-      Text = 'Add...'
-      OnClick = AddButtonClick
-    end
-    object DeleteButton: TButton
-      Position.X = 96.000000000000000000
-      Position.Y = 8.000000000000000000
-      Size.Width = 81.000000000000000000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 1
-      Text = 'Delete'
-      OnClick = DeleteButtonClick
-    end
-    object ClearAllButton: TButton
-      Position.X = 184.000000000000000000
-      Position.Y = 8.000000000000000000
-      Size.Width = 81.000000000000000000
+    TabOrder = 0
+    object OKButton: TButton
+      Anchors = [akTop, akRight]
+      Default = True
+      ModalResult = 1
+      Position.X = 464.000000000000000000
+      Position.Y = 7.000000000000000000
+      Size.Width = 75.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 2
-      Text = 'Clear all'
-      OnClick = ClearAllButtonClick
+      Text = 'OK'
+    end
+    object CancelButton: TButton
+      Anchors = [akTop, akRight]
+      Cancel = True
+      ModalResult = 2
+      Position.X = 544.000000000000000000
+      Position.Y = 7.000000000000000000
+      Size.Width = 75.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      Text = 'Cancel'
+    end
+    object HelpButton: TButton
+      Anchors = [akTop, akRight]
+      Position.X = 624.000000000000000000
+      Position.Y = 7.000000000000000000
+      Size.Width = 75.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      Text = 'Help'
+      OnClick = HelpButtonClick
     end
   end
-  object PaIconBuilder: TPanel
+  object PanelIconBuilder: TPanel
     Align = Bottom
-    Position.Y = 496.000000000000000000
-    Size.Width = 632.000000000000000000
+    Position.Y = 399.000000000000000000
+    Size.Width = 708.000000000000000000
     Size.Height = 44.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 8
+    TabOrder = 1
     object IconBuilderGroupBox: TGroupBox
       Align = Right
-      Position.X = 213.000000000000000000
+      Position.X = 289.000000000000000000
       Size.Width = 419.000000000000000000
       Size.Height = 44.000000000000000000
       Size.PlatformDefault = False
@@ -366,6 +355,7 @@
         Size.PlatformDefault = False
         Text = 'From Hex N.'
         TabOrder = 0
+        TabStop = False
       end
       object FromHexNum: TEdit
         Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -395,6 +385,7 @@
         Size.PlatformDefault = False
         Text = 'To Hex N.'
         TabOrder = 2
+        TabStop = False
       end
       object BuildFromHexButton: TButton
         Position.X = 317.000000000000000000
@@ -408,35 +399,6 @@
       end
     end
   end
-  object IconsGroupBox: TGroupBox
-    Align = Client
-    Size.Width = 632.000000000000000000
-    Size.Height = 244.000000000000000000
-    Size.PlatformDefault = False
-    Text = '%d Icons of Imagelist'
-    TabOrder = 0
-    object ImageView: TListBox
-      Align = Client
-      Margins.Left = 4.000000000000000000
-      Margins.Top = 16.000000000000000000
-      Margins.Right = 4.000000000000000000
-      Margins.Bottom = 4.000000000000000000
-      Size.Width = 624.000000000000000000
-      Size.Height = 224.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 0
-      Columns = 5
-      DisableFocusEffect = True
-      ItemHeight = 36.000000000000000000
-      ItemWidth = 120.000000000000000000
-      DefaultItemStyles.ItemStyle = ''
-      DefaultItemStyles.GroupHeaderStyle = ''
-      DefaultItemStyles.GroupFooterStyle = ''
-      OnChange = ImageViewSelectItem
-      Viewport.Width = 620.000000000000000000
-      Viewport.Height = 220.000000000000000000
-    end
-  end
   object ListBoxItemStyleBook: TStyleBook
     Styles = <
       item
@@ -447,7 +409,7 @@
           464D585F5354594C4520322E35010616437573746F6D4C697374426F78497465
           6D5374796C65037010005450463007544C61796F757400095374796C654E616D
           650616437573746F6D4C697374426F784974656D5374796C6505416C69676E07
-          0643656E7465720A53697A652E576964746805000000000000009606400B5369
+          0643656E7465720A53697A652E57696474680500000000000000AA06400B5369
           7A652E48656967687405000000000000008005401453697A652E506C6174666F
           726D44656661756C7408085461624F726465720200000654476C797068000953
           74796C654E616D65060A676C7970687374796C650C4D617267696E732E4C6566
@@ -461,7 +423,7 @@
           7267696E732E4C6566740500000000000000C000400B4D617267696E732E546F
           70050000000000000080FF3F0D4D617267696E732E5269676874050000000000
           0000C000400E4D617267696E732E426F74746F6D050000000000000080FF3F0A
-          53697A652E576964746805000000000000009006400B53697A652E4865696768
+          53697A652E57696474680500000000000000A406400B53697A652E4865696768
           740500000000000000F804401453697A652E506C6174666F726D44656661756C
           74080454657874060454657874155465787453657474696E67732E576F726457
           72617008165465787453657474696E67732E486F727A416C69676E07074C6561
@@ -579,6 +541,160 @@
           13546F756368416E696D6174696F6E2E4C696E6B0E0000000000}
       end>
     Left = 448
-    Top = 24
+    Top = 120
+  end
+  object Panel3: TPanel
+    Align = Bottom
+    Position.Y = 271.000000000000000000
+    Size.Width = 708.000000000000000000
+    Size.Height = 128.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 8
+    object ItemGroupBox: TGroupBox
+      Align = Client
+      Size.Width = 580.000000000000000000
+      Size.Height = 128.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Properties of Selected Icon n.%d'
+      TabOrder = 1
+      object FontNameLabel: TLabel
+        Position.X = 5.000000000000000000
+        Position.Y = 20.000000000000000000
+        Text = 'FontName'
+        TabOrder = 0
+        TabStop = False
+      end
+      object FontName: TComboBox
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        Position.X = 5.000000000000000000
+        Position.Y = 37.000000000000000000
+        Size.Width = 172.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        OnExit = FontNameChange
+      end
+      object FontIconHexLabel: TLabel
+        Position.X = 186.000000000000000000
+        Position.Y = 20.000000000000000000
+        Size.Width = 74.000000000000000000
+        Size.Height = 17.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'FontIconHex'
+        TabOrder = 2
+        TabStop = False
+      end
+      object FontIconHex: TEdit
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        TabOrder = 3
+        Position.X = 186.000000000000000000
+        Position.Y = 37.000000000000000000
+        Size.Width = 74.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        OnExit = FontIconHexExit
+      end
+      object FontIconDecLabel: TLabel
+        Position.X = 266.000000000000000000
+        Position.Y = 20.000000000000000000
+        Size.Width = 74.000000000000000000
+        Size.Height = 17.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'FontIconDec'
+        TabOrder = 4
+        TabStop = False
+      end
+      object FontIconDec: TSpinBox
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        TabOrder = 5
+        Cursor = crIBeam
+        DecimalDigits = 0
+        Max = 1048575.000000000000000000
+        Position.X = 267.000000000000000000
+        Position.Y = 37.000000000000000000
+        Size.Width = 109.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        OnChange = FontIconDecChange
+      end
+      object IconNameLabel: TLabel
+        Position.X = 186.000000000000000000
+        Position.Y = 60.000000000000000000
+        Size.Width = 74.000000000000000000
+        Size.Height = 17.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'IconName'
+        TabOrder = 8
+        TabStop = False
+      end
+      object IconName: TEdit
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        TabOrder = 9
+        Position.X = 186.000000000000000000
+        Position.Y = 78.000000000000000000
+        Size.Width = 154.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        OnExit = IconNameExit
+      end
+      object OpacityLabel: TLabel
+        Position.X = 347.000000000000000000
+        Position.Y = 60.000000000000000000
+        Size.Width = 97.000000000000000000
+        Size.Height = 17.000000000000000000
+        Size.PlatformDefault = False
+        Text = '% Opacity'
+        TabOrder = 10
+        TabStop = False
+      end
+      object OpacitySpinBox: TSpinBox
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        TabOrder = 11
+        Cursor = crIBeam
+        Value = 100.000000000000000000
+        Position.X = 347.000000000000000000
+        Position.Y = 78.000000000000000000
+        OnChange = OpacitySpinBoxChange
+      end
+      object FontColorLabel: TLabel
+        Position.X = 4.000000000000000000
+        Position.Y = 60.000000000000000000
+        Text = 'FontColor'
+        TabOrder = 6
+        TabStop = False
+      end
+      object FontColor: TColorComboBox
+        DropDownKind = Custom
+        Color = claBlack
+        DisableFocusEffect = False
+        ItemIndex = 7
+        Position.X = 4.000000000000000000
+        Position.Y = 78.000000000000000000
+        Size.Width = 173.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 7
+        OnChange = FontColorChange
+      end
+    end
+    object IconPanel: TPanel
+      Align = Left
+      Size.Width = 128.000000000000000000
+      Size.Height = 128.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      TabStop = False
+      object IconImage: TGlyph
+        Margins.Left = 4.000000000000000000
+        Margins.Top = 4.000000000000000000
+        Margins.Right = 4.000000000000000000
+        Margins.Bottom = 4.000000000000000000
+        Align = Client
+        Size.Width = 120.000000000000000000
+        Size.Height = 120.000000000000000000
+        Size.PlatformDefault = False
+        ImageIndex = 1
+      end
+    end
   end
 end

@@ -35,55 +35,65 @@ uses
   System.SysUtils, System.Types, System.UITypes, FMX.Controls, System.Classes,
   System.Actions, FMX.Forms, FMX.Graphics, FMX.ActnList, FMX.StdCtrls, FMX.Colors, FMX.ListBox,
   FMX.Controls.Presentation, FMX.ImgList, FMX.Types, FMX.Layouts,
-  System.ImageList, FMX.IconFontsImageList, FMX.Edit, FMX.EditBox, FMX.SpinBox;
+  System.ImageList, FMX.IconFontsImageList, FMX.Edit, FMX.EditBox, FMX.SpinBox,
+  FMX.Effects, FMX.Filter.Effects;
 
 type
   TIconFontsImageListEditorFMX = class(TForm)
     PaButtons: TPanel;
-    AddButton: TButton;
-    DeleteButton: TButton;
-    ClearAllButton: TButton;
-    ÿ: TPanel;
+    TopPanel: TPanel;
     Panel4: TPanel;
-    OKButton: TButton;
-    CancelButton: TButton;
-    HelpButton: TButton;
     paClient: TPanel;
-    ImageListGroupBox: TGroupBox;
-    DefaultFontName: TEdit;
-    DefaultFontColorColorBox: TColorComboBox;
-    DefaultFontNameLabel: TLabel;
-    DefaultFontColorLabel: TLabel;
-    AutoSizeCheckBox: TCheckBox;
-    DefaultOpacitySpinBox: TSpinBox;
-    DefaultOpacityLabel: TLabel;
-    ItemGroupBox: TGroupBox;
-    FontNameLabel: TLabel;
-    FontName: TEdit;
-    FontColorLabel: TLabel;
-    FontColor: TColorComboBox;
-    FontIconHex: TEdit;
-    FontIconHexLabel: TLabel;
-    FontIconDec: TSpinBox;
-    FontIconDecLabel: TLabel;
-    IconName: TEdit;
-    PaIconBuilder: TPanel;
-    IconNameLabel: TLabel;
-    OpacityLabel: TLabel;
-    OpacitySpinBox: TSpinBox;
-    IconPanel: TPanel;
-    IconImage: TGlyph;
+    PanelIconBuilder: TPanel;
     ListBoxItemStyleBook: TStyleBook;
-    SizeSpinBox: TSpinBox;
-    SizeLabel: TLabel;
     IconBuilderGroupBox: TGroupBox;
     FromLabel: TLabel;
     FromHexNum: TEdit;
     ToHexNum: TEdit;
     ToLabel: TLabel;
     BuildFromHexButton: TButton;
+    Panel1: TPanel;
     IconsGroupBox: TGroupBox;
     ImageView: TListBox;
+    Panel3: TPanel;
+    GlobalGroupBox: TGroupBox;
+    DefaultFontName: TComboBox;
+    DefaultFontNameLabel: TLabel;
+    DefaultFontColorLabel: TLabel;
+    DefaultFontColorColorBox: TColorComboBox;
+    DefaultOpacityLabel: TLabel;
+    DefaultOpacitySpinBox: TSpinBox;
+    ItemGroupBox: TGroupBox;
+    FontNameLabel: TLabel;
+    FontName: TComboBox;
+    FontIconHexLabel: TLabel;
+    FontIconHex: TEdit;
+    FontIconDecLabel: TLabel;
+    FontIconDec: TSpinBox;
+    IconNameLabel: TLabel;
+    IconName: TEdit;
+    OpacityLabel: TLabel;
+    OpacitySpinBox: TSpinBox;
+    FontColorLabel: TLabel;
+    FontColor: TColorComboBox;
+    IconPanel: TPanel;
+    IconImage: TGlyph;
+    SizeLabel: TLabel;
+    SizeSpinBox: TSpinBox;
+    WidthLabel: TLabel;
+    WidthSpinBox: TSpinBox;
+    HeightLabel: TLabel;
+    HeightSpinBox: TSpinBox;
+    ZoomLabel: TLabel;
+    ZoomSpinBox: TSpinBox;
+    AutoSizeCheckBox: TCheckBox;
+    OKButton: TButton;
+    CancelButton: TButton;
+    HelpButton: TButton;
+    AddButton: TButton;
+    DeleteButton: TButton;
+    ClearAllButton: TButton;
+    WinCharMap: TButton;
     procedure ClearAllButtonClick(Sender: TObject);
     procedure DeleteButtonClick(Sender: TObject);
     procedure AddButtonClick(Sender: TObject);
@@ -108,6 +118,8 @@ type
     procedure OpacitySpinBoxChange(Sender: TObject);
     procedure SizeChange(Sender: TObject);
     procedure FormResize(Sender: TObject);
+    procedure WinCharMapClick(Sender: TObject);
+    procedure ZoomChange(Sender: TObject);
   private
     FIconIndexLabel: string;
     FTotIconsLabel: string;
@@ -115,6 +127,7 @@ type
     FEditingList: TIconFontsImageList;
     //procedure IconFontsImageListFontMissing(const AFontName: TFontName);
     //procedure CloseCharMap(Sender: TObject; var Action: TCloseAction);
+    function GetFontName(FontComboBox: TComboBox): string;
     procedure AddNewItem;
     procedure DeleteSelectedItem;
     procedure ClearAllImages;
@@ -140,7 +153,42 @@ implementation
 uses
   Winapi.Messages
   , Winapi.Windows
-  , Winapi.ShellApi;
+  , Winapi.ShellApi
+  , System.Math;
+
+procedure CollectFonts(const FontList: TStrings);
+var
+  DC: HDC;
+  LFont: TLogFont;
+  LList: TStringList;
+
+  function EnumFontsProc(var LogFont: TLogFont; var TextMetric: TTextMetric;
+    FontType: Integer; Data: Pointer): Integer; stdcall;
+  var
+    S: TStrings;
+    Temp: string;
+  begin
+    S := TStrings(Data);
+    Temp := LogFont.lfFaceName;
+    if (S.Count = 0) or (AnsiCompareText(S[S.Count-1], Temp) <> 0) then
+      S.Add(Temp);
+    Result := 1;
+  end;
+
+begin
+  LList := TStringList.Create;
+  try
+    DC := GetDC(0);
+    FillChar(LFont, sizeof(LFont), 0);
+    LFont.lfCharset := DEFAULT_CHARSET;
+    EnumFontFamiliesEx(DC, LFont, @EnumFontsProc, Winapi.Windows.LPARAM(LList), 0);
+    ReleaseDC(0, DC);
+    LList.Sort;
+    FontList.Assign(LList);
+  finally
+    LList.Free;
+  end;
+end;
 
 function UpdateIconFontListView(const AListBox: TListBox): Integer;
 var
@@ -160,10 +208,13 @@ begin
       LListItem := TListBoxItem.Create(AListBox);
       LListItem.StyleLookup := 'CustomListBoxItemStyle';
       AListBox.AddObject(LListItem);
+(*
       LListItem.Text :=
         Format('%d (%s)%s%s',
         [LItem.FontIconDec,LItem.FontIconHex,sLineBreak,
          Litem.IconName]);
+*)
+      LListItem.Text := Format('%s',[Litem.IconName]);
        LListItem.ImageIndex := I;
     end;
   finally
@@ -212,8 +263,11 @@ begin
       try
         FEditinglist.Assign(AImageList);
         //DefaultFontName.ItemIndex := DefaultFontName.Items.IndexOf(FEditingList.FontName);
-        DefaultFontName.Text := FEditingList.FontName;
-        SizeSpinBox.Value := FEditingList.Size;
+        DefaultFontName.ItemIndex := DefaultFontName.Items.IndexOf(FEditingList.FontName);
+        SizeSpinBox.Value := Max(FEditingList.Width, FEditingList.Height);
+        WidthSpinBox.Value := FEditingList.Width;
+        HeightSpinBox.Value := FEditingList.Height;
+        ZoomSpinBox.Value := FEditingList.Zoom;
         DefaultFontColorColorBox.Color := FEditingList.FontColor;
         AutoSizeCheckBox.IsChecked := FEditingList.AutoSizeBitmaps;
         DefaultOpacitySpinBox.Value := FEditingList.Opacity * 100;
@@ -223,7 +277,6 @@ begin
         //UpdateCharsToBuild;
         if ImageView.Items.Count > 0 then
           ImageView.ItemIndex := 0;
-
         //if SavedBounds.Right - SavedBounds.Left > 0 then
         //  BoundsRect := SavedBounds;
       finally
@@ -265,8 +318,16 @@ end;
 
 procedure TIconFontsImageListEditorFMX.SizeChange(Sender: TObject);
 begin
-  FEditingList.Size := Round(SizeSpinBox.Value);
-  UpdateGUI;
+  if not FUpdating then
+  begin
+    if Sender = SizeSpinBox then
+      FEditingList.Size := Round(SizeSpinBox.Value);
+    if Sender = WidthSpinBox then
+      FEditingList.Width := Round(WidthSpinBox.Value);
+    if Sender = HeightSpinBox then
+      FEditingList.Height := Round(HeightSpinBox.Value);
+    UpdateGUI;
+  end;
 end;
 
 procedure TIconFontsImageListEditorFMX.AutoSizeCheckBoxClick(Sender: TObject);
@@ -342,9 +403,8 @@ end;
 procedure TIconFontsImageListEditorFMX.FontNameChange(Sender: TObject);
 begin
   if FUpdating then Exit;
-  //if Screen.Fonts.IndexOf(FontName.Text) >= 0 then
   begin
-    SetImageFontName(FontName.Text);
+    SetImageFontName(GetFontName(FontName));
     UpdateCharsToBuild;
   end;
 end;
@@ -382,6 +442,11 @@ var
 begin
   FUpdating := True;
   try
+    SizeSpinBox.Value := Max(FEditingList.Width, FEditingList.Height);
+    WidthSpinBox.Value := FEditingList.Width;
+    HeightSpinBox.Value := FEditingList.Height;
+    ZoomSpinBox.Value := FEditingList.Zoom;
+
     LIconFontItem := SelectedIconFont;
     LIsItemSelected := LIconFontItem <> nil;
     ClearAllButton.Enabled := FEditingList.Count > 0;
@@ -405,8 +470,7 @@ begin
       else
         FontColor.Color := TAlphaColors.Null;
       LItemFontName := LIconFontItem.FontName;
-      //FontName.ItemIndex := FontName.Items.IndexOf(LItemFontName);
-      FontName.Text := LItemFontName;
+      FontName.ItemIndex := FontName.Items.IndexOf(LItemFontName);
       IconName.Text := LIconFontItem.IconName;
       FontIconDec.Value := LIconFontItem.FontIconDec;
       FontIconHex.Text := LIconFontItem.FontIconHex;
@@ -417,8 +481,7 @@ begin
     else
     begin
       FontColor.Color := TAlphaColors.Null;
-      //FontName.ItemIndex := -1;
-      FontName.Text := '';
+      FontName.ItemIndex := -1;
       IconName.Text := '';
       FontIconDec.Value := 0;
       FontIconHex.Text := '';
@@ -427,6 +490,18 @@ begin
   finally
     FUpdating := False;
   end;
+end;
+
+procedure TIconFontsImageListEditorFMX.WinCharMapClick(Sender: TObject);
+begin
+  WinCharMap.SetFocus;
+  ShellExecute(0, 'open', 'charmap', '', '', SW_SHOWNORMAL);
+end;
+
+procedure TIconFontsImageListEditorFMX.ZoomChange(Sender: TObject);
+begin
+  if not FUpdating then
+    FEditingList.Zoom := Round(ZoomSpinBox.Value);
 end;
 
 procedure TIconFontsImageListEditorFMX.DeleteSelectedItem;
@@ -515,7 +590,7 @@ end;
 
 procedure TIconFontsImageListEditorFMX.DefaultFontNameSelect(Sender: TObject);
 begin
-  FEditingList.FontName := DefaultFontName.Text;
+  FEditingList.FontName := GetFontName(DefaultFontName);
   UpdateGUI;
 end;
 
@@ -546,11 +621,11 @@ begin
   FUpdating := True;
   FEditingList := TIconFontsImageList.Create(nil);
   //FEditingList.OnFontMissing := IconFontsImageListFontMissing;
-  //FontColor.ItemIndex := -1;
   FontColor.Color := talphacolors.Null;
-  //FontName.Items := Screen.Fonts;
-  //DefaultFontName.Items := Screen.Fonts;
-  DefaultFontName.Text := '';
+
+  CollectFonts(DefaultFontName.Items);
+  CollectFonts(FontName.Items);
+  DefaultFontName.ItemIndex := -1;
   FIconIndexLabel := ItemGroupBox.Text;
   FTotIconsLabel := IconsGroupBox.Text;
   IconImage.Images := FEditingList;
@@ -571,8 +646,17 @@ procedure TIconFontsImageListEditorFMX.FormResize(Sender: TObject);
 begin
   if ClientWidth < 610 then
     ClientWidth := 610;
-  if ClientHeight < 390 then
-    ClientHeight := 390;
+  if ClientHeight < 480 then
+    ClientHeight := 480;
+end;
+
+function TIconFontsImageListEditorFMX.GetFontName(
+  FontComboBox: TComboBox): string;
+begin
+  if FontComboBox.ItemIndex = -1 then
+    Result := ''
+  else
+    Result := FontComboBox.Items.Strings[FontComboBox.ItemIndex];
 end;
 
 procedure TIconFontsImageListEditorFMX.EditChangeUpdateGUI(Sender: TObject);
@@ -615,12 +699,11 @@ end;
 
 procedure TIconFontsImageListEditorFMX.BuildFromHexButtonClick(Sender: TObject);
 begin
-  //Screen.Cursor := crHourGlass;
   try
     FEditingList.AddIcons(
       StrToInt('$' + FromHexNum.Text), //From Chr
       StrToInt('$' + ToHexNum.Text), //To Chr
-      FontName.Text
+      GetFontName(FontName)
       );
     UpdateIconFontListView(ImageView);
   finally
