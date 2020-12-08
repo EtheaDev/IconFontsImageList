@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 503
-  Top = 155
+  Left = 263
+  Top = 116
   Width = 725
   Height = 586
   Caption = 
@@ -18,6 +18,12 @@ object MainForm: TMainForm
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
+  object Splitter: TSplitter
+    Left = 624
+    Top = 42
+    Height = 505
+    Align = alRight
+  end
   object Panel1: TPanel
     Left = 0
     Top = 42
@@ -29,7 +35,7 @@ object MainForm: TMainForm
       Left = 1
       Top = 1
       Width = 199
-      Height = 323
+      Height = 261
       Align = alClient
       Caption = 'Select Theme/Color'
       ItemIndex = 0
@@ -45,7 +51,7 @@ object MainForm: TMainForm
     end
     object GroupBox1: TGroupBox
       Left = 1
-      Top = 324
+      Top = 262
       Width = 199
       Height = 77
       Align = alBottom
@@ -80,7 +86,7 @@ object MainForm: TMainForm
     end
     object SliderPanel: TPanel
       Left = 1
-      Top = 442
+      Top = 380
       Width = 199
       Height = 62
       Align = alBottom
@@ -109,7 +115,7 @@ object MainForm: TMainForm
     end
     object ButtonsPanel: TPanel
       Left = 1
-      Top = 401
+      Top = 339
       Width = 199
       Height = 41
       Align = alBottom
@@ -132,6 +138,35 @@ object MainForm: TMainForm
         Caption = 'Show Image Editor'
         TabOrder = 1
         OnClick = ShowImageEditorButtonClick
+      end
+    end
+    object ZoomPanel: TPanel
+      Left = 1
+      Top = 442
+      Width = 199
+      Height = 62
+      Align = alBottom
+      BevelOuter = bvNone
+      TabOrder = 4
+      object ZoomLabel: TLabel
+        Left = 8
+        Top = 3
+        Width = 44
+        Height = 13
+        Caption = 'Zoom %:'
+      end
+      object ZoomTrackBar: TTrackBar
+        Left = 0
+        Top = 23
+        Width = 199
+        Height = 39
+        Align = alBottom
+        Max = 100
+        Min = 10
+        Frequency = 8
+        Position = 100
+        TabOrder = 0
+        OnChange = ZoomTrackBarChange
       end
     end
   end
@@ -182,13 +217,14 @@ object MainForm: TMainForm
       Enabled = False
     end
   end
-  object Panel2: TPanel
+  object paButtons: TPanel
     Left = 627
     Top = 42
     Width = 82
     Height = 505
     Align = alRight
     TabOrder = 2
+    OnResize = paButtonsResize
     object DeleteButton: TBitBtn
       Left = 5
       Top = 6
@@ -767,14 +803,14 @@ object MainForm: TMainForm
   object ClientPanel: TPanel
     Left = 201
     Top = 42
-    Width = 426
+    Width = 423
     Height = 505
     Align = alClient
     TabOrder = 3
     object ImageListLabel: TLabel
       Left = 1
       Top = 223
-      Width = 424
+      Width = 421
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -783,7 +819,7 @@ object MainForm: TMainForm
     object TreeView: TTreeView
       Left = 1
       Top = 1
-      Width = 424
+      Width = 421
       Height = 222
       Align = alTop
       Images = IconFontsImageList
@@ -793,7 +829,7 @@ object MainForm: TMainForm
     object ImageView: TListView
       Left = 1
       Top = 236
-      Width = 424
+      Width = 421
       Height = 268
       Align = alClient
       Columns = <>

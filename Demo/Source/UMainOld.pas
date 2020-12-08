@@ -54,7 +54,7 @@ type
     ToolButton5: TToolButton;
     ToolButton6: TToolButton;
     ToolButton7: TToolButton;
-    Panel2: TPanel;
+    paButtons: TPanel;
     DeleteButton: TBitBtn;
     ChangeIconButton: TBitBtn;
     ClientPanel: TPanel;
@@ -78,7 +78,11 @@ type
     DisabledAction: TAction;
     ShowCharMapButton: TBitBtn;
     ShowCharMapAction: TAction;
+    Splitter: TSplitter;
     IconFontImage: TIconFontImage;
+    ZoomPanel: TPanel;
+    ZoomLabel: TLabel;
+    ZoomTrackBar: TTrackBar;
     procedure AssignIconsButtonClick(Sender: TObject);
     procedure ChangeIconActionExecute(Sender: TObject);
     procedure SelectThemeRadioGroupClick(Sender: TObject);
@@ -90,8 +94,10 @@ type
     procedure IconFontsImageListFontMissing(const AFontName: TFontName);
     procedure ChangeColorActionExecute(Sender: TObject);
     procedure ShowCharMapActionExecute(Sender: TObject);
+    procedure paButtonsResize(Sender: TObject);
     procedure ImageViewSelectItem(Sender: TObject; Item: TListItem;
       Selected: Boolean);
+    procedure ZoomTrackBarChange(Sender: TObject);
   private
     FIconFontsImageListHot: TIconFontsImageList;
     {$IFDEF HiDPISupport}
@@ -269,6 +275,11 @@ begin
   end;
 end;
 
+procedure TMainForm.paButtonsResize(Sender: TObject);
+begin
+  IconFontImage.Height := IconFontImage.width;
+end;
+
 procedure TMainForm.SelectThemeRadioGroupClick(Sender: TObject);
 var
   LStyleName: string;
@@ -331,7 +342,7 @@ begin
   TopToolBar.ButtonWidth := LSize + 2;
   TopToolBar.Height := LSize + 6;
   TreeView.Indent := LSize;
-
+  Splitter.MinSize := DeleteButton.Width + 8;
   //Update attributes for Hot ImageList for the Toolbar
   UpdateHotImageList(IconFontsImageList, FIconFontsImageListHot, 30, 10);
   TopToolBar.HotImages := FIconFontsImageListHot;
@@ -354,6 +365,13 @@ begin
     else
       LItem.Text := '';
   end;
+end;
+
+procedure TMainForm.ZoomTrackBarChange(Sender: TObject);
+begin
+  IconFontsImageList.Zoom :=
+    ZoomTrackBar.Position;
+  IconFontImage.Zoom := ZoomTrackBar.Position;
 end;
 
 procedure TMainForm.TrackBarChange(Sender: TObject);
