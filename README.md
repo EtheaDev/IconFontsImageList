@@ -2,7 +2,7 @@
 
 ## Components to simplify use of "Icon fonts": resize, color, opacity and more... with full support for High-DPI apps. Rendering optimized with GDI+
 
-### Actual official version 2.4.0 (VCL) and 1.6.0 (FMX)
+### Actual official version 2.4.0 (VCL) and 1.6.1 (FMX)
 
 | Component | Description |
 | - | - |
@@ -34,6 +34,9 @@ Take care of changed Font file used in the Demos from v1.7(VCL)/v1.2(FMX) -> v1.
 If you are using the old Font, you can automatically convert icons to the new ones as explained [here](https://github.com/EtheaDev/IconFontsImageList/wiki/Convert-Material-Icons).
 
 **RELEASE NOTES:**
+12 Dec 2020: version 2.4.0 (VCL) and 1.6.1 (FMX)
+ - Fixed problems changing FontColor of ImageList
+ 
 06 Dec 2020: version 2.4.0 (VCL) and 1.6.0 (FMX)
  - Added width and height property for FMX (if different from size)
  - Added Zoom attribute for icons (VCL and FMX)
