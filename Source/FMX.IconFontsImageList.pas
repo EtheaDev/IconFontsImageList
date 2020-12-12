@@ -283,7 +283,7 @@ begin
       LBitmap.Canvas.EndScene;
     end;
   finally
-   LFont.DisposeOf;
+    LFont.DisposeOf;
   end;
 end;
 
@@ -307,7 +307,10 @@ end;
 
 function TIconFontBitmapItem.GetFontColor: TAlphaColor;
 begin
-  Result := FOwnerMultiResBitmap.FOwnerSourceItem.FontColor;
+  if FOwnerMultiResBitmap.FOwnerSourceItem.FontColor <> TAlphaColors.Null then
+    Result := FOwnerMultiResBitmap.FOwnerSourceItem.FontColor
+  else
+    Result := FOwnerMultiResBitmap.FOwnerSourceItem.FOwnerImageList.FontColor;
 end;
 
 function TIconFontBitmapItem.GetFontName: TFontName;
@@ -498,10 +501,7 @@ end;
 
 function TIconFontsSourceItem.GetFontColor: TAlphaColor;
 begin
-  if FFontColor = TAlphaColors.Null then
-    Result := FOwnerImageList.FFontColor
-  else
-    Result := FFontColor;
+  Result := FFontColor;
 end;
 
 function TIconFontsSourceItem.GetFontIconDec: Integer;
@@ -624,7 +624,8 @@ end;
 
 function TIconFontsSourceItem.StoreFontColor: Boolean;
 begin
-  Result := (FOwnerImageList = nil) or (FFontColor <> FOwnerImageList.FFontColor);
+  Result := ((FOwnerImageList = nil) or (FFontColor <> FOwnerImageList.FFontColor))
+    and (FFontColor <> TAlphaColors.Null);
 end;
 
 function TIconFontsSourceItem.StoreFontName: Boolean;
@@ -899,8 +900,6 @@ begin
     LSourceItem := Source[I] as TIconFontsSourceItem;
     if LSourceItem.FFontName = '' then
       LSourceItem.FontName := FFontName;
-    if LSourceItem.FFontColor = TAlphaColors.Null then
-      LSourceItem.FontColor := FFontColor;
     if LSourceItem.FOpacity = -1 then
       LSourceItem.Opacity := FOpacity;
     LSourceItem.UpdateAllItems;
@@ -913,6 +912,7 @@ begin
   begin
     FFontColor := Value;
     UpdateSourceItems;
+    Change;
   end;
 end;
 
