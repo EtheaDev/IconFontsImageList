@@ -5,16 +5,16 @@ object IconFontImageListForm: TIconFontImageListForm
     'IconFont ImageList Demo - Copyright (c) Ethea S.r.l. - Apache 2.' +
     '0 Open Source License'
   ClientHeight = 517
-  ClientWidth = 513
+  ClientWidth = 512
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
   OnCreate = FormCreate
   DesignerMasterStyle = 0
-  object Panel1: TPanel
+  object BottomPanel: TPanel
     Align = Bottom
     Position.Y = 407.000000000000000000
-    Size.Width = 513.000000000000000000
+    Size.Width = 512.000000000000000000
     Size.Height = 110.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
@@ -147,9 +147,9 @@ object IconFontImageListForm: TIconFontImageListForm
       Text = 'ListBoxItem3'
     end
   end
-  object V: TPanel
+  object TopPanel: TPanel
     Align = Top
-    Size.Width = 513.000000000000000000
+    Size.Width = 512.000000000000000000
     Size.Height = 113.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 7
@@ -173,7 +173,7 @@ object IconFontImageListForm: TIconFontImageListForm
   end
   object Glyph: TGlyph
     Align = Client
-    Size.Width = 352.000000000000000000
+    Size.Width = 351.000000000000000000
     Size.Height = 294.000000000000000000
     Size.PlatformDefault = False
     ImageIndex = 2
@@ -190,6 +190,7 @@ object IconFontImageListForm: TIconFontImageListForm
             Size = 113
           end>
         IconName = 'account'
+        FontName = 'Material Design Icons Desktop'
         FontIconDec = 983044
         Opacity = 1.000000000000000000
       end
@@ -199,6 +200,7 @@ object IconFontImageListForm: TIconFontImageListForm
             Size = 96
           end>
         IconName = 'account-alert'
+        FontName = 'Material Design Icons Desktop'
         FontIconDec = 983045
         FontColor = claRed
         Opacity = 1.000000000000000000
@@ -209,6 +211,7 @@ object IconFontImageListForm: TIconFontImageListForm
             Size = 294
           end>
         IconName = 'account-check'
+        FontName = 'Material Design Icons Desktop'
         FontIconDec = 983048
         Opacity = 1.000000000000000000
       end>

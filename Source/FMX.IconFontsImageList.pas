@@ -266,7 +266,6 @@ begin
     LFont.Family := FontName;
     LFont.Size := Min(FWidth, FHeight) * FZoom / 100;
     LFont.Size := LFont.Size * FZoom / 100;
-    //LFont.Size := FHeight;
     LBitmap.Width  := LBitmapWidth;
     LBitmap.Height := LBitmapHeight;
     LBitmap.Canvas.BeginScene;

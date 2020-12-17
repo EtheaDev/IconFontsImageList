@@ -47,6 +47,10 @@ uses
   , FMX.Objects
   ;
 
+const
+  DEFAULT_SIZE = 32;
+  ZOOM_DEFAULT = 100;
+
 type
   TIconFontMissing = procedure (const AFontName: TFontName) of object;
 
@@ -54,7 +58,7 @@ type
 
   TIconFontFixedBitmapItem = class(TFixedBitmapItem)
   private
-    FSize: Integer;
+    FWidth, FHeight, FZoom: Single;
     FFontName: TFontName;
     FFontIconDec: Integer;
     FFontColor: TAlphaColor;
@@ -65,7 +69,8 @@ type
     function GetBitmap: TBitmapOfItem;
     procedure SetFontName(const AValue: TFontName);
     procedure SetFontColor(const AValue: TAlphaColor);
-    procedure SetSize(const AValue: Integer);
+    procedure SetIconSize(const AWidth, AHeight:Single;
+      const AZoom: Integer);
     procedure DrawFontIcon;
     procedure SetOpacity(const AValue: Single);
     procedure SetIconName(const AValue: string);
@@ -79,6 +84,7 @@ type
     function GetDisplayName: string; override;
   public
     constructor Create(Collection: TCollection); override;
+    procedure Assign(Source: TPersistent); override;
   published
     property Bitmap: TBitmapOfItem read GetBitmap write SetBitmap stored False;
     property FontName: TFontName read FFontName write SetFontName;
@@ -87,7 +93,6 @@ type
     property Character: String read GetCharacter stored false;
     property FontColor: TAlphaColor read FFontColor write SetFontColor;
     property Opacity: Single read FOpacity write SetOpacity;
-    property Size: Integer read FSize write SetSize;
     property IconName: string read FIconName write SetIconName;
   end;
 
@@ -97,7 +102,9 @@ type
   TIconFontFixedMultiResBitmap = class(TFixedMultiResBitmap)
   private
     FOwnerImage: TIconFontImage;
-    procedure UpdateImageSize(const ASize: Integer);
+    procedure OnDrawImage(Sender: TObject);
+    procedure UpdateImageSize(const AWidth, AHeight: Single;
+      const AZoom: Integer);
   public
     constructor Create(AOwner: TPersistent; ItemClass: TIconFontFixedBitmapItemClass); overload;
     constructor Create(AOwner: TPersistent); overload;
@@ -105,9 +112,11 @@ type
 
   TIconFontImage = class(TImage)
   private
+    FZoom: Integer;
     FIconFontMultiResBitmap: TIconFontFixedMultiResBitmap;
-    function GetBitmapSize: Integer;
-    procedure SetBitmapSize(const AValue: Integer);
+    procedure SetBitmapZoom(const AValue: Integer);
+    procedure SetIconSize(const AWidth, AHeight: Single;
+      const AZoom: Integer);
   protected
     function CreateMultiResBitmap: TFixedMultiResBitmap; override;
   public
@@ -115,7 +124,7 @@ type
     destructor Destroy; override;
     procedure SetBounds(X, Y, AWidth, AHeight: Single); override;
   published
-    property BitmapSize: Integer read GetBitmapSize write SetBitmapSize;
+    property BitmapZoom: Integer read FZoom write SetBitmapZoom default ZOOM_DEFAULT;
   end;
 
 implementation
@@ -138,6 +147,12 @@ begin
     FOwnerImage := TIconFontImage(AOwner);
 end;
 
+procedure TIconFontFixedMultiResBitmap.OnDrawImage(Sender: TObject);
+begin
+  if Assigned(FOwnerImage) then
+    FOwnerImage.Repaint;
+end;
+
 constructor TIconFontFixedMultiResBitmap.Create(AOwner: TPersistent; ItemClass: TIconFontFixedBitmapItemClass);
 begin
   inherited Create(AOwner, ItemClass);
@@ -145,7 +160,8 @@ begin
     FOwnerImage := TIconFontImage(AOwner);
 end;
 
-procedure TIconFontFixedMultiResBitmap.UpdateImageSize(const ASize: Integer);
+procedure TIconFontFixedMultiResBitmap.UpdateImageSize(const AWidth, AHeight: Single;
+  const AZoom: Integer);
 var
   I, J: Integer;
   LItem: TFixedBitmapItem;
@@ -156,12 +172,26 @@ begin
     begin
       LItem := Items[J];
       if LItem is TIconFontFixedBitmapItem then
-        TIconFontFixedBitmapItem(LItem).Size := ASize;
+        TIconFontFixedBitmapItem(LItem).SetIconSize(AWidth, AHeight, AZoom);
     end;
   end;
 end;
 
 { TIconFontFixedBitmapItem }
+
+procedure TIconFontFixedBitmapItem.Assign(Source: TPersistent);
+begin
+  if Source is TIconFontsSourceItem then
+  begin
+    FontName := TIconFontsSourceItem(Source).FontName;
+    IconName := TIconFontsSourceItem(Source).IconName;
+    if TIconFontsSourceItem(Source).FontColor <> TAlphaColors.Null then
+      FontColor := TIconFontsSourceItem(Source).FontColor;
+    FontIconDec := TIconFontsSourceItem(Source).FontIconDec;
+  end
+  else
+    inherited;
+end;
 
 function TIconFontFixedBitmapItem.BitmapStored: Boolean;
 begin
@@ -173,7 +203,7 @@ begin
   inherited;
   if Collection is TIconFontFixedMultiResBitmap then
     FOwnerCollection := Collection as TIconFontFixedMultiResBitmap;
-  FSize := 16;
+  FZoom := ZOOM_DEFAULT;
   FOpacity := 1;
 end;
 
@@ -181,35 +211,38 @@ procedure TIconFontFixedBitmapItem.DrawFontIcon;
 var
   LFont: TFont;
   LBitmap: TBitmap;
-  LBitmapSize: Single;
+  LBitmapWidth, LBitmapHeight: Integer;
   LRect: TRectF;
-  LCharacter: String;
 begin
+  if (FWidth <= 0) or (FHeight <= 0) or (FZoom <= 0) or (FZoom >= 100) then
+    Exit;
   LBitmap := inherited Bitmap;
-  LBitmapSize := Size * Scale;
+  LBitmapWidth := Round(FWidth * Scale);
+  LBitmapHeight := Round(FHeight * Scale);
   LFont := TFont.Create;
   try
     LFont.Family := FontName;
-    LFont.Size := Size;
-    LBitmap.Width  := Round(LBitmapSize);
-    LBitmap.Height := Round(LBitmapSize);
+    LFont.Size := Min(FWidth, FHeight) * FZoom / 100;
+    LFont.Size := LFont.Size * FZoom / 100;
+    LBitmap.Width  := LBitmapWidth;
+    LBitmap.Height := LBitmapHeight;
     LBitmap.Canvas.BeginScene;
     try
       LBitmap.Canvas.Clear(TAlphaColors.Null);
       LBitmap.Canvas.Fill.Color := FontColor;
       LBitmap.Canvas.Font.Assign(LFont);
-      LRect.Create(0,0,Size,Size);
-      {$WARN SYMBOL_DEPRECATED OFF}
-      LCharacter := ConvertFromUtf32(FontIconDec);
+      LRect.Create(0,0,FWidth,FHeight);
       LBitmap.Canvas.FillText(LRect,
         Character, False, Opacity,
         [TFillTextFlag.RightToLeft],
-        TTextAlign.Leading, TTextAlign.Center);
+        TTextAlign.Center, TTextAlign.Center);
     finally
       LBitmap.Canvas.EndScene;
     end;
+    if Assigned(FOwnerCollection) then
+      FOwnerCollection.OnDrawImage(Self);
   finally
-   LFont.Free;
+    LFont.Free;
   end;
 end;
 
@@ -298,19 +331,23 @@ begin
   FIconName := AValue;
 end;
 
+procedure TIconFontFixedBitmapItem.SetIconSize(const AWidth, AHeight:Single;
+  const AZoom: Integer);
+begin
+  if (AWidth <> 0) and (AHeight <> 0) and
+    ((AWidth <> FWidth) or (AHeight <> FHeight) or (AZoom <> FZoom)) then
+  begin
+    FWidth := AWidth;
+    FHeight := AHeight;
+    FZoom := AZoom;
+    DrawFontIcon;
+  end;
+end;
+
 procedure TIconFontFixedBitmapItem.SetOpacity(const AValue: Single);
 begin
   FOpacity := AValue;
   DrawFontIcon;
-end;
-
-procedure TIconFontFixedBitmapItem.SetSize(const AValue: Integer);
-begin
-  if (Trunc(AValue) > 0) and (AValue <> FSize) then
-  begin
-    FSize := AValue;
-    DrawFontIcon;
-  end;
 end;
 
 { TIconFontImage }
@@ -320,6 +357,7 @@ begin
   inherited;
   DisableInterpolation := True;
   FIconFontMultiResBitmap := MultiResBitmap as TIconFontFixedMultiResBitmap;
+  FZoom := ZOOM_DEFAULT;
 end;
 
 function TIconFontImage.CreateMultiResBitmap: TFixedMultiResBitmap;
@@ -333,21 +371,44 @@ begin
   FIconFontMultiResBitmap := nil;
 end;
 
+(*
 function TIconFontImage.GetBitmapSize: Integer;
 begin
-  Result := Round(Inherited width);
+  Result := Round(Max(Inherited Width, Inherited Height));
+  if Result = 0 then
+    Result := DEFAULT_SIZE;
 end;
 
 procedure TIconFontImage.SetBitmapSize(const AValue: Integer);
 begin
-  if AValue <> 0 then
-    FIconFontMultiResBitmap.UpdateImageSize(AValue);
+  if ((AValue <> Height) or (AValue <> Width)) then
+    SetIconSize(AValue, AValue, FZoom);
+end;
+
+function TIconFontImage.StoreBitmapSize: Boolean;
+begin
+  Result := (Width = Height) and (Width <> DEFAULT_SIZE);
+end;
+*)
+procedure TIconFontImage.SetIconSize(const AWidth, AHeight: Single;
+  const AZoom: Integer);
+begin
+  inherited Width := AWidth;
+  inherited height := AHeight;
+  FZoom := AZoom;
+  FIconFontMultiResBitmap.UpdateImageSize(AWidth, AHeight, AZoom);
 end;
 
 procedure TIconFontImage.SetBounds(X, Y, AWidth, AHeight: Single);
 begin
   inherited;
-  BitmapSize := Trunc(Min(AWidth, AHeight));
+  SetIconSize(AWidth, AHeight, FZoom);
+end;
+
+procedure TIconFontImage.SetBitmapZoom(const AValue: Integer);
+begin
+  if (FZoom <> AValue) and (AValue <= 100) and (AValue >= 10) then
+    SetIconSize(Width, Height, AValue);
 end;
 
 initialization

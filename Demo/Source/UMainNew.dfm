@@ -155,9 +155,9 @@ object MainForm: TMainForm
       object ZoomLabel: TLabel
         Left = 8
         Top = 3
-        Width = 72
+        Width = 58
         Height = 13
-        Caption = 'Icons zoom %:'
+        Caption = 'Icons zoom:'
       end
       object ZoomTrackBar: TTrackBar
         Left = 0

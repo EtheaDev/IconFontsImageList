@@ -266,7 +266,7 @@ object IconFontsImageListEditorFMX: TIconFontsImageListEditorFMX
             TabOrder = 8
             Cursor = crIBeam
             DecimalDigits = 0
-            Max = 256.000000000000000000
+            Min = 10.000000000000000000
             Value = 100.000000000000000000
             Position.X = 5.000000000000000000
             Position.Y = 130.000000000000000000

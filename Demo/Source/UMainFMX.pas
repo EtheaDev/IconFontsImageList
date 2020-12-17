@@ -14,7 +14,7 @@ uses
 type
   TIconFontImageListForm = class(TForm)
     NextButton: TButton;
-    Panel1: TPanel;
+    BottomPanel: TPanel;
     edtColor: TColorComboBox;
     IconFontsImageList: TIconFontsImageList;
     RandomButton: TButton;
@@ -28,7 +28,7 @@ type
     ListBoxItem2: TListBoxItem;
     SpinBox1: TSpinBox;
     ListBoxItem3: TListBoxItem;
-    V: TPanel;
+    TopPanel: TPanel;
     Glyph2: TGlyph;
     Glyph1: TGlyph;
     Glyph: TGlyph;

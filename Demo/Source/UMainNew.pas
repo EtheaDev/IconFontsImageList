@@ -323,6 +323,8 @@ begin
 
   LSize := VirtualImageList.Height;
   IconSizeLabel.Caption := Format('Icons size: %d',[LSize]);
+  ZoomLabel.Caption := Format('Icons Zoom: %d%%',
+    [(VirtualImageList.ImageCollection as TIconFontsImageCollection).Zoom]);
   TopToolBar.ButtonHeight := LSize + 2;
   TopToolBar.ButtonWidth := LSize + 2;
   TopToolBar.Height := LSize + 6;
@@ -354,6 +356,7 @@ begin
   (VirtualImageList.ImageCollection as TIconFontsImageCollection).Zoom :=
     ZoomTrackBar.Position;
   IconFontImage.Zoom := ZoomTrackBar.Position;
+  UpdateGUI(False);
 end;
 
 procedure TMainForm.TrackBarChange(Sender: TObject);
