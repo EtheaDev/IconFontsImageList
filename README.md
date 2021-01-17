@@ -2,7 +2,7 @@
 
 ## Components to simplify use of "Icon fonts": resize, color, opacity and more... with full support for High-DPI apps. Rendering optimized with GDI+
 
-### Actual official version 2.4.0 (VCL) and 1.6.1 (FMX)
+### Actual official version 2.5.0 (VCL) and 1.7.0 (FMX)
 
 | Component | Description |
 | - | - |
@@ -34,6 +34,13 @@ Take care of changed Font file used in the Demos from v1.7(VCL)/v1.2(FMX) -> v1.
 If you are using the old Font, you can automatically convert icons to the new ones as explained [here](https://github.com/EtheaDev/IconFontsImageList/wiki/Convert-Material-Icons).
 
 **RELEASE NOTES:**
+17 Jan 2021: version 2.5.0 (VCL) and 1.7.0 (FMX)
+- Updated Material Design Icons Desktop.ttf to 5.9.17 version
+- Updated IconFontImage to supporto Width, Height and Zoom
+- Update GUI Demo with zoom for older Delphi versions
+- Opacity stored only if different from 1
+- Fixed TIconFontsImageListBase.GetIndexByName
+
 12 Dec 2020: version 2.4.0 (VCL) and 1.6.1 (FMX)
  - Fixed problems changing FontColor of ImageList
  
