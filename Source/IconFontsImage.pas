@@ -2,7 +2,7 @@
 {                                                                              }
 {       Icon Fonts Image: useful to show an Icon Font as an Image              }
 {                                                                              }
-{       Copyright (c) 2019-2020 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2021 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {       Contributors:                                                          }
 {                                                                              }
