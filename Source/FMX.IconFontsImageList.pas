@@ -52,7 +52,7 @@ resourcestring
   ERR_ICONFONTSFMX_FONT_NOT_INSTALLED = 'Font "%s" is not installed!';
 
 const
-  IconFontsImageListVersion = '1.6.1';
+  IconFontsImageListVersion = '1.6.2';
   DEFAULT_SIZE = 32;
   ZOOM_DEFAULT = 100;
 

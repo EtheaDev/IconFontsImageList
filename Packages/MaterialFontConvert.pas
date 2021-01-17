@@ -3,7 +3,7 @@
 {       MaterialFontConvert for                                                }
 {       Icon Fonts ImageList: An extended ImageList for Delphi                 }
 {                                                                              }
-{       Copyright (c) 2019-2020 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2021 (Ethea S.r.l.)                                 }
 {       Author: Nicola Tambascia                                               }
 {       Contributor: Carlo Barazzetta                                          }
 {                                                                              }
