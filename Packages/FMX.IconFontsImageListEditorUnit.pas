@@ -3,7 +3,7 @@
 {       Icon Fonts ImageList: An extended ImageList for Delphi/VLC+FMX         }
 {       to simplify use of Icons (resize, colors and more...)                  }
 {                                                                              }
-{       Copyright (c) 2019-2020 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2021 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {       Contributors:                                                          }
 {         Nicola Tambascia                                                     }
@@ -40,9 +40,9 @@ uses
 
 type
   TIconFontsImageListEditorFMX = class(TForm)
-    PaButtons: TPanel;
-    TopPanel: TPanel;
-    Panel4: TPanel;
+    BottomPanel: TPanel;
+    ClientPanel: TPanel;
+    ButtonsPanel: TPanel;
     paClient: TPanel;
     PanelIconBuilder: TPanel;
     ListBoxItemStyleBook: TStyleBook;
@@ -52,10 +52,9 @@ type
     ToHexNum: TEdit;
     ToLabel: TLabel;
     BuildFromHexButton: TButton;
-    Panel1: TPanel;
     IconsGroupBox: TGroupBox;
     ImageView: TListBox;
-    Panel3: TPanel;
+    ItemPanel: TPanel;
     GlobalGroupBox: TGroupBox;
     DefaultFontName: TComboBox;
     DefaultFontNameLabel: TLabel;
@@ -685,7 +684,6 @@ begin
     LInsertIndex := ImageView.Selected.Index +1
   else
     LInsertIndex := ImageView.Items.Count;
-  //ImageView.Selected := nil;
   FEditingList.InsertIcon(LInsertIndex, 0);
   UpdateIconFontListView(ImageView);
   ImageView.ItemIndex := LInsertIndex;

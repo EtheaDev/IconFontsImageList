@@ -3,7 +3,7 @@
 {       Icon Fonts ImageList fmx: An extended ImageList for Delphi/FireMonkey  }
 {       to simplify use of Icons (resize, colors and more...)                  }
 {                                                                              }
-{       Copyright (c) 2019-2020 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2021 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {       Contributors:                                                          }
 {         Nicola Tambascia                                                     }
@@ -115,6 +115,7 @@ type
   public
   end;
 
+  {TIconFontsSourceItem}
   TIconFontsSourceItem = class(TCustomSourceItem)
   private
     FOwnerImageList: TIconFontsImageList;
@@ -124,6 +125,8 @@ type
     FFontColor: TAlphaColor;
     procedure UpdateAllItems;
     function GetCharacter: String;
+    function GetFontName: TFontName;
+    function GetFontColor: TAlphaColor;
     function GetFontIconDec: Integer;
     function GetFontIconHex: string;
     procedure SetFontColor(const AValue: TAlphaColor);
@@ -134,8 +137,6 @@ type
     procedure AutoSizeBitmap(const AWidth, AHeight, AZoom: Integer);
     function GetIconName: string;
     procedure SetIconName(const Value: string);
-    function GetFontName: TFontName;
-    function GetFontColor: TAlphaColor;
     function GetOpacity: single;
     function GetDestinationItem: TCustomDestinationItem;
     procedure UpdateIconAttributes(const AFontColor: TAlphaColor;
@@ -160,6 +161,7 @@ type
     property Opacity: single read GetOpacity write SetOpacity stored StoreOpacity;
   end;
 
+  {TIconFontsImageList}
   TIconFontsImageList = class(TCustomImageList)
   private
     FWidth, FHeight: Integer;
@@ -190,6 +192,7 @@ type
     procedure Loaded; override;
     function CreateSource: TSourceCollection; override;
     function DoBitmap(Size: TSize; const Index: Integer): TBitmap; override;
+    function StoreOpacity: Boolean; virtual;
   public
     constructor Create(AOwner: TComponent); override;
     procedure Assign(Source: TPersistent); override;
@@ -220,7 +223,7 @@ type
     property AutoSizeBitmaps: Boolean read FAutoSizeBitmaps write SetAutoSizeBitmaps default True;
     property FontName: TFontName read FFontName write SetFontName;
     property FontColor: TAlphaColor read FFontColor write SetFontColor;
-    property Opacity: single read FOpacity write SetOpacity;
+    property Opacity: single read FOpacity write SetOpacity stored StoreOpacity;
     //property OnFontMissing: TIconFontMissing read FOnFontMissing write FOnFontMissing;
   end;
 
@@ -765,7 +768,6 @@ begin
       begin
         if FAutoSizeBitmaps then
         begin
-          //: 50 y:100
           if FWidth = FHeight then
           begin
             LWidth := Min(ASize.cy, ASize.cx);
@@ -860,7 +862,6 @@ begin
   Result := (Width <> Height) and (Height <> DEFAULT_SIZE);
 end;
 
-
 function TIconFontsImageList.GetSize: Integer;
 begin
   Result := Max(FWidth, FHeight);
@@ -952,6 +953,11 @@ begin
     FOpacity := Value;
     UpdateSourceItems;
   end;
+end;
+
+function TIconFontsImageList.StoreOpacity: Boolean;
+begin
+  Result := FOpacity <> 1;
 end;
 
 procedure TIconFontsImageList.SetSize(const AValue: Integer);

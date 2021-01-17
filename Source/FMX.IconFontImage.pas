@@ -3,7 +3,7 @@
 {       Icon Font Image fmx: An extended Image for Delphi/FireMonkey           }
 {       to simplify use of Icons (resize, colors and more...)                  }
 {                                                                              }
-{       Copyright (c) 2019-2020 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2021 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {       Contributors:                                                          }
 {         Nicola Tambascia                                                     }
@@ -65,6 +65,7 @@ type
     FOpacity: Single;
     FOwnerCollection: TIconFontFixedMultiResBitmap;
     FIconName: string;
+    function StoreOpacity: Boolean;
     procedure SetBitmap(const AValue: TBitmapOfItem);
     function GetBitmap: TBitmapOfItem;
     procedure SetFontName(const AValue: TFontName);
@@ -92,7 +93,7 @@ type
     property FontIconHex: string read GetFontIconHex write SetFontIconHex stored false;
     property Character: String read GetCharacter stored false;
     property FontColor: TAlphaColor read FFontColor write SetFontColor;
-    property Opacity: Single read FOpacity write SetOpacity;
+    property Opacity: Single read FOpacity write SetOpacity stored StoreOpacity;
     property IconName: string read FIconName write SetIconName;
   end;
 
@@ -350,6 +351,11 @@ begin
   DrawFontIcon;
 end;
 
+function TIconFontFixedBitmapItem.StoreOpacity: Boolean;
+begin
+  Result := FOpacity <> 1;
+end;
+
 { TIconFontImage }
 
 constructor TIconFontImage.Create(AOwner: TComponent);
@@ -371,25 +377,6 @@ begin
   FIconFontMultiResBitmap := nil;
 end;
 
-(*
-function TIconFontImage.GetBitmapSize: Integer;
-begin
-  Result := Round(Max(Inherited Width, Inherited Height));
-  if Result = 0 then
-    Result := DEFAULT_SIZE;
-end;
-
-procedure TIconFontImage.SetBitmapSize(const AValue: Integer);
-begin
-  if ((AValue <> Height) or (AValue <> Width)) then
-    SetIconSize(AValue, AValue, FZoom);
-end;
-
-function TIconFontImage.StoreBitmapSize: Boolean;
-begin
-  Result := (Width = Height) and (Width <> DEFAULT_SIZE);
-end;
-*)
 procedure TIconFontImage.SetIconSize(const AWidth, AHeight: Single;
   const AZoom: Integer);
 begin
