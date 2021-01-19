@@ -13,6 +13,8 @@
 
 ![Delphi 10.4 Sydney Support](/Demo/Images/SupportingDelphi.jpg)
 
+Related links: https://www.embarcadero.com/ - https://learndelphi.org/
+
 Sample image of VCL version
 ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/Sample.jpg](/Demo/Images/Sample.jpg)
 
