@@ -672,6 +672,9 @@ end;
 
 procedure TIconFontsImageListEditor.CloseCharMap(Sender: TObject;
   var Action: TCloseAction);
+var
+  LImageIndex: Integer;  
+  LIconFontItem: TIconFontItem;
 begin
   if FCharMap.ModalResult = mrOK then
   begin
@@ -679,7 +682,17 @@ begin
     begin
       FEditingList.AddIcons(FCharMap.CharsEdit.Text, FCharMap.DefaultFontName.Text);
       FChanged := True;
-      BuildList(ImageView.Items[ImageView.Items.Count-1].ImageIndex);
+      LImageIndex := ImageView.Items.Count-1;
+      if LImageIndex >= 0 then
+        BuildList(ImageView.Items[LImageIndex].ImageIndex)
+      else
+        BuildList(-1);              
+    end
+    else if FCharMap.SelectedIconFont <> nil then
+    begin
+      LIconFontItem := FEditingList.AddIcon(FCharMap.SelectedIconFont.FontIconDec);
+      FChanged := True;
+      BuildList(LIconFontItem.Index);
     end;
   end;
 end;

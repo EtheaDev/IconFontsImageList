@@ -126,7 +126,6 @@ type
     procedure ClearAllImages;
     procedure UpdateGUI;
     procedure UpdateCharsToBuild;
-    function SelectedIconFont: TIconFontItem;
     function GetFontName: TFontName;
     procedure SetFontName(const Value: TFontName);
     //Events for notification from item to imagelist
@@ -136,6 +135,7 @@ type
       out AFontColor, AMaskColor: TColor);
     procedure BuildList(Selected: Integer);
   public
+    function SelectedIconFont: TIconFontItem;
     constructor Create(AOwner: TComponent); override;
     constructor CreateForFont(AOwner: TComponent;
       const AFontName: TFontName; const ASize: Integer = 32;
