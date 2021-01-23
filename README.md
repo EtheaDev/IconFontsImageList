@@ -2,7 +2,7 @@
 
 ## Components to simplify use of "Icon fonts": resize, color, opacity and more... with full support for High-DPI apps. Rendering optimized with GDI+
 
-### Actual official version 2.5.0 (VCL) and 1.7.0 (FMX)
+### Actual official version 2.5.1 (VCL) and 1.7.1 (FMX)
 
 | Component | Description |
 | - | - |
