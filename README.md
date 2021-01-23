@@ -36,6 +36,10 @@ Take care of changed Font file used in the Demos from v1.7(VCL)/v1.2(FMX) -> v1.
 If you are using the old Font, you can automatically convert icons to the new ones as explained [here](https://github.com/EtheaDev/IconFontsImageList/wiki/Convert-Material-Icons).
 
 **RELEASE NOTES:**
+23 Jan 2021: version 2.5.1 (VCL) and 1.7.1 (FMX)
+- Fixed check for unassigned Imagelist loading component
+- Fixed #41 AV using CharMap
+
 17 Jan 2021: version 2.5.0 (VCL) and 1.7.0 (FMX)
 - Updated Material Design Icons Desktop.ttf to 5.9.17 version
 - Updated IconFontImage to supporto Width, Height and Zoom
