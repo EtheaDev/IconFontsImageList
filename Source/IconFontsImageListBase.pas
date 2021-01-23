@@ -57,7 +57,7 @@ resourcestring
   ERR_COLLECTION_NOT_ASSIGNED = 'Error: image collection of "%s" not assigned!';
 
 const
-  IconFontsImageListVersion = '2.5.0';
+  IconFontsImageListVersion = '2.5.1';
   DEFAULT_SIZE = 16;
 
 type
@@ -109,7 +109,7 @@ type
     procedure SetOpacity(const Value: Byte);
     {$ENDIF}
     procedure SetDisabledFactor(const Value: Byte);
-    procedure CheckCollection;
+    function CheckCollection: boolean;
     procedure SetZoon(const Value: Integer);
   protected
     procedure CheckFontName(const AFontName: TFontName);
@@ -321,8 +321,8 @@ end;
 procedure TIconFontsImageListBase.Delete(const AIndex: Integer);
 begin
   //Don't call inherited method of ImageList, to avoid errors
-  CheckCollection;
-  IconFontItems.Delete(AIndex);
+  if CheckCollection then
+    IconFontItems.Delete(AIndex);
 end;
 
 destructor TIconFontsImageListBase.Destroy;
@@ -341,9 +341,10 @@ begin
     inherited;
 end;
 
-procedure TIconFontsImageListBase.CheckCollection;
+function TIconFontsImageListBase.CheckCollection: boolean;
 begin
-  if IconFontItems = nil then
+  Result := Assigned(IconFontItems);
+  if not Result and not (csLoading in ComponentState) then
     raise Exception.CreateFmt(ERR_COLLECTION_NOT_ASSIGNED, [Name]);
 end;
 
@@ -459,15 +460,15 @@ end;
 
 function TIconFontsImageListBase.GetNames(Index: Integer): string;
 begin
-  CheckCollection;
-  if (Index >= 0) and Assigned(IconFontItems) and (Index < IconFontItems.Count) then
+  if CheckCollection and
+    (Index >= 0) and Assigned(IconFontItems) and (Index < IconFontItems.Count) then
     Result := IconFontItems[Index].IconName;
 end;
 
 procedure TIconFontsImageListBase.SetIconFontItems(const AValue: TIconFontItems);
 begin
-  CheckCollection;
-  IconFontItems.Assign(AValue);
+  if CheckCollection then
+    IconFontItems.Assign(AValue);
 end;
 
 procedure TIconFontsImageListBase.SetIconSize(const ASize: Integer);
@@ -539,8 +540,8 @@ var
 {$ENDIF}
   LItem: TIconFontItem;
 begin
-  CheckCollection;
-  if (AIndex >= 0) and (AIndex < IconFontItems.Count) then
+  if CheckCollection and
+    (AIndex >= 0) and (AIndex < IconFontItems.Count) then
   begin
     LItem := IconFontItems[AIndex];
 
@@ -560,7 +561,8 @@ procedure TIconFontsImageListBase.PaintTo(const ACanvas: TCanvas; const AName: s
 var
   LIndex: Integer;
 begin
-  CheckCollection;
+  if not CheckCollection then
+    Exit;
   LIndex := IconFontItems.IndexOf(Name);
   PaintTo(ACanvas, LIndex, X, Y, AWidth, AHeight,
     AEnabled, ADisabledFactor, AZoom);
@@ -586,8 +588,8 @@ function TIconFontsImageListBase.AddIcon(const AChar: Integer;
   const AFontColor: TColor = clDefault;
   const AMaskColor: TColor = clNone): TIconFontItem;
 begin
-  CheckCollection;
-  Result := IconFontItems.AddIcon(AChar, AIconName, AFontName, AFontColor, AMaskColor);
+  if CheckCollection then
+    Result := IconFontItems.AddIcon(AChar, AIconName, AFontName, AFontColor, AMaskColor);
 end;
 
 function TIconFontsImageListBase.AddIcons(const AFrom, ATo: WideChar;
@@ -666,18 +668,20 @@ function TIconFontsImageListBase.GetIndexByName(
 var
   LIconFontItem: TIconFontItem;
 begin
-  CheckCollection;
+  Result := -1;
+  if not CheckCollection then
+    exit;
   LIconFontItem := IconFontItems.GetIconByName(AName);
   if Assigned(LIconFontItem) then
-    Result := LIconFontItem.Index
-  else
-    Result := -1;
+    Result := LIconFontItem.Index;
 end;
 
 function TIconFontsImageListBase.GetNameByIndex(AIndex: TImageIndex): TImageName;
 begin
-  CheckCollection;
-  Result := IconFontItems.Items[AIndex].IconName;
+  if CheckCollection then
+    Result := IconFontItems.Items[AIndex].IconName
+  else
+    Result := '';
 end;
 
 function TIconFontsImageListBase.IsImageNameAvailable: Boolean;
@@ -732,8 +736,8 @@ end;
 
 procedure TIconFontsImageListBase.SetNames(Index: Integer; const Value: string);
 begin
-  CheckCollection;
-  if (Index >= 0) and (Index < IconFontItems.Count) then
+  if CheckCollection and
+    (Index >= 0) and (Index < IconFontItems.Count) then
     IconFontItems[Index].IconName := Value;
 end;
 
