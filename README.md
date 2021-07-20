@@ -29,6 +29,10 @@ Follow the [guide in Wiki section](https://github.com/EtheaDev/IconFontsImageLis
 
 We advise that TIconFontsVirtualImageList should be used only for versions of Delphi before 10.3. For recent versions of Delphi the recommended combination should be **TIconFontsImageCollection + TVirtualImageList**. Don't forget also the importance of TVirtualImageList.PreserveItems when you have a large ImageCollection with many linked Actions. Without setting this property to "True", everytime you add or remove an icon in the collection, you have to check and change the ImageIndex of all the Actions.
 
+## Demos uses Material Design Icon Fonts ##
+
+All demos included in this repo uses the Material Design Font available here: https://github.com/Templarian/MaterialDesign-Font (the file is included into Demo\Fonts folder)
+
 **Warning: "Material Font" has changed**
 
 Take care of changed Font file used in the Demos from v1.7(VCL)/v1.2(FMX) -> v1.8(VCL)/v1.3(FMX), as explained [here](https://github.com/EtheaDev/IconFontsImageList/wiki/Deploy-Applications). 
