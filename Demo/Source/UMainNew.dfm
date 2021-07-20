@@ -199,16 +199,19 @@ object MainForm: TMainForm
       Left = 80
       Top = 0
       ImageIndex = 2
+      ImageName = 'amazon'
     end
     object ToolButton4: TToolButton
       Left = 120
       Top = 0
       ImageIndex = 3
+      ImageName = 'google-chrome'
     end
     object ToolButton5: TToolButton
       Left = 160
       Top = 0
       ImageIndex = 4
+      ImageName = 'android'
     end
     object ToolButton6: TToolButton
       Left = 200
@@ -354,18 +357,21 @@ object MainForm: TMainForm
       Category = 'Edit'
       Caption = 'Change icon'
       ImageIndex = 5
+      ImageName = 'file-replace'
       OnExecute = ChangeIconActionExecute
     end
     object DeleteIconAction: TAction
       Category = 'Edit'
       Caption = 'Delete Icon'
       ImageIndex = 1
+      ImageName = 'delete'
       OnExecute = DeleteIconActionExecute
     end
     object ChangeColorAction: TAction
       Category = 'Edit'
       Caption = 'Change Color'
       ImageIndex = 7
+      ImageName = 'palette'
       OnExecute = ChangeColorActionExecute
     end
     object DisabledAction: TAction
@@ -373,17 +379,20 @@ object MainForm: TMainForm
       Caption = 'Disabled'
       Enabled = False
       ImageIndex = 0
+      ImageName = 'account'
     end
     object ShowCharMapAction: TAction
       Category = 'Edit'
       Caption = 'CharMap...'
       Hint = 'Show Char Map...'
       ImageIndex = 8
+      ImageName = 'format-font'
       OnExecute = ShowCharMapActionExecute
     end
     object NewFormAction: TAction
       Caption = 'New Form...'
       ImageIndex = 9
+      ImageName = 'open-in-new'
       OnExecute = NewFormActionExecute
     end
   end

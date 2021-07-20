@@ -391,6 +391,8 @@ begin
 end;
 
 initialization
-  //ReportMemoryLeaksOnShutdown := True;
+  {$IFDEF DEBUG}
+  ReportMemoryLeaksOnShutdown := True;
+  {$ENDIF}
 
 end.

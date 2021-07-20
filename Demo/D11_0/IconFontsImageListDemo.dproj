@@ -1,10 +1,10 @@
-﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{B54226D7-B090-43B6-BFA7-829CA17D1686}</ProjectGuid>
+        <ProjectGuid>{B6BD3330-6CCA-4A05-8AAC-99C1E3D8C425}</ProjectGuid>
         <MainSource>IconFontsImageListDemo.dpr</MainSource>
         <Config Condition="'$(Config)'==''">Debug</Config>
         <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
-        <ProjectVersion>19.2</ProjectVersion>
+        <ProjectVersion>19.3</ProjectVersion>
         <FrameworkType>VCL</FrameworkType>
         <Base>True</Base>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
@@ -54,7 +54,7 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
         <Icon_MainIcon>IconFontsImageListComponentIcon.ico</Icon_MainIcon>
-        <DCC_DcuOutput>..\Dcu\D10_4\$(Platform)\$(Config)</DCC_DcuOutput>
+        <DCC_DcuOutput>..\Dcu\D11_0\$(Platform)\$(Config)</DCC_DcuOutput>
         <DCC_ExeOutput>..\Bin</DCC_ExeOutput>
         <DCC_UnitSearchPath>..\..\source;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <DCC_DependencyCheckOutputName>..\Bin\IconFontsImageListDemo.exe</DCC_DependencyCheckOutputName>

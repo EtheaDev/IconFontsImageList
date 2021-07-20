@@ -17,8 +17,6 @@ object IconFontImageForm: TIconFontImageForm
         FontName = 'Material Design Icons Desktop'
         FontIconDec = 983048
         FontColor = claBlack
-        Opacity = 1.000000000000000000
-        Size = 205
         IconName = 'account'
       end
       item
@@ -26,8 +24,6 @@ object IconFontImageForm: TIconFontImageForm
         FontName = 'Material Design Icons Desktop'
         FontIconDec = 983049
         FontColor = claBlack
-        Opacity = 1.000000000000000000
-        Size = 205
         IconName = 'account-circle'
       end>
     Align = Client
@@ -36,7 +32,6 @@ object IconFontImageForm: TIconFontImageForm
     Size.Height = 205.000000000000000000
     Size.PlatformDefault = False
     OnResize = IconFontImageResize
-    BitmapSize = 340
   end
   object Panel1: TPanel
     Align = Bottom

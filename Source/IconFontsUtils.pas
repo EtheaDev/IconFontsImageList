@@ -339,12 +339,14 @@ end;
 function GrayscaleColor(AColor : TColor) : TColor;
 var
   LGray : byte;
+  LColor: TColor;
 begin
+  LColor := ColorToRGB(AColor);
   // get the luminance according to https://www.w3.org/TR/AERT/#color-contrast
-  LGray  := round((0.299 * GetRValue(AColor)) + (0.587 * GetGValue(AColor)) + (0.114 * GetBValue(AColor)));
+  LGray  := round((0.299 * GetRValue(LColor)) + (0.587 * GetGValue(LColor)) + (0.114 * GetBValue(LColor)));
 
   // set the result to the new grayscale color including the alpha info
-  Result := (AColor and $FF000000) or rgb(LGray, LGray, LGray);
+  Result := (LColor and $FF000000) or rgb(LGray, LGray, LGray);
 end;
 
 end.

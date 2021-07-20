@@ -57,7 +57,7 @@ resourcestring
   ERR_COLLECTION_NOT_ASSIGNED = 'Error: image collection of "%s" not assigned!';
 
 const
-  IconFontsImageListVersion = '2.5.1';
+  IconFontsImageListVersion = '2.6.0';
   DEFAULT_SIZE = 16;
 
 type
@@ -589,7 +589,9 @@ function TIconFontsImageListBase.AddIcon(const AChar: Integer;
   const AMaskColor: TColor = clNone): TIconFontItem;
 begin
   if CheckCollection then
-    Result := IconFontItems.AddIcon(AChar, AIconName, AFontName, AFontColor, AMaskColor);
+    Result := IconFontItems.AddIcon(AChar, AIconName, AFontName, AFontColor, AMaskColor)
+  else
+    Result := nil;
 end;
 
 function TIconFontsImageListBase.AddIcons(const AFrom, ATo: WideChar;
