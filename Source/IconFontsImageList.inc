@@ -178,7 +178,7 @@
   {$DEFINE D11_0+}
 {$ENDIF}
 
-//GDI+ support available from DXE6
+//GDI+ support available from DXE4
 {$IFDEF DXE4+}
   {$Define GDI+}
 {$ENDIF}

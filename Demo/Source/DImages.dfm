@@ -1,5 +1,6 @@
 object dmImages: TdmImages
   OldCreateOrder = False
+  OnDestroy = DataModuleDestroy
   Height = 278
   Width = 365
   object IconFontsImageCollection: TIconFontsImageCollection

@@ -3,7 +3,7 @@
 {       Icon Fonts ImageList: An extended ImageList for Delphi/VCL             }
 {       to simplify use of Icons (resize, colors and more...)                  }
 {                                                                              }
-{       Copyright (c) 2019-2020 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2021 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {       Contributors:                                                          }
 {         Nicola Tambascia                                                     }
@@ -33,7 +33,7 @@ interface
 
 uses
   WinApi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.ImgList,
-  UITypes,
+  System.UITypes,
   System.ImageList, //if you are compiling with an older version of Delphi delete this line
   Vcl.BaseImageCollection, //if you are compiling with an older version of Delphi delete this line
   IconFontsImageCollection,
@@ -43,7 +43,10 @@ type
   TdmImages = class(TDataModule)
     IconFontsImageCollection: TIconFontsImageCollection;
     procedure IconFontsImageCollectionFontMissing(const AFontName: TFontName);
+    procedure DataModuleDestroy(Sender: TObject);
   private
+    FAutoAddFont: Boolean;
+    FFontFileName: string;
   public
   end;
 
@@ -57,22 +60,36 @@ implementation
 uses
   Vcl.Graphics;
 
+procedure TdmImages.DataModuleDestroy(Sender: TObject);
+begin
+  if FAutoAddFont then
+    {$IFNDEF D2010+}
+    RemoveFontResource(PChar(FFontFileName));
+    {$ELSE}
+    RemoveFontResource(PWideChar(FFontFileName));
+    {$ENDIF}
+end;
+
 procedure TdmImages.IconFontsImageCollectionFontMissing(
   const AFontName: TFontName);
 var
-  LFontFileName: string;
+  LHWND: HWND;
 begin
   inherited;
   //The "material desktop font is not installed into system: load and install now from disk
-  LFontFileName := ExtractFilePath(ParamStr(0))+'..\Fonts\Material Design Icons Desktop.ttf';
-  if FileExists(LFontFileName) then
+  FFontFileName := ExtractFilePath(ParamStr(0))+'..\Fonts\Material Design Icons Desktop.ttf';
+  if FileExists(FFontFileName) then
   begin
     {$IFNDEF D2010+}
-    AddFontResource(PChar(LFontFileName));
+    AddFontResource(PChar(FFontFileName));
     {$ELSE}
-    AddFontResource(PWideChar(LFontFileName));
+    AddFontResource(PWideChar(FFontFileName));
     {$ENDIF}
-    SendMessage(HWND_BROADCAST, WM_FONTCHANGE, 0, 0);
+    FAutoAddFont := True;
+    {$IFDEF GDI+}
+    //Wait for Font available on GDI+ collection for drawing...
+    Sleep(500);
+    {$ENDIF}
   end
   else
   begin
