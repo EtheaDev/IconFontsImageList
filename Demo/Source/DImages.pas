@@ -63,11 +63,14 @@ uses
 procedure TdmImages.DataModuleDestroy(Sender: TObject);
 begin
   if FAutoAddFont then
+  begin
     {$IFNDEF D2010+}
     RemoveFontResource(PChar(FFontFileName));
     {$ELSE}
     RemoveFontResource(PWideChar(FFontFileName));
     {$ENDIF}
+    PostMessage(HWND_BROADCAST, WM_FONTCHANGE, 0, 0);
+  end;
 end;
 
 procedure TdmImages.IconFontsImageCollectionFontMissing(
@@ -85,6 +88,7 @@ begin
     {$ELSE}
     AddFontResource(PWideChar(FFontFileName));
     {$ENDIF}
+    PostMessage(HWND_BROADCAST, WM_FONTCHANGE, 0, 0);
     FAutoAddFont := True;
     {$IFDEF GDI+}
     //Wait for Font available on GDI+ collection for drawing...

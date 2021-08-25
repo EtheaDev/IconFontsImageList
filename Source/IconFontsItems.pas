@@ -477,9 +477,6 @@ begin
   FIconFont.PaintTo(ACanvas, X, Y, AWidth, AHeight, LFontName,
     FFontIconDec, LFontColor, AMaskColor, AEnabled, ADisabledFactor, AZoom);
   {$ENDIF}
-
-//  if Assigned(IconFontsImageList.OnDrawIcon) then
-//    IconFontsImageList.OnDrawIcon(Self, IconFontsImageList.FIconsAdded, Self);
 end;
 
 procedure TIconFontItem.SetFontColor(const AValue: TColor);
