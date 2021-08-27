@@ -15,8 +15,8 @@ object dmImages: TdmImages
         IconName = 'delete'
       end
       item
-        FontIconDec = 983085
-        IconName = 'amazon'
+        FontIconDec = 983093
+        IconName = 'apple'
       end
       item
         FontIconDec = 983727

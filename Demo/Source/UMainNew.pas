@@ -154,7 +154,6 @@ var
 begin
   Screen.Cursor := crHourGlass;
   try
-    ImageView.Clear;
     LRand1 := $F0001+Random(5000);
     LRand2 := LRand1+NumSpinEdit.Value-1;
 
@@ -317,6 +316,7 @@ var
 begin
   if UpdateIcons then
   begin
+    VirtualImageList.Clear;
     //Assign all icons to VirtualImageList
     VirtualImageList.Add('', 0, dmImages.IconFontsImageCollection.Count-1);
   end;

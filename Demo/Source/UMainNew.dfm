@@ -199,7 +199,6 @@ object MainForm: TMainForm
       Left = 80
       Top = 0
       ImageIndex = 2
-      ImageName = 'amazon'
     end
     object ToolButton4: TToolButton
       Left = 120
@@ -418,9 +417,8 @@ object MainForm: TMainForm
       end
       item
         CollectionIndex = 2
-        CollectionName = 'amazon'
         Disabled = False
-        Name = 'amazon'
+        Name = 'apple'
       end
       item
         CollectionIndex = 3
