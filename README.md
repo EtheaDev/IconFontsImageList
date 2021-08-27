@@ -2,7 +2,7 @@
 
 ## Components to simplify use of "Icon fonts": resize, color, opacity and more... with full support for High-DPI apps. Rendering optimized with GDI+
 
-### Actual official version 2.6.0 (VCL) and 1.8.0 (FMX)
+### Actual official version 3.0.0 (VCL+FMX)
 
 | Component | Description |
 | - | - |
@@ -40,6 +40,11 @@ Take care of changed Font file used in the Demos from v1.7(VCL)/v1.2(FMX) -> v1.
 If you are using the old Font, you can automatically convert icons to the new ones as explained [here](https://github.com/EtheaDev/IconFontsImageList/wiki/Convert-Material-Icons).
 
 **RELEASE NOTES:**
+27 Aug 2021: version 3.0.0 (VCL+FMX)
+- FMX version aligned to VCL
+- Completed support for Delphi 11 Olympus
+- aligned demo font "Material Design Icons Desktop" to ver. 6.1.41
+
 20 Jul 2021: version 2.6.0 (VCL) and 1.8.0 (FMX)
 - Updated font material design to 6.0.29 version
 - Added support for Delphi 11 Olympus (packages)
