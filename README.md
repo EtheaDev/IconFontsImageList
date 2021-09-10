@@ -42,12 +42,12 @@ If you are using the old Font, you can automatically convert icons to the new on
 **RELEASE NOTES:**
 27 Aug 2021: version 3.0.0 (VCL+FMX)
 - FMX version aligned to VCL
-- Completed support for Delphi 11 Olympus
+- Completed support for Delphi 11 Alexandria
 - aligned demo font "Material Design Icons Desktop" to ver. 6.1.41
 
 20 Jul 2021: version 2.6.0 (VCL) and 1.8.0 (FMX)
 - Updated font material design to 6.0.29 version
-- Added support for Delphi 11 Olympus (packages)
+- Added support for Delphi 11 Alexandria (packages)
 
 23 Jan 2021: version 2.5.1 (VCL) and 1.7.1 (FMX)
 - Fixed check for unassigned Imagelist loading component
