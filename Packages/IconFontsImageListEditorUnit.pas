@@ -217,6 +217,17 @@ uses
   , System.Types
   , System.Character
   {$ENDIF}
+  //WARNING: you must define this directive to use this unit outside the IDE
+{$IFNDEF UseIconFontEditorsAtRunTime}
+  {$IF (CompilerVersion >= 24.0)}
+  , Vcl.Themes
+  , ToolsAPI
+  {$IFEND}
+  {$IF (CompilerVersion >= 32.0)}
+  , IDETheme.Utils
+  , BrandingAPI
+  {$IFEND}
+{$ENDIF}
   , IconFontsUtils;
 
 const
@@ -879,6 +890,12 @@ begin
 end;
 
 procedure TIconFontsImageListEditor.FormCreate(Sender: TObject);
+{$IFNDEF UseIconFontEditorsAtRunTime}
+  {$IF (CompilerVersion >= 32.0)}
+  var
+    LStyle: TCustomStyleServices;
+  {$IFEND}
+{$ENDIF}
 
   procedure InitColorBox(AColorBox: TColorBox;
     AColor: TColor);
@@ -891,6 +908,40 @@ procedure TIconFontsImageListEditor.FormCreate(Sender: TObject);
   end;
 
 begin
+{$IFNDEF UseIconFontEditorsAtRunTime}
+  {$IF (CompilerVersion >= 32.0)}
+    {$IF (CompilerVersion <= 34.0)}
+    if UseThemeFont then
+      Self.Font.Assign(GetThemeFont);
+    {$IFEND}
+    {$IF CompilerVersion > 34.0}
+    if TIDEThemeMetrics.Font.Enabled then
+      Self.Font.Assign(TIDEThemeMetrics.Font.GetFont);
+    {$IFEND}
+
+    if ThemeProperties <> nil then
+    begin
+      LStyle := ThemeProperties.StyleServices;
+      StyleElements := StyleElements - [seClient];
+      Color := LStyle.GetSystemColor(clWindow);
+      BottomPanel.StyleElements := BottomPanel.StyleElements - [seClient];
+      BottomPanel.ParentBackground := False;
+      BottomPanel.Color := LStyle.GetSystemColor(clBtnFace);
+      IDEThemeManager.RegisterFormClass(TIconFontsImageListEditor);
+      ThemeProperties.ApplyTheme(Self);
+    end;
+  {$IFEND}
+{$ENDIF}
+
+  {$IF (CompilerVersion >= 24.0)}
+  CategoryListBox.AlignWithMargins := True;
+  CategoryListBox.Margins.Top := 6;
+  ImageView.AlignWithMargins := True;
+  ImageView.Margins.Top := 6;
+  IconPanel.AlignWithMargins := True;
+  IconPanel.Margins.Top := 6;
+  {$IFEND}
+
   {$IFNDEF UNICODE}
   CharsEditLabel.Visible := False;
   CharsEdit.Visible := False;

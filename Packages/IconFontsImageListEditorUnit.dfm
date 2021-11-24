@@ -33,9 +33,9 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
   end
   object paImages: TPanel
     Left = 0
-    Top = 57
+    Top = 65
     Width = 784
-    Height = 337
+    Height = 329
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
@@ -43,7 +43,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Left = 185
       Top = 0
       Width = 4
-      Height = 337
+      Height = 329
       AutoSnap = False
       MinSize = 185
     end
@@ -51,13 +51,13 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Left = 641
       Top = 0
       Width = 143
-      Height = 337
+      Height = 329
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 1
       DesignSize = (
         143
-        337)
+        329)
       object SetCategoriesButton: TButton
         Left = 4
         Top = 121
@@ -108,7 +108,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       end
       object WinCharMapButton: TButton
         Left = 4
-        Top = 277
+        Top = 269
         Width = 134
         Height = 25
         Anchors = [akRight, akBottom]
@@ -119,7 +119,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       end
       object ShowCharMapButton: TButton
         Left = 4
-        Top = 306
+        Top = 298
         Width = 134
         Height = 26
         Anchors = [akRight, akBottom]
@@ -133,7 +133,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Left = 0
       Top = 0
       Width = 185
-      Height = 337
+      Height = 329
       Align = alLeft
       BevelOuter = bvNone
       TabOrder = 0
@@ -141,7 +141,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
         Left = 0
         Top = 0
         Width = 185
-        Height = 146
+        Height = 138
         Align = alClient
         Caption = 'Images/Categories'
         TabOrder = 0
@@ -149,7 +149,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           Left = 2
           Top = 15
           Width = 181
-          Height = 129
+          Height = 121
           Align = alClient
           ItemHeight = 13
           TabOrder = 0
@@ -158,7 +158,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       end
       object PropertiesGroupBox: TGroupBox
         Left = 0
-        Top = 146
+        Top = 138
         Width = 185
         Height = 191
         Align = alBottom
@@ -169,7 +169,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           191)
         object DefaultFontNameLabel: TLabel
           Left = 7
-          Top = 15
+          Top = 23
           Width = 169
           Height = 13
           AutoSize = False
@@ -178,7 +178,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
         end
         object DefaultFontColorLabel: TLabel
           Left = 7
-          Top = 55
+          Top = 63
           Width = 100
           Height = 13
           AutoSize = False
@@ -187,7 +187,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
         end
         object DefaultMaskColorLabel: TLabel
           Left = 7
-          Top = 93
+          Top = 101
           Width = 109
           Height = 13
           AutoSize = False
@@ -206,18 +206,19 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
         end
         object DefaultFontName: TComboBox
           Left = 7
-          Top = 30
+          Top = 38
           Width = 169
           Height = 22
           Style = csOwnerDrawFixed
           Anchors = [akLeft, akTop, akRight]
           DropDownCount = 30
+          ItemHeight = 16
           TabOrder = 0
           OnSelect = DefaultFontNameSelect
         end
         object DefaultFontColorColorBox: TColorBox
           Left = 7
-          Top = 70
+          Top = 78
           Width = 169
           Height = 22
           DefaultColorColor = clNone
@@ -225,12 +226,13 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           Selected = clDefault
           Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbIncludeDefault]
           Anchors = [akLeft, akTop, akRight]
+          ItemHeight = 16
           TabOrder = 1
           OnChange = DefaultFontColorColorBoxChange
         end
         object DefaultMaskColorColorBox: TColorBox
           Left = 7
-          Top = 108
+          Top = 116
           Width = 169
           Height = 22
           DefaultColorColor = clNone
@@ -238,12 +240,13 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           Selected = clDefault
           Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbIncludeDefault]
           Anchors = [akLeft, akTop, akRight]
+          ItemHeight = 16
           TabOrder = 2
           OnChange = DefaultMaskColorColorBoxChange
         end
         object StoreBitmapCheckBox: TCheckBox
           Left = 7
-          Top = 139
+          Top = 141
           Width = 85
           Height = 17
           Caption = 'StoreBitmap'
@@ -268,7 +271,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Left = 189
       Top = 0
       Width = 452
-      Height = 337
+      Height = 329
       Align = alClient
       Caption = '%d Icons of Imagelist'
       TabOrder = 2
@@ -276,7 +279,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
         Left = 2
         Top = 15
         Width = 448
-        Height = 320
+        Height = 312
         Align = alClient
         Columns = <>
         DragMode = dmAutomatic
@@ -351,13 +354,13 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
     Left = 0
     Top = 0
     Width = 784
-    Height = 57
+    Height = 65
     Align = alTop
     Caption = 'Properties of ImageList'
     TabOrder = 0
     object SizeLabel: TLabel
       Left = 8
-      Top = 15
+      Top = 21
       Width = 80
       Height = 13
       AutoSize = False
@@ -366,7 +369,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
     end
     object WidthLabel: TLabel
       Left = 94
-      Top = 15
+      Top = 21
       Width = 80
       Height = 13
       AutoSize = False
@@ -375,7 +378,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
     end
     object HeightLabel: TLabel
       Left = 181
-      Top = 15
+      Top = 21
       Width = 80
       Height = 13
       AutoSize = False
@@ -384,7 +387,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
     end
     object SizeSpinEdit: TSpinEdit
       Left = 8
-      Top = 30
+      Top = 36
       Width = 81
       Height = 22
       MaxValue = 0
@@ -395,7 +398,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
     end
     object WidthSpinEdit: TSpinEdit
       Left = 95
-      Top = 30
+      Top = 36
       Width = 81
       Height = 22
       MaxValue = 0
@@ -406,7 +409,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
     end
     object HeightSpinEdit: TSpinEdit
       Left = 182
-      Top = 30
+      Top = 36
       Width = 81
       Height = 22
       MaxValue = 0
@@ -449,6 +452,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
           Top = 0
           Width = 144
           Height = 144
+          DoubleBuffered = False
           Align = alClient
         end
       end
@@ -529,6 +533,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
         Top = 21
         Width = 180
         Height = 21
+        ItemHeight = 13
         TabOrder = 0
         OnChange = FontNameChange
       end
@@ -562,6 +567,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
         NoneColorColor = clNone
         Selected = clDefault
         Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbIncludeDefault]
+        ItemHeight = 16
         TabOrder = 3
         OnChange = FontColorChange
       end
@@ -574,6 +580,7 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
         NoneColorColor = clNone
         Selected = clDefault
         Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbIncludeDefault]
+        ItemHeight = 16
         TabOrder = 4
         OnChange = MaskColorChange
       end

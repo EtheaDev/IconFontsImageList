@@ -96,7 +96,7 @@ PackageDLLOutputDir=
 PackageDCPOutputDir=
 SearchPath=$(DELPHI)\Lib\Debug;..\..\Source
 Packages=vcl;rtl;vclx;inet;xmlrtl;vclie;inetdbbde;inetdbxpress;dbrtl;dsnap;dsnapcon;vcldb;soaprtl;VclSmp;dbexpress;dbxcds;inetdb;bdertl;vcldbx;webdsnap;websnap;adortl;ibxpress;teeui;teedb;tee;dss;visualclx;visualdbclx;vclactnband;vclshlctrls;IntrawebDB_50_70;Intraweb_50_70;dclaxserver;rbDAD107;rbUSERDesign107;rbUSER107;rbDBDE107;rbRCL107;rbBDE107;rbADO107;rbDB107;rbDBE107;rbIBE107;rbIDE107;rbRIDE107;rbRAP107;rbTCUI107;rbTC107;ip4000v7;rbIP107;dxEdtrD7;wPDF3_D7;wpViewPDF_D7;RBCalendarD7Pak;NativeExcelD7;dxComnD7;frx7;frxADO7;frxBDE7;frxDB7;frxDBX7;frxe7;frxIBX7;frxTee7;fs7;fsADO7;fsBDE7;fsDB7;fsIBX7;fsTee7
-Conditionals=
+Conditionals=UseIconFontEditorsAtRunTime
 DebugSourceDirs=
 UsePackages=0
 [Parameters]
@@ -135,11 +135,28 @@ ProductName=
 ProductVersion=1.0.0.0
 Comments=
 [Excluded Packages]
+D:\ETHEA\FastReport 4\LibD7\dclfrx7.bpl=FastReport 4.0 Components
+D:\ETHEA\FastReport 4\LibD7\dclfrxADO7.bpl=FastReport 4.0 ADO Components
+D:\ETHEA\FastReport 4\LibD7\dclfrxBDE7.bpl=FastReport 4.0 BDE Components
+D:\ETHEA\FastReport 4\LibD7\dclfrxDB7.bpl=FastReport 4.0 DB Components
+D:\ETHEA\FastReport 4\LibD7\dclfrxDBX7.bpl=FastReport 4.0 DBX Components
+D:\ETHEA\FastReport 4\LibD7\dclfrxe7.bpl=FastReport 4.0 Exports
+D:\ETHEA\FastReport 4\LibD7\dclfrxIBX7.bpl=FastReport 4.0 IBX Components
+D:\ETHEA\FastReport 4\LibD7\dclfrxTee7.bpl=FastReport 4.0 Tee Components
+D:\ETHEA\FastReport 4\LibD7\dclfs7.bpl=FastScript 1.9 Components
+D:\ETHEA\FastReport 4\LibD7\dclfsADO7.bpl=FastScript 1.9 ADO Components
+D:\ETHEA\FastReport 4\LibD7\dclfsBDE7.bpl=FastScript 1.9 BDE Components
+D:\ETHEA\FastReport 4\LibD7\dclfsDB7.bpl=FastScript 1.9 DB Components
+D:\ETHEA\FastReport 4\LibD7\dclfsIBX7.bpl=FastScript 1.9 IBX Components
+D:\ETHEA\FastReport 4\LibD7\dclfsTee7.bpl=FastScript 1.9 Tee Components
 D:\Program Files (x86)\Borland\Delphi7\Lib\HelpCtxD7.bpl=HelpScribble HelpContext Property Editor for Delphi 7
 D:\Program Files (x86)\Borland\Delphi7\\RBuilder\Lib\dclRBC107.bpl=ReportBuilder TeeChart 4.04 Components
 D:\Program Files (x86)\Borland\Delphi7\Bin\XDBLISCOR107CL.bpl=**** XDB Components for Delphi 7 - ReportBuilder 10 *****
 d:\program files (x86)\borland\delphi7\Bin\XDBLISCOR107DCL.bpl=**** XDB design-time property-editors for Delphi 7 - ReportBuilder 10 *****
 d:\program files (x86)\borland\delphi7\Bin\XDBLSFORMS107CL.bpl=**** XDB Forms Repository for Delphi 7 - ReportBuilder 10 *****
+[HistoryLists\hlConditionals]
+Count=1
+Item0=UseIconFontEditorsAtRunTime
 [HistoryLists\hlUnitAliases]
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
@@ -147,3 +164,6 @@ Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
 Count=2
 Item0=$(DELPHI)\Lib\Debug;..\..\Source
 Item1=..\..\Source
+[HistoryLists\hlOutputDirectorry]
+Count=1
+Item0=UseIconFontEditorsAtRunTime

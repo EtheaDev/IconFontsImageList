@@ -1,10 +1,10 @@
 object IconFontsCharMapForm: TIconFontsCharMapForm
   Left = 352
   Top = 227
+  Width = 698
+  Height = 619
   HelpContext = 26140
   Caption = 'Icon Fonts CharMap %s - Copyright Ethea S.r.l.'
-  ClientHeight = 580
-  ClientWidth = 688
   Color = clBtnFace
   Constraints.MinHeight = 400
   Constraints.MinWidth = 500
@@ -25,17 +25,17 @@ object IconFontsCharMapForm: TIconFontsCharMapForm
   TextHeight = 13
   object ImageListGroup: TGroupBox
     Left = 0
-    Top = 97
-    Width = 688
-    Height = 422
+    Top = 113
+    Width = 682
+    Height = 362
     Align = alClient
     Caption = '%d Icons available from selected Font'
     TabOrder = 1
     object ImageView: TListView
       Left = 2
       Top = 15
-      Width = 684
-      Height = 405
+      Width = 678
+      Height = 345
       Cursor = crHandPoint
       Hint = 'Use Ctrl+click to copy character'
       Align = alClient
@@ -51,19 +51,19 @@ object IconFontsCharMapForm: TIconFontsCharMapForm
   end
   object IconBuilderGroupBox: TGroupBox
     Left = 0
-    Top = 525
-    Width = 688
-    Height = 55
+    Top = 481
+    Width = 682
+    Height = 61
     Align = alBottom
     Caption = 'Chars to copy'
     TabOrder = 2
     DesignSize = (
-      688
-      55)
+      682
+      61)
     object CharsEdit: TEdit
       Left = 7
-      Top = 17
-      Width = 569
+      Top = 25
+      Width = 554
       Height = 21
       Hint = 'Icon Name'
       Anchors = [akLeft, akTop, akRight]
@@ -71,8 +71,8 @@ object IconFontsCharMapForm: TIconFontsCharMapForm
       OnChange = EditChangeUpdateGUI
     end
     object CopyToclipboardButton: TButton
-      Left = 579
-      Top = 16
+      Left = 569
+      Top = 22
       Width = 104
       Height = 30
       Action = CopyToCipboardAction
@@ -83,33 +83,33 @@ object IconFontsCharMapForm: TIconFontsCharMapForm
   object paTop: TPanel
     Left = 0
     Top = 0
-    Width = 688
-    Height = 97
+    Width = 682
+    Height = 113
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 0
     object paClient: TPanel
       Left = 0
       Top = 0
-      Width = 605
-      Height = 97
+      Width = 682
+      Height = 113
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
       object ImageGroup: TGroupBox
         Left = 0
         Top = 0
-        Width = 605
-        Height = 97
+        Width = 682
+        Height = 113
         Align = alClient
         Caption = 'Properties of Selected Icon'
         TabOrder = 0
         DesignSize = (
-          605
-          97)
+          682
+          113)
         object FontIconHexLabel: TLabel
-          Left = 89
-          Top = 55
+          Left = 91
+          Top = 63
           Width = 74
           Height = 13
           AutoSize = False
@@ -118,7 +118,7 @@ object IconFontsCharMapForm: TIconFontsCharMapForm
         end
         object FontIconDecLabel: TLabel
           Left = 169
-          Top = 55
+          Top = 63
           Width = 78
           Height = 13
           AutoSize = False
@@ -126,8 +126,8 @@ object IconFontsCharMapForm: TIconFontsCharMapForm
           Transparent = True
         end
         object DefaultFontNameLabel: TLabel
-          Left = 89
-          Top = 13
+          Left = 91
+          Top = 21
           Width = 156
           Height = 13
           AutoSize = False
@@ -136,8 +136,8 @@ object IconFontsCharMapForm: TIconFontsCharMapForm
         end
         object IconNameLabel: TLabel
           Left = 255
-          Top = 55
-          Width = 201
+          Top = 63
+          Width = 244
           Height = 13
           Anchors = [akLeft, akTop, akRight]
           AutoSize = False
@@ -147,7 +147,7 @@ object IconFontsCharMapForm: TIconFontsCharMapForm
         end
         object MainPanel: TPanel
           Left = 5
-          Top = 18
+          Top = 22
           Width = 78
           Height = 78
           BevelOuter = bvNone
@@ -162,13 +162,14 @@ object IconFontsCharMapForm: TIconFontsCharMapForm
             Top = 2
             Width = 72
             Height = 72
+            DoubleBuffered = False
             Align = alClient
           end
         end
         object FontIconHex: TEdit
-          Left = 89
-          Top = 70
-          Width = 74
+          Left = 91
+          Top = 78
+          Width = 70
           Height = 21
           Hint = 'Hexadecimal value'
           CharCase = ecUpperCase
@@ -178,8 +179,8 @@ object IconFontsCharMapForm: TIconFontsCharMapForm
         end
         object FontIconDec: TEdit
           Left = 169
-          Top = 70
-          Width = 80
+          Top = 78
+          Width = 78
           Height = 21
           Hint = 'Decimal value'
           ReadOnly = True
@@ -187,17 +188,18 @@ object IconFontsCharMapForm: TIconFontsCharMapForm
         end
         object DefaultFontName: TComboBox
           Left = 91
-          Top = 28
-          Width = 510
+          Top = 36
+          Width = 430
           Height = 21
           Style = csDropDownList
           Anchors = [akLeft, akTop, akRight]
+          ItemHeight = 13
           TabOrder = 1
           OnSelect = DefaultFontNameSelect
         end
         object cbShowSurrogate: TCheckBox
-          Left = 465
-          Top = 55
+          Left = 537
+          Top = 38
           Width = 131
           Height = 17
           Anchors = [akTop, akRight]
@@ -206,8 +208,8 @@ object IconFontsCharMapForm: TIconFontsCharMapForm
           OnClick = cbShowSurrogateClick
         end
         object ShowCaptionsCheckBox: TCheckBox
-          Left = 465
-          Top = 74
+          Left = 537
+          Top = 80
           Width = 131
           Height = 17
           Anchors = [akTop, akRight]
@@ -219,8 +221,8 @@ object IconFontsCharMapForm: TIconFontsCharMapForm
         end
         object IconName: TEdit
           Left = 255
-          Top = 70
-          Width = 202
+          Top = 78
+          Width = 266
           Height = 21
           Hint = 'Icon Name (from metadata registered)'
           Anchors = [akLeft, akTop, akRight]
@@ -230,54 +232,60 @@ object IconFontsCharMapForm: TIconFontsCharMapForm
         end
       end
     end
-    object paButtons: TPanel
-      Left = 605
-      Top = 0
-      Width = 83
-      Height = 97
-      Align = alRight
-      BevelOuter = bvNone
-      TabOrder = 1
-      object OKButton: TButton
-        Left = 2
-        Top = 8
-        Width = 75
-        Height = 25
-        Caption = 'OK'
-        Default = True
-        ModalResult = 1
-        TabOrder = 0
-        OnClick = OKButtonClick
-      end
-      object HelpButton: TButton
-        Left = 2
-        Top = 66
-        Width = 75
-        Height = 25
-        Caption = '&Help'
-        TabOrder = 2
-        OnClick = HelpButtonClick
-      end
-      object CancelButton: TButton
-        Left = 2
-        Top = 35
-        Width = 75
-        Height = 25
-        Hint = 'Close'
-        Caption = 'Cancel'
-        TabOrder = 1
-        OnClick = CancelButtonClick
-      end
-    end
   end
   object ProgressBar: TProgressBar
     Left = 0
-    Top = 519
-    Width = 688
+    Top = 475
+    Width = 682
     Height = 6
     Align = alBottom
     TabOrder = 3
     Visible = False
+  end
+  object BottomPanel: TPanel
+    Left = 0
+    Top = 542
+    Width = 682
+    Height = 38
+    Align = alBottom
+    BevelOuter = bvNone
+    TabOrder = 4
+    DesignSize = (
+      682
+      38)
+    object OKButton: TButton
+      Left = 398
+      Top = 6
+      Width = 85
+      Height = 25
+      Anchors = [akTop, akRight]
+      Caption = 'OK'
+      Default = True
+      ModalResult = 1
+      TabOrder = 0
+      OnClick = OKButtonClick
+    end
+    object HelpButton: TButton
+      Left = 588
+      Top = 6
+      Width = 85
+      Height = 25
+      Anchors = [akTop, akRight]
+      Caption = '&Help'
+      TabOrder = 2
+      OnClick = HelpButtonClick
+    end
+    object CancelButton: TButton
+      Left = 493
+      Top = 6
+      Width = 85
+      Height = 25
+      Hint = 'Close'
+      Anchors = [akTop, akRight]
+      Caption = 'Cancel'
+      TabOrder = 1
+      OnClick = CancelButtonClick
+    end
   end
   object ActionList: TActionList
     OnUpdate = ActionListUpdate

@@ -52,7 +52,7 @@ resourcestring
   ERR_ICONFONTSFMX_FONT_NOT_INSTALLED = 'Font "%s" is not installed!';
 
 const
-  IconFontsImageListVersion = '3.0.0';
+  IconFontsImageListVersion = '3.1.0';
   DEFAULT_SIZE = 32;
   ZOOM_DEFAULT = 100;
 
@@ -162,6 +162,11 @@ type
   end;
 
   {TIconFontsImageList}
+  {$IF CompilerVersion > 34}
+  [ComponentPlatforms(pidWin32 or pidWin64 or pidOSX32 or pidiOSSimulator32 or pidiOSDevice32 or pidAndroidArm32)]
+  {$ELSE}
+  [ComponentPlatforms(pidWin32 or pidWin64 or pidOSX32 or pidiOSSimulator32 or pidiOSDevice32 or pidAndroid32Arm)]
+  {$ENDIF}
   TIconFontsImageList = class(TCustomImageList)
   private
     FWidth, FHeight: Integer;

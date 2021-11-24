@@ -56,12 +56,9 @@ uses
 
 type
   TIconFontsCharMapForm = class(TForm)
-    OKButton: TButton;
     ImageListGroup: TGroupBox;
     ImageView: TListView;
-    HelpButton: TButton;
     paTop: TPanel;
-    paButtons: TPanel;
     paClient: TPanel;
     IconBuilderGroupBox: TGroupBox;
     CharsEdit: TEdit;
@@ -75,7 +72,6 @@ type
     FontIconDec: TEdit;
     DefaultFontName: TComboBox;
     DefaultFontNameLabel: TLabel;
-    CancelButton: TButton;
     cbShowSurrogate: TCheckBox;
     ProgressBar: TProgressBar;
     ActionList: TActionList;
@@ -83,6 +79,10 @@ type
     ShowCaptionsCheckBox: TCheckBox;
     IconName: TEdit;
     IconNameLabel: TLabel;
+    BottomPanel: TPanel;
+    OKButton: TButton;
+    HelpButton: TButton;
+    CancelButton: TButton;
     procedure FormCreate(Sender: TObject);
     procedure AddButtonClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -161,10 +161,21 @@ uses
   CommCtrl
   , TypInfo
   , ShellApi
-  , IconFontsUtils
   {$IFDEF D2010+}
   , Icons.Utils
   {$ENDIF}
+  //WARNING: you must define this directive to use this unit outside the IDE
+{$IFNDEF UseIconFontEditorsAtRunTime}
+  {$IF (CompilerVersion >= 24.0)}
+  , Vcl.Themes
+  , ToolsAPI
+  {$IFEND}
+  {$IF (CompilerVersion >= 32.0)}
+  , IDETheme.Utils
+  , BrandingAPI
+  {$IFEND}
+{$ENDIF}
+  , IconFontsUtils
   ;
 
 const
@@ -429,7 +440,43 @@ begin
 end;
 
 procedure TIconFontsCharMapForm.FormCreate(Sender: TObject);
+{$IFNDEF UseIconFontEditorsAtRunTime}
+  {$IF (CompilerVersion >= 32.0)}
+  var
+    LStyle: TCustomStyleServices;
+  {$IFEND}
+{$ENDIF}
 begin
+{$IFNDEF UseIconFontEditorsAtRunTime}
+  {$IF (CompilerVersion >= 32.0)}
+    {$IF (CompilerVersion <= 34.0)}
+    if UseThemeFont then
+      Self.Font.Assign(GetThemeFont);
+    {$IFEND}
+    {$IF CompilerVersion > 34.0}
+    if TIDEThemeMetrics.Font.Enabled then
+      Self.Font.Assign(TIDEThemeMetrics.Font.GetFont);
+    {$IFEND}
+
+    if ThemeProperties <> nil then
+    begin
+      LStyle := ThemeProperties.StyleServices;
+      StyleElements := StyleElements - [seClient];
+      Color := LStyle.GetSystemColor(clWindow);
+      BottomPanel.StyleElements := BottomPanel.StyleElements - [seClient];
+      BottomPanel.ParentBackground := False;
+      BottomPanel.Color := LStyle.GetSystemColor(clBtnFace);
+      IDEThemeManager.RegisterFormClass(TIconFontsCharMapForm);
+      ThemeProperties.ApplyTheme(Self);
+    end;
+  {$IFEND}
+{$ENDIF}
+
+  {$IF (CompilerVersion >= 24.0)}
+  ImageView.AlignWithMargins := True;
+  ImageView.Margins.Top := 6;
+  {$IFEND}
+
   {$IFDEF D2010+}
   cbShowSurrogate.Visible := True;
   {$ELSE}
@@ -585,7 +632,7 @@ begin
   Screen.Cursor := crHourGlass;
   try
     paClient.Enabled := False;
-    paButtons.Enabled := False;
+    BottomPanel.Enabled := False;
     ImageView.Enabled := False;
     IconBuilderGroupBox.Enabled := False;
     FStopped := False;
@@ -692,7 +739,7 @@ begin
   finally
     IconBuilderGroupBox.Enabled := True;
     ImageView.Enabled := True;
-    paButtons.Enabled := True;
+    BottomPanel.Enabled := True;
     paClient.Enabled := True;
     Screen.Cursor := crDefault;
   end;
