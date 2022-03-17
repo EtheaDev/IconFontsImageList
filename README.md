@@ -1,4 +1,4 @@
-﻿# IconFontsImageList [![License](https://img.shields.io/badge/License-Apache%202.0-yellowgreen.svg)](https://opensource.org/licenses/Apache-2.0)
+# IconFontsImageList [![License](https://img.shields.io/badge/License-Apache%202.0-yellowgreen.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ## Four advanced components to simplify use of Icon Fonts as images and ImageList (for VCL and FMX). Full support for High-DPI apps. Rendering optimized with GDI+
 
@@ -45,8 +45,8 @@ If you are using the old Font, you can automatically convert icons to the new on
 - Updated Library suffix for Delphi 10.4 and 11 to (auto)
 
 24 Nov 2021: version 3.1.0 (VCL+FMX)
-- Updated MaterialDesign fonts
-- Updated component editors form light or dark theme
+- Updated Material Design Desktop Font to versione 6.6.30
+- Added Added IDE themes support for component editors27 Aug 2021: version 3.0.0 (VCL+FMX)
 
 27 Aug 2021: version 3.0.0 (VCL+FMX)
 - FMX version aligned to VCL
