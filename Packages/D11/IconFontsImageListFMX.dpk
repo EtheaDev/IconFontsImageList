@@ -1,4 +1,4 @@
-package IconFontsImageList;
+package IconFontsImageListFMX;
 
 {$R *.res}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
@@ -25,23 +25,17 @@ package IconFontsImageList;
 {$IMAGEBASE $400000}
 {$DEFINE RELEASE}
 {$ENDIF IMPLICITBUILDING}
-{$DESCRIPTION 'Ethea IconFontsImageList VCL components'}
-{$LIBSUFFIX '_D11_0'}
+{$DESCRIPTION 'Ethea IconFontsImageList FMX components'}
+{$LIBSUFFIX AUTO}
 {$RUNONLY}
 {$IMPLICITBUILD OFF}
 
 requires
   rtl,
-  vcl,
-  vclwinx;
+  fmx;
 
 contains
-  IconFontsImage in '..\..\Source\IconFontsImage.pas',
-  IconFontsImageListBase in '..\..\Source\IconFontsImageListBase.pas',
-  IconFontsItems in '..\..\Source\IconFontsItems.pas',
-  IconFontsVirtualImageList in '..\..\Source\IconFontsVirtualImageList.pas',
-  IconFontsImageCollection in '..\..\Source\IconFontsImageCollection.pas',
-  IconFontsImageList in '..\..\Source\IconFontsImageList.pas',
-  IconFontsUtils in '..\..\Source\IconFontsUtils.pas';
+  FMX.IconFontsImageList in '..\..\Source\FMX.IconFontsImageList.pas',
+  FMX.IconFontImage in '..\..\Source\FMX.IconFontImage.pas';
 
 end.

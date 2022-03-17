@@ -36,7 +36,7 @@
         <DCC_DebugInformation>1</DCC_DebugInformation>
         <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
         <DCC_Description>Ethea IconFontsImageList VCL components</DCC_Description>
-        <DllSuffix>_D10_4</DllSuffix>
+        <DllSuffix>$(Auto)</DllSuffix>
         <RuntimeOnlyPackage>true</RuntimeOnlyPackage>
         <DCC_Namespace>Winapi;System.Win;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;$(DCC_Namespace)</DCC_Namespace>
         <VerInfo_Locale>1033</VerInfo_Locale>

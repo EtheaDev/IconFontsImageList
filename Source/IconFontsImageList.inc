@@ -159,7 +159,7 @@
   {$DEFINE D10_4+}
 {$ENDIF}
 
-// Delphi 11.0 Alexandria
+// Delphi 11 Alexandria
 {$IFDEF VER350}
   {$DEFINE D2010+}
   {$DEFINE DXE+}
@@ -175,7 +175,7 @@
   {$DEFINE D10_2+}
   {$DEFINE D10_3+}
   {$DEFINE D10_4+}
-  {$DEFINE D11_0+}
+  {$DEFINE D11+}
 {$ENDIF}
 
 //GDI+ support available from DXE4

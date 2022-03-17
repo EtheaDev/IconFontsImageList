@@ -78,7 +78,7 @@
         <DCC_CBuilderOutput>All</DCC_CBuilderOutput>
         <SanitizedProjectName>dclIconFontsImageListFMX</SanitizedProjectName>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
-        <DllSuffix>_D10_4</DllSuffix>
+        <DllSuffix>$(Auto)</DllSuffix>
         <DCC_Description>Ethea IconFontsImageList  FMX components</DCC_Description>
         <DesignOnlyPackage>true</DesignOnlyPackage>
         <VerInfo_Locale>1033</VerInfo_Locale>
@@ -168,8 +168,6 @@
                     <Source Name="MainSource">dclIconFontsImageListFMX.dpk</Source>
                 </Source>
                 <Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k270.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp270.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
