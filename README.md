@@ -1,17 +1,19 @@
-# IconFontsImageList [![License](https://img.shields.io/badge/License-Apache%202.0-yellowgreen.svg)](https://opensource.org/licenses/Apache-2.0)
+﻿# IconFontsImageList [![License](https://img.shields.io/badge/License-Apache%202.0-yellowgreen.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ## Four advanced components to simplify use of Icon Fonts as images and ImageList (for VCL and FMX). Full support for High-DPI apps. Rendering optimized with GDI+
 
-### Actual official version 3.2.1 (VCL+FMX)
+### Actual official version 3.2.2 (VCL+FMX)
 
 | Component | Description |
 | - | - |
-| ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageCollectionComponentIcon.png](https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageCollectionComponentIcon.png) | **TIconFontsImageCollection** is collection of "Icon Fonts" for Delphi to provide a centralized list of images for IconFontsVirtualImageList (only for VCL) |
-| ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsVirtualImageListComponentIcon.png](https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsVirtualImageListComponentIcon.png) | **TIconFontsVirtualImageList** is a special "virtual" ImageList for Delphi linked to an IconFontsImageCollection (only for VCL) to simplify use of "Font Icons" (resize, color and more...) |
-| ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageComponentIcon.png](https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageComponentIcon.png) | **TIconFontImage** is an extended Image component for Delphi (VCL+FMX) to show any Icon Font directly or included into a an IconFontsImageList with all functionality (stretch, color, opacity and more...) |
-| ![https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png](https://github.com/EtheaDev/IconFontsImageList/blob/master/Packages/IconFontsImageListComponentIcon.png) | **TIconFontsImageList** is an extended ImageList for Delphi (VCL+FMX) to simplify use of Icon Fonts (resize, color and more...). Use only for simple application with one form. |
+| ![IconFontsImageCollectionComponentIcon.png](./Packages/IconFontsImageCollectionComponentIcon.png) | **TIconFontsImageCollection** is collection of "Icon Fonts" for Delphi to provide a centralized list of images for IconFontsVirtualImageList (only for VCL) |
+| ![IconFontsVirtualImageListComponentIcon.png](./Packages/IconFontsVirtualImageListComponentIcon.png) | **TIconFontsVirtualImageList** is a special "virtual" ImageList for Delphi linked to an IconFontsImageCollection (only for VCL) to simplify use of "Font Icons" (resize, color and more...) |
+| ![IconFontsImageComponentIcon.png](./Packages/IconFontsImageComponentIcon.png) | **TIconFontImage** is an extended Image component for Delphi (VCL+FMX) to show any Icon Font directly or included into a an IconFontsImageList with all functionality (stretch, color, opacity and more...) |
+| ![IconFontsImageListComponentIcon.png](./Packages/IconFontsImageListComponentIcon.png) | **TIconFontsImageList** is an extended ImageList for Delphi (VCL+FMX) to simplify use of Icon Fonts (resize, color and more...). Use only for simple application with one form. |
 
-![Delphi 10.4 Sydney Support](/Demo/Images/SupportingDelphi.jpg)
+### Available from Delphi 7 to Delphi 11 (32bit and 64bit platforms)
+
+![Delphi 11 Support](/Demo/Images/SupportingDelphi.jpg)
 
 Related links: https://www.embarcadero.com/ - https://learndelphi.org/
 
@@ -40,6 +42,9 @@ Take care of changed Font file used in the Demos from v1.7(VCL)/v1.2(FMX) -> v1.
 If you are using the old Font, you can automatically convert icons to the new ones as explained [here](https://github.com/EtheaDev/IconFontsImageList/wiki/Convert-Material-Icons).
 
 **RELEASE NOTES:**
+15 Sep 2022: version 3.2.2 (VCL+FMX)
+- Updated packages for Delphi 11.2
+
 17 Jun 2022: version 3.2.1 (VCL+FMX)
 - Updated Material Design Desktop Font to version 7.0.01
 - Updated MaterialDesign fonts (7000 icons)
