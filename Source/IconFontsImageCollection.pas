@@ -3,7 +3,7 @@
 {       Icon Fonts ImageCollection: An extended ImageCollection for Delphi/VCL }
 {       to use VirtualImageList with Icon Fonts                                }
 {                                                                              }
-{       Copyright (c) 2019-2022 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2023 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {                                                                              }
 {       https://github.com/EtheaDev/IconFontsImageList                         }

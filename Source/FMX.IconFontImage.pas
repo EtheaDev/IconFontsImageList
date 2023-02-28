@@ -3,7 +3,7 @@
 {       Icon Font Image fmx: An extended Image for Delphi/FireMonkey           }
 {       to simplify use of Icons (resize, colors and more...)                  }
 {                                                                              }
-{       Copyright (c) 2019-2022 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2023 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {       Contributors:                                                          }
 {         Nicola Tambascia                                                     }

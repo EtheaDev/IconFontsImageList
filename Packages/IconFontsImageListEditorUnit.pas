@@ -3,7 +3,7 @@
 {       Icon Fonts ImageList: An extended ImageList for Delphi                 }
 {       to simplify use of Icons (resize, colors and more...)                  }
 {                                                                              }
-{       Copyright (c) 2019-2022 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2023 (Ethea S.r.l.)                                 }
 {       Contributors:                                                          }
 {         Carlo Barazzetta                                                     }
 {         Nicola Tambascia                                                     }
@@ -178,7 +178,7 @@ type
     procedure UpdateCategories;
     procedure UpdateSizeGUI;
     procedure AddNewItem;
-    procedure DeleteSelectedItem;
+    procedure DeleteSelectedItems;
     procedure Apply;
     procedure UpdateGUI;
     procedure UpdateCharsToBuild;
@@ -649,15 +649,27 @@ begin
   Accept := Source = Sender;
 end;
 
-procedure TIconFontsImageListEditor.DeleteSelectedItem;
+procedure TIconFontsImageListEditor.DeleteSelectedItems;
 var
+  LIndex: Integer;
   LSelectedImageIndex: Integer;
 begin
-  LSelectedImageIndex := ImageView.Items[ImageView.Selected.Index].ImageIndex;
-  FEditingList.Delete(ImageView.Selected.Index);
-  FChanged := True;
-  BuildList(LSelectedImageIndex);
-  FChanged := True;
+  Screen.Cursor := crHourGlass;
+  try
+    LSelectedImageIndex := ImageView.Items[ImageView.ItemIndex].ImageIndex;
+    FEditingList.BeginUpdate;
+    try
+      for LIndex := ImageView.Items.Count - 1 downto 0 do
+        if ImageView.Items[LIndex].Selected then
+          FEditingList.Delete(ImageView.Items[LIndex].ImageIndex);
+    finally
+      FEditingList.EndUpdate;
+    end;
+    FChanged := True;
+    BuildList(LSelectedImageIndex);
+  finally
+    Screen.Cursor := crDefault;
+  end;
 end;
 
 destructor TIconFontsImageListEditor.Destroy;
@@ -741,7 +753,7 @@ begin
   if (Key = VK_INSERT) and (Shift = []) then
     AddNewItem
   else if (Key = VK_DELETE) and (Shift = []) then
-    DeleteSelectedItem;
+    DeleteSelectedItems;
 end;
 
 function TIconFontsImageListEditor.SelectedIcon: TIconFontItem;
@@ -869,7 +881,7 @@ end;
 
 procedure TIconFontsImageListEditor.DeleteButtonClick(Sender: TObject);
 begin
-  DeleteSelectedItem;
+  DeleteSelectedItems;
 end;
 
 procedure TIconFontsImageListEditor.MaskColorChange(Sender: TObject);

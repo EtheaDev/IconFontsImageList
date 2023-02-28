@@ -3,7 +3,7 @@
 {       Icon Fonts ImageList fmx: An extended ImageList for Delphi/FireMonkey  }
 {       to simplify use of Icons (resize, colors and more...)                  }
 {                                                                              }
-{       Copyright (c) 2019-2022 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2023 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {       Contributors:                                                          }
 {         Nicola Tambascia                                                     }
@@ -52,7 +52,7 @@ resourcestring
   ERR_ICONFONTSFMX_FONT_NOT_INSTALLED = 'Font "%s" is not installed!';
 
 const
-  IconFontsImageListVersion = '3.2.2';
+  IconFontsImageListVersion = '3.3.0';
   DEFAULT_SIZE = 32;
   ZOOM_DEFAULT = 100;
 

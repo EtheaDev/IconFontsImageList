@@ -2,7 +2,7 @@
 
 ## Four advanced components to simplify use of Icon Fonts as images and ImageList (for VCL and FMX). Full support for High-DPI apps. Rendering optimized with GDI+
 
-### Actual official version 3.2.2 (VCL+FMX)
+### Actual official version 3.3.0 (VCL+FMX)
 
 | Component | Description |
 | - | - |
@@ -42,6 +42,10 @@ Take care of changed Font file used in the Demos from v1.7(VCL)/v1.2(FMX) -> v1.
 If you are using the old Font, you can automatically convert icons to the new ones as explained [here](https://github.com/EtheaDev/IconFontsImageList/wiki/Convert-Material-Icons).
 
 **RELEASE NOTES:**
+28 Feb 2023: version 3.3.0 (VCL+FMX)
+- Updated packages for Delphi 11.3
+- Feature Request #43: delete all selected icons into editor
+
 15 Sep 2022: version 3.2.2 (VCL+FMX)
 - Updated packages for Delphi 11.2
 
