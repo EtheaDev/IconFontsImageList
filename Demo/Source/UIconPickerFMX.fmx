@@ -1,0 +1,110 @@
+object IconPicker: TIconPicker
+  Left = 0
+  Top = 0
+  Caption = 'FMX Icon Font Picker'
+  ClientHeight = 347
+  ClientWidth = 240
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  DesignerMasterStyle = 0
+  object edtChar: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 3
+    Text = 'F008'
+    Position.X = 8.000000000000000000
+    Position.Y = 76.000000000000000000
+    OnChange = edtCharChange
+  end
+  object edtColor: TColorComboBox
+    DropDownKind = Custom
+    Color = claBlack
+    DisableFocusEffect = False
+    ItemIndex = 7
+    Position.X = 8.000000000000000000
+    Position.Y = 120.000000000000000000
+    Size.Width = 217.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 5
+    OnChange = edtColorChange
+  end
+  object Preview: TGroupBox
+    Position.X = 8.000000000000000000
+    Position.Y = 160.000000000000000000
+    Size.Width = 228.000000000000000000
+    Size.Height = 177.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Preview'
+    TabOrder = 6
+    object Image16x16: TImage
+      MultiResBitmap = <
+        item
+        end>
+      Position.X = 7.000000000000000000
+      Position.Y = 24.000000000000000000
+      Size.Width = 16.000000000000000000
+      Size.Height = 16.000000000000000000
+      Size.PlatformDefault = False
+    end
+    object Image32x32: TImage
+      MultiResBitmap = <
+        item
+        end>
+      Position.X = 25.000000000000000000
+      Position.Y = 24.000000000000000000
+      Size.Width = 32.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+    end
+    object Image64x64: TImage
+      MultiResBitmap = <
+        item
+        end>
+      Position.X = 59.000000000000000000
+      Position.Y = 24.000000000000000000
+      Size.Width = 64.000000000000000000
+      Size.Height = 64.000000000000000000
+      Size.PlatformDefault = False
+    end
+    object Image90x90: TImage
+      MultiResBitmap = <
+        item
+        end>
+      Position.X = 126.000000000000000000
+      Position.Y = 24.000000000000000000
+      Size.Width = 90.000000000000000000
+      Size.Height = 90.000000000000000000
+      Size.PlatformDefault = False
+    end
+  end
+  object Label1: TLabel
+    Position.X = 8.000000000000000000
+    Position.Y = 15.000000000000000000
+    Text = 'Font Name'
+    TabOrder = 0
+  end
+  object Label2: TLabel
+    Position.X = 8.000000000000000000
+    Position.Y = 59.000000000000000000
+    Text = 'Character HEX'
+    TabOrder = 2
+  end
+  object Label3: TLabel
+    Position.X = 8.000000000000000000
+    Position.Y = 103.000000000000000000
+    Text = 'Color'
+    TabOrder = 4
+  end
+  object edtFont: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 1
+    Text = 'Material Design Icons'
+    Position.X = 8.000000000000000000
+    Position.Y = 36.000000000000000000
+    Size.Width = 217.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+  end
+end

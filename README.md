@@ -2,7 +2,7 @@
 
 ## Four advanced components to simplify use of Icon Fonts as images and ImageList (for VCL and FMX). Full support for High-DPI apps. Rendering optimized with GDI+
 
-### Actual official version 3.3.0 (VCL+FMX)
+### Actual official version 3.3.1 (VCL+FMX)
 
 | Component | Description |
 | - | - |
@@ -11,9 +11,9 @@
 | ![IconFontsImageComponentIcon.png](./Packages/IconFontsImageComponentIcon.png) | **TIconFontImage** is an extended Image component for Delphi (VCL+FMX) to show any Icon Font directly or included into a an IconFontsImageList with all functionality (stretch, color, opacity and more...) |
 | ![IconFontsImageListComponentIcon.png](./Packages/IconFontsImageListComponentIcon.png) | **TIconFontsImageList** is an extended ImageList for Delphi (VCL+FMX) to simplify use of Icon Fonts (resize, color and more...). Use only for simple application with one form. |
 
-### Available from Delphi 7 to Delphi 11 (32bit and 64bit platforms)
+### Available from Delphi 7 to Delphi 12 (32bit and 64bit platforms)
 
-![Delphi 11 Support](/Demo/Images/SupportingDelphi.jpg)
+![Delphi Support](/Demo/Images/SupportingDelphi.jpg)
 
 Related links: https://www.embarcadero.com/ - https://learndelphi.org/
 
@@ -42,6 +42,9 @@ Take care of changed Font file used in the Demos from v1.7(VCL)/v1.2(FMX) -> v1.
 If you are using the old Font, you can automatically convert icons to the new ones as explained [here](https://github.com/EtheaDev/IconFontsImageList/wiki/Convert-Material-Icons).
 
 **RELEASE NOTES:**
+24 Aug 2023: version 3.3.1 (VCL+FMX)
+- Added support for Delphi 12
+
 28 Feb 2023: version 3.3.0 (VCL+FMX)
 - Updated packages for Delphi 11.3
 - Feature Request #43: delete all selected icons into editor

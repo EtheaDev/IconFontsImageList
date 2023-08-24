@@ -14,10 +14,8 @@ object MainForm: TMainForm
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
   ShowHint = True
   OnCreate = FormCreate
-  PixelsPerInch = 96
   TextHeight = 13
   object Splitter: TSplitter
     Left = 626
@@ -400,66 +398,54 @@ object MainForm: TMainForm
     Top = 312
   end
   object VirtualImageList: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 0
         CollectionName = 'account'
-        Disabled = False
         Name = 'account'
       end
       item
         CollectionIndex = 1
         CollectionName = 'delete'
-        Disabled = False
         Name = 'delete'
       end
       item
         CollectionIndex = 2
-        Disabled = False
         Name = 'apple'
       end
       item
         CollectionIndex = 3
         CollectionName = 'google-chrome'
-        Disabled = False
         Name = 'google-chrome'
       end
       item
         CollectionIndex = 4
         CollectionName = 'android'
-        Disabled = False
         Name = 'android'
       end
       item
         CollectionIndex = 5
         CollectionName = 'file-replace'
-        Disabled = False
         Name = 'file-replace'
       end
       item
         CollectionIndex = 6
         CollectionName = 'account-search'
-        Disabled = False
         Name = 'account-search'
       end
       item
         CollectionIndex = 7
         CollectionName = 'palette'
-        Disabled = False
         Name = 'palette'
       end
       item
         CollectionIndex = 8
         CollectionName = 'format-font'
-        Disabled = False
         Name = 'format-font'
       end
       item
         CollectionIndex = 9
         CollectionName = 'open-in-new'
-        Disabled = False
         Name = 'open-in-new'
       end>
     ImageCollection = dmImages.IconFontsImageCollection

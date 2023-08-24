@@ -1,0 +1,72 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{BB2193D5-C9ED-4CBD-A0EE-F14F68FA6AAC}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="IconFontsImageList.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="dclIconFontsImageList.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="IconFontsImageListFMX.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="dclIconFontsImageListFMX.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="IconFontsImageList">
+        <MSBuild Projects="IconFontsImageList.dproj"/>
+    </Target>
+    <Target Name="IconFontsImageList:Clean">
+        <MSBuild Projects="IconFontsImageList.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="IconFontsImageList:Make">
+        <MSBuild Projects="IconFontsImageList.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="dclIconFontsImageList">
+        <MSBuild Projects="dclIconFontsImageList.dproj"/>
+    </Target>
+    <Target Name="dclIconFontsImageList:Clean">
+        <MSBuild Projects="dclIconFontsImageList.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="dclIconFontsImageList:Make">
+        <MSBuild Projects="dclIconFontsImageList.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="IconFontsImageListFMX">
+        <MSBuild Projects="IconFontsImageListFMX.dproj"/>
+    </Target>
+    <Target Name="IconFontsImageListFMX:Clean">
+        <MSBuild Projects="IconFontsImageListFMX.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="IconFontsImageListFMX:Make">
+        <MSBuild Projects="IconFontsImageListFMX.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="dclIconFontsImageListFMX">
+        <MSBuild Projects="dclIconFontsImageListFMX.dproj"/>
+    </Target>
+    <Target Name="dclIconFontsImageListFMX:Clean">
+        <MSBuild Projects="dclIconFontsImageListFMX.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="dclIconFontsImageListFMX:Make">
+        <MSBuild Projects="dclIconFontsImageListFMX.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="IconFontsImageList;dclIconFontsImageList;IconFontsImageListFMX;dclIconFontsImageListFMX"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="IconFontsImageList:Clean;dclIconFontsImageList:Clean;IconFontsImageListFMX:Clean;dclIconFontsImageListFMX:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="IconFontsImageList:Make;dclIconFontsImageList:Make;IconFontsImageListFMX:Make;dclIconFontsImageListFMX:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
