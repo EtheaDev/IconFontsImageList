@@ -1,5 +1,4 @@
 object dmImages: TdmImages
-  OldCreateOrder = True
   OnDestroy = DataModuleDestroy
   Height = 278
   Width = 365
@@ -48,6 +47,7 @@ object dmImages: TdmImages
         IconName = 'open-in-new'
       end>
     FontName = 'Material Design Icons'
+    OnFontMissing = IconFontsImageCollectionFontMissing
     Left = 184
     Top = 152
   end
