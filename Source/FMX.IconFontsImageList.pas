@@ -3,7 +3,7 @@
 {       Icon Fonts ImageList fmx: An extended ImageList for Delphi/FireMonkey  }
 {       to simplify use of Icons (resize, colors and more...)                  }
 {                                                                              }
-{       Copyright (c) 2019-2023 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2024 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {       Contributors:                                                          }
 {         Nicola Tambascia                                                     }
@@ -52,7 +52,7 @@ resourcestring
   ERR_ICONFONTSFMX_FONT_NOT_INSTALLED = 'Font "%s" is not installed!';
 
 const
-  IconFontsImageListVersion = '3.3.1';
+  IconFontsImageListVersion = '3.3.2';
   DEFAULT_SIZE = 32;
   ZOOM_DEFAULT = 100;
 
@@ -165,7 +165,7 @@ type
   {$IF CompilerVersion > 34}
   [ComponentPlatforms(pidWin32 or pidWin64 or pidOSX32 or pidiOSSimulator32 or pidiOSDevice32 or pidAndroidArm32)]
   {$ELSE}
-  [ComponentPlatforms(pidWin32 or pidWin64 or pidOSX32 or pidiOSSimulator32 or pidiOSDevice32 or pidAndroid32Arm)]
+  [ComponentPlatforms(pidWin32 or pidWin64 or pidOSX32 or pidiOSDevice32)]
   {$ENDIF}
   TIconFontsImageList = class(TCustomImageList)
   private
@@ -290,7 +290,7 @@ begin
       LBitmap.Canvas.EndScene;
     end;
   finally
-    LFont.DisposeOf;
+    LFont.Free;
   end;
 end;
 

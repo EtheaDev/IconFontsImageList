@@ -1,0 +1,258 @@
+<style type="text/css">
+code{
+  font-family: "Consolas", monospace;
+}
+pre{
+  border: 1px solid #ddd;
+  border-left: 3px solid #f36d33;
+  overflow: auto;
+  padding: 1em 1.5em;
+  display: block;
+}
+Blockquote{
+  border-left: 3px solid #d0d0d0;
+  padding-left: 0.5em;
+  margin-left:1em;
+}
+Blockquote p{
+  margin: 0;
+}
+table{
+  border:1px solid;
+  border-collapse:collapse;
+}
+th{  padding:5px;
+  border:1px solid;
+}
+td{
+  padding:5px;
+  border:1px solid;
+}
+</style>
+<h2>IconFontsImageList <a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/badge/License-Apache%202.0-yellowgreen.svg" alt="License"/></a></h2>
+<h2>Four advanced components to simplify use of Icon Fonts as images and ImageList (for VCL and FMX). Full support for High-DPI apps. Rendering optimized with GDI+</h2>
+<h3>Actual official version 3.3.2 (VCL+FMX)</h3>
+<table>
+  <tr>
+    <th>Component</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><img src="./Packages/IconFontsImageCollectionComponentIcon.png" alt="IconFontsImageCollectionComponentIcon.png"/></td>
+    <td><strong>TIconFontsImageCollection</strong> is collection of &ldquo;Icon Fonts&rdquo; for Delphi to provide a centralized list of images for IconFontsVirtualImageList (only for VCL)</td>
+  </tr>
+  <tr>
+    <td><img src="./Packages/IconFontsVirtualImageListComponentIcon.png" alt="IconFontsVirtualImageListComponentIcon.png"/></td>
+    <td><strong>TIconFontsVirtualImageList</strong> is a special &ldquo;virtual&rdquo; ImageList for Delphi linked to an IconFontsImageCollection (only for VCL) to simplify use of &ldquo;Font Icons&rdquo; (resize, color and more&hellip;)</td>
+  </tr>
+  <tr>
+    <td><img src="./Packages/IconFontsImageComponentIcon.png" alt="IconFontsImageComponentIcon.png"/></td>
+    <td><strong>TIconFontImage</strong> is an extended Image component for Delphi (VCL+FMX) to show any Icon Font directly or included into a an IconFontsImageList with all functionality (stretch, color, opacity and more&hellip;)</td>
+  </tr>
+  <tr>
+    <td><img src="./Packages/IconFontsImageListComponentIcon.png" alt="IconFontsImageListComponentIcon.png"/></td>
+    <td><strong>TIconFontsImageList</strong> is an extended ImageList for Delphi (VCL+FMX) to simplify use of Icon Fonts (resize, color and more&hellip;). Use only for simple application with one form.</td>
+  </tr>
+</table>
+<h3>Available from Delphi 7 to Delphi 12 (32bit and 64bit platforms)</h3>
+<p><img src="/Demo/Images/SupportingDelphi.jpg" alt="Delphi Support"/></p>
+<p>Related links: https://www.embarcadero.com/ - https://learndelphi.org/</p>
+<p>Sample image of VCL version
+<img src="/Demo/Images/Sample.jpg" alt="https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/Sample.jpg"/></p>
+<p>Sample image of FMX version
+<img src="/Demo/Images/SampleFMX.jpg" alt="https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/SampleFMX.jpg"/></p>
+<p>Follow the <a href="https://github.com/EtheaDev/IconFontsImageList/wiki">guide in Wiki section</a> to known how to use those components to modernize your Delphi VCL or FMX applications scalable, colored and beautiful with few lines of code.</p>
+<h2>Very important notice:</h2>
+<p><strong>TVirtualImageList</strong> (available from D10.3) and <strong>TIconFontsVirtualImageList</strong> both use images from <strong>TIconFontsImageCollection</strong>. An important difference is that TVirtualImageList may use and create only a subset of the images in the collection, whereas TIconFontsVirtualImageList creates all images of the collection everytime it is needed (e,g. DPI change), which is slower and consumes more memory.</p>
+<p>We advise that TIconFontsVirtualImageList should be used only for versions of Delphi before 10.3. For recent versions of Delphi the recommended combination should be <strong>TIconFontsImageCollection + TVirtualImageList</strong>. Don't forget also the importance of TVirtualImageList.PreserveItems when you have a large ImageCollection with many linked Actions. Without setting this property to &ldquo;True&rdquo;, everytime you add or remove an icon in the collection, you have to check and change the ImageIndex of all the Actions.</p>
+<h2>Demos uses Material Design Icon Fonts</h2>
+<p>All demos included in this repo uses the Material Design Font available <a href="https://github.com/Templarian/MaterialDesign-Webfont">here.</a> (the file &ldquo;materialdesignicons-webfont.ttf&rdquo; is renamed to &ldquo;Material Design Icons.ttf&rdquo; and included into <strong>Demo\Fonts</strong> folder)</p>
+<p><strong>Warning: &ldquo;Material Font&rdquo; has changed again</strong></p>
+<p>Take care of changed Font file used in the Demos starting from v3.3.2 release, as explained <a href="https://github.com/EtheaDev/IconFontsImageList/wiki/Deploy-Applications">here</a>.</p>
+<p><strong>RELEASE NOTES:</strong>
+03 May 2023: version 3.3.2 (VCL+FMX)</p>
+<ul>
+<li>Fixed Slow loading of material design font in Windows 11</li>
+<li>Added support for Delphi 12.1</li>
+<li>Removed old font &ldquo;Material Design Icons Desktop.ttf&rdquo;</li>
+<li>Added new font &ldquo;Material Design Icons.ttf&rdquo;</li>
+<li>Removed old unit form Font Name conversion: MaterialFontConvert.pas</li>
+<li>Updated list of Icons Names/CodePoint to version 7.4.47 into Source\Fonts\Icons.MaterialDesign.pas</li>
+<li>Added Search of Icons by Name in Custom CharMap</li>
+</ul>
+<p>09 Nov 2023: version 3.3.1 (VCL+FMX)</p>
+<ul>
+<li>Added support for Delphi 12</li>
+</ul>
+<p>28 Feb 2023: version 3.3.0 (VCL+FMX)</p>
+<ul>
+<li>Updated packages for Delphi 11.3</li>
+<li>Feature Request #43: delete all selected icons into editor</li>
+</ul>
+<p>15 Sep 2022: version 3.2.2 (VCL+FMX)</p>
+<ul>
+<li>Updated packages for Delphi 11.2</li>
+</ul>
+<p>17 Jun 2022: version 3.2.1 (VCL+FMX)</p>
+<ul>
+<li>Updated Material Design Desktop Font to version 7.0.01</li>
+<li>Updated MaterialDesign fonts (7000 icons)</li>
+</ul>
+<p>17 Mar 2022: version 3.2.0 (VCL+FMX)</p>
+<ul>
+<li>Updated support to Delphi 11.1</li>
+<li>Updated Library suffix for Delphi 10.4 and 11 to (auto)</li>
+</ul>
+<p>24 Nov 2021: version 3.1.0 (VCL+FMX)</p>
+<ul>
+<li>Updated MaterialDesign fonts</li>
+<li>Updated component editors form light or dark theme</li>
+</ul>
+<p>27 Aug 2021: version 3.0.0 (VCL+FMX)</p>
+<ul>
+<li>FMX version aligned to VCL</li>
+<li>Completed support for Delphi 11 Alexandria</li>
+<li>aligned demo font &ldquo;Material Design Icons Desktop&rdquo; to ver. 6.1.41</li>
+</ul>
+<p>20 Jul 2021: version 2.6.0 (VCL) and 1.8.0 (FMX)</p>
+<ul>
+<li>Updated font material design to 6.0.29 version</li>
+<li>Added support for Delphi 11 Alexandria (packages)</li>
+</ul>
+<p>23 Jan 2021: version 2.5.1 (VCL) and 1.7.1 (FMX)</p>
+<ul>
+<li>Fixed check for unassigned Imagelist loading component</li>
+<li>Fixed #41 AV using CharMap</li>
+</ul>
+<p>17 Jan 2021: version 2.5.0 (VCL) and 1.7.0 (FMX)</p>
+<ul>
+<li>Updated Material Design Icons Desktop.ttf to 5.9.17 version</li>
+<li>Updated IconFontImage to supporto Width, Height and Zoom</li>
+<li>Update GUI Demo with zoom for older Delphi versions</li>
+<li>Opacity stored only if different from 1</li>
+<li>Fixed TIconFontsImageListBase.GetIndexByName</li>
+</ul>
+<p>12 Dec 2020: version 2.4.0 (VCL) and 1.6.1 (FMX)</p>
+<ul>
+<li>Fixed problems changing FontColor of ImageList</li>
+</ul>
+<p>06 Dec 2020: version 2.4.0 (VCL) and 1.6.0 (FMX)</p>
+<ul>
+<li>Added width and height property for FMX (if different from size)</li>
+<li>Added Zoom attribute for icons (VCL and FMX)</li>
+</ul>
+<p>16 Sep 2020: version 2.3.1 (VCL) and 1.5.1 (FMX)</p>
+<ul>
+<li>Fixed issue #37 (Partly ugly antialiasing effects)</li>
+</ul>
+<p>05 Sep 2020: version 2.3 (VCL) and 1.5.1 (FMX)</p>
+<ul>
+<li>Added demo with VirtualImageList form D10.3 and D10.4</li>
+<li>Refactoring to move methods from IconFontsImageList to IconFontsImageCollection</li>
+<li>Update IconFontImage to connect also to a VirtualImageList</li>
+<li>Fixed some packages and demos for older Delphi versions (Delphi7, DXE3, DXE6, DXE8)</li>
+</ul>
+<p>04 Sep 2020: version 2.2.2 (VCL) and 1.5.1 (FMX)</p>
+<ul>
+<li>Export Icons in png files into component editor</li>
+<li>Updated &ldquo;Material Design Font Desktop.ttf&rdquo; font and metadata</li>
+</ul>
+<p>27 Aug 2020: version 2.2.1 (VCL) and 1.5.0 (FMX)</p>
+<ul>
+<li>Complete refactoring for full support of High-DPI</li>
+<li>New IconFontsImageCollection component</li>
+<li>New IconFontsVirtualImageList component</li>
+<li>Redesigned component editor to support Categories for icons</li>
+<li>New support for native VirtualImageList (from D10.3)</li>
+<li>Fixed some issues</li>
+</ul>
+<p>15 July 2020: official 2.1 (VCL) and 1.5 version (FMX)</p>
+<ul>
+<li>Fixed rendering on TButton!</li>
+<li>Fixed rendering for Delphi7</li>
+</ul>
+<p>19 June 2020: official 2.0 (VCL) and 1.5 version (FMX)</p>
+<ul>
+<li>Added <a href="https://github.com/EtheaDev/IconFontsImageList/wiki/GDI">GDI+ support</a> (from DXE6)</li>
+<li>Added new TIconFontsImage component</li>
+<li>Added Width, Height, DisabledFactor, Opacity properties for TIconFontsImageList</li>
+</ul>
+<p>08 June 2020: official 1.10 (VCL) and 1.5 version (FMX)</p>
+<ul>
+<li>Added IconManager and an example of metadata info form Material Design Icons Desktop Font</li>
+<li>Updated CharMap with metadata support</li>
+<li>Support for Delphi 10.4 Sydney</li>
+</ul>
+<p>17 May 2020: official 1.9 (VCL) and 1.4 version (FMX)</p>
+<ul>
+<li>Added component &ldquo;menu option&rdquo; to <a href="https://github.com/EtheaDev/IconFontsImageList/wiki/Convert-Material-Icons">convert &ldquo;Material&rdquo; Icons</a> from old font &ldquo;Material Design Icons&rdquo; (materialdesignicons-webfont.ttf) to new font &ldquo;Material Design Icons Desktop&rdquo; (Material Design Icons Desktop.ttf)</li>
+<li>Restored old font &ldquo;Material Design Icons&rdquo; only for use with Delphi 7 and Delphi 2010.</li>
+<li>Fixed FMX components and demos to compile with mobile platforms</li>
+</ul>
+<p>13 May 2020: official 1.8 (VCL) and 1.3 version (FMX)</p>
+<ul>
+<li>Changed font used in the Demos to preserve future changes of char/mapping.</li>
+<li>Added preview for new &ldquo;Material Design Icons Desktop.ttf&rdquo; in Demo/Fonts folder.</li>
+</ul>
+<p>9 May 2020: official 1.2 version (FMX)</p>
+<ul>
+<li>Fixed component editor and packages for Delphi 10.1 and 10.2</li>
+</ul>
+<p>7 May 2020: official 1.1 version (FMX)</p>
+<ul>
+<li>Added Component Editor for FMX version: <a href="https://github.com/EtheaDev/IconFontsImageList/wiki/Component-Editor-(FMX)">look here&hellip;</a>.</li>
+<li>Fixed some problems in FMX version</li>
+<li>Updated Demo for FMX version</li>
+</ul>
+<p>2 May 2020: official 1.7 version (VCL)</p>
+<ul>
+<li>Added utilities to manage Disabled and Hot Imagelist</li>
+<li>Added a Video tutorial in Wiki section</li>
+</ul>
+<p>12 April 2020: official 1.6 version (VCL)</p>
+<ul>
+<li>Added a custom CharMap form (VCL only) to show and collect icons more easily: <a href="https://github.com/EtheaDev/IconFontsImageList/wiki/CharMap">look here&hellip;</a>.</li>
+</ul>
+<p>27 March 2020: official 1.5 version (VCL) and first 1.0 version (FMX)</p>
+<ul>
+<li>Added support for Icon Fonts that contains surrogate pair characters (VCL &amp; FMX)!</li>
+</ul>
+<p>Now you can use all the icons present in any &ldquo;font collection&rdquo; that containts those special characters: <a href="https://github.com/EtheaDev/IconFontsImageList/wiki/Icon-Fonts-with-surrogate-pair">look here&hellip;</a>.</p>
+<p>24 March 2020: official 1.4 version (VCL) and first Beta version (FMX)</p>
+<ul>
+<li>Improved performances into IDE (VCL)</li>
+<li>Added two new FMX components: TIconFontsImageListFMX and TIconFontImageFMX (beta)</li>
+<li>Added two demos for TIconFontsImageListFMX and TIconFontImageFMX</li>
+<li>Minor fixes (VCL)</li>
+</ul>
+<p>30 January 2020: official 1.3 version</p>
+<ul>
+<li>Added support for Delphi7 (generally for no Unicode version)</li>
+<li>Fixed when adding an icon without specifying a character</li>
+<li>Added SaveToFile method to save the icons into a single Bitmap</li>
+<li>Added Export button To ImageList Editor</li>
+<li>Added OnMissingFont event</li>
+</ul>
+<p>21 January 2020: official 1.2 version</p>
+<ul>
+<li>Added support for DXE8</li>
+<li>Demos with various VCL Styles</li>
+<li>Utility to update automatically IconFonts color by active VCL Style</li>
+<li>Increased performance when switching VCL Style at runtime</li>
+<li>Minor fixes</li>
+</ul>
+<p>13 December 2019: official 1.1 version</p>
+<ul>
+<li>Fixed some problems when adding or deleting icons into Extended Editor and Collection Editor</li>
+<li>Added support for building icons from/to Chars (into Extended Editor)</li>
+<li>Fixed some minor problems</li>
+</ul>
+<p>27 November 2019: first stable version 1.0:</p>
+<ul>
+<li>The component TIconFontsImageList with advanced component editor.</li>
+<li>Demo to show how to change the size, fonts and colors of the icons.</li>
+<li>Very high performance for building hundreds of icons.</li>
+<li>Support from Delphi 2010 to 10.3 Rio</li>
+</ul>
+<p>Inspired by the &ldquo;Font Icon Editor&rdquo; project by Luca Minuti:
+<a href="https://github.com/lminuti/FontIconEditor">https://github.com/lminuti/FontIconEditor</a></p>

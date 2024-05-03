@@ -78,9 +78,10 @@
         <DCCReference Include="VclSmp.dcp"/>
         <DCCReference Include="..\RegisterIconFontsImageList.pas"/>
         <DCCReference Include="..\IconFontsImageListEditor.pas"/>
-        <DCCReference Include="..\..\Source\IconFontsCharMapUnit.pas"/>
+        <DCCReference Include="..\..\Source\IconFontsCharMapUnit.pas">
+            <Form>IconFontsCharMapForm</Form>
+        </DCCReference>
         <DCCReference Include="..\IconFontsImageListEditorUnit.pas"/>
-        <DCCReference Include="..\MaterialFontConvert.pas"/>
         <DCCReference Include="..\..\Source\Fonts\Icons.Utils.pas"/>
         <DCCReference Include="..\..\Source\Fonts\Icons.MaterialDesign.pas"/>
         <BuildConfiguration Include="Debug">

@@ -88,7 +88,7 @@ RemoteSymbols=0
 MinStackSize=16384
 MaxStackSize=1048576
 ImageBase=4194304
-ExeDescription=Ethea IconFontsImageList component
+ExeDescription=Ethea IconFontsImageList VCL components
 [Directories]
 OutputDir=
 UnitOutputDir=..\..\Lib\D7

@@ -3,7 +3,7 @@
 {       Icon Fonts ImageList: An extended ImageList for Delphi                 }
 {       to simplify use of Icons (resize, colors and more...)                  }
 {                                                                              }
-{       Copyright (c) 2019-2023 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2024 (Ethea S.r.l.)                                 }
 {       Contributors:                                                          }
 {         Carlo Barazzetta                                                     }
 {                                                                              }
@@ -85,19 +85,11 @@ uses
   , IconFontsVirtualImageList
   , IconFontsImageCollection
   , IconFontsImageListEditorUnit
-{$IFDEF D2010+}
-  , MaterialFontConvert
-{$ENDIF}
   , Dialogs;
 
 { TIconFontsImageListCompEditor }
 
 procedure TIconFontsImageListCompEditor.ExecuteVerb(Index: Integer);
-{$IFDEF D2010+}
-var
-  LConvertCount : integer;
-  LMissingCount : integer;
-{$ENDIF}
 begin
   inherited;
   if Index = 0 then
@@ -111,16 +103,6 @@ begin
     ShellExecute(0, 'open',
       PChar('https://github.com/EtheaDev/IconFontsImageList/wiki/Home'), nil, nil,
       SW_SHOWNORMAL)
-{$IFDEF D2010+}
-  end    
-  else //Index = 2
-  begin
-    ConvertFont((Component as TIconFontsImageList), LConvertCount, LMissingCount);
-    MessageDlg(Format(MSG_ICONFONTS_CONVERTED, [LConvertCount,LMissingCount]),
-      mtInformation, [mbOK], 0);
-    if LConvertCount > 0 then
-      Designer.Modified;
-{$ENDIF}
   end;
 end;
 
@@ -130,9 +112,6 @@ begin
   case Index of
     0: Result := 'I&conFonts ImageList Editor...';
     1: Result := Format('Ver. %s - (c) Ethea S.r.l. - show help...',[IconFontsImageListVersion]);
-{$IFDEF D2010+}
-    2: Result := Format('Convert from "%s" to "%s"...',[OLD_FONT_NAME, NEW_FONT_NAME]);
-{$ENDIF}
   end;
 end;
 

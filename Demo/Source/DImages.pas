@@ -3,7 +3,7 @@
 {       Icon Fonts ImageList: An extended ImageList for Delphi/VCL             }
 {       to simplify use of Icons (resize, colors and more...)                  }
 {                                                                              }
-{       Copyright (c) 2019-2023 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2024 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {       Contributors:                                                          }
 {         Nicola Tambascia                                                     }
@@ -34,8 +34,8 @@ interface
 uses
   WinApi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.ImgList,
   System.UITypes,
-  System.ImageList, //if you are compiling with an older version of Delphi delete this line
-  Vcl.BaseImageCollection, //if you are compiling with an older version of Delphi delete this line
+  //System.ImageList, //if you are compiling with an older version of Delphi delete this line
+  //Vcl.BaseImageCollection, //if you are compiling with an older version of Delphi delete this line
   IconFontsImageCollection,
   Vcl.Controls;
 
@@ -80,7 +80,7 @@ var
 begin
   inherited;
   //The "material desktop font is not installed into system: load and install now from disk
-  FFontFileName := ExtractFilePath(ParamStr(0))+'..\Fonts\Material Design Icons Desktop.ttf';
+  FFontFileName := ExtractFilePath(ParamStr(0))+'..\Fonts\Material Design Icons.ttf';
   if FileExists(FFontFileName) then
   begin
     {$IFNDEF D2010+}

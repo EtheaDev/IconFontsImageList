@@ -1,8 +1,8 @@
-﻿# IconFontsImageList [![License](https://img.shields.io/badge/License-Apache%202.0-yellowgreen.svg)](https://opensource.org/licenses/Apache-2.0)
+﻿## IconFontsImageList [![License](https://img.shields.io/badge/License-Apache%202.0-yellowgreen.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ## Four advanced components to simplify use of Icon Fonts as images and ImageList (for VCL and FMX). Full support for High-DPI apps. Rendering optimized with GDI+
 
-### Actual official version 3.3.1 (VCL+FMX)
+### Actual official version 3.3.2 (VCL+FMX)
 
 | Component | Description |
 | - | - |
@@ -33,16 +33,23 @@ We advise that TIconFontsVirtualImageList should be used only for versions of De
 
 ## Demos uses Material Design Icon Fonts ##
 
-All demos included in this repo uses the Material Design Font available here: https://github.com/Templarian/MaterialDesign-Font (the file is included into Demo\Fonts folder)
+All demos included in this repo uses the Material Design Font available [here.](https://github.com/Templarian/MaterialDesign-Webfont) (the file "materialdesignicons-webfont.ttf" is renamed to "Material Design Icons.ttf" and included into **Demo\Fonts** folder)
 
-**Warning: "Material Font" has changed**
+**Warning: "Material Font" has changed again**
 
-Take care of changed Font file used in the Demos from v1.7(VCL)/v1.2(FMX) -> v1.8(VCL)/v1.3(FMX), as explained [here](https://github.com/EtheaDev/IconFontsImageList/wiki/Deploy-Applications). 
-
-If you are using the old Font, you can automatically convert icons to the new ones as explained [here](https://github.com/EtheaDev/IconFontsImageList/wiki/Convert-Material-Icons).
+Take care of changed Font file used in the Demos starting from v3.3.2 release, as explained [here](https://github.com/EtheaDev/IconFontsImageList/wiki/Deploy-Applications).
 
 **RELEASE NOTES:**
-24 Aug 2023: version 3.3.1 (VCL+FMX)
+03 May 2023: version 3.3.2 (VCL+FMX)
+- Fixed Slow loading of material design font in Windows 11
+- Added support for Delphi 12.1
+- Removed old font "Material Design Icons Desktop.ttf"
+- Added new font "Material Design Icons.ttf"
+- Removed old unit form Font Name conversion: MaterialFontConvert.pas
+- Updated list of Icons Names/CodePoint to version 7.4.47 into Source\Fonts\Icons.MaterialDesign.pas
+- Added Search of Icons by Name in Custom CharMap
+
+09 Nov 2023: version 3.3.1 (VCL+FMX)
 - Added support for Delphi 12
 
 28 Feb 2023: version 3.3.0 (VCL+FMX)

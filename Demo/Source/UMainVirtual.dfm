@@ -14,9 +14,7 @@ object MainForm: TMainForm
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
   OnCreate = FormCreate
-  PixelsPerInch = 96
   TextHeight = 13
   object Splitter: TSplitter
     Left = 626
@@ -171,16 +169,19 @@ object MainForm: TMainForm
       Left = 78
       Top = 0
       ImageIndex = 2
+      ImageName = 'amazon'
     end
     object ToolButton4: TToolButton
       Left = 117
       Top = 0
       ImageIndex = 3
+      ImageName = 'google-chrome'
     end
     object ToolButton5: TToolButton
       Left = 156
       Top = 0
       ImageIndex = 4
+      ImageName = 'android'
     end
     object ToolButton6: TToolButton
       Left = 195
@@ -281,15 +282,16 @@ object MainForm: TMainForm
       Indent = 35
       TabOrder = 0
       Items.NodeData = {
-        0303000000240000000100000001000000FFFFFFFFFFFFFFFF00000000000000
-        000100000001036F006E0065002C0000000400000004000000FFFFFFFFFFFFFF
-        FF00000000000000000000000001076F006E0065002D006F006E006500240000
-        000200000002000000FFFFFFFFFFFFFFFF000000000000000002000000010374
-        0077006F002C0000000500000005000000FFFFFFFFFFFFFFFF00000000000000
-        00000000000107740077006F0020006F006E0065002C00000006000000070000
-        0000000000FFFFFFFF0000000000000000000000000107740077006F00200074
-        0077006F00280000000300000003000000FFFFFFFFFFFFFFFF00000000000000
-        0000000000010574006800720065006500}
+        070300000009540054007200650065004E006F00640065002500000001000000
+        01000000FFFFFFFFFFFFFFFF0000000000000000000100000001036F006E0065
+        0000002D0000000400000004000000FFFFFFFFFFFFFFFF000000000000000000
+        0000000001076F006E0065002D006F006E006500000025000000020000000200
+        0000FFFFFFFFFFFFFFFF000000000000000000020000000103740077006F0000
+        002D0000000500000005000000FFFFFFFFFFFFFFFF0000000000000000000000
+        00000107740077006F0020006F006E00650000002D0000000600000007000000
+        00000000FFFFFFFF000000000000000000000000000107740077006F00200074
+        0077006F000000290000000300000003000000FFFFFFFFFFFFFFFF0000000000
+        0000000000000000010574006800720065006500}
     end
     object ImageView: TListView
       Left = 1
@@ -299,7 +301,6 @@ object MainForm: TMainForm
       Align = alClient
       Columns = <>
       IconOptions.AutoArrange = True
-      LargeImages = dmImages.IconFontsImageList
       TabOrder = 1
       OnSelectItem = ImageViewSelectItem
     end
@@ -312,18 +313,21 @@ object MainForm: TMainForm
       Category = 'Edit'
       Caption = 'Change icon'
       ImageIndex = 5
+      ImageName = 'file-replace'
       OnExecute = ChangeIconActionExecute
     end
     object DeleteIconAction: TAction
       Category = 'Edit'
       Caption = 'Delete Icon'
       ImageIndex = 1
+      ImageName = 'delete'
       OnExecute = DeleteIconActionExecute
     end
     object ChangeColorAction: TAction
       Category = 'Edit'
       Caption = 'Change Color'
       ImageIndex = 7
+      ImageName = 'palette'
       OnExecute = ChangeColorActionExecute
     end
     object DisabledAction: TAction
@@ -331,12 +335,14 @@ object MainForm: TMainForm
       Caption = 'Disabled'
       Enabled = False
       ImageIndex = 0
+      ImageName = 'account'
     end
     object ShowCharMapAction: TAction
       Category = 'Edit'
       Caption = 'CharMap...'
       Hint = 'Show Char Map...'
       ImageIndex = 8
+      ImageName = 'format-font'
       OnExecute = ShowCharMapActionExecute
     end
   end
@@ -345,61 +351,50 @@ object MainForm: TMainForm
     Top = 312
   end
   object VirtualImageList: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 0
         CollectionName = 'account'
-        Disabled = False
         Name = 'account'
       end
       item
         CollectionIndex = 1
         CollectionName = 'delete'
-        Disabled = False
         Name = 'delete'
       end
       item
         CollectionIndex = 2
-        CollectionName = 'amazon'
-        Disabled = False
+        CollectionName = 'apple'
         Name = 'amazon'
       end
       item
         CollectionIndex = 3
         CollectionName = 'google-chrome'
-        Disabled = False
         Name = 'google-chrome'
       end
       item
         CollectionIndex = 4
         CollectionName = 'android'
-        Disabled = False
         Name = 'android'
       end
       item
         CollectionIndex = 5
         CollectionName = 'file-replace'
-        Disabled = False
         Name = 'file-replace'
       end
       item
         CollectionIndex = 6
         CollectionName = 'account-search'
-        Disabled = False
         Name = 'account-search'
       end
       item
         CollectionIndex = 7
         CollectionName = 'palette'
-        Disabled = False
         Name = 'palette'
       end
       item
         CollectionIndex = 8
         CollectionName = 'format-font'
-        Disabled = False
         Name = 'format-font'
       end>
     ImageCollection = dmImages.IconFontsImageCollection

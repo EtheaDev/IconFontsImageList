@@ -3,7 +3,7 @@
 {       Icon Font Image fmx: An extended Image for Delphi/FireMonkey           }
 {       to simplify use of Icons (resize, colors and more...)                  }
 {                                                                              }
-{       Copyright (c) 2019-2023 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2024 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {       Contributors:                                                          }
 {         Nicola Tambascia                                                     }
@@ -114,7 +114,7 @@ type
   {$IF CompilerVersion > 34}
   [ComponentPlatforms(pidWin32 or pidWin64 or pidOSX32 or pidiOSSimulator32 or pidiOSDevice32 or pidAndroidArm32)]
   {$ELSE}
-  [ComponentPlatforms(pidWin32 or pidWin64 or pidOSX32 or pidiOSSimulator32 or pidiOSDevice32 or pidAndroid32Arm)]
+  [ComponentPlatforms(pidWin32 or pidWin64 or pidOSX32 or pidiOSDevice32)]
   {$ENDIF}
   TIconFontImage = class(TImage)
   private

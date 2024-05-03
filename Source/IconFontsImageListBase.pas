@@ -3,7 +3,7 @@
 {       Icon Fonts ImageList: An extended ImageList for Delphi/VCL             }
 {       to simplify use of Icons (resize, colors and more...)                  }
 {                                                                              }
-{       Copyright (c) 2019-2023 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2024 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {       Contributors:                                                          }
 {         Nicola Tambascia                                                     }
@@ -37,6 +37,7 @@ uses
   , ImgList
   , Windows
   , Graphics
+  , SysUtils
 {$IFDEF D10_4+}
   , System.UITypes
 {$ENDIF}
@@ -57,10 +58,12 @@ resourcestring
   ERR_COLLECTION_NOT_ASSIGNED = 'Error: image collection of "%s" not assigned!';
 
 const
-  IconFontsImageListVersion = '3.3.1';
+  IconFontsImageListVersion = '3.3.2';
   DEFAULT_SIZE = 16;
 
 type
+  EFontNotFoundException = class(Exception);
+
   TIconFontMissing = procedure (const AFontName: TFontName) of object;
 
   {TIconFontsImageListBase}
@@ -218,8 +221,7 @@ type
 implementation
 
 uses
-  SysUtils
-  , IconFontsUtils
+  IconFontsUtils
   , Math
   , ComCtrls
   {$IFDEF DXE3+}
@@ -360,7 +362,7 @@ begin
         if Assigned(OnFontMissing) then
           OnFontMissing(AFontName)
         else if not (csDesigning in ComponentState) then
-          raise Exception.CreateFmt(ERR_ICONFONTS_FONT_NOT_INSTALLED,[AFontName]);
+          raise EFontNotFoundException.CreateFmt(ERR_ICONFONTS_FONT_NOT_INSTALLED,[AFontName]);
       end
       else
         FFontNamesChecked.Add(AFontName);

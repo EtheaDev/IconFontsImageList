@@ -3,7 +3,7 @@
 {       Icon Fonts ImageList: An extended ImageList for Delphi/VCL             }
 {       to simplify use of Icons (resize, colors and more...)                  }
 {                                                                              }
-{       Copyright (c) 2019-2023 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2024 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {       Contributors:                                                          }
 {         Nicola Tambascia                                                     }
@@ -38,7 +38,7 @@ uses
   ActnList, ExtCtrls, ComCtrls, ToolWin,
   Spin, IconFontsImageList, IconFontsImageListBase,
   IconFontsItems, IconFontsVirtualImageList, IconFontsImageCollection,
-  System.ImageList, //if you are compiling with an older version of Delphi delete this line
+  //System.ImageList, //if you are compiling with an older version of Delphi delete this line
   System.Actions, //if you are compiling with an older version of Delphi delete this line
   IconFontsImage;
 
@@ -161,7 +161,7 @@ begin
     IconFontsVirtualImageList.AddIcons(
       LRand1, //From Chr
       LRand2, //To Chr
-      'Material Design Icons Desktop'
+      'Material Design Icons'
       );
     LStop := GetTickCount;
     MessageDlg(Format('Built %d Icons in %d milliseconds!', 

@@ -3,7 +3,7 @@
 {       Icon Fonts ImageList: An extended ImageList for Delphi                 }
 {       to simplify use of Icons (resize, colors and more...)                  }
 {                                                                              }
-{       Copyright (c) 2019-2023 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2024 (Ethea S.r.l.)                                 }
 {       Contributors:                                                          }
 {         Carlo Barazzetta                                                     }
 {         Nicola Tambascia                                                     }
@@ -657,13 +657,13 @@ begin
   Screen.Cursor := crHourGlass;
   try
     LSelectedImageIndex := ImageView.Items[ImageView.ItemIndex].ImageIndex;
-    FEditingList.BeginUpdate;
+    {$IFDEF DXE6+}FEditingList.BeginUpdate;{$ENDIF}
     try
       for LIndex := ImageView.Items.Count - 1 downto 0 do
         if ImageView.Items[LIndex].Selected then
           FEditingList.Delete(ImageView.Items[LIndex].ImageIndex);
     finally
-      FEditingList.EndUpdate;
+      {$IFDEF DXE6+}FEditingList.EndUpdate;{$ENDIF}
     end;
     FChanged := True;
     BuildList(LSelectedImageIndex);

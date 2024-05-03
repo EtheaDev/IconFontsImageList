@@ -52,7 +52,7 @@ object Form22: TForm22
     TabOrder = 3
   end
   object IconFontsImageList: TIconFontsImageList
-    FontName = 'Material Design Icons Desktop'
+    FontName = 'Material Design Icons'
     FontColor = clBlack
     MaskColor = clBtnFace
     Size = 48

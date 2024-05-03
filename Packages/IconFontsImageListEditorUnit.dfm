@@ -30,8 +30,6 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
     Align = alBottom
     AutoSnap = False
     MinSize = 220
-    ExplicitTop = 394
-    ExplicitWidth = 784
   end
   object paImages: TPanel
     Left = 0
@@ -48,7 +46,6 @@ object IconFontsImageListEditor: TIconFontsImageListEditor
       Height = 332
       AutoSnap = False
       MinSize = 185
-      ExplicitHeight = 329
     end
     object Panel1: TPanel
       Left = 627

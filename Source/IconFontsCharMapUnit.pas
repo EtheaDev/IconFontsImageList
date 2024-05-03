@@ -3,7 +3,7 @@
 {       Icon Fonts ImageList: An extended ImageList for Delphi                 }
 {       to simplify use of Icons (resize, colors and more...)                  }
 {                                                                              }
-{       Copyright (c) 2019-2023 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2024 (Ethea S.r.l.)                                 }
 {       Contributors:                                                          }
 {         Carlo Barazzetta                                                     }
 {         Nicola Tambascia                                                     }
@@ -59,7 +59,6 @@ type
     ImageListGroup: TGroupBox;
     ImageView: TListView;
     paTop: TPanel;
-    paClient: TPanel;
     IconBuilderGroupBox: TGroupBox;
     CharsEdit: TEdit;
     CopyToclipboardButton: TButton;
@@ -83,6 +82,9 @@ type
     OKButton: TButton;
     HelpButton: TButton;
     CancelButton: TButton;
+    SearchGroupBox: TGroupBox;
+    IconSearchEdit: TEdit;
+    SearchButton: TButton;
     procedure FormCreate(Sender: TObject);
     procedure AddButtonClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -105,6 +107,7 @@ type
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure CancelButtonClick(Sender: TObject);
     procedure ShowCaptionsCheckBoxClick(Sender: TObject);
+    procedure IconSearchClick(Sender: TObject);
   private
     FStopped: Boolean;
     FBuilding: Boolean;
@@ -378,6 +381,40 @@ begin
   AssignSource(AIconFontsImageList, AFontName);
 end;
 
+procedure TIconFontsCharMapForm.IconSearchClick(Sender: TObject);
+var
+  LSearchValue: string;
+  LLen: Integer;
+  LIconFontItem: TIconFontItem;
+
+  function SearchIconName(const FromStart: Integer): Boolean;
+  var
+    I: Integer;
+  begin
+    Result := False;
+    for I := FromStart to FCharMapList.IconFontItems.Count -1 do
+    begin
+      LIconFontItem := FCharMapList.IconFontItems[I];
+      if SameText(Copy(LIconFontItem.IconName,1,LLen), LSearchValue) then
+      begin
+        if ImageView.ItemIndex <> I then
+        begin
+          ImageView.ItemIndex := I;
+          Result := True;
+          Break;
+        end;
+      end;
+    end;
+
+  end;
+
+begin
+  LSearchValue := IconSearchEdit.Text;
+  LLen := Length(LSearchValue);
+  if not SearchIconName(ImageView.ItemIndex) then
+    SearchIconName(0);
+end;
+
 procedure TIconFontsCharMapForm.ImageViewDblClick(Sender: TObject);
 begin
   if (SelectedIconFont <> nil) then
@@ -410,7 +447,9 @@ end;
 
 procedure TIconFontsCharMapForm.OKButtonClick(Sender: TObject);
 begin
-  if not FBuilding then
+  if IconSearchEdit.Focused then
+    SearchButton.Click
+  else if not FBuilding then
   begin
     ModalResult := mrOK;
     Close;
@@ -631,7 +670,7 @@ var
 begin
   Screen.Cursor := crHourGlass;
   try
-    paClient.Enabled := False;
+    paTop.Enabled := False;
     BottomPanel.Enabled := False;
     ImageView.Enabled := False;
     IconBuilderGroupBox.Enabled := False;
@@ -740,7 +779,7 @@ begin
     IconBuilderGroupBox.Enabled := True;
     ImageView.Enabled := True;
     BottomPanel.Enabled := True;
-    paClient.Enabled := True;
+    paTop.Enabled := True;
     Screen.Cursor := crDefault;
   end;
 end;
