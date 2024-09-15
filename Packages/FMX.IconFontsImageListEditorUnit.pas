@@ -255,40 +255,25 @@ var
   LEditor: TIconFontsImageListEditorFMX;
 begin
   LEditor := TIconFontsImageListEditorFMX.Create(nil);
-  with LEditor do
-  begin
-    try
-      //Screen.Cursor := crHourglass;
-      try
-        FEditinglist.Assign(AImageList);
-        //DefaultFontName.ItemIndex := DefaultFontName.Items.IndexOf(FEditingList.FontName);
-        DefaultFontName.ItemIndex := DefaultFontName.Items.IndexOf(FEditingList.FontName);
-        SizeSpinBox.Value := Max(FEditingList.Width, FEditingList.Height);
-        WidthSpinBox.Value := FEditingList.Width;
-        HeightSpinBox.Value := FEditingList.Height;
-        ZoomSpinBox.Value := FEditingList.Zoom;
-        DefaultFontColorColorBox.Color := FEditingList.FontColor;
-        AutoSizeCheckBox.IsChecked := FEditingList.AutoSizeBitmaps;
-        DefaultOpacitySpinBox.Value := FEditingList.Opacity * 100;
-        ImageView.Images := FEditinglist;
-        UpdateIconFontListView(ImageView);
-        //UpdateGUI;
-        //UpdateCharsToBuild;
-        if ImageView.Items.Count > 0 then
-          ImageView.ItemIndex := 0;
-        //if SavedBounds.Right - SavedBounds.Left > 0 then
-        //  BoundsRect := SavedBounds;
-      finally
-        //Screen.Cursor := crDefault;
-      end;
-      Result := ShowModal = mrOk;
-      if Result then
-        AImageList.Assign(FEditingList);
-      //Savedprocedure TIconFontsImageListEditorFMX.AddButtonClick(Sender: TObject);
-      //Bounds := BoundsRect;
-    finally
-      DisposeOf;
-    end;
+  try
+    LEditor.FEditinglist.Assign(AImageList);
+    LEditor.DefaultFontName.ItemIndex := LEditor.DefaultFontName.Items.IndexOf(LEditor.FEditingList.FontName);
+    LEditor.SizeSpinBox.Value := Max(LEditor.FEditingList.Width, LEditor.FEditingList.Height);
+    LEditor.WidthSpinBox.Value := LEditor.FEditingList.Width;
+    LEditor.HeightSpinBox.Value := LEditor.FEditingList.Height;
+    LEditor.ZoomSpinBox.Value := LEditor.FEditingList.Zoom;
+    LEditor.DefaultFontColorColorBox.Color := LEditor.FEditingList.FontColor;
+    LEditor.AutoSizeCheckBox.IsChecked := LEditor.FEditingList.AutoSizeBitmaps;
+    LEditor.DefaultOpacitySpinBox.Value := LEditor.FEditingList.Opacity * 100;
+    LEditor.ImageView.Images := LEditor.FEditinglist;
+    UpdateIconFontListView(LEditor.ImageView);
+    if LEditor.ImageView.Items.Count > 0 then
+      LEditor.ImageView.ItemIndex := 0;
+    Result := LEditor.ShowModal = mrOk;
+    if Result then
+      AImageList.Assign(LEditor.FEditingList);
+  finally
+    LEditor.Free;
   end;
 end;
 

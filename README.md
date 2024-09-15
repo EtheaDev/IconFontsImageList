@@ -2,7 +2,7 @@
 
 ## Four advanced components to simplify use of Icon Fonts as images and ImageList (for VCL and FMX). Full support for High-DPI apps. Rendering optimized with GDI+
 
-### Actual official version 3.3.2 (VCL+FMX)
+### Actual official version 3.3.3 (VCL+FMX)
 
 | Component | Description |
 | - | - |
@@ -40,7 +40,10 @@ All demos included in this repo uses the Material Design Font available [here.](
 Take care of changed Font file used in the Demos starting from v3.3.2 release, as explained [here](https://github.com/EtheaDev/IconFontsImageList/wiki/Deploy-Applications).
 
 **RELEASE NOTES:**
-03 May 2023: version 3.3.2 (VCL+FMX)
+15 Sep 2024: version 3.3.3 (VCL+FMX)
+- Updated Packages for Delphi 12.2
+
+03 May 2024: version 3.3.2 (VCL+FMX)
 - Fixed Slow loading of material design font in Windows 11
 - Added support for Delphi 12.1
 - Removed old font "Material Design Icons Desktop.ttf"
