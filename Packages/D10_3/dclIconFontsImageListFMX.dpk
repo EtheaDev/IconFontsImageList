@@ -26,8 +26,8 @@ package dclIconFontsImageListFMX;
 {$IMAGEBASE $400000}
 {$DEFINE RELEASE}
 {$ENDIF IMPLICITBUILDING}
-{$DESCRIPTION 'Ethea IconFontsImageList  FMX components'}
-{$LIBSUFFIX '_D10_3'}
+{$DESCRIPTION 'Ethea IconFontsImageList FMX components'}
+{$LIBSUFFIX '260'}
 {$DESIGNONLY}
 {$IMPLICITBUILD ON}
 

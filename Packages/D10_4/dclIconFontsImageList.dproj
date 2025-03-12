@@ -1,6 +1,6 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{D8DA5F13-E336-4314-8777-8ED2B62943BB}</ProjectGuid>
+        <ProjectGuid>{0AC245B1-CA68-47BB-81A2-0148C2598849}</ProjectGuid>
         <MainSource>dclIconFontsImageList.dpk</MainSource>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Release</Config>
@@ -78,21 +78,19 @@
         <DCCReference Include="VclSmp.dcp"/>
         <DCCReference Include="..\RegisterIconFontsImageList.pas"/>
         <DCCReference Include="..\IconFontsImageListEditor.pas"/>
-        <DCCReference Include="..\..\Source\IconFontsCharMapUnit.pas">
-            <Form>IconFontsCharMapForm</Form>
-        </DCCReference>
+        <DCCReference Include="..\..\Source\IconFontsCharMapUnit.pas"/>
         <DCCReference Include="..\IconFontsImageListEditorUnit.pas"/>
         <DCCReference Include="..\..\Source\Fonts\Icons.Utils.pas"/>
         <DCCReference Include="..\..\Source\Fonts\Icons.MaterialDesign.pas"/>
-        <BuildConfiguration Include="Debug">
-            <Key>Cfg_2</Key>
-            <CfgParent>Base</CfgParent>
-        </BuildConfiguration>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
         <BuildConfiguration Include="Release">
             <Key>Cfg_1</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Debug">
+            <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
         </BuildConfiguration>
     </ItemGroup>

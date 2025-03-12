@@ -1,6 +1,6 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{0DCE4C13-AB48-440A-A532-B8AE38F9BBB1}</ProjectGuid>
+        <ProjectGuid>{BB2193D5-C9ED-4CBD-A0EE-F14F68FA6AAC}</ProjectGuid>
     </PropertyGroup>
     <ItemGroup>
         <Projects Include="IconFontsImageList.dproj">
@@ -45,4 +45,18 @@
         <CallTarget Targets="IconFontsImageList:Make;dclIconFontsImageList:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+    <ItemGroup Condition="'$(BuildGroup)'=='ALL'">
+        <BuildGroupProject Include="IconFontsImageList.dproj">
+            <ProjectGuid>{04BF305D-5A45-4264-B41F-266E66DBD5BA}</ProjectGuid>
+            <Configurations>Release</Configurations>
+            <Platforms>Win32;Win64</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+        <BuildGroupProject Include="dclIconFontsImageList.dproj">
+            <ProjectGuid>{0AC245B1-CA68-47BB-81A2-0148C2598849}</ProjectGuid>
+            <Configurations>Release</Configurations>
+            <Platforms>Win32</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+    </ItemGroup>
 </Project>

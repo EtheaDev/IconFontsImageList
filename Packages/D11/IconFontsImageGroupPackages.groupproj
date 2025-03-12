@@ -1,6 +1,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{ACD49A68-E3E6-484A-9900-574C1D1654C5}</ProjectGuid>
+        <ProjectGuid>{BB2193D5-C9ED-4CBD-A0EE-F14F68FA6AAC}</ProjectGuid>
     </PropertyGroup>
     <ItemGroup>
         <Projects Include="IconFontsImageList.dproj">
@@ -69,4 +69,30 @@
         <CallTarget Targets="IconFontsImageList:Make;dclIconFontsImageList:Make;IconFontsImageListFMX:Make;dclIconFontsImageListFMX:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+    <ItemGroup Condition="'$(BuildGroup)'=='ALL'">
+        <BuildGroupProject Include="IconFontsImageList.dproj">
+            <ProjectGuid>{04BF305D-5A45-4264-B41F-266E66DBD5BA}</ProjectGuid>
+            <Configurations>Release</Configurations>
+            <Platforms>Win32;Win64</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+        <BuildGroupProject Include="dclIconFontsImageList.dproj">
+            <ProjectGuid>{0AC245B1-CA68-47BB-81A2-0148C2598849}</ProjectGuid>
+            <Configurations>Release</Configurations>
+            <Platforms>Win32</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+        <BuildGroupProject Include="IconFontsImageListFMX.dproj">
+            <ProjectGuid>{452EDB1E-5B9B-4E89-9D36-A63A06F44B45}</ProjectGuid>
+            <Configurations>Release</Configurations>
+            <Platforms>Win32;Win64</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+        <BuildGroupProject Include="dclIconFontsImageListFMX.dproj">
+            <ProjectGuid>{61E87847-C63A-494D-BFF7-1BAC0FEB00F9}</ProjectGuid>
+            <Configurations>Release</Configurations>
+            <Platforms>Win32</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+    </ItemGroup>
 </Project>

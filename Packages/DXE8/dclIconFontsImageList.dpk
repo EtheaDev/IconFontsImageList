@@ -27,7 +27,7 @@ package dclIconFontsImageList;
 {$DEFINE RELEASE}
 {$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'Ethea IconFontsImageList VCL components'}
-{$LIBSUFFIX '_DXE8'}
+{$LIBSUFFIX '220'}
 {$DESIGNONLY}
 {$IMPLICITBUILD ON}
 

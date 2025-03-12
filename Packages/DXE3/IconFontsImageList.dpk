@@ -25,8 +25,8 @@ package IconFontsImageList;
 {$IMAGEBASE $400000}
 {$DEFINE RELEASE}
 {$ENDIF IMPLICITBUILDING}
-{$DESCRIPTION 'Ethea IconFontsImageList component'}
-{$LIBSUFFIX '_DXE3'}
+{$DESCRIPTION 'Ethea IconFontsImageList VCL components'}
+{$LIBSUFFIX '170'}
 {$RUNONLY}
 {$IMPLICITBUILD OFF}
 

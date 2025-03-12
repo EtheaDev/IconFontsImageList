@@ -27,7 +27,7 @@ package dclIconFontsImageList;
 {$DEFINE RELEASE}
 {$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'Ethea IconFontsImageList VCL components'}
-{$LIBSUFFIX '_D10_1'}
+{$LIBSUFFIX '240'}
 {$DESIGNONLY}
 {$IMPLICITBUILD ON}
 
@@ -39,7 +39,7 @@ requires
 contains
   RegisterIconFontsImageList in '..\RegisterIconFontsImageList.pas',
   IconFontsImageListEditor in '..\IconFontsImageListEditor.pas',
-  IconFontsCharMapUnit in '..\..\Source\IconFontsCharMapUnit.pas',
+  IconFontsCharMapUnit in '..\..\Source\IconFontsCharMapUnit.pas' {IconFontsCharMapForm},
   IconFontsImageListEditorUnit in '..\IconFontsImageListEditorUnit.pas',
   Icons.Utils in '..\..\Source\Fonts\Icons.Utils.pas',
   Icons.MaterialDesign in '..\..\Source\Fonts\Icons.MaterialDesign.pas';

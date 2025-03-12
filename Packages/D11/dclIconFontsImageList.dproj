@@ -1,6 +1,6 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{400459EB-9F05-4486-A6AF-7FDCDF77D9E7}</ProjectGuid>
+        <ProjectGuid>{0AC245B1-CA68-47BB-81A2-0148C2598849}</ProjectGuid>
         <MainSource>dclIconFontsImageList.dpk</MainSource>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Release</Config>

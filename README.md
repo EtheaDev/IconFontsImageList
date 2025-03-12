@@ -2,7 +2,7 @@
 
 ## Four advanced components to simplify use of Icon Fonts as images and ImageList (for VCL and FMX). Full support for High-DPI apps. Rendering optimized with GDI+
 
-### Actual official version 3.3.3 (VCL+FMX)
+### Actual official version 3.4.0 (VCL+FMX)
 
 | Component | Description |
 | - | - |
@@ -11,7 +11,17 @@
 | ![IconFontsImageComponentIcon.png](./Packages/IconFontsImageComponentIcon.png) | **TIconFontImage** is an extended Image component for Delphi (VCL+FMX) to show any Icon Font directly or included into a an IconFontsImageList with all functionality (stretch, color, opacity and more...) |
 | ![IconFontsImageListComponentIcon.png](./Packages/IconFontsImageListComponentIcon.png) | **TIconFontsImageList** is an extended ImageList for Delphi (VCL+FMX) to simplify use of Icon Fonts (resize, color and more...). Use only for simple application with one form. |
 
+## New Setup for automatic installation of components
+
+From 3.4.0 version a new "Installer" read-to-use is located in the Release area: [Download the Installer](https://github.com/EtheaDev/IconFontsImageList/releases/latest/download/IconFontsImageList_Setup.exe).
+
+The Installer automatically detect your Delphi versions, install sources, build and install packages and add source paths.
+
+![Setup](./Demo/Images/Setup.png)
+
 ### Available from Delphi 7 to Delphi 12 (32bit and 64bit platforms)
+
+Notice: the Installer is not able to automatic compile and install for Delphi 7: you must install it manually as explained [here](https://github.com/EtheaDev/IconFontsImageList/wiki#installation)
 
 ![Delphi Support](/Demo/Images/SupportingDelphi.jpg)
 
@@ -40,6 +50,11 @@ All demos included in this repo uses the Material Design Font available [here.](
 Take care of changed Font file used in the Demos starting from v3.3.2 release, as explained [here](https://github.com/EtheaDev/IconFontsImageList/wiki/Deploy-Applications).
 
 **RELEASE NOTES:**
+12 Mar 2025: version 3.4.0 (VCL+FMX)
+- Updated Packages for Delphi 12.3 and 64bit IDE
+- Added Library Description in Delphi Splash and About forms
+- Added easy IconFontsImageList_Setup.exe
+
 15 Sep 2024: version 3.3.3 (VCL+FMX)
 - Updated Packages for Delphi 12.2
 

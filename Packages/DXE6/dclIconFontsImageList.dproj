@@ -1,13 +1,13 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{46EB4FDB-2AA6-4D29-82F2-B6BCE834F622}</ProjectGuid>
+        <ProjectGuid>{19F770D7-10EB-4248-8EFB-F6A63994AE55}</ProjectGuid>
         <MainSource>dclIconFontsImageList.dpk</MainSource>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Release</Config>
         <TargetedPlatforms>1</TargetedPlatforms>
         <AppType>Package</AppType>
         <FrameworkType>VCL</FrameworkType>
-        <ProjectVersion>18.4</ProjectVersion>
+        <ProjectVersion>15.4</ProjectVersion>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
@@ -44,7 +44,7 @@
         <GenPackage>true</GenPackage>
         <SanitizedProjectName>dclIconFontsImageList</SanitizedProjectName>
         <DCC_Description>Ethea IconFontsImageList VCL components</DCC_Description>
-        <DllSuffix>_DXE6</DllSuffix>
+        <DllSuffix>200</DllSuffix>
         <DesignOnlyPackage>true</DesignOnlyPackage>
         <DCC_Namespace>Winapi;System.Win;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;$(DCC_Namespace)</DCC_Namespace>
         <VerInfo_Locale>1033</VerInfo_Locale>
@@ -78,21 +78,19 @@
         <DCCReference Include="VclSmp.dcp"/>
         <DCCReference Include="..\RegisterIconFontsImageList.pas"/>
         <DCCReference Include="..\IconFontsImageListEditor.pas"/>
-        <DCCReference Include="..\..\Source\IconFontsCharMapUnit.pas">
-            <Form>IconFontsCharMapForm</Form>
-        </DCCReference>
+        <DCCReference Include="..\..\Source\IconFontsCharMapUnit.pas"/>
         <DCCReference Include="..\IconFontsImageListEditorUnit.pas"/>
         <DCCReference Include="..\..\Source\Fonts\Icons.Utils.pas"/>
         <DCCReference Include="..\..\Source\Fonts\Icons.MaterialDesign.pas"/>
-        <BuildConfiguration Include="Debug">
-            <Key>Cfg_2</Key>
-            <CfgParent>Base</CfgParent>
-        </BuildConfiguration>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
         <BuildConfiguration Include="Release">
             <Key>Cfg_1</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Debug">
+            <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
         </BuildConfiguration>
     </ItemGroup>

@@ -27,7 +27,7 @@ package dclIconFontsImageListFMX;
 {$DEFINE RELEASE}
 {$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'Ethea IconFontsImageList FMX components'}
-{$LIBSUFFIX '_D10_2'}
+{$LIBSUFFIX '250'}
 {$DESIGNONLY}
 {$IMPLICITBUILD ON}
 
