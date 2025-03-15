@@ -19,6 +19,10 @@ The Installer automatically detect your Delphi versions, install sources, build 
 
 ![Setup](./Demo/Images/Setup.png)
 
+## Documentation
+
+Follow the [Project Site](https://ethea.it/docs/iconfontsimagelist/) to known how to use those components to modernize your Delphi VCL or FMX applications with scalable, colored and beautiful icons.
+
 ### Available from Delphi 7 to Delphi 12 (32bit and 64bit platforms)
 
 Notice: the Installer is not able to automatic compile and install for Delphi 7: you must install it manually as explained [here](https://github.com/EtheaDev/IconFontsImageList/wiki#installation)
