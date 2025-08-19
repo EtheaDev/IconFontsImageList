@@ -1,15 +1,15 @@
-﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{452EDB1E-5B9B-4E89-9D36-A63A06F44B45}</ProjectGuid>
-        <MainSource>IconFontsImageListFMX.dpk</MainSource>
-        <ProjectVersion>20.2</ProjectVersion>
+        <ProjectGuid>{61E87847-C63A-494D-BFF7-1BAC0FEB00F9}</ProjectGuid>
+        <MainSource>dclIconFontsImageListFMX.dpk</MainSource>
+        <ProjectVersion>20.3</ProjectVersion>
         <FrameworkType>FMX</FrameworkType>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Release</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>3</TargetedPlatforms>
         <AppType>Package</AppType>
-        <ProjectName Condition="'$(ProjectName)'==''">IconFontsImageListFMX</ProjectName>
+        <ProjectName Condition="'$(ProjectName)'==''">dclIconFontsImageListFMX</ProjectName>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
         <Base>true</Base>
@@ -49,6 +49,11 @@
         <CfgParent>Base</CfgParent>
         <Base>true</Base>
     </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Base)'=='true') or '$(Base_Win64)'!=''">
+        <Base_Win64>true</Base_Win64>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
     <PropertyGroup Condition="('$(Platform)'=='Win64x' and '$(Base)'=='true') or '$(Base_Win64x)'!=''">
         <Base_Win64x>true</Base_Win64x>
         <CfgParent>Base</CfgParent>
@@ -71,7 +76,7 @@
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
-        <DCC_DcuOutput>..\..\Lib\D12\$(Platform)\$(Config)</DCC_DcuOutput>
+        <DCC_DcuOutput>..\..\Lib\D13\$(Platform)\$(Config)</DCC_DcuOutput>
         <DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
         <DCC_E>false</DCC_E>
         <DCC_N>false</DCC_N>
@@ -80,15 +85,14 @@
         <DCC_K>false</DCC_K>
         <GenDll>true</GenDll>
         <GenPackage>true</GenPackage>
-        <DCC_Namespace>System;Xml;Data;$(DCC_Namespace)</DCC_Namespace>
+        <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
         <DCC_CBuilderOutput>All</DCC_CBuilderOutput>
-        <SanitizedProjectName>IconFontsImageListFMX</SanitizedProjectName>
-        <VerInfo_Locale>1033</VerInfo_Locale>
+        <SanitizedProjectName>dclIconFontsImageListFMX</SanitizedProjectName>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
-        <DCC_Description>Ethea IconFontsImageList FMX components</DCC_Description>
-        <RuntimeOnlyPackage>true</RuntimeOnlyPackage>
-        <DCC_OutputNeverBuildDcps>true</DCC_OutputNeverBuildDcps>
         <DllSuffix>$(Auto)</DllSuffix>
+        <DCC_Description>Ethea IconFontsImageList  FMX components</DCC_Description>
+        <DesignOnlyPackage>true</DesignOnlyPackage>
+        <VerInfo_Locale>1033</VerInfo_Locale>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Android)'!=''">
         <VerInfo_Keys>package=com.embarcadero.$(MSBuildProjectName);label=$(MSBuildProjectName);versionCode=1;versionName=1.0.0;persistent=False;restoreAnyVersion=False;installLocation=auto;largeHeap=False;theme=TitleBar;hardwareAccelerated=true;apiKey=</VerInfo_Keys>
@@ -142,6 +146,10 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <BT_BuildType>Debug</BT_BuildType>
+        <DCC_UsePackage>rtl;IconFontsImageListFMX;$(DCC_UsePackage)</DCC_UsePackage>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base_Win64)'!=''">
+        <DCC_UsePackage>rtl;$(DCC_UsePackage)</DCC_UsePackage>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win64x)'!=''">
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
@@ -169,10 +177,16 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
+        <DCCReference Include="..\IconFontsImageListNew.dcr"/>
+        <DCCReference Include="DesignIDE.dcp"/>
+        <DCCReference Include="dclfmxstd.dcp"/>
         <DCCReference Include="rtl.dcp"/>
-        <DCCReference Include="fmx.dcp"/>
-        <DCCReference Include="..\..\Source\FMX.IconFontsImageList.pas"/>
-        <DCCReference Include="..\..\Source\FMX.IconFontImage.pas"/>
+        <DCCReference Include="IconFontsImageListFMX.dcp"/>
+        <DCCReference Include="..\FMX.RegisterIconFontsImageList.pas"/>
+        <DCCReference Include="..\FMX.IconFontsImageListEditor.pas"/>
+        <DCCReference Include="..\FMX.IconFontsImageListEditorUnit.pas">
+            <Form>IconFontsImageListEditorFMX</Form>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -191,7 +205,7 @@
         <BorlandProject>
             <Delphi.Personality>
                 <Source>
-                    <Source Name="MainSource">IconFontsImageListFMX.dpk</Source>
+                    <Source Name="MainSource">dclIconFontsImageListFMX.dpk</Source>
                 </Source>
                 <Excluded_Packages>
                 </Excluded_Packages>

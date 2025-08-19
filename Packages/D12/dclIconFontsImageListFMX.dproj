@@ -2,7 +2,7 @@
     <PropertyGroup>
         <ProjectGuid>{61E87847-C63A-494D-BFF7-1BAC0FEB00F9}</ProjectGuid>
         <MainSource>dclIconFontsImageListFMX.dpk</MainSource>
-        <ProjectVersion>20.3</ProjectVersion>
+        <ProjectVersion>20.2</ProjectVersion>
         <FrameworkType>FMX</FrameworkType>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Release</Config>

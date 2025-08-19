@@ -1,0 +1,98 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{BF4421B6-B8EB-432D-9DB8-5B69168D6503}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="IconFontsImageList.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="dclIconFontsImageList.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="IconFontsImageListFMX.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="dclIconFontsImageListFMX.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="IconFontsImageList">
+        <MSBuild Projects="IconFontsImageList.dproj"/>
+    </Target>
+    <Target Name="IconFontsImageList:Clean">
+        <MSBuild Projects="IconFontsImageList.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="IconFontsImageList:Make">
+        <MSBuild Projects="IconFontsImageList.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="dclIconFontsImageList">
+        <MSBuild Projects="dclIconFontsImageList.dproj"/>
+    </Target>
+    <Target Name="dclIconFontsImageList:Clean">
+        <MSBuild Projects="dclIconFontsImageList.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="dclIconFontsImageList:Make">
+        <MSBuild Projects="dclIconFontsImageList.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="IconFontsImageListFMX">
+        <MSBuild Projects="IconFontsImageListFMX.dproj"/>
+    </Target>
+    <Target Name="IconFontsImageListFMX:Clean">
+        <MSBuild Projects="IconFontsImageListFMX.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="IconFontsImageListFMX:Make">
+        <MSBuild Projects="IconFontsImageListFMX.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="dclIconFontsImageListFMX">
+        <MSBuild Projects="dclIconFontsImageListFMX.dproj"/>
+    </Target>
+    <Target Name="dclIconFontsImageListFMX:Clean">
+        <MSBuild Projects="dclIconFontsImageListFMX.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="dclIconFontsImageListFMX:Make">
+        <MSBuild Projects="dclIconFontsImageListFMX.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="IconFontsImageList;dclIconFontsImageList;IconFontsImageListFMX;dclIconFontsImageListFMX"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="IconFontsImageList:Clean;dclIconFontsImageList:Clean;IconFontsImageListFMX:Clean;dclIconFontsImageListFMX:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="IconFontsImageList:Make;dclIconFontsImageList:Make;IconFontsImageListFMX:Make;dclIconFontsImageListFMX:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+    <ItemGroup Condition="'$(BuildGroup)'=='ALL'">
+        <BuildGroupProject Include="IconFontsImageList.dproj">
+            <ProjectGuid>{04BF305D-5A45-4264-B41F-266E66DBD5BA}</ProjectGuid>
+            <Configurations>Release</Configurations>
+            <Platforms>Win32;Win64</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+        <BuildGroupProject Include="dclIconFontsImageList.dproj">
+            <ProjectGuid>{0AC245B1-CA68-47BB-81A2-0148C2598849}</ProjectGuid>
+            <Configurations>Release</Configurations>
+            <Platforms>Win32;Win64</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+        <BuildGroupProject Include="IconFontsImageListFMX.dproj">
+            <ProjectGuid>{452EDB1E-5B9B-4E89-9D36-A63A06F44B45}</ProjectGuid>
+            <Configurations>Release</Configurations>
+            <Platforms>Win32;Win64</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+        <BuildGroupProject Include="dclIconFontsImageListFMX.dproj">
+            <ProjectGuid>{61E87847-C63A-494D-BFF7-1BAC0FEB00F9}</ProjectGuid>
+            <Configurations>Release</Configurations>
+            <Platforms>Win32;Win64</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+    </ItemGroup>
+</Project>

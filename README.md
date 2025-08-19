@@ -2,7 +2,7 @@
 
 ## Four advanced components to simplify use of Icon Fonts as images and ImageList (for VCL and FMX). Full support for High-DPI apps. Rendering optimized with GDI+
 
-### Actual official version 3.4.0 (VCL+FMX)
+### Actual official version 3.4.2 (VCL+FMX)
 
 | Component | Description |
 | - | - |
@@ -23,19 +23,19 @@ The Installer automatically detect your Delphi versions, install sources, build 
 
 Follow the [Project Site](https://ethea.it/docs/iconfontsimagelist/) to known how to use those components to modernize your Delphi VCL or FMX applications with scalable, colored and beautiful icons.
 
-### Available from Delphi 7 to Delphi 12 (32bit and 64bit platforms)
+### Available from Delphi 7 to Delphi 13 (32bit and 64bit platforms)
 
 Notice: the Installer is not able to automatic compile and install for Delphi 7: you must install it manually as explained [here](https://github.com/EtheaDev/IconFontsImageList/wiki#installation)
 
-![Delphi Support](/Demo/Images/SupportingDelphi.jpg)
+![Delphi Support](./Demo/Images/SupportingDelphi.jpg)
 
 Related links: https://www.embarcadero.com/ - https://learndelphi.org/
 
 Sample image of VCL version
-![https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/Sample.jpg](/Demo/Images/Sample.jpg)
+![Sample.jpg](./Demo/Images/Sample.jpg)
 
 Sample image of FMX version
-![https://github.com/EtheaDev/IconFontsImageList/blob/master/Demo/Images/SampleFMX.jpg](/Demo/Images/SampleFMX.jpg)
+![SampleFMX.jpg](./Demo/Images/SampleFMX.jpg)
 
 Follow the [guide in Wiki section](https://github.com/EtheaDev/IconFontsImageList/wiki) to known how to use those components to modernize your Delphi VCL or FMX applications scalable, colored and beautiful with few lines of code.
 
@@ -45,7 +45,7 @@ Follow the [guide in Wiki section](https://github.com/EtheaDev/IconFontsImageLis
 
 We advise that TIconFontsVirtualImageList should be used only for versions of Delphi before 10.3. For recent versions of Delphi the recommended combination should be **TIconFontsImageCollection + TVirtualImageList**. Don't forget also the importance of TVirtualImageList.PreserveItems when you have a large ImageCollection with many linked Actions. Without setting this property to "True", everytime you add or remove an icon in the collection, you have to check and change the ImageIndex of all the Actions.
 
-## Demos uses Material Design Icon Fonts ##
+## Demos uses Material Design Icon Fonts
 
 All demos included in this repo uses the Material Design Font available [here.](https://github.com/Templarian/MaterialDesign-Webfont) (the file "materialdesignicons-webfont.ttf" is renamed to "Material Design Icons.ttf" and included into **Demo\Fonts** folder)
 
@@ -54,6 +54,13 @@ All demos included in this repo uses the Material Design Font available [here.](
 Take care of changed Font file used in the Demos starting from v3.3.2 release, as explained [here](https://github.com/EtheaDev/IconFontsImageList/wiki/Deploy-Applications).
 
 **RELEASE NOTES:**
+19 Aug 2025: version 3.4.2 (VCL+FMX)
+- Updated Packaged for Delphi 13 and 64bit IDE
+
+25 Mar 2025: version 3.4.1 (VCL+FMX)
+- Fixed Setup conflict with SVGIconImageList components
+- Updated Packages for Delphi 12.3
+
 12 Mar 2025: version 3.4.0 (VCL+FMX)
 - Updated Packages for Delphi 12.3 and 64bit IDE
 - Added Library Description in Delphi Splash and About forms
@@ -114,32 +121,32 @@ Take care of changed Font file used in the Demos starting from v3.3.2 release, a
 - Fixed TIconFontsImageListBase.GetIndexByName
 
 12 Dec 2020: version 2.4.0 (VCL) and 1.6.1 (FMX)
- - Fixed problems changing FontColor of ImageList
+- Fixed problems changing FontColor of ImageList
  
 06 Dec 2020: version 2.4.0 (VCL) and 1.6.0 (FMX)
- - Added width and height property for FMX (if different from size)
- - Added Zoom attribute for icons (VCL and FMX)
+- Added width and height property for FMX (if different from size)
+- Added Zoom attribute for icons (VCL and FMX)
 
 16 Sep 2020: version 2.3.1 (VCL) and 1.5.1 (FMX)
- - Fixed issue #37 (Partly ugly antialiasing effects)
+- Fixed issue #37 (Partly ugly antialiasing effects)
 
 05 Sep 2020: version 2.3 (VCL) and 1.5.1 (FMX)
- - Added demo with VirtualImageList form D10.3 and D10.4
- - Refactoring to move methods from IconFontsImageList to IconFontsImageCollection
- - Update IconFontImage to connect also to a VirtualImageList
- - Fixed some packages and demos for older Delphi versions (Delphi7, DXE3, DXE6, DXE8)
+- Added demo with VirtualImageList form D10.3 and D10.4
+- Refactoring to move methods from IconFontsImageList to IconFontsImageCollection
+- Update IconFontImage to connect also to a VirtualImageList
+- Fixed some packages and demos for older Delphi versions (Delphi7, DXE3, DXE6, DXE8)
 
 04 Sep 2020: version 2.2.2 (VCL) and 1.5.1 (FMX)
- - Export Icons in png files into component editor
- - Updated "Material Design Font Desktop.ttf" font and metadata
+- Export Icons in png files into component editor
+- Updated "Material Design Font Desktop.ttf" font and metadata
  
 27 Aug 2020: version 2.2.1 (VCL) and 1.5.0 (FMX)
- - Complete refactoring for full support of High-DPI
- - New IconFontsImageCollection component
- - New IconFontsVirtualImageList component
- - Redesigned component editor to support Categories for icons
- - New support for native VirtualImageList (from D10.3)
- - Fixed some issues
+- Complete refactoring for full support of High-DPI
+- New IconFontsImageCollection component
+- New IconFontsVirtualImageList component
+- Redesigned component editor to support Categories for icons
+- New support for native VirtualImageList (from D10.3)
+- Fixed some issues
 
 15 July 2020: official 2.1 (VCL) and 1.5 version (FMX)
 - Fixed rendering on TButton!
@@ -181,8 +188,7 @@ Take care of changed Font file used in the Demos starting from v3.3.2 release, a
 
 27 March 2020: official 1.5 version (VCL) and first 1.0 version (FMX)
 - Added support for Icon Fonts that contains surrogate pair characters (VCL & FMX)!
-
-Now you can use all the icons present in any "font collection" that containts those special characters: [look here...](https://github.com/EtheaDev/IconFontsImageList/wiki/Icon-Fonts-with-surrogate-pair).
+- Now you can use all the icons present in any "font collection" that containts those special characters: [look here...](https://github.com/EtheaDev/IconFontsImageList/wiki/Icon-Fonts-with-surrogate-pair).
 
 24 March 2020: official 1.4 version (VCL) and first Beta version (FMX)
 - Improved performances into IDE (VCL)
