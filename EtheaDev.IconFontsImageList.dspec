@@ -1,0 +1,113 @@
+# DPM package spec file (https://delphi.dev)
+# The version and the commit are written by _sync\sync_project.py at every release.
+min dpm client version: 1.0.0
+metadata:
+  id: EtheaDev.IconFontsImageList
+  version: 3.4.4
+  description: 'Four advanced components to use Icon Fonts as images and ImageList, for VCL and FMX: TIconFontsImageList, TIconFontsImageCollection, TIconFontsVirtualImageList and TIconFontImage. Full support for High-DPI apps, rendering optimized with GDI+.'
+  authors:
+    - Carlo Barazzetta
+  projectUrl: https://www.ethea.it/docs/iconfontsimagelist/
+  repositoryUrl: https://github.com/EtheaDev/IconFontsImageList
+  repositoryCommit: '#HASH#'
+  license: Apache-2.0
+  copyright: Ethea S.r.l.
+  tags:
+    - vcl
+    - fmx
+    - imagelist
+    - icon-fonts
+    - high-dpi
+  frameworks:
+    - VCL
+    - FMX
+  readme: README.md
+variables:
+  packagesource: /Packages/D$compilermajornoprefix$
+targetPlatforms:
+  # Delphi XE3-XE8: VCL only
+  - compiler: delphixe3
+    platforms:
+      - win32
+      - win64
+  - compiler: delphixe6
+    platforms:
+      - win32
+      - win64
+  - compiler: delphixe8
+    platforms:
+      - win32
+      - win64
+  # Delphi 10.1 and later: VCL and FMX
+  - compiler: delphi10.1
+    platforms:
+      - win32
+      - win64
+    template: vclfmx
+    variables:
+      packagesource: /Packages/D10_1
+  - compiler: delphi10.2
+    platforms:
+      - win32
+      - win64
+    template: vclfmx
+    variables:
+      packagesource: /Packages/D10_2
+  - compiler: delphi10.3
+    platforms:
+      - win32
+      - win64
+    template: vclfmx
+    variables:
+      packagesource: /Packages/D10_3
+  - compiler: delphi10.4
+    platforms:
+      - win32
+      - win64
+    template: vclfmx
+    variables:
+      packagesource: /Packages/D10_4
+  - compiler from: delphi11.0
+    compiler to: delphi13.0
+    platforms:
+      - win32
+      - win64
+    template: vclfmx
+templates:
+  - name: default
+    source:
+      - src: /Source/*.pas
+      - src: /Source/*.inc
+      - src: /Source/*.dfm
+        copyToLib: true
+      - src: /Source/Fonts/*.pas
+      - src: /Packages/*.pas
+      - src: /Packages/*.dfm
+      - src: /Packages/*.dcr
+      - src: /Packages/*.res
+      - src: $packageSource$/*.dpk
+      - src: $packageSource$/*.dproj
+    build:
+      - project: $packageSource$/IconFontsImageList.dproj
+    design:
+      - project: $packageSource$/dclIconFontsImageList.dproj
+  - name: vclfmx
+    source:
+      - src: /Source/*.pas
+      - src: /Source/*.inc
+      - src: /Source/*.dfm
+        copyToLib: true
+      - src: /Source/Fonts/*.pas
+      - src: /Packages/*.pas
+      - src: /Packages/*.dfm
+      - src: /Packages/*.fmx
+      - src: /Packages/*.dcr
+      - src: /Packages/*.res
+      - src: $packageSource$/*.dpk
+      - src: $packageSource$/*.dproj
+    build:
+      - project: $packageSource$/IconFontsImageList.dproj
+      - project: $packageSource$/IconFontsImageListFMX.dproj
+    design:
+      - project: $packageSource$/dclIconFontsImageList.dproj
+      - project: $packageSource$/dclIconFontsImageListFMX.dproj

@@ -25,7 +25,7 @@ package IconFontsImageList;
 {$DESCRIPTION 'Ethea IconFontsImageList VCL components'}
 {$LIBSUFFIX '_D2010'}
 {$RUNONLY}
-{$IMPLICITBUILD ON}
+{$IMPLICITBUILD OFF}
 
 requires
   rtl,

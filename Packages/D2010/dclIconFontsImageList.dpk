@@ -27,7 +27,7 @@ package dclIconFontsImageList;
 {$DESCRIPTION 'Ethea IconFontsImageList VCL components'}
 {$LIBSUFFIX '_D2010'}
 {$DESIGNONLY}
-{$IMPLICITBUILD ON}
+{$IMPLICITBUILD OFF}
 
 requires
   DesignIDE,

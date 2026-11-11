@@ -29,7 +29,7 @@ package dclIconFontsImageListFMX;
 {$DESCRIPTION 'Ethea IconFontsImageList FMX components'}
 {$LIBSUFFIX AUTO}
 {$DESIGNONLY}
-{$IMPLICITBUILD ON}
+{$IMPLICITBUILD OFF}
 
 requires
   DesignIDE,

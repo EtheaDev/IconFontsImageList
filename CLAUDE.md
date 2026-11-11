@@ -42,3 +42,21 @@ Every unit includes `Source\IconFontsImageList.inc`, which maps `VERxxx` to cumu
 ### Releasing a new version
 
 The version string appears in several places that must stay in sync: `IconFontsImageListVersion` in `Source\IconFontsImageListBase.pas` and `Source\FMX.IconFontsImageList.pas`, `LibraryVersion` in `Setup\Setup.iss`, and the "Actual official version" + release notes in `README.md` (and `README.htm`).
+
+## DPM package (delphi.dev)
+
+The library is also published as a DPM package (Delphi Package Manager, https://delphi.dev,
+organization EtheaDev): spec `EtheaDev.IconFontsImageList.dspec` in the root (id `EtheaDev.IconFontsImageList`). It is packed from the GitHub
+clone and pushed by `D:\ETHEA\GitHub_EtheaDev\_sync\sync_project.py IconFontsImageList --release`; `version`
+is aligned to the README release notes automatically and `repositoryCommit: '#HASH#'` is replaced
+at pack time: don't edit them by hand.
+
+**Keep the dspec aligned with the packages and the Setup**: when a package folder is added or
+removed (new Delphi version), a `.dpk` is added/renamed, a new kind of file is needed by the
+packages (`.dfm`, `.res`, `.dcr`, ...), or a platform is enabled/disabled in a runtime `.dproj`,
+update `targetPlatforms` / `templates` (`source`, `build`, `design`) in the same commit. Check
+with `python D:\ETHEA\GitHub_EtheaDev\_sync\dpm_tools.py IconFontsImageList`: the publishing script refuses
+to commit/release while the check fails.
+
+- Delphi XE3, XE6, XE8: VCL only; 10.1 to 13: VCL + FMX (template `vclfmx`). D7 and D2010 are not
+  supported by DPM.

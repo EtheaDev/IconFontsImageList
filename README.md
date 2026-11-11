@@ -1,6 +1,5 @@
 ﻿## IconFontsImageList
 
-<!-- badges -->
 [![License: Apache](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
 [![Latest release](https://img.shields.io/github/v/release/EtheaDev/IconFontsImageList?label=release&color=blue)](https://github.com/EtheaDev/IconFontsImageList/releases)
 [![Delphi 7+](https://img.shields.io/badge/Delphi-7%2B-e62329.svg)](https://www.embarcadero.com/products/delphi)
@@ -22,6 +21,16 @@ An "Installer" read-to-use is located in the Release area: [Download the Install
 The Installer automatically detect your Delphi versions, install sources, build and install packages and add source paths.
 
 ![Setup](./Demo/Images/Setup.png)
+
+## Installation with DPM (Delphi Package Manager)
+
+The library is also published on [delphi.dev](https://delphi.dev/packages/etheadev.iconfontsimagelist) as the package **EtheaDev.IconFontsImageList** (Delphi XE3 to 13, Win32 and Win64): you can install it with [DPM, the Delphi Package Manager](https://delphi.dev), as an alternative to the Setup. From the IDE, right click on your project in the Project Manager and choose *Manage DPM Packages*, or from the command line:
+
+```
+dpm install EtheaDev.IconFontsImageList <path of your project>.dproj
+```
+
+DPM downloads the package, builds it for the Delphi version and the platforms of your project and adds it to the project.
 
 ## Documentation
 
@@ -56,6 +65,9 @@ All demos included in this repo uses the Material Design Font available [here.](
 Take care of changed Font file used in the Demos starting from v3.3.2 release, as explained [here](https://ethea.it/docs/iconfontsimagelist/Deploy-Applications).
 
 **RELEASE NOTES:**
+
+11 Nov 2026: version 3.4.4 (VCL+FMX)
+- Compatibility with Delphi 13.2
 
 15 Oct 2026: version 3.4.3 (VCL+FMX)
 - Added support for Delphi 13.2
@@ -231,3 +243,9 @@ Take care of changed Font file used in the Demos starting from v3.3.2 release, a
 
 Inspired by the "Font Icon Editor" project by Luca Minuti:
 [https://github.com/lminuti/FontIconEditor](https://github.com/lminuti/FontIconEditor)
+
+## License
+
+Copyright (c) 2019-2026 Ethea S.r.l.
+
+Licensed under the [Apache License, Version 2.0](LICENSE) (the "License"): you may not use this software except in compliance with the License. Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
